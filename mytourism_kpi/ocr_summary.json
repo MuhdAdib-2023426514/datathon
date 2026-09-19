@@ -1,0 +1,42 @@
+{
+  "2016": {
+    "pages_processed": 6,
+    "total_rows": 62,
+    "error": null
+  },
+  "2017": {
+    "pages_processed": 0,
+    "total_rows": 0,
+    "error": "no text layer hits"
+  },
+  "2018": {
+    "pages_processed": 7,
+    "total_rows": 80,
+    "error": null
+  },
+  "2019": {
+    "pages_processed": 7,
+    "total_rows": 82,
+    "error": null
+  },
+  "2020": {
+    "pages_processed": 4,
+    "total_rows": 36,
+    "error": null
+  },
+  "2021": {
+    "pages_processed": 5,
+    "total_rows": 53,
+    "error": null
+  },
+  "2022": {
+    "pages_processed": 4,
+    "total_rows": 52,
+    "error": null
+  },
+  "2023": {
+    "pages_processed": 5,
+    "total_rows": 83,
+    "error": null
+  }
+}

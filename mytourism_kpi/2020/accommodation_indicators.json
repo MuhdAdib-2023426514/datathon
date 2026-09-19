@@ -1,0 +1,482 @@
+{
+  "year": 2020,
+  "source": "Malaysia Tourism Key Performance Indicators 2020",
+  "section": "ACCOMMODATION INDICATORS",
+  "tables": {
+    "hotel_guests_by_state": {
+      "columns": [
+        "state",
+        "dom_2020",
+        "dom_2019",
+        "dom_pct_2020_2019",
+        "for_2020",
+        "for_2019",
+        "for_pct_2020_2019",
+        "total_2020",
+        "total_2019",
+        "total_pct_2020_2019"
+      ],
+      "schema_note": "Expected columns for 2020. Rows may have extra/fewer values if OCR misread — check source_page.",
+      "rows": [
+        {
+          "state": "MALAYSIA",
+          "source_page": [
+            57
+          ],
+          "values": [
+            35405021,
+            2020,
+            13.3,
+            4701027,
+            26431843,
+            42127856,
+            -3,
+            7.26
+          ]
+        },
+        {
+          "state": "KUALA LUMPUR",
+          "source_page": [
+            57
+          ],
+          "values": [
+            4514383,
+            7397154,
+            -38.97,
+            1584088,
+            10931619,
+            6098471,
+            18328773
+          ]
+        },
+        {
+          "state": "PUTRAJAYA",
+          "source_page": [
+            57
+          ],
+          "values": [
+            173400,
+            306920,
+            -43.5,
+            20874,
+            178498,
+            -88.31,
+            194274,
+            485418,
+            -59.98
+          ]
+        },
+        {
+          "state": "SELANGOR",
+          "source_page": [
+            57
+          ],
+          "values": [
+            1653005,
+            3548963,
+            -53.42,
+            322618,
+            1866153,
+            -82.7,
+            1975623,
+            5415116,
+            -63.52
+          ]
+        },
+        {
+          "state": "NEGERI SEMBILAN",
+          "source_page": [
+            57
+          ],
+          "values": [
+            980525,
+            1928835,
+            -49.16,
+            66437,
+            459539,
+            -85.54,
+            1046962,
+            2388374,
+            -56.16
+          ]
+        },
+        {
+          "state": "MELAKA",
+          "source_page": [
+            57
+          ],
+          "values": [
+            1262949,
+            3252525,
+            -61.17,
+            180422,
+            1465372,
+            -87.69,
+            1443371,
+            4717897,
+            -69.41
+          ]
+        },
+        {
+          "state": "JOHOR",
+          "source_page": [
+            57
+          ],
+          "values": [
+            3472179,
+            5020019,
+            -30.83,
+            418237,
+            2548685,
+            -83.59,
+            3890416,
+            7568704,
+            -48.6
+          ]
+        },
+        {
+          "state": "PAHANG",
+          "source_page": [
+            57
+          ],
+          "values": [
+            6784431,
+            8877064,
+            -23.57,
+            517572,
+            2754449,
+            -81.2,
+            7302003,
+            11631513,
+            -37.22
+          ]
+        },
+        {
+          "state": "TERENGGANU",
+          "source_page": [
+            57
+          ],
+          "values": [
+            1325099,
+            1738426,
+            -23.78,
+            19796,
+            179324,
+            -88.96,
+            1344895,
+            1917750,
+            -29.87
+          ]
+        },
+        {
+          "state": "KELANTAN",
+          "source_page": [
+            57
+          ],
+          "values": [
+            556340,
+            1050577,
+            -47.04,
+            4520,
+            49211,
+            -90.82,
+            560860,
+            1099788,
+            -49.0
+          ]
+        },
+        {
+          "state": "PERLIS",
+          "source_page": [
+            57
+          ],
+          "values": [
+            126013,
+            179724,
+            -29.89,
+            1113,
+            5700,
+            -80.47,
+            127126,
+            185424,
+            -31.44
+          ]
+        },
+        {
+          "state": "KEDAH",
+          "source_page": [
+            57
+          ],
+          "values": [
+            2118912,
+            2663052,
+            -20.43,
+            375582,
+            1583215,
+            -76.28,
+            2494494,
+            4246267,
+            -41.25
+          ]
+        },
+        {
+          "state": "PULAU PINANG",
+          "source_page": [
+            57
+          ],
+          "values": [
+            2336054,
+            3541246,
+            -34.03,
+            526295,
+            2848750,
+            -81.53,
+            2862349,
+            6389996,
+            -55.21
+          ]
+        },
+        {
+          "state": "PERAK",
+          "source_page": [
+            57
+          ],
+          "values": [
+            1128553,
+            2623351,
+            -56.98,
+            55135,
+            293256,
+            -81.2,
+            1183688,
+            2916607,
+            -59.42
+          ]
+        },
+        {
+          "state": "SABAH",
+          "source_page": [
+            57
+          ],
+          "values": [
+            1311390,
+            -68.99
+          ]
+        },
+        {
+          "state": "LABUAN",
+          "source_page": [
+            57
+          ],
+          "values": [
+            251661,
+            430038,
+            -41.48,
+            21737,
+            75447,
+            119,
+            273398,
+            505485,
+            -45.9
+          ]
+        },
+        {
+          "state": "SARAWAK",
+          "source_page": [
+            57
+          ],
+          "values": [
+            2709100,
+            4306725,
+            -37.1,
+            100257,
+            539599,
+            -81.42,
+            2809357,
+            4846324,
+            -42.03
+          ]
+        },
+        {
+          "state": "TOTAL",
+          "source_page": [
+            57
+          ],
+          "values": [
+            30703994,
+            51093010,
+            -39.91,
+            4701027,
+            28836193,
+            35405021,
+            79929203
+          ]
+        }
+      ]
+    },
+    "average_occupancy_rates_by_state": {
+      "columns": [
+        "state",
+        "aor_2020",
+        "aor_2019",
+        "pct_diff_2020_2019"
+      ],
+      "schema_note": "Expected columns for 2020. Rows may have extra/fewer values if OCR misread — check source_page.",
+      "rows": [
+        {
+          "state": "KUALA LUMPUR",
+          "source_page": "58",
+          "values": [
+            59.9,
+            25.1,
+            -34.8
+          ]
+        },
+        {
+          "state": "PUTRAJAYA",
+          "source_page": "58",
+          "values": [
+            64.2,
+            40.6,
+            -23.6
+          ]
+        },
+        {
+          "state": "SELANGOR",
+          "source_page": "58",
+          "values": [
+            56.4,
+            30.2,
+            -26.2
+          ]
+        },
+        {
+          "state": "NEGERI SEMBILAN",
+          "source_page": "58",
+          "values": [
+            51.9,
+            25.5,
+            -26.4
+          ]
+        },
+        {
+          "state": "MELAKA",
+          "source_page": "58",
+          "values": [
+            51.7,
+            20.0,
+            -31.7
+          ]
+        },
+        {
+          "state": "JOHOR",
+          "source_page": "58",
+          "values": [
+            57.3,
+            32.0,
+            -25.3
+          ]
+        },
+        {
+          "state": "PAHANG",
+          "source_page": "58",
+          "values": [
+            79.4,
+            40.7,
+            -38.7
+          ]
+        },
+        {
+          "state": "TERENGGANU",
+          "source_page": "58",
+          "values": [
+            41.3,
+            32.4,
+            -8.9
+          ]
+        },
+        {
+          "state": "KELANTAN",
+          "source_page": "58",
+          "values": [
+            43.4,
+            34.6,
+            -8.8
+          ]
+        },
+        {
+          "state": "PERLIS",
+          "source_page": "58",
+          "values": [
+            36.0,
+            22.5,
+            -13.5
+          ]
+        },
+        {
+          "state": "KEDAH",
+          "source_page": "58",
+          "values": [
+            55.7,
+            26.1,
+            -29.6
+          ]
+        },
+        {
+          "state": "PULAU PINANG",
+          "source_page": "58",
+          "values": [
+            56.5,
+            23.7,
+            -32.8
+          ]
+        },
+        {
+          "state": "PERAK",
+          "source_page": "58",
+          "values": [
+            43.9,
+            25.8,
+            -18.1
+          ]
+        },
+        {
+          "state": "SABAH",
+          "source_page": "58",
+          "values": [
+            65.8,
+            24.3,
+            -41.5
+          ]
+        },
+        {
+          "state": "LABUAN",
+          "source_page": "58",
+          "values": [
+            42.2,
+            43.0,
+            0.8
+          ]
+        },
+        {
+          "state": "SARAWAK",
+          "source_page": "58",
+          "values": [
+            461,
+            30.3,
+            -15.8
+          ]
+        },
+        {
+          "state": "MALAYSIA",
+          "source_page": "58",
+          "values": [
+            58.8,
+            30.9,
+            -27.9
+          ]
+        }
+      ]
+    }
+  }
+}

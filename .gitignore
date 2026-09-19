@@ -1,0 +1,23 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Large raw PDF publications archive (>900MB, not required by data pipeline)
+/dts/
+*.pdf
+
+# IDE & temporary files
+.vscode/
+.idea/
+*.swp
+*.tmp
+.DS_Store
