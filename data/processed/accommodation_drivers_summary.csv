@@ -1,0 +1,7 @@
+feature_name,feature_label,std_beta,std_error,t_statistic,p_value,is_significant_5pct,vif,direction,importance_share_pct
+resident_median_income,Resident Median Household Income (RM),0.6577,0.1056,6.229,0.0,True,2.74,Positive (+),31.5
+alos_days,Average Length of Stay (ALOS days),0.3869,0.0711,5.442,0.0,True,1.23,Positive (+),18.5
+aor_pct,Hotel Average Occupancy Rate (%),0.3825,0.0626,6.113,0.0,True,1.21,Positive (+),18.3
+holiday_share_pct,Holiday Purpose Share (% tourists),0.3647,0.0675,5.401,0.0,True,1.22,Positive (+),17.5
+tourist_t20_share_pct,Inbound Tourist T20 Affluence Share (%),-0.1708,0.0859,-1.988,0.0468,True,1.85,Negative (-),8.2
+luxury_room_share_pct,4/5-Star Luxury Room Share (%),-0.125,0.1271,-0.984,0.3253,False,2.26,Negative (-),6.0

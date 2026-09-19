@@ -1,0 +1,129 @@
+{
+  "constants": {
+    "accommodation_vai": 0.858,
+    "fnb_vai": 0.432,
+    "overall_tourism_vai": 0.528,
+    "disclaimer": "Scenario estimate, not a causal forecast."
+  },
+  "state_baselines": {
+    "Johor": {
+      "alos": 2.615,
+      "spend_per_night": 42.815,
+      "tourists_k": 9651.48,
+      "hotel_rooms": 35921,
+      "aor": 53.25
+    },
+    "Kedah": {
+      "alos": 2.795,
+      "spend_per_night": 28.65,
+      "tourists_k": 6989.635,
+      "hotel_rooms": 18640,
+      "aor": 48.75
+    },
+    "Kelantan": {
+      "alos": 2.98,
+      "spend_per_night": 24.865,
+      "tourists_k": 6187.955,
+      "hotel_rooms": 6377,
+      "aor": 43.35
+    },
+    "Melaka": {
+      "alos": 2.12,
+      "spend_per_night": 65.415,
+      "tourists_k": 6668.53,
+      "hotel_rooms": 20407,
+      "aor": 45.75
+    },
+    "Negeri Sembilan": {
+      "alos": 2.27,
+      "spend_per_night": 38.885,
+      "tourists_k": 6267.28,
+      "hotel_rooms": 11191,
+      "aor": 43.2
+    },
+    "Pahang": {
+      "alos": 2.19,
+      "spend_per_night": 56.015,
+      "tourists_k": 10285.91,
+      "hotel_rooms": 34362,
+      "aor": 75.95
+    },
+    "Perak": {
+      "alos": 2.395,
+      "spend_per_night": 31.42,
+      "tourists_k": 10311.385,
+      "hotel_rooms": 19435,
+      "aor": 46.65
+    },
+    "Perlis": {
+      "alos": 2.37,
+      "spend_per_night": 33.56,
+      "tourists_k": 1368.49,
+      "hotel_rooms": 1521,
+      "aor": 41.35
+    },
+    "Pulau Pinang": {
+      "alos": 2.615,
+      "spend_per_night": 75.3,
+      "tourists_k": 5197.78,
+      "hotel_rooms": 27368,
+      "aor": 57.7
+    },
+    "Sabah": {
+      "alos": 3.08,
+      "spend_per_night": 51.425,
+      "tourists_k": 6720.685,
+      "hotel_rooms": 27231,
+      "aor": 52.85
+    },
+    "Sarawak": {
+      "alos": 3.095,
+      "spend_per_night": 45.56,
+      "tourists_k": 6015.46,
+      "hotel_rooms": 28074,
+      "aor": 47.5
+    },
+    "Selangor": {
+      "alos": 2.275,
+      "spend_per_night": 62.245,
+      "tourists_k": 10084.975,
+      "hotel_rooms": 34974,
+      "aor": 53.2
+    },
+    "Terengganu": {
+      "alos": 2.63,
+      "spend_per_night": 34.71,
+      "tourists_k": 5079.02,
+      "hotel_rooms": 11252,
+      "aor": 45.95
+    },
+    "W.P. Kuala Lumpur": {
+      "alos": 2.28,
+      "spend_per_night": 102.9,
+      "tourists_k": 8147.435,
+      "hotel_rooms": 65053,
+      "aor": 64.75
+    },
+    "W.P. Labuan": {
+      "alos": 2.675,
+      "spend_per_night": 68.655,
+      "tourists_k": 230.445,
+      "hotel_rooms": 2297,
+      "aor": 38.2
+    },
+    "W.P. Putrajaya": {
+      "alos": 2.32,
+      "spend_per_night": 38.85,
+      "tourists_k": 778.845,
+      "hotel_rooms": 2618,
+      "aor": 56.25
+    }
+  },
+  "gravity_elasticities": {
+    "distance_friction": -0.5913,
+    "origin_households": 0.9319,
+    "origin_income": 0.5673,
+    "destination_pull": 0.7098,
+    "cross_region_barrier": -1.2665
+  }
+}

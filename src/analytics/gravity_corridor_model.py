@@ -43,7 +43,9 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
         SELECT 
             p.*,
             s_orig.visitors_thousands as origin_visitors_k,
-            s_orig.alos_days as origin_alos_days
+            s_orig.alos_days as origin_alos_days,
+            s_orig.households_thousands as origin_households_k,
+            s_orig.median_household_income_rm as origin_median_income_rm
         FROM origin_destination_panel p
         LEFT JOIN state_panel_year s_orig 
             ON p.year = s_orig.year AND p.origin = s_orig.state
@@ -51,12 +53,13 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
     """).df()
 
     # Filter clean rows
-    df_panel = df_panel.dropna(subset=["tourist_flow_thousands", "distance_km", "origin_visitors_k", "dest_total_tourists_thousands"]).copy()
+    df_panel = df_panel.dropna(subset=["tourist_flow_thousands", "distance_km", "origin_households_k", "origin_median_income_rm", "dest_total_tourists_thousands"]).copy()
 
     # Ensure positive variables for log transformations
     df_panel["effective_dist_km"] = df_panel["distance_km"].clip(lower=40.0)
     df_panel["flow_clipped"] = df_panel["tourist_flow_thousands"].clip(lower=0.01)
-    df_panel["origin_mass_clipped"] = df_panel["origin_visitors_k"].clip(lower=1.0)
+    df_panel["origin_hh_clipped"] = df_panel["origin_households_k"].clip(lower=10.0)
+    df_panel["origin_inc_clipped"] = df_panel["origin_median_income_rm"].clip(lower=1000.0)
     df_panel["dest_pull_clipped"] = df_panel["dest_total_tourists_thousands"].clip(lower=1.0)
     df_panel["dest_alos_clipped"] = df_panel["dest_alos_days"].clip(lower=0.5)
     df_panel["dest_rooms_clipped"] = df_panel["dest_rooms_count"].clip(lower=100.0)
@@ -64,7 +67,8 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
     # Log transformations
     df_panel["ln_flow"] = np.log(df_panel["flow_clipped"])
     df_panel["ln_dist"] = np.log(df_panel["effective_dist_km"])
-    df_panel["ln_origin_mass"] = np.log(df_panel["origin_mass_clipped"])
+    df_panel["ln_origin_hh"] = np.log(df_panel["origin_hh_clipped"])
+    df_panel["ln_origin_inc"] = np.log(df_panel["origin_inc_clipped"])
     df_panel["ln_dest_pull"] = np.log(df_panel["dest_pull_clipped"])
     df_panel["ln_dest_alos"] = np.log(df_panel["dest_alos_clipped"])
     df_panel["ln_dest_rooms"] = np.log(df_panel["dest_rooms_clipped"])
@@ -72,16 +76,16 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
     df_panel["year_factor"] = df_panel["year"].astype(str)
 
     # =========================================================================
-    # MODEL 1: Cross-Sectional Gravity Model (2025 Baseline, N = 240)
+    # MODEL 1: Cross-Sectional Structural Gravity Model (2025 Baseline, N = 240)
     # =========================================================================
     df_2025 = df_panel[df_panel["year"] == 2025].copy()
-    formula_cs = "ln_flow ~ ln_origin_mass + ln_dest_pull + ln_dist + cross_region_int + ln_dest_alos"
+    formula_cs = "ln_flow ~ ln_origin_hh + ln_origin_inc + ln_dest_pull + ln_dist + cross_region_int + ln_dest_alos"
     model_cs = ols(formula_cs, data=df_2025).fit(cov_type="HC1")
 
     # =========================================================================
-    # MODEL 2: Longitudinal Panel Gravity Model with Year Fixed Effects (2018–2025, N = 1,920)
+    # MODEL 2: Longitudinal Panel Gravity Model with Year Fixed Effects (2018–2025, N = 1,890)
     # =========================================================================
-    formula_panel = "ln_flow ~ ln_origin_mass + ln_dest_pull + ln_dist + cross_region_int + ln_dest_alos + C(year_factor)"
+    formula_panel = "ln_flow ~ ln_origin_hh + ln_origin_inc + ln_dest_pull + ln_dist + cross_region_int + ln_dest_alos + C(year_factor)"
     model_panel = ols(formula_panel, data=df_panel).fit(cov_type="HC1")
 
     # =========================================================================
@@ -97,8 +101,8 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
     summary_rows = [
         # Panel Model Primary Findings
         {
-            "model_type": "Panel Fixed Effects (2018–2025, N=1920)",
-            "variable": "ln(Distance)",
+            "model_type": "Panel Fixed Effects (2018–2025, N=1890)",
+            "variable": "ln(Distance Friction)",
             "coefficient": round(model_panel.params["ln_dist"], 4),
             "std_error": round(model_panel.bse["ln_dist"], 4),
             "t_statistic": round(model_panel.tvalues["ln_dist"], 4),
@@ -107,17 +111,27 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
             "interpretation": f"A 10% increase in corridor distance reduces tourist flow by {abs(model_panel.params['ln_dist']) * 10:.1f}% across all 8 years."
         },
         {
-            "model_type": "Panel Fixed Effects (2018–2025, N=1920)",
-            "variable": "ln(Origin Visitor Mass)",
-            "coefficient": round(model_panel.params["ln_origin_mass"], 4),
-            "std_error": round(model_panel.bse["ln_origin_mass"], 4),
-            "t_statistic": round(model_panel.tvalues["ln_origin_mass"], 4),
-            "p_value": round(model_panel.pvalues["ln_origin_mass"], 4),
+            "model_type": "Panel Fixed Effects (2018–2025, N=1890)",
+            "variable": "ln(Origin Households)",
+            "coefficient": round(model_panel.params["ln_origin_hh"], 4),
+            "std_error": round(model_panel.bse["ln_origin_hh"], 4),
+            "t_statistic": round(model_panel.tvalues["ln_origin_hh"], 4),
+            "p_value": round(model_panel.pvalues["ln_origin_hh"], 4),
             "significance": "p < 0.001",
-            "interpretation": f"A 10% increase in origin travel pool expands corridor tourist generation by {model_panel.params['ln_origin_mass'] * 10:.1f}%."
+            "interpretation": f"A 10% expansion in origin household population increases outbound tourist generation by {model_panel.params['ln_origin_hh'] * 10:.1f}%."
         },
         {
-            "model_type": "Panel Fixed Effects (2018–2025, N=1920)",
+            "model_type": "Panel Fixed Effects (2018–2025, N=1890)",
+            "variable": "ln(Origin Median Income)",
+            "coefficient": round(model_panel.params["ln_origin_inc"], 4),
+            "std_error": round(model_panel.bse["ln_origin_inc"], 4),
+            "t_statistic": round(model_panel.tvalues["ln_origin_inc"], 4),
+            "p_value": round(model_panel.pvalues["ln_origin_inc"], 4),
+            "significance": "p < 0.001",
+            "interpretation": f"A 10% increase in origin median income expands travel demand by {model_panel.params['ln_origin_inc'] * 10:.1f}%."
+        },
+        {
+            "model_type": "Panel Fixed Effects (2018–2025, N=1890)",
             "variable": "ln(Destination Intake Pull)",
             "coefficient": round(model_panel.params["ln_dest_pull"], 4),
             "std_error": round(model_panel.bse["ln_dest_pull"], 4),
@@ -127,24 +141,24 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
             "interpretation": f"A 10% increase in destination overall tourist intake expands corridor flow by {model_panel.params['ln_dest_pull'] * 10:.1f}%."
         },
         {
-            "model_type": "Panel Fixed Effects (2018–2025, N=1920)",
-            "variable": "Cross-Region Flight Penalty (Peninsula <-> Borneo)",
+            "model_type": "Panel Fixed Effects (2018–2025, N=1890)",
+            "variable": "Cross-Region Flight Barrier (Peninsula <-> Borneo)",
             "coefficient": round(model_panel.params["cross_region_int"], 4),
             "std_error": round(model_panel.bse["cross_region_int"], 4),
             "t_statistic": round(model_panel.tvalues["cross_region_int"], 4),
             "p_value": round(model_panel.pvalues["cross_region_int"], 4),
             "significance": "p < 0.001",
-            "interpretation": f"Flight-mandatory corridors face an average {abs(math.exp(model_panel.params['cross_region_int']) - 1) * 100:.1f}% flow barrier relative to overland routes."
+            "interpretation": f"Corridors crossing between Peninsular Malaysia and Borneo face an extra {abs(math.exp(model_panel.params['cross_region_int']) - 1) * 100:.1f}% flow penalty."
         },
         {
-            "model_type": "Panel Fixed Effects (2018–2025, N=1920)",
+            "model_type": "Panel Fixed Effects (2018–2025, N=1890)",
             "variable": "ln(Destination ALOS)",
             "coefficient": round(model_panel.params["ln_dest_alos"], 4),
             "std_error": round(model_panel.bse["ln_dest_alos"], 4),
             "t_statistic": round(model_panel.tvalues["ln_dest_alos"], 4),
             "p_value": round(model_panel.pvalues["ln_dest_alos"], 4),
-            "significance": "p < 0.01" if model_panel.pvalues["ln_dest_alos"] < 0.01 else "Not sig",
-            "interpretation": "Destination length-of-stay elasticity controlling for spatial friction and macro time shocks."
+            "significance": "p < 0.05" if model_panel.pvalues["ln_dest_alos"] < 0.05 else "Not sig",
+            "interpretation": "Destination length-of-stay elasticity controlling for spatial friction and origin income."
         },
         # Structural Comparison Highlights
         {

@@ -1,0 +1,85 @@
+{
+  "model_metadata": {
+    "r_squared": 0.6092,
+    "adj_r_squared": 0.5895,
+    "f_statistic": 21.64,
+    "n_observations": 126,
+    "dependent_variable": "ln(Accom Spend per Tourist RM)",
+    "covariance_type": "HC3 Robust Standard Errors",
+    "description": "Standardized driver attribution model explaining variation in accommodation yield across Malaysian states (2018-2025)."
+  },
+  "feature_attributions": [
+    {
+      "feature_name": "resident_median_income",
+      "feature_label": "Resident Median Household Income (RM)",
+      "std_beta": 0.6577,
+      "std_error": 0.1056,
+      "t_statistic": 6.229,
+      "p_value": 0.0,
+      "is_significant_5pct": true,
+      "vif": 2.74,
+      "direction": "Positive (+)",
+      "importance_share_pct": 31.5
+    },
+    {
+      "feature_name": "alos_days",
+      "feature_label": "Average Length of Stay (ALOS days)",
+      "std_beta": 0.3869,
+      "std_error": 0.0711,
+      "t_statistic": 5.442,
+      "p_value": 0.0,
+      "is_significant_5pct": true,
+      "vif": 1.23,
+      "direction": "Positive (+)",
+      "importance_share_pct": 18.5
+    },
+    {
+      "feature_name": "aor_pct",
+      "feature_label": "Hotel Average Occupancy Rate (%)",
+      "std_beta": 0.3825,
+      "std_error": 0.0626,
+      "t_statistic": 6.113,
+      "p_value": 0.0,
+      "is_significant_5pct": true,
+      "vif": 1.21,
+      "direction": "Positive (+)",
+      "importance_share_pct": 18.3
+    },
+    {
+      "feature_name": "holiday_share_pct",
+      "feature_label": "Holiday Purpose Share (% tourists)",
+      "std_beta": 0.3647,
+      "std_error": 0.0675,
+      "t_statistic": 5.401,
+      "p_value": 0.0,
+      "is_significant_5pct": true,
+      "vif": 1.22,
+      "direction": "Positive (+)",
+      "importance_share_pct": 17.5
+    },
+    {
+      "feature_name": "tourist_t20_share_pct",
+      "feature_label": "Inbound Tourist T20 Affluence Share (%)",
+      "std_beta": -0.1708,
+      "std_error": 0.0859,
+      "t_statistic": -1.988,
+      "p_value": 0.0468,
+      "is_significant_5pct": true,
+      "vif": 1.85,
+      "direction": "Negative (-)",
+      "importance_share_pct": 8.2
+    },
+    {
+      "feature_name": "luxury_room_share_pct",
+      "feature_label": "4/5-Star Luxury Room Share (%)",
+      "std_beta": -0.125,
+      "std_error": 0.1271,
+      "t_statistic": -0.984,
+      "p_value": 0.3253,
+      "is_significant_5pct": false,
+      "vif": 2.26,
+      "direction": "Negative (-)",
+      "importance_share_pct": 6.0
+    }
+  ]
+}
