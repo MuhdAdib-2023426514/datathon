@@ -1,0 +1,17 @@
+year,state,state_code,region,population_thousands,population_millions,median_household_income_rm,mean_household_income_rm
+2024,Johor,MY-01,Southern,4100.0,4.1,6071.0,7700.0
+2024,Kedah,MY-02,Northern,2200.0,2.2,4402.0,5500.0
+2024,Kelantan,MY-03,East Coast,1850.0,1.85,3614.0,4800.0
+2024,Melaka,MY-04,Southern,1030.0,1.03,6210.0,8000.0
+2024,Negeri Sembilan,MY-05,Central,1210.0,1.21,5226.0,6700.0
+2024,Pahang,MY-06,East Coast,1630.0,1.63,4753.0,5900.0
+2024,Pulau Pinang,MY-07,Northern,1770.0,1.77,6502.0,8200.0
+2024,Perak,MY-08,Northern,2540.0,2.54,4594.0,5700.0
+2024,Perlis,MY-09,Northern,290.0,0.29,4713.0,5600.0
+2024,Selangor,MY-10,Central,7200.0,7.2,9983.0,12200.0
+2024,Terengganu,MY-11,East Coast,1210.0,1.21,5878.0,7200.0
+2024,Sabah,MY-12,East Malaysia,3700.0,3.7,4577.0,5700.0
+2024,Sarawak,MY-13,East Malaysia,2500.0,2.5,4978.0,6400.0
+2024,W.P. Kuala Lumpur,MY-14,Central,2000.0,2.0,10234.0,13300.0
+2024,W.P. Labuan,MY-15,East Malaysia,100.0,0.1,6904.0,8500.0
+2024,W.P. Putrajaya,MY-16,Central,120.0,0.12,13473.0,16800.0
