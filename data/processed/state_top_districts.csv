@@ -1,0 +1,466 @@
+year,state,state_code,region,rank,district_name
+2018,Johor,MY-01,Southern,1,Johor Bahru
+2018,Johor,MY-01,Southern,2,Batu Pahat
+2018,Johor,MY-01,Southern,3,Muar
+2018,Johor,MY-01,Southern,4,Kluang
+2018,Johor,MY-01,Southern,5,Mersing
+2018,Pulau Pinang,MY-07,Northern,1,Timur Laut
+2018,Pulau Pinang,MY-07,Northern,2,Seberang Perai Tengah
+2018,Pulau Pinang,MY-07,Northern,3,Barat Daya
+2018,Pulau Pinang,MY-07,Northern,4,Seberang Perai Utara
+2018,Pulau Pinang,MY-07,Northern,5,Seberang Perai Selatan
+2018,Kedah,MY-02,Northern,1,Kota Setar
+2018,Kedah,MY-02,Northern,2,Kuala Muda
+2018,Kedah,MY-02,Northern,3,Langkawi
+2018,Kedah,MY-02,Northern,4,Kubang Pasu
+2018,Kedah,MY-02,Northern,5,Kulim
+2018,Perak,MY-08,Northern,1,Kinta
+2018,Perak,MY-08,Northern,2,Manjung
+2018,Perak,MY-08,Northern,3,"Larut, Matang & Selama"
+2018,Perak,MY-08,Northern,4,Hilir Perak
+2018,Perak,MY-08,Northern,5,Kuala Kangsar
+2018,Kelantan,MY-03,East Coast,1,Kota Bharu
+2018,Kelantan,MY-03,East Coast,2,Pasir Mas
+2018,Kelantan,MY-03,East Coast,3,Tanah Merah
+2018,Kelantan,MY-03,East Coast,4,Pasir Puteh
+2018,Kelantan,MY-03,East Coast,5,Bachok
+2018,Selangor,MY-10,Central,1,Petaling
+2018,Selangor,MY-10,Central,2,Gombak
+2018,Selangor,MY-10,Central,3,Hulu Langat
+2018,Selangor,MY-10,Central,4,Klang
+2018,Selangor,MY-10,Central,5,Sepang
+2018,Melaka,MY-04,Southern,1,Melaka Tengah
+2018,Melaka,MY-04,Southern,2,Hang Tuah Jaya
+2018,Melaka,MY-04,Southern,3,Alor Gajah
+2018,Melaka,MY-04,Southern,4,Jasin
+2018,Terengganu,MY-11,East Coast,1,Kuala Terengganu
+2018,Terengganu,MY-11,East Coast,2,Dungun
+2018,Terengganu,MY-11,East Coast,3,Kemaman
+2018,Terengganu,MY-11,East Coast,4,Besut
+2018,Terengganu,MY-11,East Coast,5,Kuala Nerus
+2018,Negeri Sembilan,MY-05,Central,1,Seremban
+2018,Negeri Sembilan,MY-05,Central,2,Port Dickson
+2018,Negeri Sembilan,MY-05,Central,3,Tampin
+2018,Negeri Sembilan,MY-05,Central,4,Kuala Pilah
+2018,Negeri Sembilan,MY-05,Central,5,Jempol
+2018,Sabah,MY-12,East Malaysia,1,Kota Kinabalu
+2018,Sabah,MY-12,East Malaysia,2,Tawau
+2018,Sabah,MY-12,East Malaysia,3,Beaufort
+2018,Sabah,MY-12,East Malaysia,4,Sandakan
+2018,Sabah,MY-12,East Malaysia,5,Ranau
+2018,Pahang,MY-06,East Coast,1,Kuantan
+2018,Pahang,MY-06,East Coast,2,Temerloh
+2018,Pahang,MY-06,East Coast,3,Bentong
+2018,Pahang,MY-06,East Coast,4,Cameron Highlands
+2018,Pahang,MY-06,East Coast,5,Maran
+2018,Sarawak,MY-13,East Malaysia,1,Kuching
+2018,Sarawak,MY-13,East Malaysia,2,Sibu
+2018,Sarawak,MY-13,East Malaysia,3,Miri
+2018,Sarawak,MY-13,East Malaysia,4,Bintulu
+2018,Sarawak,MY-13,East Malaysia,5,Serian
+2019,Johor,MY-01,Southern,1,Johor Bahru
+2019,Johor,MY-01,Southern,2,Batu Pahat
+2019,Johor,MY-01,Southern,3,Muar
+2019,Johor,MY-01,Southern,4,Kluang
+2019,Johor,MY-01,Southern,5,Kota Tinggi
+2019,Pulau Pinang,MY-07,Northern,1,Timur Laut
+2019,Pulau Pinang,MY-07,Northern,2,Seberang Perai Tengah
+2019,Pulau Pinang,MY-07,Northern,3,Barat Daya
+2019,Pulau Pinang,MY-07,Northern,4,Seberang Perai Utara
+2019,Pulau Pinang,MY-07,Northern,5,Seberang Perai Selatan
+2019,Kedah,MY-02,Northern,1,Kota Setar
+2019,Kedah,MY-02,Northern,2,Kuala Muda
+2019,Kedah,MY-02,Northern,3,Langkawi
+2019,Kedah,MY-02,Northern,4,Kubang Pasu
+2019,Kedah,MY-02,Northern,5,Baling
+2019,Perak,MY-08,Northern,1,Kinta
+2019,Perak,MY-08,Northern,2,Manjung
+2019,Perak,MY-08,Northern,3,"Larut, Matang & Selama"
+2019,Perak,MY-08,Northern,4,Kuala Kangsar
+2019,Perak,MY-08,Northern,5,Hilir Perak
+2019,Kelantan,MY-03,East Coast,1,Kota Bharu
+2019,Kelantan,MY-03,East Coast,2,Pasir Mas
+2019,Kelantan,MY-03,East Coast,3,Pasir Puteh
+2019,Kelantan,MY-03,East Coast,4,Tumpat
+2019,Kelantan,MY-03,East Coast,5,Tanah Merah
+2019,Selangor,MY-10,Central,1,Petaling
+2019,Selangor,MY-10,Central,2,Gombak
+2019,Selangor,MY-10,Central,3,Hulu Langat
+2019,Selangor,MY-10,Central,4,Klang
+2019,Selangor,MY-10,Central,5,Kuala Selangor
+2019,Melaka,MY-04,Southern,1,Melaka Tengah
+2019,Melaka,MY-04,Southern,2,Alor Gajah
+2019,Melaka,MY-04,Southern,3,Jasin
+2019,Terengganu,MY-11,East Coast,1,Kuala Terengganu
+2019,Terengganu,MY-11,East Coast,2,Dungun
+2019,Terengganu,MY-11,East Coast,3,Kemaman
+2019,Terengganu,MY-11,East Coast,4,Kuala Nerus
+2019,Terengganu,MY-11,East Coast,5,Besut
+2019,Negeri Sembilan,MY-05,Central,1,Seremban
+2019,Negeri Sembilan,MY-05,Central,2,Port Dickson
+2019,Negeri Sembilan,MY-05,Central,3,Kuala Pilah
+2019,Negeri Sembilan,MY-05,Central,4,Tampin
+2019,Negeri Sembilan,MY-05,Central,5,Jempol
+2019,Sabah,MY-12,East Malaysia,1,Kota Kinabalu
+2019,Sabah,MY-12,East Malaysia,2,Tawau
+2019,Sabah,MY-12,East Malaysia,3,Kota Marudu
+2019,Sabah,MY-12,East Malaysia,4,Lahad Datu
+2019,Sabah,MY-12,East Malaysia,5,Semporna
+2019,Pahang,MY-06,East Coast,1,Kuantan
+2019,Pahang,MY-06,East Coast,2,Temerloh
+2019,Pahang,MY-06,East Coast,3,Bentong
+2019,Pahang,MY-06,East Coast,4,Cameron Highlands
+2019,Pahang,MY-06,East Coast,5,Maran
+2019,Sarawak,MY-13,East Malaysia,1,Kuching
+2019,Sarawak,MY-13,East Malaysia,2,Sibu
+2019,Sarawak,MY-13,East Malaysia,3,Miri
+2019,Sarawak,MY-13,East Malaysia,4,Bintulu
+2019,Sarawak,MY-13,East Malaysia,5,Serian
+2020,Johor,MY-01,Southern,1,Johor Bahru
+2020,Johor,MY-01,Southern,2,Kota Tinggi
+2020,Johor,MY-01,Southern,3,Batu Pahat
+2020,Johor,MY-01,Southern,4,Pontian
+2020,Johor,MY-01,Southern,5,Mersing
+2020,Pulau Pinang,MY-07,Northern,1,Timur Laut
+2020,Pulau Pinang,MY-07,Northern,2,Barat Daya
+2020,Pulau Pinang,MY-07,Northern,3,Seberang Perai Utara
+2020,Pulau Pinang,MY-07,Northern,4,Seberang Perai Selatan
+2020,Pulau Pinang,MY-07,Northern,5,Seberang Perai Tengah
+2020,Kedah,MY-02,Northern,1,Kota Setar
+2020,Kedah,MY-02,Northern,2,Langkawi
+2020,Kedah,MY-02,Northern,3,Pokok Sena
+2020,Kedah,MY-02,Northern,4,Pendang
+2020,Kedah,MY-02,Northern,5,Kubang Pasu
+2020,Perak,MY-08,Northern,1,Larut & Matang
+2020,Perak,MY-08,Northern,2,Kinta
+2020,Perak,MY-08,Northern,3,Manjung
+2020,Perak,MY-08,Northern,4,Kuala Kangsar
+2020,Perak,MY-08,Northern,5,Kerian
+2020,Kelantan,MY-03,East Coast,1,Kota Bharu
+2020,Kelantan,MY-03,East Coast,2,Pasir Mas
+2020,Kelantan,MY-03,East Coast,3,Tanah Merah
+2020,Kelantan,MY-03,East Coast,4,Gua Musang
+2020,Kelantan,MY-03,East Coast,5,Pasir Puteh
+2020,Selangor,MY-10,Central,1,Petaling
+2020,Selangor,MY-10,Central,2,Klang
+2020,Selangor,MY-10,Central,3,Hulu Langat
+2020,Selangor,MY-10,Central,4,Gombak
+2020,Selangor,MY-10,Central,5,Kuala Langat
+2020,Melaka,MY-04,Southern,1,Melaka Tengah
+2020,Melaka,MY-04,Southern,2,Alor Gajah
+2020,Melaka,MY-04,Southern,3,Jasin
+2020,Terengganu,MY-11,East Coast,1,Kuala Terengganu
+2020,Terengganu,MY-11,East Coast,2,Kemaman
+2020,Terengganu,MY-11,East Coast,3,Dungun
+2020,Terengganu,MY-11,East Coast,4,Kuala Nerus
+2020,Terengganu,MY-11,East Coast,5,Marang
+2020,Negeri Sembilan,MY-05,Central,1,Seremban
+2020,Negeri Sembilan,MY-05,Central,2,Port Dickson
+2020,Negeri Sembilan,MY-05,Central,3,Tampin
+2020,Negeri Sembilan,MY-05,Central,4,Jempol
+2020,Negeri Sembilan,MY-05,Central,5,Kuala Pilah
+2020,Sabah,MY-12,East Malaysia,1,Kota Kinabalu
+2020,Sabah,MY-12,East Malaysia,2,Keningau
+2020,Sabah,MY-12,East Malaysia,3,Tawau
+2020,Sabah,MY-12,East Malaysia,4,Lahad Datu
+2020,Sabah,MY-12,East Malaysia,5,Semporna
+2020,Pahang,MY-06,East Coast,1,Kuantan
+2020,Pahang,MY-06,East Coast,2,Cameron Highlands
+2020,Pahang,MY-06,East Coast,3,Bentong
+2020,Pahang,MY-06,East Coast,4,Rompin
+2020,Pahang,MY-06,East Coast,5,Jerantut
+2020,Sarawak,MY-13,East Malaysia,1,Kuching
+2020,Sarawak,MY-13,East Malaysia,2,Sibu
+2020,Sarawak,MY-13,East Malaysia,3,Bintulu
+2020,Sarawak,MY-13,East Malaysia,4,Miri
+2020,Sarawak,MY-13,East Malaysia,5,Serian
+2021,Johor,MY-01,Southern,1,Johor Bahru
+2021,Johor,MY-01,Southern,2,Kota Tinggi
+2021,Johor,MY-01,Southern,3,Muar
+2021,Johor,MY-01,Southern,4,Kluang
+2021,Johor,MY-01,Southern,5,Batu Pahat
+2021,Pulau Pinang,MY-07,Northern,1,Timur Laut
+2021,Pulau Pinang,MY-07,Northern,2,Barat Daya
+2021,Pulau Pinang,MY-07,Northern,3,Seberang Perai Tengah
+2021,Pulau Pinang,MY-07,Northern,4,Seberang Perai Utara
+2021,Pulau Pinang,MY-07,Northern,5,Seberang Perai Selatan
+2021,Kedah,MY-02,Northern,1,Langkawi
+2021,Kedah,MY-02,Northern,2,Kuala Muda
+2021,Kedah,MY-02,Northern,3,Kulim
+2021,Kedah,MY-02,Northern,4,Kota Setar
+2021,Kedah,MY-02,Northern,5,Kubang Pasu
+2021,Perak,MY-08,Northern,1,Larut & Matang
+2021,Perak,MY-08,Northern,2,Kinta
+2021,Perak,MY-08,Northern,3,Manjung
+2021,Perak,MY-08,Northern,4,Hilir Perak
+2021,Perak,MY-08,Northern,5,Kuala Kangsar
+2021,Kelantan,MY-03,East Coast,1,Kota Bharu
+2021,Kelantan,MY-03,East Coast,2,Bachok
+2021,Kelantan,MY-03,East Coast,3,Pasir Mas
+2021,Kelantan,MY-03,East Coast,4,Machang
+2021,Kelantan,MY-03,East Coast,5,Gua Musang
+2021,Selangor,MY-10,Central,1,Petaling
+2021,Selangor,MY-10,Central,2,Hulu Langat
+2021,Selangor,MY-10,Central,3,Klang
+2021,Selangor,MY-10,Central,4,Gombak
+2021,Selangor,MY-10,Central,5,Sepang
+2021,Melaka,MY-04,Southern,1,Melaka Tengah
+2021,Melaka,MY-04,Southern,2,Alor Gajah
+2021,Melaka,MY-04,Southern,3,Jasin
+2021,Terengganu,MY-11,East Coast,1,Kuala Terengganu
+2021,Terengganu,MY-11,East Coast,2,Dungun
+2021,Terengganu,MY-11,East Coast,3,Kemaman
+2021,Terengganu,MY-11,East Coast,4,Besut
+2021,Terengganu,MY-11,East Coast,5,Kuala Nerus
+2021,Negeri Sembilan,MY-05,Central,1,Seremban
+2021,Negeri Sembilan,MY-05,Central,2,Port Dickson
+2021,Negeri Sembilan,MY-05,Central,3,Tampin
+2021,Negeri Sembilan,MY-05,Central,4,Jempol
+2021,Negeri Sembilan,MY-05,Central,5,Kuala Pilah
+2021,Sabah,MY-12,East Malaysia,1,Kota Kinabalu
+2021,Sabah,MY-12,East Malaysia,2,Tawau
+2021,Sabah,MY-12,East Malaysia,3,Ranau
+2021,Sabah,MY-12,East Malaysia,4,Semporna
+2021,Sabah,MY-12,East Malaysia,5,Lahad Datu
+2021,Pahang,MY-06,East Coast,1,Kuantan
+2021,Pahang,MY-06,East Coast,2,Bentong
+2021,Pahang,MY-06,East Coast,3,Cameron Highlands
+2021,Pahang,MY-06,East Coast,4,Temerloh
+2021,Pahang,MY-06,East Coast,5,Lipis
+2021,Sarawak,MY-13,East Malaysia,1,Bintulu
+2021,Sarawak,MY-13,East Malaysia,2,Sibu
+2021,Sarawak,MY-13,East Malaysia,3,Kuching
+2021,Sarawak,MY-13,East Malaysia,4,Miri
+2021,Sarawak,MY-13,East Malaysia,5,Mukah
+2022,Johor,MY-01,Southern,1,Johor Bahru
+2022,Johor,MY-01,Southern,2,Batu Pahat
+2022,Johor,MY-01,Southern,3,Kota Tinggi
+2022,Johor,MY-01,Southern,4,Muar
+2022,Johor,MY-01,Southern,5,Mersing
+2022,Pulau Pinang,MY-07,Northern,1,Timur Laut
+2022,Pulau Pinang,MY-07,Northern,2,Barat Daya
+2022,Pulau Pinang,MY-07,Northern,3,Seberang Perai Tengah
+2022,Pulau Pinang,MY-07,Northern,4,Seberang Perai Utara
+2022,Pulau Pinang,MY-07,Northern,5,Seberang Perai Selatan
+2022,Kedah,MY-02,Northern,1,Kota Setar
+2022,Kedah,MY-02,Northern,2,Langkawi
+2022,Kedah,MY-02,Northern,3,Baling
+2022,Kedah,MY-02,Northern,4,Kuala Muda
+2022,Kedah,MY-02,Northern,5,Kulim
+2022,Perak,MY-08,Northern,1,Kinta
+2022,Perak,MY-08,Northern,2,Larut & Matang
+2022,Perak,MY-08,Northern,3,Manjung
+2022,Perak,MY-08,Northern,4,Batang Padang
+2022,Perak,MY-08,Northern,5,Hilir Perak
+2022,Kelantan,MY-03,East Coast,1,Kota Bharu
+2022,Kelantan,MY-03,East Coast,2,Bachok
+2022,Kelantan,MY-03,East Coast,3,Pasir Mas
+2022,Kelantan,MY-03,East Coast,4,Pasir Puteh
+2022,Kelantan,MY-03,East Coast,5,Gua Musang
+2022,Selangor,MY-10,Central,1,Petaling
+2022,Selangor,MY-10,Central,2,Hulu Langat
+2022,Selangor,MY-10,Central,3,Gombak
+2022,Selangor,MY-10,Central,4,Klang
+2022,Selangor,MY-10,Central,5,Sepang
+2022,Melaka,MY-04,Southern,1,Melaka Tengah
+2022,Melaka,MY-04,Southern,2,Alor Gajah
+2022,Melaka,MY-04,Southern,3,Jasin
+2022,Terengganu,MY-11,East Coast,1,Kuala Terengganu
+2022,Terengganu,MY-11,East Coast,2,Kemaman
+2022,Terengganu,MY-11,East Coast,3,Kuala Nerus
+2022,Terengganu,MY-11,East Coast,4,Dungun
+2022,Terengganu,MY-11,East Coast,5,Marang
+2022,Negeri Sembilan,MY-05,Central,1,Seremban
+2022,Negeri Sembilan,MY-05,Central,2,Port Dickson
+2022,Negeri Sembilan,MY-05,Central,3,Jempol
+2022,Negeri Sembilan,MY-05,Central,4,Kuala Pilah
+2022,Negeri Sembilan,MY-05,Central,5,Tampin
+2022,Sabah,MY-12,East Malaysia,1,Kota Kinabalu
+2022,Sabah,MY-12,East Malaysia,2,Tawau
+2022,Sabah,MY-12,East Malaysia,3,Ranau
+2022,Sabah,MY-12,East Malaysia,4,Lahad Datu
+2022,Sabah,MY-12,East Malaysia,5,Sandakan
+2022,Pahang,MY-06,East Coast,1,Kuantan
+2022,Pahang,MY-06,East Coast,2,Cameron Highlands
+2022,Pahang,MY-06,East Coast,3,Bentong
+2022,Pahang,MY-06,East Coast,4,Temerloh
+2022,Pahang,MY-06,East Coast,5,Maran
+2022,Sarawak,MY-13,East Malaysia,1,Kuching
+2022,Sarawak,MY-13,East Malaysia,2,Sibu
+2022,Sarawak,MY-13,East Malaysia,3,Miri
+2022,Sarawak,MY-13,East Malaysia,4,Bintulu
+2022,Sarawak,MY-13,East Malaysia,5,Sri Aman
+2023,Johor,MY-01,Southern,1,Johor Bahru
+2023,Johor,MY-01,Southern,2,Batu Pahat
+2023,Johor,MY-01,Southern,3,Kota Tinggi
+2023,Johor,MY-01,Southern,4,Muar
+2023,Johor,MY-01,Southern,5,Mersing
+2023,Pulau Pinang,MY-07,Northern,1,Timur Laut
+2023,Pulau Pinang,MY-07,Northern,2,Barat Daya
+2023,Pulau Pinang,MY-07,Northern,3,Seberang Perai Tengah
+2023,Pulau Pinang,MY-07,Northern,4,Seberang Perai Utara
+2023,Pulau Pinang,MY-07,Northern,5,Seberang Perai Selatan
+2023,Kedah,MY-02,Northern,1,Kota Setar
+2023,Kedah,MY-02,Northern,2,Langkawi
+2023,Kedah,MY-02,Northern,3,Baling
+2023,Kedah,MY-02,Northern,4,Kuala Muda
+2023,Kedah,MY-02,Northern,5,Kulim
+2023,Perak,MY-08,Northern,1,Kinta
+2023,Perak,MY-08,Northern,2,Larut & Matang
+2023,Perak,MY-08,Northern,3,Manjung
+2023,Perak,MY-08,Northern,4,Batang Padang
+2023,Perak,MY-08,Northern,5,Hilir Perak
+2023,Kelantan,MY-03,East Coast,1,Kota Bharu
+2023,Kelantan,MY-03,East Coast,2,Bachok
+2023,Kelantan,MY-03,East Coast,3,Pasir Mas
+2023,Kelantan,MY-03,East Coast,4,Machang
+2023,Kelantan,MY-03,East Coast,5,Pasir Puteh
+2023,Selangor,MY-10,Central,1,Petaling
+2023,Selangor,MY-10,Central,2,Sepang
+2023,Selangor,MY-10,Central,3,Hulu Langat
+2023,Selangor,MY-10,Central,4,Gombak
+2023,Selangor,MY-10,Central,5,Sabak Bernam
+2023,Melaka,MY-04,Southern,1,Melaka Tengah
+2023,Melaka,MY-04,Southern,2,Alor Gajah
+2023,Melaka,MY-04,Southern,3,Jasin
+2023,Terengganu,MY-11,East Coast,1,Kuala Terengganu
+2023,Terengganu,MY-11,East Coast,2,Kemaman
+2023,Terengganu,MY-11,East Coast,3,Besut
+2023,Terengganu,MY-11,East Coast,4,Kuala Nerus
+2023,Terengganu,MY-11,East Coast,5,Dungun
+2023,Negeri Sembilan,MY-05,Central,1,Seremban
+2023,Negeri Sembilan,MY-05,Central,2,Port Dickson
+2023,Negeri Sembilan,MY-05,Central,3,Jempol
+2023,Negeri Sembilan,MY-05,Central,4,Kuala Pilah
+2023,Negeri Sembilan,MY-05,Central,5,Tampin
+2023,Sabah,MY-12,East Malaysia,1,Kota Kinabalu
+2023,Sabah,MY-12,East Malaysia,2,Tawau
+2023,Sabah,MY-12,East Malaysia,3,Ranau
+2023,Sabah,MY-12,East Malaysia,4,Lahad Datu
+2023,Sabah,MY-12,East Malaysia,5,Sandakan
+2023,Pahang,MY-06,East Coast,1,Kuantan
+2023,Pahang,MY-06,East Coast,2,Cameron Highlands
+2023,Pahang,MY-06,East Coast,3,Bentong
+2023,Pahang,MY-06,East Coast,4,Temerloh
+2023,Pahang,MY-06,East Coast,5,Pekan
+2023,Sarawak,MY-13,East Malaysia,1,Kuching
+2023,Sarawak,MY-13,East Malaysia,2,Sibu
+2023,Sarawak,MY-13,East Malaysia,3,Miri
+2023,Sarawak,MY-13,East Malaysia,4,Bintulu
+2023,Sarawak,MY-13,East Malaysia,5,Sri Aman
+2024,Johor,MY-01,Southern,1,Johor Bahru
+2024,Johor,MY-01,Southern,2,Batu Pahat
+2024,Johor,MY-01,Southern,3,Muar
+2024,Johor,MY-01,Southern,4,Kota Tinggi
+2024,Johor,MY-01,Southern,5,Segamat
+2024,Pulau Pinang,MY-07,Northern,1,Timur Laut
+2024,Pulau Pinang,MY-07,Northern,2,Barat Daya
+2024,Pulau Pinang,MY-07,Northern,3,Seberang Perai Tengah
+2024,Pulau Pinang,MY-07,Northern,4,Seberang Perai Utara
+2024,Pulau Pinang,MY-07,Northern,5,Seberang Perai Selatan
+2024,Kedah,MY-02,Northern,1,Kota Setar
+2024,Kedah,MY-02,Northern,2,Langkawi
+2024,Kedah,MY-02,Northern,3,Kuala Muda
+2024,Kedah,MY-02,Northern,4,Baling
+2024,Kedah,MY-02,Northern,5,Kulim
+2024,Perak,MY-08,Northern,1,Kinta
+2024,Perak,MY-08,Northern,2,Larut & Matang
+2024,Perak,MY-08,Northern,3,Manjung
+2024,Perak,MY-08,Northern,4,Kuala Kangsar
+2024,Perak,MY-08,Northern,5,Batang Padang
+2024,Kelantan,MY-03,East Coast,1,Kota Bharu
+2024,Kelantan,MY-03,East Coast,2,Bachok
+2024,Kelantan,MY-03,East Coast,3,Pasir Mas
+2024,Kelantan,MY-03,East Coast,4,Pasir Puteh
+2024,Kelantan,MY-03,East Coast,5,Tanah Merah
+2024,Selangor,MY-10,Central,1,Petaling
+2024,Selangor,MY-10,Central,2,Sepang
+2024,Selangor,MY-10,Central,3,Gombak
+2024,Selangor,MY-10,Central,4,Kuala Selangor
+2024,Selangor,MY-10,Central,5,Hulu Langat
+2024,Melaka,MY-04,Southern,1,Melaka Tengah
+2024,Melaka,MY-04,Southern,2,Alor Gajah
+2024,Melaka,MY-04,Southern,3,Jasin
+2024,Terengganu,MY-11,East Coast,1,Kuala Terengganu
+2024,Terengganu,MY-11,East Coast,2,Kuala Nerus
+2024,Terengganu,MY-11,East Coast,3,Kemaman
+2024,Terengganu,MY-11,East Coast,4,Besut
+2024,Terengganu,MY-11,East Coast,5,Dungun
+2024,Negeri Sembilan,MY-05,Central,1,Seremban
+2024,Negeri Sembilan,MY-05,Central,2,Port Dickson
+2024,Negeri Sembilan,MY-05,Central,3,Tampin
+2024,Negeri Sembilan,MY-05,Central,4,Kuala Pilah
+2024,Negeri Sembilan,MY-05,Central,5,Jempol
+2024,Sabah,MY-12,East Malaysia,1,Kota Kinabalu
+2024,Sabah,MY-12,East Malaysia,2,Ranau
+2024,Sabah,MY-12,East Malaysia,3,Tawau
+2024,Sabah,MY-12,East Malaysia,4,Sandakan
+2024,Sabah,MY-12,East Malaysia,5,Keningau
+2024,Pahang,MY-06,East Coast,1,Kuantan
+2024,Pahang,MY-06,East Coast,2,Bentong
+2024,Pahang,MY-06,East Coast,3,Cameron Highlands
+2024,Pahang,MY-06,East Coast,4,Rompin
+2024,Pahang,MY-06,East Coast,5,Temerloh
+2024,Sarawak,MY-13,East Malaysia,1,Kuching
+2024,Sarawak,MY-13,East Malaysia,2,Sibu
+2024,Sarawak,MY-13,East Malaysia,3,Bintulu
+2024,Sarawak,MY-13,East Malaysia,4,Miri
+2024,Sarawak,MY-13,East Malaysia,5,Sri Aman
+2025,Johor,MY-01,Southern,1,Johor Bahru
+2025,Johor,MY-01,Southern,2,Batu Pahat
+2025,Johor,MY-01,Southern,3,Muar
+2025,Johor,MY-01,Southern,4,Kota Tinggi
+2025,Johor,MY-01,Southern,5,Segamat
+2025,Pulau Pinang,MY-07,Northern,1,Timur Laut
+2025,Pulau Pinang,MY-07,Northern,2,Barat Daya
+2025,Pulau Pinang,MY-07,Northern,3,Seberang Perai Tengah
+2025,Pulau Pinang,MY-07,Northern,4,Seberang Perai Utara
+2025,Pulau Pinang,MY-07,Northern,5,Seberang Perai Selatan
+2025,Kedah,MY-02,Northern,1,Kota Setar
+2025,Kedah,MY-02,Northern,2,Langkawi
+2025,Kedah,MY-02,Northern,3,Kuala Muda
+2025,Kedah,MY-02,Northern,4,Baling
+2025,Kedah,MY-02,Northern,5,Kulim
+2025,Perak,MY-08,Northern,1,Kinta
+2025,Perak,MY-08,Northern,2,Larut & Matang
+2025,Perak,MY-08,Northern,3,Manjung
+2025,Perak,MY-08,Northern,4,Kuala Kangsar
+2025,Perak,MY-08,Northern,5,Batang Padang
+2025,Kelantan,MY-03,East Coast,1,Kota Bharu
+2025,Kelantan,MY-03,East Coast,2,Bachok
+2025,Kelantan,MY-03,East Coast,3,Pasir Mas
+2025,Kelantan,MY-03,East Coast,4,Pasir Puteh
+2025,Kelantan,MY-03,East Coast,5,Tanah Merah
+2025,Selangor,MY-10,Central,1,Petaling
+2025,Selangor,MY-10,Central,2,Sepang
+2025,Selangor,MY-10,Central,3,Gombak
+2025,Selangor,MY-10,Central,4,Kuala Selangor
+2025,Selangor,MY-10,Central,5,Hulu Langat
+2025,Melaka,MY-04,Southern,1,Melaka Tengah
+2025,Melaka,MY-04,Southern,2,Alor Gajah
+2025,Melaka,MY-04,Southern,3,Jasin
+2025,Terengganu,MY-11,East Coast,1,Kuala Terengganu
+2025,Terengganu,MY-11,East Coast,2,Kuala Nerus
+2025,Terengganu,MY-11,East Coast,3,Kemaman
+2025,Terengganu,MY-11,East Coast,4,Besut
+2025,Terengganu,MY-11,East Coast,5,Dungun
+2025,Negeri Sembilan,MY-05,Central,1,Seremban
+2025,Negeri Sembilan,MY-05,Central,2,Port Dickson
+2025,Negeri Sembilan,MY-05,Central,3,Tampin
+2025,Negeri Sembilan,MY-05,Central,4,Kuala Pilah
+2025,Negeri Sembilan,MY-05,Central,5,Jempol
+2025,Sabah,MY-12,East Malaysia,1,Kota Kinabalu
+2025,Sabah,MY-12,East Malaysia,2,Ranau
+2025,Sabah,MY-12,East Malaysia,3,Tawau
+2025,Sabah,MY-12,East Malaysia,4,Sandakan
+2025,Sabah,MY-12,East Malaysia,5,Keningau
+2025,Pahang,MY-06,East Coast,1,Kuantan
+2025,Pahang,MY-06,East Coast,2,Bentong
+2025,Pahang,MY-06,East Coast,3,Cameron Highlands
+2025,Pahang,MY-06,East Coast,4,Rompin
+2025,Pahang,MY-06,East Coast,5,Temerloh
+2025,Sarawak,MY-13,East Malaysia,1,Kuching
+2025,Sarawak,MY-13,East Malaysia,2,Sibu
+2025,Sarawak,MY-13,East Malaysia,3,Bintulu
+2025,Sarawak,MY-13,East Malaysia,4,Miri
+2025,Sarawak,MY-13,East Malaysia,5,Sri Aman

@@ -1,0 +1,641 @@
+year,state,state_code,region,rank,destination_name
+2018,Johor,MY-01,Southern,1,Bandaraya Johor Bahru
+2018,Johor,MY-01,Southern,2,Mersing
+2018,Johor,MY-01,Southern,3,Kluang
+2018,Johor,MY-01,Southern,4,Batu Pahat
+2018,Johor,MY-01,Southern,5,Muar
+2018,Perlis,MY-09,Northern,1,Padang Besar
+2018,Perlis,MY-09,Northern,2,Kuala Perlis
+2018,Perlis,MY-09,Northern,3,Pantai Sg. Berembang
+2018,Perlis,MY-09,Northern,4,Bandar Kangar
+2018,Perlis,MY-09,Northern,5,Gua Kelam
+2018,Kedah,MY-02,Northern,1,Bandar Alor Setar
+2018,Kedah,MY-02,Northern,2,Pulau Langkawi
+2018,Kedah,MY-02,Northern,3,Pantai  Merdeka
+2018,Kedah,MY-02,Northern,4,Tanjung Dawai
+2018,Kedah,MY-02,Northern,5,Pantai Murni
+2018,Selangor,MY-10,Central,1,Petaling Jaya
+2018,Selangor,MY-10,Central,2,Sepang
+2018,Selangor,MY-10,Central,3,Klang
+2018,Selangor,MY-10,Central,4,Gombak
+2018,Selangor,MY-10,Central,5,Hulu Langat
+2018,Kelantan,MY-03,East Coast,1,Bandar Kota Bharu
+2018,Kelantan,MY-03,East Coast,2,Pasar Siti Khatijah
+2018,Kelantan,MY-03,East Coast,3,Pantai Cahaya Bulan
+2018,Kelantan,MY-03,East Coast,4,Wakaf Che Yeh
+2018,Kelantan,MY-03,East Coast,5,Rantau Panjang
+2018,Terengganu,MY-11,East Coast,1,Kuala Terengganu
+2018,Terengganu,MY-11,East Coast,2,Dungun
+2018,Terengganu,MY-11,East Coast,3,Pantai Batu Buruk
+2018,Terengganu,MY-11,East Coast,4,Besut
+2018,Terengganu,MY-11,East Coast,5,Pasar Payang
+2018,Melaka,MY-04,Southern,1,Banda Hilir
+2018,Melaka,MY-04,Southern,2,Klebang
+2018,Melaka,MY-04,Southern,3,Simpang Ampat
+2018,Melaka,MY-04,Southern,4,Zoo Melaka
+2018,Melaka,MY-04,Southern,5,Pantai Pengkalan Balak
+2018,Sabah,MY-12,East Malaysia,1,Tawau
+2018,Sabah,MY-12,East Malaysia,2,Bandar Kota Kinabalu
+2018,Sabah,MY-12,East Malaysia,3,Beaufort
+2018,Sabah,MY-12,East Malaysia,4,Kunak
+2018,Sabah,MY-12,East Malaysia,5,Lahad Datu
+2018,Negeri Sembilan,MY-05,Central,1,Bandar Seremban
+2018,Negeri Sembilan,MY-05,Central,2,Pantai Port Dickson
+2018,Negeri Sembilan,MY-05,Central,3,Nilai
+2018,Negeri Sembilan,MY-05,Central,4,Kuala Pilah
+2018,Negeri Sembilan,MY-05,Central,5,Tampin
+2018,Sarawak,MY-13,East Malaysia,1,Bandaraya Kuching
+2018,Sarawak,MY-13,East Malaysia,2,Bandaraya Miri
+2018,Sarawak,MY-13,East Malaysia,3,Bandar Sibu
+2018,Sarawak,MY-13,East Malaysia,4,Bandar Bintulu
+2018,Sarawak,MY-13,East Malaysia,5,Serian
+2018,Pahang,MY-06,East Coast,1,Genting Highlands
+2018,Pahang,MY-06,East Coast,2,Bandar Kuantan
+2018,Pahang,MY-06,East Coast,3,Temerloh
+2018,Pahang,MY-06,East Coast,4,Cameron Highlands
+2018,Pahang,MY-06,East Coast,5,Pantai Telok Chempedak
+2018,W.P. Kuala Lumpur,MY-14,Central,1,Mid Valley
+2018,W.P. Kuala Lumpur,MY-14,Central,2,SOGO
+2018,W.P. Kuala Lumpur,MY-14,Central,3,KLCC
+2018,W.P. Kuala Lumpur,MY-14,Central,4,Pavillion
+2018,W.P. Kuala Lumpur,MY-14,Central,5,Jalan TAR
+2018,Pulau Pinang,MY-07,Northern,1,Bayan Lepas
+2018,Pulau Pinang,MY-07,Northern,2,Seberang Jaya
+2018,Pulau Pinang,MY-07,Northern,3,Pantai Batu Feringghi
+2018,Pulau Pinang,MY-07,Northern,4,Georgetown
+2018,Pulau Pinang,MY-07,Northern,5,Bukit Bendera
+2018,W.P. Labuan,MY-15,East Malaysia,1,Pantai Pancur Hitam
+2018,W.P. Labuan,MY-15,East Malaysia,2,Pantai Pohon Batu
+2018,W.P. Labuan,MY-15,East Malaysia,3,Memorial Perang Dunia Kedua
+2018,W.P. Labuan,MY-15,East Malaysia,4,Kg. Patau-Patau
+2018,W.P. Labuan,MY-15,East Malaysia,5,Dataran Labuan
+2018,Perak,MY-08,Northern,1,Bandaraya Ipoh
+2018,Perak,MY-08,Northern,2,Taman Tasik Taiping
+2018,Perak,MY-08,Northern,3,Teluk Intan
+2018,Perak,MY-08,Northern,4,Pulau Pangkor
+2018,Perak,MY-08,Northern,5,Lumut
+2018,W.P. Putrajaya,MY-16,Central,1,Alamanda
+2018,W.P. Putrajaya,MY-16,Central,2,Dataran Putra
+2018,W.P. Putrajaya,MY-16,Central,3,Masjid Putra
+2018,W.P. Putrajaya,MY-16,Central,4,Taman Saujana Hijau
+2018,W.P. Putrajaya,MY-16,Central,5,Cruise Tasik Putrajaya
+2019,Johor,MY-01,Southern,1,Danga Bay
+2019,Johor,MY-01,Southern,2,Bandaraya Johor Bahru
+2019,Johor,MY-01,Southern,3,Nusajaya
+2019,Johor,MY-01,Southern,4,Batu Pahat
+2019,Johor,MY-01,Southern,5,Kluang
+2019,Perlis,MY-09,Northern,1,Padang Besar
+2019,Perlis,MY-09,Northern,2,Kuala Perlis
+2019,Perlis,MY-09,Northern,3,Pantai Sg. Berembang
+2019,Perlis,MY-09,Northern,4,Kangar
+2019,Perlis,MY-09,Northern,5,Gua Kelam
+2019,Kedah,MY-02,Northern,1,Pulau Langkawi
+2019,Kedah,MY-02,Northern,2,Bandar Alor Setar
+2019,Kedah,MY-02,Northern,3,Gunung Jerai
+2019,Kedah,MY-02,Northern,4,Bandar Amanjaya
+2019,Kedah,MY-02,Northern,5,Tanjung Dawai
+2019,Selangor,MY-10,Central,1,Bandar Botanik
+2019,Selangor,MY-10,Central,2,Shah Alam
+2019,Selangor,MY-10,Central,3,Subang Jaya
+2019,Selangor,MY-10,Central,4,Sepang
+2019,Selangor,MY-10,Central,5,Hulu Langat
+2019,Kelantan,MY-03,East Coast,1,Lembah Sireh
+2019,Kelantan,MY-03,East Coast,2,Pasar Siti Khatijah
+2019,Kelantan,MY-03,East Coast,3,Pantai Cahaya Bulan
+2019,Kelantan,MY-03,East Coast,4,Wakaf Che Yeh
+2019,Kelantan,MY-03,East Coast,5,Rantau Panjang
+2019,Terengganu,MY-11,East Coast,1,Pasar Payang
+2019,Terengganu,MY-11,East Coast,2,Pantai Batu Buruk
+2019,Terengganu,MY-11,East Coast,3,Kemasik
+2019,Terengganu,MY-11,East Coast,4,Pulau Warisan
+2019,Terengganu,MY-11,East Coast,5,Kuala Ibai
+2019,Melaka,MY-04,Southern,1,Banda Hilir
+2019,Melaka,MY-04,Southern,2,Klebang
+2019,Melaka,MY-04,Southern,3,Simpang Ampat
+2019,Melaka,MY-04,Southern,4,Pantai Pengkalan Balak
+2019,Melaka,MY-04,Southern,5,Melaka International Trade Centre (MITC)
+2019,Sabah,MY-12,East Malaysia,1,Bandaraya Kota Kinabalu
+2019,Sabah,MY-12,East Malaysia,2,Kundasang
+2019,Sabah,MY-12,East Malaysia,3,Ranau
+2019,Sabah,MY-12,East Malaysia,4,Tawau
+2019,Sabah,MY-12,East Malaysia,5,Sandakan
+2019,Negeri Sembilan,MY-05,Central,1,Pantai Port Dickson
+2019,Negeri Sembilan,MY-05,Central,2,Bandar Seremban
+2019,Negeri Sembilan,MY-05,Central,3,Nilai
+2019,Negeri Sembilan,MY-05,Central,4,Hutan Lipur & Rekreasi Ulu Bendul
+2019,Negeri Sembilan,MY-05,Central,5,Pedas
+2019,Sarawak,MY-13,East Malaysia,1,Kuching Waterfront
+2019,Sarawak,MY-13,East Malaysia,2,Wisma Sanyan
+2019,Sarawak,MY-13,East Malaysia,3,Pantai Tanjung Batu
+2019,Sarawak,MY-13,East Malaysia,4,Pantai Damai
+2019,Sarawak,MY-13,East Malaysia,5,Padawan
+2019,Pahang,MY-06,East Coast,1,Genting Highlands
+2019,Pahang,MY-06,East Coast,2,Bandar Kuantan
+2019,Pahang,MY-06,East Coast,3,Temerloh
+2019,Pahang,MY-06,East Coast,4,Cameron Highlands
+2019,Pahang,MY-06,East Coast,5,Pantai Telok Chempedak
+2019,W.P. Kuala Lumpur,MY-14,Central,1,Mid Valley
+2019,W.P. Kuala Lumpur,MY-14,Central,2,SOGO
+2019,W.P. Kuala Lumpur,MY-14,Central,3,Kuala Lumpur City Centre (KLCC)
+2019,W.P. Kuala Lumpur,MY-14,Central,4,Bukit Bintang
+2019,W.P. Kuala Lumpur,MY-14,Central,5,Jalan Masjid India
+2019,Pulau Pinang,MY-07,Northern,1,Bukit Bendera
+2019,Pulau Pinang,MY-07,Northern,2,Pantai Batu Ferringhi
+2019,Pulau Pinang,MY-07,Northern,3,KOMTAR
+2019,Pulau Pinang,MY-07,Northern,4,Seberang Jaya
+2019,Pulau Pinang,MY-07,Northern,5,Batu Kawan
+2019,W.P. Labuan,MY-15,East Malaysia,1,Memorial Perang Dunia Kedua
+2019,W.P. Labuan,MY-15,East Malaysia,2,Pantai Pancur Hitam
+2019,W.P. Labuan,MY-15,East Malaysia,3,Pantai Pohon Batu
+2019,W.P. Labuan,MY-15,East Malaysia,4,Kg. Patau-Patau
+2019,W.P. Labuan,MY-15,East Malaysia,5,Dataran Labuan
+2019,Perak,MY-08,Northern,1,Pulau Pangkor
+2019,Perak,MY-08,Northern,2,Tambun
+2019,Perak,MY-08,Northern,3,Teluk Batik
+2019,Perak,MY-08,Northern,4,Taiping
+2019,Perak,MY-08,Northern,5,Taman Rekreasi Gunung Lang
+2019,W.P. Putrajaya,MY-16,Central,1,Alamanda
+2019,W.P. Putrajaya,MY-16,Central,2,Masjid Putra
+2019,W.P. Putrajaya,MY-16,Central,3,Taman Botani
+2019,W.P. Putrajaya,MY-16,Central,4,Putrajaya International Convention Centre (PICC)
+2019,W.P. Putrajaya,MY-16,Central,5,Masjid Sultan Mizan Zainal Abidin
+2020,Johor,MY-01,Southern,1,Desaru
+2020,Johor,MY-01,Southern,2,Angsana Johor Bahru Mall
+2020,Johor,MY-01,Southern,3,Johor Premium Outlet (JPO)
+2020,Johor,MY-01,Southern,4,KSL City
+2020,Johor,MY-01,Southern,5,Air Terjun Kota Tinggi
+2020,Perlis,MY-09,Northern,1,Kuala Perlis
+2020,Perlis,MY-09,Northern,2,Arked Niaga Padang Besar
+2020,Perlis,MY-09,Northern,3,Tasik Timah Tasoh
+2020,Perlis,MY-09,Northern,4,Hutan Lipur Bukit Ayer
+2020,Perlis,MY-09,Northern,5,Taman Rekreasi Pengkalan Asam
+2020,Kedah,MY-02,Northern,1,Pulau Langkawi
+2020,Kedah,MY-02,Northern,2,Menara Alor Setar
+2020,Kedah,MY-02,Northern,3,Gunung Keriang
+2020,Kedah,MY-02,Northern,4,Aman Central Mall
+2020,Kedah,MY-02,Northern,5,Pekan Rabu
+2020,Selangor,MY-10,Central,1,The Curve
+2020,Selangor,MY-10,Central,2,Sunway Pyramid Shopping Mall
+2020,Selangor,MY-10,Central,3,Zoo Negara
+2020,Selangor,MY-10,Central,4,Pantai Morib
+2020,Selangor,MY-10,Central,5,One Utama Shopping Centre
+2020,Kelantan,MY-03,East Coast,1,Pasar Siti Khadijah
+2020,Kelantan,MY-03,East Coast,2,Masjid Bandar Pasir Mas
+2020,Kelantan,MY-03,East Coast,3,Kawasan Membeli Belah Bebas Cukai Rantau Panjang
+2020,Kelantan,MY-03,East Coast,4,Pantai Cahaya Bulan
+2020,Kelantan,MY-03,East Coast,5,Pasar Malam Wakaf Che Yeh
+2020,Terengganu,MY-11,East Coast,1,Pantai Batu Buruk
+2020,Terengganu,MY-11,East Coast,2,Pasar Besar Kedai Payang
+2020,Terengganu,MY-11,East Coast,3,Drawbridge
+2020,Terengganu,MY-11,East Coast,4,KTCC Mall
+2020,Terengganu,MY-11,East Coast,5,Pantai Teluk Lipat
+2020,Melaka,MY-04,Southern,1,Melaka River Cruise
+2020,Melaka,MY-04,Southern,2,Pantai Pengkalan Balak
+2020,Melaka,MY-04,Southern,3,Muzium Adat Istadat
+2020,Melaka,MY-04,Southern,4,Taman Rama-Rama dan Reptilia
+2020,Melaka,MY-04,Southern,5,Mahkota Parade
+2020,Sabah,MY-12,East Malaysia,1,Imago Shopping Centre
+2020,Sabah,MY-12,East Malaysia,2,Suria Sabah Shopping Mall
+2020,Sabah,MY-12,East Malaysia,3,Ladang Lembu Tenusu
+2020,Sabah,MY-12,East Malaysia,4,Pulau Bohey Dulang
+2020,Sabah,MY-12,East Malaysia,5,Sungai Melangkap
+2020,Negeri Sembilan,MY-05,Central,1,Port Dickson
+2020,Negeri Sembilan,MY-05,Central,2,Nilai Wholesale Centre (Nilai 3)
+2020,Negeri Sembilan,MY-05,Central,3,Palm Mall
+2020,Negeri Sembilan,MY-05,Central,4,Kompleks Sejarah Pengkalan Kempas
+2020,Negeri Sembilan,MY-05,Central,5,Dataran Tampin
+2020,Sarawak,MY-13,East Malaysia,1,Pasar Sentral Sibu
+2020,Sarawak,MY-13,East Malaysia,2,Daesco Star Mega Mall
+2020,Sarawak,MY-13,East Malaysia,3,Vivacity Megamall
+2020,Sarawak,MY-13,East Malaysia,4,Park City Mall
+2020,Sarawak,MY-13,East Malaysia,5,The Spring Mall Bintulu
+2020,Pahang,MY-06,East Coast,1,Cameron Highlands
+2020,Pahang,MY-06,East Coast,2,Bukit Panorama
+2020,Pahang,MY-06,East Coast,3,Bukit Gambang Resort City
+2020,Pahang,MY-06,East Coast,4,Genting Premium Outlets
+2020,Pahang,MY-06,East Coast,5,East Cost Mall (ECM)
+2020,W.P. Kuala Lumpur,MY-14,Central,1,Mid Valley
+2020,W.P. Kuala Lumpur,MY-14,Central,2,Kuala Lumpur City Centre (KLCC)
+2020,W.P. Kuala Lumpur,MY-14,Central,3,Pavillion
+2020,W.P. Kuala Lumpur,MY-14,Central,4,SOGO
+2020,W.P. Kuala Lumpur,MY-14,Central,5,Sunway Putra Mall
+2020,Pulau Pinang,MY-07,Northern,1,Queens Bay
+2020,Pulau Pinang,MY-07,Northern,2,Bukit Bendera
+2020,Pulau Pinang,MY-07,Northern,3,Pantai Batu Ferringhi
+2020,Pulau Pinang,MY-07,Northern,4,Gurney Plaza
+2020,Pulau Pinang,MY-07,Northern,5,Prangin Mall
+2020,W.P. Labuan,MY-15,East Malaysia,1,Pantai Pohon Batu
+2020,W.P. Labuan,MY-15,East Malaysia,2,Taman Burung Labuan
+2020,W.P. Labuan,MY-15,East Malaysia,3,Memorial Perang Dunia Kedua
+2020,W.P. Labuan,MY-15,East Malaysia,4,Pantai Pancur Hitam
+2020,W.P. Labuan,MY-15,East Malaysia,5,Kg. Patau-Patau
+2020,Perak,MY-08,Northern,1,Durio Tourism Mardi
+2020,Perak,MY-08,Northern,2,Pantai Teluk Nipah
+2020,Perak,MY-08,Northern,3,Marina Island
+2020,Perak,MY-08,Northern,4,Ipoh Town Hall
+2020,Perak,MY-08,Northern,5,Air Terjun Ulu Kinta
+2020,W.P. Putrajaya,MY-16,Central,1,Alamanda
+2020,W.P. Putrajaya,MY-16,Central,2,Masjid Putra
+2020,W.P. Putrajaya,MY-16,Central,3,Taman Botani
+2020,W.P. Putrajaya,MY-16,Central,4,Putrajaya International Convention Centre (PICC)
+2020,W.P. Putrajaya,MY-16,Central,5,Masjid Sultan Mizan Zainal Abidin
+2021,Johor,MY-01,Southern,1,Paradigm Mall Johor Bahru
+2021,Johor,MY-01,Southern,2,Pantai Desaru
+2021,Johor,MY-01,Southern,3,Kota Tinggi Firefly Park
+2021,Johor,MY-01,Southern,4,"The Mall, Mid Valley Southkey"
+2021,Johor,MY-01,Southern,5,Batu Pahat Mall (BP Mall)
+2021,Perlis,MY-09,Northern,1,Tasik Timah Tasoh
+2021,Perlis,MY-09,Northern,2,Taman Rekreasi Tasik Melati
+2021,Perlis,MY-09,Northern,3,Arked Niaga Padang Besar
+2021,Perlis,MY-09,Northern,4,Padang Waremart
+2021,Perlis,MY-09,Northern,5,Hutan Lipur Bukit Ayer
+2021,Kedah,MY-02,Northern,1,Makam Mahsuri
+2021,Kedah,MY-02,Northern,2,Perniagaan Haji Ismail Group
+2021,Kedah,MY-02,Northern,3,Pantai Cenang
+2021,Kedah,MY-02,Northern,4,Langkawi Cable Car
+2021,Kedah,MY-02,Northern,5,Padang Matsirat
+2021,Selangor,MY-10,Central,1,Sunway Pyramid Shopping Mall
+2021,Selangor,MY-10,Central,2,IDEAL Convention Centre (IDCC) Shah Alam
+2021,Selangor,MY-10,Central,3,GM Klang Wholesale City
+2021,Selangor,MY-10,Central,4,Pantai Morib
+2021,Selangor,MY-10,Central,5,The Curve
+2021,Kelantan,MY-03,East Coast,1,Aeon Lembah Sireh
+2021,Kelantan,MY-03,East Coast,2,KB Mall
+2021,Kelantan,MY-03,East Coast,3,Pasar Siti Khadijah
+2021,Kelantan,MY-03,East Coast,4,Pantai Cahaya Bulan
+2021,Kelantan,MY-03,East Coast,5,Pantai Irama
+2021,Terengganu,MY-11,East Coast,1,KTCC Mall
+2021,Terengganu,MY-11,East Coast,2,Pantai Batu Buruk
+2021,Terengganu,MY-11,East Coast,3,Terengganu Drawbridge
+2021,Terengganu,MY-11,East Coast,4,Pasar Besar Kedai Payang
+2021,Terengganu,MY-11,East Coast,5,Pulau Warisan (i-City Terengganu)
+2021,Melaka,MY-04,Southern,1,Pantai Emas Klebang
+2021,Melaka,MY-04,Southern,2,Mahkota Parade
+2021,Melaka,MY-04,Southern,3,Dataran Pahlawan
+2021,Melaka,MY-04,Southern,4,Taman Botanikal Melaka
+2021,Melaka,MY-04,Southern,5,Pantai Pengkalan Balak
+2021,Sabah,MY-12,East Malaysia,1,Imago Shopping Mall
+2021,Sabah,MY-12,East Malaysia,2,One Borneo Hypermall
+2021,Sabah,MY-12,East Malaysia,3,Pasar Tanjung Tawau
+2021,Sabah,MY-12,East Malaysia,4,Karamunsing Shopping Mall
+2021,Sabah,MY-12,East Malaysia,5,Sutera Habour Golf & Country Club
+2021,Negeri Sembilan,MY-05,Central,1,Pantai Port Dickson
+2021,Negeri Sembilan,MY-05,Central,2,Palm Mall Seremban
+2021,Negeri Sembilan,MY-05,Central,3,Pantai Teluk Kemang
+2021,Negeri Sembilan,MY-05,Central,4,Nilai 3 Wholesale Centre
+2021,Negeri Sembilan,MY-05,Central,5,Muzium Tentera Darat
+2021,Sarawak,MY-13,East Malaysia,1,The Spring Mall Bintulu
+2021,Sarawak,MY-13,East Malaysia,2,Daesco Star Mega Mall
+2021,Sarawak,MY-13,East Malaysia,3,Park City Mall
+2021,Sarawak,MY-13,East Malaysia,4,Vivacity Megamall
+2021,Sarawak,MY-13,East Malaysia,5,Pantai Tanjung Batu
+2021,Pahang,MY-06,East Coast,1,East Cost Mall (ECM)
+2021,Pahang,MY-06,East Coast,2,Genting Premium Outlets
+2021,Pahang,MY-06,East Coast,3,Pantai Telok Chempedak
+2021,Pahang,MY-06,East Coast,4,Cameron Highlands
+2021,Pahang,MY-06,East Coast,5,Genting Highlands
+2021,W.P. Kuala Lumpur,MY-14,Central,1,Mid Valley Megamall
+2021,W.P. Kuala Lumpur,MY-14,Central,2,SOGO
+2021,W.P. Kuala Lumpur,MY-14,Central,3,Pavilion Kuala Lumpur
+2021,W.P. Kuala Lumpur,MY-14,Central,4,Kuala Lumpur Convention Centre (KLCC)
+2021,W.P. Kuala Lumpur,MY-14,Central,5,Putra World Trade Centre (PWTC)
+2021,Pulau Pinang,MY-07,Northern,1,Queensbay Mall
+2021,Pulau Pinang,MY-07,Northern,2,Gurney Plaza
+2021,Pulau Pinang,MY-07,Northern,3,Gurney Paragon Mall
+2021,Pulau Pinang,MY-07,Northern,4,Pantai Batu Feringghi
+2021,Pulau Pinang,MY-07,Northern,5,1st Avenue Mall
+2021,W.P. Labuan,MY-15,East Malaysia,1,Pantai Pohon Batu
+2021,W.P. Labuan,MY-15,East Malaysia,2,Pantai Sg. Miri
+2021,W.P. Labuan,MY-15,East Malaysia,3,Pantai Pancur Hitam
+2021,W.P. Labuan,MY-15,East Malaysia,4,Taman Marin Labuan
+2021,W.P. Labuan,MY-15,East Malaysia,5,Memorial Perang Dunia Kedua
+2021,Perak,MY-08,Northern,1,Ipoh Parade Shopping Centre
+2021,Perak,MY-08,Northern,2,Taman Tasik Taiping
+2021,Perak,MY-08,Northern,3,Teluk Batik
+2021,Perak,MY-08,Northern,4,Lost World of Tambun
+2021,Perak,MY-08,Northern,5,Lumut Waterfront
+2021,W.P. Putrajaya,MY-16,Central,1,Alamanda Shopping Centre
+2021,W.P. Putrajaya,MY-16,Central,2,Dataran Putra
+2021,W.P. Putrajaya,MY-16,Central,3,Putrajaya International Convention Centre (PICC)
+2021,W.P. Putrajaya,MY-16,Central,4,"Kelab Tasik Putrajaya, Presint 8"
+2021,W.P. Putrajaya,MY-16,Central,5,"Taman Botani, Presint 1"
+2022,Johor,MY-01,Southern,1,Legoland Malaysia
+2022,Johor,MY-01,Southern,2,Toppen Shopping Centre
+2022,Johor,MY-01,Southern,3,Johor Premium Outlet (JPO)
+2022,Johor,MY-01,Southern,4,Pantai Tanjung Balau
+2022,Johor,MY-01,Southern,5,Paradigm Mall Johor Bahru
+2022,Perlis,MY-09,Northern,1,Arked Niaga Padang Besar
+2022,Perlis,MY-09,Northern,2,Masjid Terapung
+2022,Perlis,MY-09,Northern,3,Hutan Lipur Bukit Ayer
+2022,Perlis,MY-09,Northern,4,Padang Waremart
+2022,Perlis,MY-09,Northern,5,Tasik Timah Tasoh
+2022,Kedah,MY-02,Northern,1,Pantai Cenang
+2022,Kedah,MY-02,Northern,2,Aman Central Mall
+2022,Kedah,MY-02,Northern,3,Kompleks Pekan Rabu
+2022,Kedah,MY-02,Northern,4,Air Terjun Telaga Tujuh
+2022,Kedah,MY-02,Northern,5,Alor Star Mall
+2022,Selangor,MY-10,Central,1,IOI City Mall
+2022,Selangor,MY-10,Central,2,The Curve
+2022,Selangor,MY-10,Central,3,Sunway Pyramid Shopping Mall
+2022,Selangor,MY-10,Central,4,GM Klang Wholesale City
+2022,Selangor,MY-10,Central,5,"i-City, Shah Alam"
+2022,Kelantan,MY-03,East Coast,1,Aeon Lembah Sireh
+2022,Kelantan,MY-03,East Coast,2,Pantai Cahaya Bulan
+2022,Kelantan,MY-03,East Coast,3,KB Mall
+2022,Kelantan,MY-03,East Coast,4,Pasar Siti Khadijah
+2022,Kelantan,MY-03,East Coast,5,Pantai Irama
+2022,Terengganu,MY-11,East Coast,1,KTCC Mall
+2022,Terengganu,MY-11,East Coast,2,Terengganu Drawbridge
+2022,Terengganu,MY-11,East Coast,3,Pantai Batu Buruk
+2022,Terengganu,MY-11,East Coast,4,Pasar Besar Kedai Payang
+2022,Terengganu,MY-11,East Coast,5,Pulau Warisan (i-City Terengganu)
+2022,Melaka,MY-04,Southern,1,Dataran Pahlawan
+2022,Melaka,MY-04,Southern,2,Pantai Klebang
+2022,Melaka,MY-04,Southern,3,Mahkota Parade
+2022,Melaka,MY-04,Southern,4,Jonker Street/ Jalan Hang Jebat
+2022,Melaka,MY-04,Southern,5,A' Famosa Resort
+2022,Sabah,MY-12,East Malaysia,1,Imago Shopping Mall
+2022,Sabah,MY-12,East Malaysia,2,One Borneo Hypermall
+2022,Sabah,MY-12,East Malaysia,3,Desa Dairy Farm
+2022,Sabah,MY-12,East Malaysia,4,Air Panas Poring
+2022,Sabah,MY-12,East Malaysia,5,Suria Sabah Shopping Mall
+2022,Negeri Sembilan,MY-05,Central,1,Palm Mall Seremban
+2022,Negeri Sembilan,MY-05,Central,2,Pantai Teluk Kemang
+2022,Negeri Sembilan,MY-05,Central,3,Pantai Port Dickson
+2022,Negeri Sembilan,MY-05,Central,4,City Park Seremban 2
+2022,Negeri Sembilan,MY-05,Central,5,Pantai Cahaya Negeri
+2022,Sarawak,MY-13,East Malaysia,1,Daesco Star Mega Mall
+2022,Sarawak,MY-13,East Malaysia,2,Pasar Sentral Sibu
+2022,Sarawak,MY-13,East Malaysia,3,Vivacity Megamall
+2022,Sarawak,MY-13,East Malaysia,4,Wisma Sanyan
+2022,Sarawak,MY-13,East Malaysia,5,The Spring Shopping Mall
+2022,Pahang,MY-06,East Coast,1,Genting Highlands
+2022,Pahang,MY-06,East Coast,2,Cameron Highlands
+2022,Pahang,MY-06,East Coast,3,Pantai Teluk Cempedak
+2022,Pahang,MY-06,East Coast,4,"Strawberry Farm (Brinchang, Tanah Rata)"
+2022,Pahang,MY-06,East Coast,5,East Cost Mall (ECM)
+2022,W.P. Kuala Lumpur,MY-14,Central,1,Mid Valley Megamall
+2022,W.P. Kuala Lumpur,MY-14,Central,2,Berjaya Times Square
+2022,W.P. Kuala Lumpur,MY-14,Central,3,Pavilion Kuala Lumpur
+2022,W.P. Kuala Lumpur,MY-14,Central,4,SOGO
+2022,W.P. Kuala Lumpur,MY-14,Central,5,Lalaport Bukit Bintang City Centre (BBCC)
+2022,Pulau Pinang,MY-07,Northern,1,Queensbay Mall
+2022,Pulau Pinang,MY-07,Northern,2,Pantai Batu Ferringhi
+2022,Pulau Pinang,MY-07,Northern,3,Bukit Bendera
+2022,Pulau Pinang,MY-07,Northern,4,Gurney Plaza
+2022,Pulau Pinang,MY-07,Northern,5,KOMTAR
+2022,W.P. Labuan,MY-15,East Malaysia,1,Pantai Layang-layang
+2022,W.P. Labuan,MY-15,East Malaysia,2,Taman Marin Laut
+2022,W.P. Labuan,MY-15,East Malaysia,3,Kampung Patau-Patau
+2022,W.P. Labuan,MY-15,East Malaysia,4,Kompleks Ujana Kewangan
+2022,W.P. Labuan,MY-15,East Malaysia,5,Memorial Perang Dunia Kedua
+2022,Perak,MY-08,Northern,1,Ipoh Parade Shopping Centre
+2022,Perak,MY-08,Northern,2,Zoo Taiping
+2022,Perak,MY-08,Northern,3,Lost World of Tambun
+2022,Perak,MY-08,Northern,4,Teluk Batik
+2022,Perak,MY-08,Northern,5,Pulau Pangkor
+2022,W.P. Putrajaya,MY-16,Central,1,Alamanda Shopping Centre
+2022,W.P. Putrajaya,MY-16,Central,2,"Dataran Putrajaya, Presint 3"
+2022,W.P. Putrajaya,MY-16,Central,3,Galeria PJH
+2022,W.P. Putrajaya,MY-16,Central,4,Taman Cabaran
+2022,W.P. Putrajaya,MY-16,Central,5,"Taman Botani, Presint 1"
+2023,Johor,MY-01,Southern,1,Paradigm Mall Johor Bahru
+2023,Johor,MY-01,Southern,2,Pantai Desaru
+2023,Johor,MY-01,Southern,3,Toppen Shopping Centre
+2023,Johor,MY-01,Southern,4,"The Mall, Mid Valley Southkey"
+2023,Johor,MY-01,Southern,5,Legoland Malaysia
+2023,Perlis,MY-09,Northern,1,Arked Niaga Padang Besar
+2023,Perlis,MY-09,Northern,2,Tasik Timah Tasoh
+2023,Perlis,MY-09,Northern,3,Pantai Peranginan Sg. Berembang
+2023,Perlis,MY-09,Northern,4,Hutan Lipur Bukit Ayer
+2023,Perlis,MY-09,Northern,5,Padang Waremart
+2023,Kedah,MY-02,Northern,1,Pantai Cenang
+2023,Kedah,MY-02,Northern,2,Aman Central Mall
+2023,Kedah,MY-02,Northern,3,Langkawi Cable Car
+2023,Kedah,MY-02,Northern,4,National Art Gallery
+2023,Kedah,MY-02,Northern,5,Pantai Merdeka
+2023,Selangor,MY-10,Central,1,IOI City Mall
+2023,Selangor,MY-10,Central,2,Sunway Pyramid Shopping Mall
+2023,Selangor,MY-10,Central,3,IKEA Damansara
+2023,Selangor,MY-10,Central,4,GM Klang Wholesale City
+2023,Selangor,MY-10,Central,5,"i-City, Shah Alam"
+2023,Kelantan,MY-03,East Coast,1,AEON Lembah Sireh
+2023,Kelantan,MY-03,East Coast,2,Pasar Siti Khadijah
+2023,Kelantan,MY-03,East Coast,3,KB Mall
+2023,Kelantan,MY-03,East Coast,4,Pantai Irama
+2023,Kelantan,MY-03,East Coast,5,Kawasan Membeli Belah Bebas Cukai Rantau Panjang
+2023,Terengganu,MY-11,East Coast,1,KTCC Mall
+2023,Terengganu,MY-11,East Coast,2,Pantai Miami Terengganu
+2023,Terengganu,MY-11,East Coast,3,Pantai Batu Buruk
+2023,Terengganu,MY-11,East Coast,4,Pasar Besar Kedai Payang
+2023,Terengganu,MY-11,East Coast,5,Pulau Warisan (i-City Terengganu)
+2023,Melaka,MY-04,Southern,1,Pantai Klebang
+2023,Melaka,MY-04,Southern,2,Dataran Pahlawan
+2023,Melaka,MY-04,Southern,3,Mahkota Parade
+2023,Melaka,MY-04,Southern,4,Jonker Street/ Jalan Hang Jebat
+2023,Melaka,MY-04,Southern,5,Pantai Pengkalan Balak
+2023,Sabah,MY-12,East Malaysia,1,Imago Shopping Mall
+2023,Sabah,MY-12,East Malaysia,2,Pekan Kundasang & Pekan Nabalu
+2023,Sabah,MY-12,East Malaysia,3,Pantai Tanjung Aru
+2023,Sabah,MY-12,East Malaysia,4,Ladang Lembu Tenusu/ Desa Dairy Farm
+2023,Sabah,MY-12,East Malaysia,5,Centre Point Sabah
+2023,Negeri Sembilan,MY-05,Central,1,Pantai Port Dickson
+2023,Negeri Sembilan,MY-05,Central,2,Palm Mall Seremban
+2023,Negeri Sembilan,MY-05,Central,3,Pantai Teluk Kemang
+2023,Negeri Sembilan,MY-05,Central,4,City Park Seremban 2
+2023,Negeri Sembilan,MY-05,Central,5,Pantai Cahaya Negeri
+2023,Sarawak,MY-13,East Malaysia,1,Daesco Star Mega Mall
+2023,Sarawak,MY-13,East Malaysia,2,Pasar Sentral Sibu
+2023,Sarawak,MY-13,East Malaysia,3,The Spring Mall Bintulu
+2023,Sarawak,MY-13,East Malaysia,4,AEON MALL Kuching Central
+2023,Sarawak,MY-13,East Malaysia,5,Vivacity Megamall
+2023,Pahang,MY-06,East Coast,1,East Cost Mall (ECM)
+2023,Pahang,MY-06,East Coast,2,Kuantan City Mall
+2023,Pahang,MY-06,East Coast,3,Genting Highlands
+2023,Pahang,MY-06,East Coast,4,Cameron Highlands
+2023,Pahang,MY-06,East Coast,5,Pantai Teluk Cempedak
+2023,W.P. Kuala Lumpur,MY-14,Central,1,Mid Valley Megamall
+2023,W.P. Kuala Lumpur,MY-14,Central,2,Pavilion Kuala Lumpur
+2023,W.P. Kuala Lumpur,MY-14,Central,3,SOGO
+2023,W.P. Kuala Lumpur,MY-14,Central,4,Suria KLCC
+2023,W.P. Kuala Lumpur,MY-14,Central,5,Berjaya Times Square
+2023,Pulau Pinang,MY-07,Northern,1,Queensbay Mall
+2023,Pulau Pinang,MY-07,Northern,2,Gurney Paragon Mall
+2023,Pulau Pinang,MY-07,Northern,3,Pantai Batu Ferringhi
+2023,Pulau Pinang,MY-07,Northern,4,1st Avenue Mall
+2023,Pulau Pinang,MY-07,Northern,5,Bukit Bendera
+2023,W.P. Labuan,MY-15,East Malaysia,1,Kampung Patau-Patau
+2023,W.P. Labuan,MY-15,East Malaysia,2,Pantai Layang-layang
+2023,W.P. Labuan,MY-15,East Malaysia,3,Kompleks Sukan Laut Antarabangsa Labuan
+2023,W.P. Labuan,MY-15,East Malaysia,4,Pantai Pohon Batu
+2023,W.P. Labuan,MY-15,East Malaysia,5,Kompleks Ujang Kewangan
+2023,Perak,MY-08,Northern,1,Pulau Pangkor
+2023,Perak,MY-08,Northern,2,Lost World of Tambun
+2023,Perak,MY-08,Northern,3,Teluk Batik
+2023,Perak,MY-08,Northern,4,Ipoh Parade Shopping Centre
+2023,Perak,MY-08,Northern,5,Lumut Waterfront
+2023,W.P. Putrajaya,MY-16,Central,1,Alamanda Shopping Centre
+2023,W.P. Putrajaya,MY-16,Central,2,"Dataran Putrajaya, Presint 3"
+2023,W.P. Putrajaya,MY-16,Central,3,Cruise Tasik Putrajaya
+2023,W.P. Putrajaya,MY-16,Central,4,Putrajaya International Convention Centre (PICC)
+2023,W.P. Putrajaya,MY-16,Central,5,"Taman Wetland, Presint 13"
+2024,Johor,MY-01,Southern,1,Paradigm Mall Johor Bahru
+2024,Johor,MY-01,Southern,2,Toppen Shopping Centre
+2024,Johor,MY-01,Southern,3,Legoland Malaysia
+2024,Johor,MY-01,Southern,4,Air Terjun Gunung Ledang
+2024,Johor,MY-01,Southern,5,"The Mall, Mid Valley Southkey"
+2024,Perlis,MY-09,Northern,1,Arked Niaga Padang Besar
+2024,Perlis,MY-09,Northern,2,Medan Ikan Bakar Kuala Perlis
+2024,Perlis,MY-09,Northern,3,Padang Waremart
+2024,Perlis,MY-09,Northern,4,Hutan Lipur Bukit Ayer
+2024,Perlis,MY-09,Northern,5,Menara Pandang Wang Kelian
+2024,Kedah,MY-02,Northern,1,Aman Central Mall
+2024,Kedah,MY-02,Northern,2,Amanjaya Mall
+2024,Kedah,MY-02,Northern,3,Pantai Cenang
+2024,Kedah,MY-02,Northern,4,Dataran Lang
+2024,Kedah,MY-02,Northern,5,Pantai Tanjung Dawai
+2024,Selangor,MY-10,Central,1,IOI City Mall
+2024,Selangor,MY-10,Central,2,Ikea Damansara
+2024,Selangor,MY-10,Central,3,Sunway Pyramid
+2024,Selangor,MY-10,Central,4,1 Utama Shopping Centre
+2024,Selangor,MY-10,Central,5,Batu Caves
+2024,Kelantan,MY-03,East Coast,1,AEON Lembah Sireh
+2024,Kelantan,MY-03,East Coast,2,Pasar Siti Khadijah
+2024,Kelantan,MY-03,East Coast,3,KB Mall
+2024,Kelantan,MY-03,East Coast,4,Pasar Malam Wakaf Che Yeh
+2024,Kelantan,MY-03,East Coast,5,Pantai Cahaya Bulan
+2024,Terengganu,MY-11,East Coast,1,KTCC Mall
+2024,Terengganu,MY-11,East Coast,2,Terengganu Drawbridge
+2024,Terengganu,MY-11,East Coast,3,Pantai Batu Buruk
+2024,Terengganu,MY-11,East Coast,4,Pasar Besar Kedai Payang
+2024,Terengganu,MY-11,East Coast,5,Pesisir Pantai Seberang Takir
+2024,Melaka,MY-04,Southern,1,Pantai Klebang
+2024,Melaka,MY-04,Southern,2,Jonker Street
+2024,Melaka,MY-04,Southern,3,Mahkota Parade
+2024,Melaka,MY-04,Southern,4,Dataran Pahlawan
+2024,Melaka,MY-04,Southern,5,Zoo Melaka
+2024,Sabah,MY-12,East Malaysia,1,Imago Shopping Mall
+2024,Sabah,MY-12,East Malaysia,2,One Borneo Hypermall
+2024,Sabah,MY-12,East Malaysia,3,Suria Sabah Shopping Mall
+2024,Sabah,MY-12,East Malaysia,4,Centre Point Sabah
+2024,Sabah,MY-12,East Malaysia,5,Pantai Tanjung Aru
+2024,Negeri Sembilan,MY-05,Central,1,Palm Mall Seremban
+2024,Negeri Sembilan,MY-05,Central,2,City Park Seremban 2
+2024,Negeri Sembilan,MY-05,Central,3,Dataran Nilai
+2024,Negeri Sembilan,MY-05,Central,4,Pantai Teluk Kemang
+2024,Negeri Sembilan,MY-05,Central,5,Pantai Port Dickson
+2024,Sarawak,MY-13,East Malaysia,1,Daesco Star Mega Mall
+2024,Sarawak,MY-13,East Malaysia,2,The Spring Mall Bintulu
+2024,Sarawak,MY-13,East Malaysia,3,Pasar Sentral Sibu
+2024,Sarawak,MY-13,East Malaysia,4,Vivacity Megamall
+2024,Sarawak,MY-13,East Malaysia,5,Wisma Sanyan
+2024,Pahang,MY-06,East Coast,1,East Cost Mall (ECM)
+2024,Pahang,MY-06,East Coast,2,Pantai Teluk Cempedak
+2024,Pahang,MY-06,East Coast,3,Kuantan Parade
+2024,Pahang,MY-06,East Coast,4,Genting Highlands
+2024,Pahang,MY-06,East Coast,5,Cameron Highlands
+2024,W.P. Kuala Lumpur,MY-14,Central,1,SOGO
+2024,W.P. Kuala Lumpur,MY-14,Central,2,Mid Valley Megamall
+2024,W.P. Kuala Lumpur,MY-14,Central,3,Suria KLCC
+2024,W.P. Kuala Lumpur,MY-14,Central,4,Petaling Street Market
+2024,W.P. Kuala Lumpur,MY-14,Central,5,Pasar Seni
+2024,Pulau Pinang,MY-07,Northern,1,Queensbay Mall
+2024,Pulau Pinang,MY-07,Northern,2,Pantai Batu Ferringhi
+2024,Pulau Pinang,MY-07,Northern,3,Sunway Carnival Mall
+2024,Pulau Pinang,MY-07,Northern,4,Gurney Plaza
+2024,Pulau Pinang,MY-07,Northern,5,Bukit Bendera
+2024,W.P. Labuan,MY-15,East Malaysia,1,Kompleks Ujana Kewangan
+2024,W.P. Labuan,MY-15,East Malaysia,2,Dataran Labuan
+2024,W.P. Labuan,MY-15,East Malaysia,3,Pantai Pohon Batu
+2024,W.P. Labuan,MY-15,East Malaysia,4,Kompleks Sukan Laut Antarabangsa Labuan
+2024,W.P. Labuan,MY-15,East Malaysia,5,Kampung Patau-Patau
+2024,Perak,MY-08,Northern,1,Teluk Batik
+2024,Perak,MY-08,Northern,2,Lumut Waterfront
+2024,Perak,MY-08,Northern,3,Ipoh Night Market
+2024,Perak,MY-08,Northern,4,Taman Rekreasi Gunung Lang
+2024,Perak,MY-08,Northern,5,Pulau Pangkor
+2024,W.P. Putrajaya,MY-16,Central,1,"Dataran Putrajaya, Presint 3"
+2024,W.P. Putrajaya,MY-16,Central,2,Alamanda Shopping Centre
+2024,W.P. Putrajaya,MY-16,Central,3,Masjid Putra
+2024,W.P. Putrajaya,MY-16,Central,4,Cruise Tasik Putrajaya
+2024,W.P. Putrajaya,MY-16,Central,5,Dataran Putra
+2025,Johor,MY-01,Southern,1,Toppen Shopping Centre
+2025,Johor,MY-01,Southern,2,Paradigm Mall Johor Bahru
+2025,Johor,MY-01,Southern,3,Pantai Desaru
+2025,Johor,MY-01,Southern,4,"The Mall, Mid Valley Southkey"
+2025,Johor,MY-01,Southern,5,Johor Premium Outlet
+2025,Perlis,MY-09,Northern,1,Arked Niaga Padang Besar
+2025,Perlis,MY-09,Northern,2,Wang Kelian View Point
+2025,Perlis,MY-09,Northern,3,Taman Eko-Rimba Bukit Ayer
+2025,Perlis,MY-09,Northern,4,Padang Waremart
+2025,Perlis,MY-09,Northern,5,Medan Ikan Bakar Kuala Perlis
+2025,Kedah,MY-02,Northern,1,Aman Central Mall
+2025,Kedah,MY-02,Northern,2,Pantai Tanjung Dawai
+2025,Kedah,MY-02,Northern,3,Pantai Merdeka
+2025,Kedah,MY-02,Northern,4,Pantai Cenang
+2025,Kedah,MY-02,Northern,5,Gunung Jerai
+2025,Selangor,MY-10,Central,1,IOI City Mall
+2025,Selangor,MY-10,Central,2,1 Utama Shopping Centre
+2025,Selangor,MY-10,Central,3,Sunway Pyramid
+2025,Selangor,MY-10,Central,4,Ikea Damansara
+2025,Selangor,MY-10,Central,5,Setia City Mall
+2025,Kelantan,MY-03,East Coast,1,AEON Lembah Sireh
+2025,Kelantan,MY-03,East Coast,2,Pasar Siti Khadijah
+2025,Kelantan,MY-03,East Coast,3,KB Mall
+2025,Kelantan,MY-03,East Coast,4,Pantai Tapang
+2025,Kelantan,MY-03,East Coast,5,Pantai Melawi
+2025,Terengganu,MY-11,East Coast,1,KTCC Mall
+2025,Terengganu,MY-11,East Coast,2,Pasar Besar Kedai Payang
+2025,Terengganu,MY-11,East Coast,3,Pantai Penarik
+2025,Terengganu,MY-11,East Coast,4,Pantai Teluk Ketapang
+2025,Terengganu,MY-11,East Coast,5,Pantai Batu Buruk
+2025,Melaka,MY-04,Southern,1,AEON MALL Bandaraya Melaka
+2025,Melaka,MY-04,Southern,2,Dataran Pahlawan Melaka Megamall
+2025,Melaka,MY-04,Southern,3,Pantai Klebang
+2025,Melaka,MY-04,Southern,4,Freeport A' Famosa Outlet
+2025,Melaka,MY-04,Southern,5,Jonker Walk
+2025,Sabah,MY-12,East Malaysia,1,Imago Shopping Mall
+2025,Sabah,MY-12,East Malaysia,2,Pekan Nabalu
+2025,Sabah,MY-12,East Malaysia,3,Pantai Anjung Aru
+2025,Sabah,MY-12,East Malaysia,4,Pulau Mabul
+2025,Sabah,MY-12,East Malaysia,5,Sungai Melangkap
+2025,Negeri Sembilan,MY-05,Central,1,Pantai Teluk Kemang
+2025,Negeri Sembilan,MY-05,Central,2,AEON Mall Nilai
+2025,Negeri Sembilan,MY-05,Central,3,Pantai Port Dickson
+2025,Negeri Sembilan,MY-05,Central,4,PD Water Front
+2025,Negeri Sembilan,MY-05,Central,5,Masjid Sri Sendayan
+2025,Sarawak,MY-13,East Malaysia,1,Kuching Waterfront
+2025,Sarawak,MY-13,East Malaysia,2,Daesco Star Mega Mall
+2025,Sarawak,MY-13,East Malaysia,3,Pasar Sentral Sibu
+2025,Sarawak,MY-13,East Malaysia,4,The Spring Mall Bintulu
+2025,Sarawak,MY-13,East Malaysia,5,Vivacity Megamall
+2025,Pahang,MY-06,East Coast,1,Genting Highlands
+2025,Pahang,MY-06,East Coast,2,Cameron Highlands
+2025,Pahang,MY-06,East Coast,3,East Cost Mall
+2025,Pahang,MY-06,East Coast,4,Pantai Teluk Cempedak
+2025,Pahang,MY-06,East Coast,5,Kuantan City Mall
+2025,W.P. Kuala Lumpur,MY-14,Central,1,Pavilion Kuala Lumpur
+2025,W.P. Kuala Lumpur,MY-14,Central,2,SOGO
+2025,W.P. Kuala Lumpur,MY-14,Central,3,Mid Valley Megamall
+2025,W.P. Kuala Lumpur,MY-14,Central,4,Berjaya Times Square
+2025,W.P. Kuala Lumpur,MY-14,Central,5,Axiata Arena Bukit Jalil
+2025,Pulau Pinang,MY-07,Northern,1,Sunway Carnival Mall
+2025,Pulau Pinang,MY-07,Northern,2,Queensbay Mall
+2025,Pulau Pinang,MY-07,Northern,3,Gurney Plaza
+2025,Pulau Pinang,MY-07,Northern,4,Pantai Teluk Bahang
+2025,Pulau Pinang,MY-07,Northern,5,Kek Lok Si Temple
+2025,W.P. Labuan,MY-15,East Malaysia,1,Kompleks Sukan Laut Antarabangsa Labuan
+2025,W.P. Labuan,MY-15,East Malaysia,2,Dataran Labuan
+2025,W.P. Labuan,MY-15,East Malaysia,3,Kampung Patau-Patau
+2025,W.P. Labuan,MY-15,East Malaysia,4,Memorial Perang Dunia Kedua
+2025,W.P. Labuan,MY-15,East Malaysia,5,Pantai Pohon Batu
+2025,Perak,MY-08,Northern,1,Ipoh Parade Shopping Centre
+2025,Perak,MY-08,Northern,2,Teluk Batik
+2025,Perak,MY-08,Northern,3,Concubine Lane
+2025,Perak,MY-08,Northern,4,Ipoh Night Market
+2025,Perak,MY-08,Northern,5,Bazar Karat Ipoh
+2025,W.P. Putrajaya,MY-16,Central,1,Dataran Putrajaya
+2025,W.P. Putrajaya,MY-16,Central,2,Alamanda Shopping Centre
+2025,W.P. Putrajaya,MY-16,Central,3,Masjid Putra
+2025,W.P. Putrajaya,MY-16,Central,4,Cruise Tasik Putrajaya
+2025,W.P. Putrajaya,MY-16,Central,5,Taman Saujana Hijau
