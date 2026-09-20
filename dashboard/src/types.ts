@@ -49,12 +49,24 @@ export interface TSAMacroData {
 export interface StateDemographics {
   total_population_thousands: number;
   total_population_millions: number;
+  adult_15plus_thousands?: number;
+  children_0_14_thousands?: number;
+  children_pct: number;
   working_age_thousands: number;
   working_age_pct: number;
-  youth_20_39_pct: number;
+  elderly_65plus_thousands?: number;
   elderly_pct: number;
-  children_pct: number;
   dependency_ratio: number;
+  dts_age_classes?: {
+    age_15_24_k: number;
+    age_15_24_pct: number;
+    age_25_39_k: number;
+    age_25_39_pct: number;
+    age_40_54_k: number;
+    age_40_54_pct: number;
+    age_55plus_k: number;
+    age_55plus_pct: number;
+  };
   households_thousands: number;
   median_household_income_rm: number;
   avg_household_size: number;

@@ -81,45 +81,68 @@ def run_population_ingestion() -> pd.DataFrame:
         SELECT 
             EXTRACT(year FROM date) as year,
             state,
-            -- Total Pop
+            -- Total Population
             MAX(CASE WHEN sex = 'both' AND age = 'overall' AND ethnicity = 'overall' THEN population END) as total_pop_k,
-            -- Working Age 15-64
-            SUM(CASE WHEN sex = 'both' AND ethnicity = 'overall' AND age IN (
-                '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64'
-            ) THEN population ELSE 0 END) as working_age_pop_k,
-            -- Youth / Young Adults 20-39
-            SUM(CASE WHEN sex = 'both' AND ethnicity = 'overall' AND age IN (
-                '20-24', '25-29', '30-34', '35-39'
-            ) THEN population ELSE 0 END) as youth_20_39_pop_k,
-            -- Elderly 65+
-            SUM(CASE WHEN sex = 'both' AND ethnicity = 'overall' AND age IN (
-                '65-69', '70-74', '75-79', '80-84', '85+', '70+', '80+'
-            ) THEN population ELSE 0 END) as elderly_65plus_pop_k,
             -- Children 0-14
             SUM(CASE WHEN sex = 'both' AND ethnicity = 'overall' AND age IN (
                 '0-4', '5-9', '10-14'
             ) THEN population ELSE 0 END) as children_0_14_pop_k,
-            -- Non-citizens
-            MAX(CASE WHEN sex = 'both' AND age = 'overall' AND ethnicity = 'other_noncitizen' THEN population ELSE 0 END) as non_citizen_pop_k
+            -- DTS Age Class 1: 15-24 (Belia / Young Adults)
+            SUM(CASE WHEN sex = 'both' AND ethnicity = 'overall' AND age IN (
+                '15-19', '20-24'
+            ) THEN population ELSE 0 END) as dts_15_24_pop_k,
+            -- DTS Age Class 2: 25-39 (Dewasa Muda / Prime Mobile Travelers)
+            SUM(CASE WHEN sex = 'both' AND ethnicity = 'overall' AND age IN (
+                '25-29', '30-34', '35-39'
+            ) THEN population ELSE 0 END) as dts_25_39_pop_k,
+            -- DTS Age Class 3: 40-54 (Pertengahan Umur / Family Travelers)
+            SUM(CASE WHEN sex = 'both' AND ethnicity = 'overall' AND age IN (
+                '40-44', '45-49', '50-54'
+            ) THEN population ELSE 0 END) as dts_40_54_pop_k,
+            -- DTS Age Class 4: 55+ (Warga Emas / Seniors & Retirees)
+            SUM(CASE WHEN sex = 'both' AND ethnicity = 'overall' AND age IN (
+                '55-59', '60-64', '65-69', '70-74', '75-79', '80-84', '85+'
+            ) THEN population ELSE 0 END) as dts_55plus_pop_k,
+            -- Working Age 15-64
+            SUM(CASE WHEN sex = 'both' AND ethnicity = 'overall' AND age IN (
+                '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64'
+            ) THEN population ELSE 0 END) as working_age_pop_k,
+            -- Elderly 65+
+            SUM(CASE WHEN sex = 'both' AND ethnicity = 'overall' AND age IN (
+                '65-69', '70-74', '75-79', '80-84', '85+'
+            ) THEN population ELSE 0 END) as elderly_65plus_pop_k
         FROM '{pq_file}'
         WHERE EXTRACT(year FROM date) BETWEEN 2018 AND 2025
         GROUP BY 1, 2
+    ),
+    calc AS (
+        SELECT 
+            year,
+            state,
+            ROUND(total_pop_k, 2) as total_population_thousands,
+            ROUND(total_pop_k / 1000.0, 4) as total_population_millions,
+            ROUND(children_0_14_pop_k, 2) as children_0_14_thousands,
+            ROUND(dts_15_24_pop_k, 2) as dts_15_24_thousands,
+            ROUND(dts_25_39_pop_k, 2) as dts_25_39_thousands,
+            ROUND(dts_40_54_pop_k, 2) as dts_40_54_thousands,
+            ROUND(dts_55plus_pop_k, 2) as dts_55plus_thousands,
+            ROUND(dts_15_24_pop_k + dts_25_39_pop_k + dts_40_54_pop_k + dts_55plus_pop_k, 2) as adult_15plus_thousands,
+            ROUND(working_age_pop_k, 2) as working_age_thousands,
+            ROUND(elderly_65plus_pop_k, 2) as elderly_65plus_thousands,
+            -- Percentages of Total Population
+            ROUND(children_0_14_pop_k * 100.0 / NULLIF(total_pop_k, 0), 1) as children_pct,
+            ROUND(working_age_pop_k * 100.0 / NULLIF(total_pop_k, 0), 1) as working_age_pct,
+            ROUND(elderly_65plus_pop_k * 100.0 / NULLIF(total_pop_k, 0), 1) as elderly_pct,
+            -- DTS Adult (15+) Shares (Summing exactly to 100% of adults)
+            ROUND(dts_15_24_pop_k * 100.0 / NULLIF(dts_15_24_pop_k + dts_25_39_pop_k + dts_40_54_pop_k + dts_55plus_pop_k, 0), 1) as dts_15_24_pct,
+            ROUND(dts_25_39_pop_k * 100.0 / NULLIF(dts_15_24_pop_k + dts_25_39_pop_k + dts_40_54_pop_k + dts_55plus_pop_k, 0), 1) as dts_25_39_pct,
+            ROUND(dts_40_54_pop_k * 100.0 / NULLIF(dts_15_24_pop_k + dts_25_39_pop_k + dts_40_54_pop_k + dts_55plus_pop_k, 0), 1) as dts_40_54_pct,
+            ROUND(dts_55plus_pop_k * 100.0 / NULLIF(dts_15_24_pop_k + dts_25_39_pop_k + dts_40_54_pop_k + dts_55plus_pop_k, 0), 1) as dts_55plus_pct,
+            -- Dependency Ratio
+            ROUND((children_0_14_pop_k + elderly_65plus_pop_k) * 100.0 / NULLIF(working_age_pop_k, 0), 1) as dependency_ratio
+        FROM base
     )
-    SELECT 
-        year,
-        state,
-        ROUND(total_pop_k, 2) as total_population_thousands,
-        ROUND(total_pop_k / 1000.0, 4) as total_population_millions,
-        ROUND(working_age_pop_k, 2) as working_age_thousands,
-        ROUND(youth_20_39_pop_k, 2) as youth_20_39_thousands,
-        ROUND(elderly_65plus_pop_k, 2) as elderly_65plus_thousands,
-        ROUND(children_0_14_pop_k, 2) as children_0_14_thousands,
-        ROUND(working_age_pop_k * 100.0 / NULLIF(total_pop_k, 0), 1) as working_age_pct,
-        ROUND(youth_20_39_pop_k * 100.0 / NULLIF(total_pop_k, 0), 1) as youth_20_39_pct,
-        ROUND(elderly_65plus_pop_k * 100.0 / NULLIF(total_pop_k, 0), 1) as elderly_pct,
-        ROUND(children_0_14_pop_k * 100.0 / NULLIF(total_pop_k, 0), 1) as children_pct,
-        ROUND((children_0_14_pop_k + elderly_65plus_pop_k) * 100.0 / NULLIF(working_age_pop_k, 0), 1) as dependency_ratio
-    FROM base
+    SELECT * FROM calc
     ORDER BY year, state
     """
 
@@ -201,9 +224,20 @@ def run_population_ingestion() -> pd.DataFrame:
             p.homestay_operators,
             d.total_population_thousands,
             d.total_population_millions,
+            d.adult_15plus_thousands,
+            d.dts_15_24_thousands,
+            d.dts_15_24_pct,
+            d.dts_25_39_thousands,
+            d.dts_25_39_pct,
+            d.dts_40_54_thousands,
+            d.dts_40_54_pct,
+            d.dts_55plus_thousands,
+            d.dts_55plus_pct,
+            d.children_0_14_thousands,
+            d.children_pct,
             d.working_age_thousands,
             d.working_age_pct,
-            d.youth_20_39_pct,
+            d.elderly_65plus_thousands,
             d.elderly_pct,
             d.dependency_ratio,
             d.households_thousands,

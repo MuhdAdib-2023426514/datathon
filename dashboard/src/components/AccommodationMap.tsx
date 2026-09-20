@@ -360,40 +360,86 @@ export const AccommodationMap: React.FC<AccommodationMapProps> = ({
             </div>
           </div>
 
-          {/* Demographics Age Profile (from population_state.parquet) */}
+          {/* Demographics Age Profile: Official DOSM DTS Visitor Age Classes */}
           <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80 space-y-2">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-slate-300 flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5 text-cyan-400" />
-                Demographics & Resident Profile (2025)
+                DTS Visitor Demographic Classes (2025)
               </span>
               <span className="font-mono text-slate-400 text-[11px]">
-                {activeState.demographics?.total_population_millions?.toFixed(2) || 'N/A'} M Residents
+                {activeState.demographics?.total_population_millions?.toFixed(2) || 'N/A'} M Total ({activeState.demographics?.adult_15plus_thousands ? (activeState.demographics.adult_15plus_thousands / 1000).toFixed(2) : 'N/A'} M Adults 15+)
               </span>
             </div>
 
+            {/* 4 DTS Mutually Exclusive Adult Cohorts (Sum to 100% of adults) */}
             <div className="grid grid-cols-4 gap-1 text-center text-[11px]">
               <div className="p-1.5 rounded bg-slate-950/60 border border-slate-800/50">
-                <span className="text-[10px] text-slate-400 block">Working 15–64</span>
-                <strong className="text-cyan-300 font-mono">{activeState.demographics?.working_age_pct || 70}%</strong>
+                <span className="text-[10px] text-cyan-400 block font-medium">15–24 (Belia)</span>
+                <strong className="text-white font-mono text-xs">
+                  {activeState.demographics?.dts_age_classes?.age_15_24_pct || 22}%
+                </strong>
+                <span className="text-[9px] text-slate-400 block mt-0.5">
+                  {activeState.demographics?.dts_age_classes?.age_15_24_k?.toFixed(0) || '0'}k pax
+                </span>
+              </div>
+              <div className="p-1.5 rounded bg-slate-950/60 border border-emerald-500/30 bg-emerald-950/10">
+                <span className="text-[10px] text-emerald-400 block font-medium">25–39 (Prime)</span>
+                <strong className="text-emerald-300 font-mono text-xs">
+                  {activeState.demographics?.dts_age_classes?.age_25_39_pct || 35}%
+                </strong>
+                <span className="text-[9px] text-emerald-400/80 block mt-0.5">
+                  {activeState.demographics?.dts_age_classes?.age_25_39_k?.toFixed(0) || '0'}k pax
+                </span>
               </div>
               <div className="p-1.5 rounded bg-slate-950/60 border border-slate-800/50">
-                <span className="text-[10px] text-slate-400 block">Youth 20–39</span>
-                <strong className="text-emerald-300 font-mono">{activeState.demographics?.youth_20_39_pct || 35}%</strong>
+                <span className="text-[10px] text-amber-400 block font-medium">40–54 (Family)</span>
+                <strong className="text-white font-mono text-xs">
+                  {activeState.demographics?.dts_age_classes?.age_40_54_pct || 24}%
+                </strong>
+                <span className="text-[9px] text-slate-400 block mt-0.5">
+                  {activeState.demographics?.dts_age_classes?.age_40_54_k?.toFixed(0) || '0'}k pax
+                </span>
               </div>
               <div className="p-1.5 rounded bg-slate-950/60 border border-slate-800/50">
-                <span className="text-[10px] text-slate-400 block">Elderly 65+</span>
-                <strong className="text-amber-300 font-mono">{activeState.demographics?.elderly_pct || 8}%</strong>
-              </div>
-              <div className="p-1.5 rounded bg-slate-950/60 border border-slate-800/50">
-                <span className="text-[10px] text-slate-400 block">Household Size</span>
-                <strong className="text-purple-300 font-mono">{activeState.demographics?.avg_household_size || 3.9} pax</strong>
+                <span className="text-[10px] text-purple-400 block font-medium">≥ 55 (Senior)</span>
+                <strong className="text-white font-mono text-xs">
+                  {activeState.demographics?.dts_age_classes?.age_55plus_pct || 19}%
+                </strong>
+                <span className="text-[9px] text-slate-400 block mt-0.5">
+                  {activeState.demographics?.dts_age_classes?.age_55plus_k?.toFixed(0) || '0'}k pax
+                </span>
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
-              <span>Resident Median Income: <strong className="text-white font-mono">RM {activeState.baseline_2025.resident_median_income_rm.toLocaleString()}</strong></span>
+            {/* 100% MECE Cohort Stack Bar */}
+            <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden flex">
+              <div 
+                className="bg-cyan-500 h-full" 
+                style={{ width: `${activeState.demographics?.dts_age_classes?.age_15_24_pct || 22}%` }}
+                title={`15-24: ${activeState.demographics?.dts_age_classes?.age_15_24_pct}%`}
+              ></div>
+              <div 
+                className="bg-emerald-400 h-full" 
+                style={{ width: `${activeState.demographics?.dts_age_classes?.age_25_39_pct || 35}%` }}
+                title={`25-39: ${activeState.demographics?.dts_age_classes?.age_25_39_pct}%`}
+              ></div>
+              <div 
+                className="bg-amber-400 h-full" 
+                style={{ width: `${activeState.demographics?.dts_age_classes?.age_40_54_pct || 24}%` }}
+                title={`40-54: ${activeState.demographics?.dts_age_classes?.age_40_54_pct}%`}
+              ></div>
+              <div 
+                className="bg-purple-400 h-full" 
+                style={{ width: `${activeState.demographics?.dts_age_classes?.age_55plus_pct || 19}%` }}
+                title={`≥ 55: ${activeState.demographics?.dts_age_classes?.age_55plus_pct}%`}
+              ></div>
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] text-slate-400 pt-0.5">
+              <span>Children 0–14: <strong className="text-slate-300 font-mono">{activeState.demographics?.children_pct || 21}% ({activeState.demographics?.children_0_14_thousands?.toFixed(0) || '0'}k)</strong></span>
               <span>Dependency Ratio: <strong className="text-slate-300 font-mono">{activeState.demographics?.dependency_ratio || 40}</strong></span>
+              <span>Resident Median: <strong className="text-emerald-400 font-mono">RM {activeState.baseline_2025.resident_median_income_rm.toLocaleString()}</strong></span>
             </div>
           </div>
 
