@@ -1,129 +1,230 @@
 {
   "constants": {
-    "accommodation_vai": 0.858,
-    "fnb_vai": 0.432,
-    "overall_tourism_vai": 0.528,
-    "disclaimer": "Scenario estimate, not a causal forecast."
+    "accommodation_vai": 0.8579,
+    "disclaimer": "Scenario estimate, not a causal forecast.",
+    "average_guests_per_room": 1.8,
+    "saturation_thresholds": {
+      "watch": 70.0,
+      "severe": 80.0,
+      "physical": 100.0
+    }
   },
   "state_baselines": {
     "Johor": {
-      "alos": 2.615,
-      "spend_per_night": 42.815,
-      "tourists_k": 9651.48,
-      "hotel_rooms": 35921,
-      "aor": 53.25
+      "alos": 2.68,
+      "spend_per_night": 42.98,
+      "tourists_k": 9821.9,
+      "excursionists_k": 8375.07,
+      "hotel_rooms": 35799,
+      "aor": 54.2
     },
     "Kedah": {
-      "alos": 2.795,
-      "spend_per_night": 28.65,
-      "tourists_k": 6989.635,
-      "hotel_rooms": 18640,
-      "aor": 48.75
+      "alos": 2.82,
+      "spend_per_night": 29.27,
+      "tourists_k": 7124.85,
+      "excursionists_k": 8483.04,
+      "hotel_rooms": 18679,
+      "aor": 50.9
     },
     "Kelantan": {
       "alos": 2.98,
-      "spend_per_night": 24.865,
-      "tourists_k": 6187.955,
-      "hotel_rooms": 6377,
-      "aor": 43.35
+      "spend_per_night": 25.11,
+      "tourists_k": 6512.13,
+      "excursionists_k": 5549.89,
+      "hotel_rooms": 6392,
+      "aor": 43.5
     },
     "Melaka": {
-      "alos": 2.12,
-      "spend_per_night": 65.415,
-      "tourists_k": 6668.53,
-      "hotel_rooms": 20407,
-      "aor": 45.75
+      "alos": 2.11,
+      "spend_per_night": 63.0,
+      "tourists_k": 7178.69,
+      "excursionists_k": 13653.51,
+      "hotel_rooms": 20655,
+      "aor": 46.1
     },
     "Negeri Sembilan": {
-      "alos": 2.27,
-      "spend_per_night": 38.885,
-      "tourists_k": 6267.28,
-      "hotel_rooms": 11191,
-      "aor": 43.2
+      "alos": 2.29,
+      "spend_per_night": 37.78,
+      "tourists_k": 6547.02,
+      "excursionists_k": 12809.52,
+      "hotel_rooms": 11527,
+      "aor": 44.2
     },
     "Pahang": {
-      "alos": 2.19,
-      "spend_per_night": 56.015,
-      "tourists_k": 10285.91,
-      "hotel_rooms": 34362,
-      "aor": 75.95
+      "alos": 2.21,
+      "spend_per_night": 53.78,
+      "tourists_k": 11045.98,
+      "excursionists_k": 12115.19,
+      "hotel_rooms": 34401,
+      "aor": 76.3
     },
     "Perak": {
-      "alos": 2.395,
-      "spend_per_night": 31.42,
-      "tourists_k": 10311.385,
-      "hotel_rooms": 19435,
-      "aor": 46.65
+      "alos": 2.44,
+      "spend_per_night": 31.32,
+      "tourists_k": 10413.82,
+      "excursionists_k": 13228.24,
+      "hotel_rooms": 19572,
+      "aor": 46.4
     },
     "Perlis": {
-      "alos": 2.37,
-      "spend_per_night": 33.56,
-      "tourists_k": 1368.49,
-      "hotel_rooms": 1521,
-      "aor": 41.35
+      "alos": 2.25,
+      "spend_per_night": 35.64,
+      "tourists_k": 1474.94,
+      "excursionists_k": 2280.75,
+      "hotel_rooms": 1553,
+      "aor": 41.7
     },
     "Pulau Pinang": {
-      "alos": 2.615,
-      "spend_per_night": 75.3,
-      "tourists_k": 5197.78,
-      "hotel_rooms": 27368,
-      "aor": 57.7
+      "alos": 2.65,
+      "spend_per_night": 72.28,
+      "tourists_k": 5629.54,
+      "excursionists_k": 12088.43,
+      "hotel_rooms": 28045,
+      "aor": 58.6
     },
     "Sabah": {
-      "alos": 3.08,
-      "spend_per_night": 51.425,
-      "tourists_k": 6720.685,
-      "hotel_rooms": 27231,
-      "aor": 52.85
+      "alos": 3.15,
+      "spend_per_night": 46.37,
+      "tourists_k": 7359.89,
+      "excursionists_k": 15001.28,
+      "hotel_rooms": 27254,
+      "aor": 54.1
     },
     "Sarawak": {
-      "alos": 3.095,
-      "spend_per_night": 45.56,
-      "tourists_k": 6015.46,
-      "hotel_rooms": 28074,
-      "aor": 47.5
+      "alos": 3.1,
+      "spend_per_night": 44.42,
+      "tourists_k": 6329.89,
+      "excursionists_k": 16391.63,
+      "hotel_rooms": 28236,
+      "aor": 47.3
     },
     "Selangor": {
-      "alos": 2.275,
-      "spend_per_night": 62.245,
-      "tourists_k": 10084.975,
-      "hotel_rooms": 34974,
-      "aor": 53.2
+      "alos": 2.31,
+      "spend_per_night": 60.67,
+      "tourists_k": 10595.56,
+      "excursionists_k": 25780.89,
+      "hotel_rooms": 35066,
+      "aor": 54.8
     },
     "Terengganu": {
-      "alos": 2.63,
-      "spend_per_night": 34.71,
-      "tourists_k": 5079.02,
-      "hotel_rooms": 11252,
-      "aor": 45.95
+      "alos": 2.76,
+      "spend_per_night": 33.84,
+      "tourists_k": 5239.64,
+      "excursionists_k": 10222.64,
+      "hotel_rooms": 11314,
+      "aor": 45.6
     },
     "W.P. Kuala Lumpur": {
-      "alos": 2.28,
-      "spend_per_night": 102.9,
-      "tourists_k": 8147.435,
-      "hotel_rooms": 65053,
-      "aor": 64.75
+      "alos": 2.33,
+      "spend_per_night": 82.96,
+      "tourists_k": 10078.57,
+      "excursionists_k": 24981.36,
+      "hotel_rooms": 66133,
+      "aor": 66.9
     },
     "W.P. Labuan": {
-      "alos": 2.675,
-      "spend_per_night": 68.655,
-      "tourists_k": 230.445,
-      "hotel_rooms": 2297,
-      "aor": 38.2
+      "alos": 2.51,
+      "spend_per_night": 67.59,
+      "tourists_k": 266.79,
+      "excursionists_k": 337.58,
+      "hotel_rooms": 2298,
+      "aor": 39.4
     },
     "W.P. Putrajaya": {
-      "alos": 2.32,
-      "spend_per_night": 38.85,
-      "tourists_k": 778.845,
-      "hotel_rooms": 2618,
-      "aor": 56.25
+      "alos": 2.5,
+      "spend_per_night": 31.44,
+      "tourists_k": 906.1,
+      "excursionists_k": 2240.39,
+      "hotel_rooms": 2656,
+      "aor": 56.0
     }
   },
-  "gravity_elasticities": {
-    "distance_friction": -0.6031,
-    "origin_working_age": 0.8903,
-    "origin_income": 0.725,
-    "destination_pull": 0.7035,
-    "cross_region_barrier": -1.3319
+  "gravity_models": {
+    "validation": [
+      {
+        "model_specification": "PPML (Poisson Pseudo-Maximum Likelihood)",
+        "training_sample": "2018\u20132024 (N = 1650 corridors)",
+        "testing_sample": "2025 Actuals (N = 240 corridors)",
+        "predictive_r2": 0.5177,
+        "correlation": 0.812,
+        "squared_correlation": 0.6593,
+        "rmse_thousands": 356.45,
+        "is_primary": true,
+        "status": "Validated: Primary zero-robust gravity specification."
+      },
+      {
+        "model_specification": "Log-OLS Classical Gravity",
+        "training_sample": "2018\u20132024 (N = 1650 corridors)",
+        "testing_sample": "2025 Actuals (N = 240 corridors)",
+        "predictive_r2": 0.4863,
+        "correlation": 0.7672,
+        "squared_correlation": 0.5886,
+        "rmse_thousands": 367.88,
+        "is_primary": false,
+        "status": "Comparison: Classical log-linear model (exhibits retransformation bias)."
+      }
+    ],
+    "parameters": [
+      {
+        "model_type": "PPML Panel (Primary, 2018\u20132025)",
+        "variable": "Distance Decay Friction (PPML)",
+        "coefficient": -0.4328,
+        "std_error": 0.0474,
+        "t_statistic": -9.1339,
+        "p_value": 0.0,
+        "significance": "p < 0.001",
+        "interpretation": "Under PPML (zero-flow robust), a 10% increase in corridor distance reduces tourist flow by 4.3%."
+      },
+      {
+        "model_type": "Log-OLS Panel (Comparison, 2018\u20132025)",
+        "variable": "Distance Decay Friction (Log-OLS)",
+        "coefficient": -0.6037,
+        "std_error": 0.0521,
+        "t_statistic": -11.5988,
+        "p_value": 0.0,
+        "significance": "p < 0.001",
+        "interpretation": "Under Log-OLS, a 10% distance increase reduces flow by 6.0%."
+      },
+      {
+        "model_type": "PPML Panel (Primary, 2018\u20132025)",
+        "variable": "Origin Adult Population 15+ (PPML)",
+        "coefficient": 0.8108,
+        "std_error": 0.0271,
+        "t_statistic": 29.9049,
+        "p_value": 0.0,
+        "significance": "p < 0.001",
+        "interpretation": "A 10% expansion in origin adult population expands tourist generation by 8.1%."
+      },
+      {
+        "model_type": "PPML Panel (Primary, 2018\u20132025)",
+        "variable": "Cross-Region Flight Barrier (Peninsula <-> Borneo)",
+        "coefficient": -0.8574,
+        "std_error": 0.1191,
+        "t_statistic": -7.1983,
+        "p_value": 0.0,
+        "significance": "p < 0.001",
+        "interpretation": "Corridors crossing Peninsula and Borneo face an extra 57.6% flow penalty."
+      },
+      {
+        "model_type": "Pre-COVID (2018\u20132019)",
+        "variable": "Distance Decay Friction (Pre-COVID)",
+        "coefficient": -0.6229,
+        "std_error": 0.1206,
+        "t_statistic": -5.164,
+        "p_value": 0.0,
+        "significance": "p < 0.001",
+        "interpretation": "Pre-COVID baseline distance friction."
+      },
+      {
+        "model_type": "Post-Recovery (2023\u20132025)",
+        "variable": "Distance Decay Friction (Post-Recovery)",
+        "coefficient": -0.5936,
+        "std_error": 0.0668,
+        "t_statistic": -8.8906,
+        "p_value": 0.0,
+        "significance": "p < 0.001",
+        "interpretation": "Post-recovery distance decay friction (shows persistent preference for proximate intra-peninsular travel)."
+      }
+    ]
   }
 }

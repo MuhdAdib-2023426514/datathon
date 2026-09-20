@@ -1,15 +1,17 @@
 """
 Dashboard Data Exporter
-Extracts and serializes pre-aggregated, optimized JSON data structures from DuckDB
+Extracts and serializes pre-aggregated, validated JSON data structures from DuckDB
 into `dashboard/public/data/` for high-performance client-side rendering.
 
 Generates:
   1. geo_malaysia.json - 16-state boundary GeoJSON (MultiPolygon)
   2. tsa_macro.json - TSA 2015-2025 macro indicators & product-level VAI rankings
-  3. state_profiles.json - Comprehensive 16-state multi-year profiles, radar metrics, archetypes & SDG diagnostics
-  4. od_corridors.json - Inter-state flows, geodesic coordinates, corridor classifications & gravity metrics
-  5. scenario_engine.json - What-if simulation parameters, baseline metrics & causal disclaimer
-  6. drivers_rq3.json - Feature attribution, standardized betas & importance for Research Question 3
+  3. state_profiles.json - Comprehensive 16-state multi-year profiles, empirical radar metrics,
+     accurate 2025 baselines, and SDG economic metrics
+  4. od_corridors.json - Longitudinal year-specific flows, geodesic coordinates, corridor classifications,
+     annual HHI populations (interstate vs all-origin), and gravity predictions
+  5. scenario_engine.json - What-if simulation parameters, portfolio capacity metrics & causal disclaimer
+  6. drivers_rq3.json - Feature attribution, standardized betas, clustered inference & R-squared
 """
 
 import json
@@ -60,30 +62,38 @@ def export_dashboard_data():
     DASHBOARD_DATA_DIR.mkdir(parents=True, exist_ok=True)
     con = duckdb.connect(str(DUCKDB_PATH), read_only=True)
 
-    # 1. GeoJSON (malaysia.geojson)
+    # 1. GeoJSON (geo_malaysia.json)
     if GEO_FILE.exists():
-        target_geo = DASHBOARD_DATA_DIR / "geo_malaysia.json"
-        shutil.copy2(GEO_FILE, target_geo)
-        print(f"  [1/6] Exported GeoJSON: {target_geo.name} ({target_geo.stat().st_size / 1024:.1f} KB)")
+        shutil.copy2(GEO_FILE, DASHBOARD_DATA_DIR / "geo_malaysia.json")
+        print(f"  [1/6] Exported GeoJSON: geo_malaysia.json")
     else:
-        print("  [Warning] GeoJSON file not found at:", GEO_FILE)
+        print(f"  [1/6] WARNING: GeoJSON file not found at {GEO_FILE}")
 
-    # 2. TSA Macro (tsa_macro.json)
+    # 2. TSA Macro & Products (tsa_macro.json)
     df_tsa_macro = con.execute("SELECT * FROM tsa_macro_year ORDER BY year").df()
-    df_tsa_products = con.execute("SELECT * FROM tourism_product_year ORDER BY product, year").df()
-    df_product_summary = con.execute("SELECT * FROM product_value_summary ORDER BY vai_rank ASC").df()
+    df_tsa_products = con.execute("SELECT * FROM tourism_product_year ORDER BY year, vai DESC").df()
+    df_product_summary = con.execute("SELECT * FROM product_value_summary ORDER BY post_recovery_median_vai DESC").df()
 
     tsa_data = {
         "macro_series": df_tsa_macro.to_dict(orient="records"),
+        "macro_timeseries": df_tsa_macro.to_dict(orient="records"),
         "product_series": df_tsa_products.to_dict(orient="records"),
+        "product_timeseries": df_tsa_products.to_dict(orient="records"),
         "product_summary": df_product_summary.to_dict(orient="records"),
+        "product_rankings": df_product_summary.to_dict(orient="records"),
+        "summary": {
+            "total_tdgva_2025_b": round(float(df_tsa_macro[df_tsa_macro["year"] == 2025]["tdgva"].values[0]) / 1000.0, 2),
+            "tdgva_share_2025_pct": float(df_tsa_macro[df_tsa_macro["year"] == 2025]["tdgva_share_gva"].values[0]),
+            "total_employment_2025_k": float(df_tsa_macro[df_tsa_macro["year"] == 2025]["total_employment_thousands"].values[0]),
+            "highest_vai_product": df_product_summary.iloc[0]["product"],
+            "highest_vai_score": float(df_product_summary.iloc[0]["post_recovery_median_vai"]),
+        }
     }
     with open(DASHBOARD_DATA_DIR / "tsa_macro.json", "w", encoding="utf-8") as f:
         json.dump(clean_nan(tsa_data), f, indent=2)
     print(f"  [2/6] Exported TSA Macro: tsa_macro.json ({len(df_tsa_macro)} macro years, {len(df_product_summary)} products)")
 
     # 3. State Profiles (state_profiles.json)
-    # Comprehensive state profiles joining clusters, demographics, SDG metrics, purpose, hotel stars, lodging breakdown, and time series
     df_clusters = con.execute("SELECT * FROM state_clusters").df()
     df_sdg = con.execute("SELECT * FROM sdg_sustainable_metrics WHERE year = 2025").df()
     df_stars = con.execute("SELECT * FROM state_hotel_star_inventory WHERE year = 2025").df()
@@ -92,6 +102,7 @@ def export_dashboard_data():
     df_demog_2025 = con.execute("SELECT * FROM state_demographics_annual WHERE year = 2025").df()
     df_granular = con.execute("SELECT * FROM state_granular_profile").df()
     df_panel = con.execute("SELECT * FROM state_panel_year ORDER BY state, year").df()
+    df_state_2025 = con.execute("SELECT * FROM state_panel_year WHERE year = 2025").df().set_index("state")
 
     states_dict = {}
     for _, c_row in df_clusters.iterrows():
@@ -111,6 +122,9 @@ def export_dashboard_data():
 
         time_series = df_panel[df_panel["state"] == st].to_dict(orient="records")
 
+        # Verified 2025 baseline row directly from state_panel_year (Fixing Finding 3: KL 35.06M actuals)
+        s25 = df_state_2025.loc[st] if st in df_state_2025.index else None
+
         states_dict[st] = {
             "state": st,
             "state_code": c_row["state_code"],
@@ -128,17 +142,30 @@ def export_dashboard_data():
                 "resident_affluence": float(c_row.get("resident_affluence_score", 50.0)),
             },
             "baseline_2025": {
-                "visitors_thousands": float(c_row["avg_visitors_k"]),
-                "tourists_thousands": float(c_row["avg_tourists_k"]),
-                "alos_days": float(c_row["alos_days"]),
-                "spend_per_night_rm": float(c_row["spend_per_night_rm"]),
-                "spend_per_tourist_rm": float(c_row["spend_per_tourist_rm"]),
-                "accommodation_share_pct": float(c_row["accommodation_share_pct"]),
-                "accommodation_expenditure_rm_million": float(c_row["accom_exp_rm_mil"]),
-                "total_expenditure_rm_million": float(c_row["total_exp_rm_mil"]),
-                "hotel_rooms": int(c_row["hotel_rooms"]) if pd.notnull(c_row["hotel_rooms"]) else 0,
-                "aor_pct": float(c_row["aor_pct"]) if pd.notnull(c_row["aor_pct"]) else 0.0,
-                "resident_median_income_rm": float(c_row["resident_median_income_rm"]),
+                "visitors_thousands": float(s25["visitors_thousands"]) if s25 is not None else float(c_row["avg_visitors_k"]),
+                "tourists_thousands": float(s25["tourists_thousands"]) if s25 is not None else float(c_row["avg_tourists_k"]),
+                "excursionists_thousands": float(s25["excursionists_thousands"]) if s25 is not None else 0.0,
+                "trips_thousands": float(s25["trips_thousands"]) if s25 is not None else 0.0,
+                "alos_days": float(s25["alos_days"]) if s25 is not None else float(c_row["alos_days"]),
+                "spend_per_night_rm": float(s25["spend_per_night_rm"]) if s25 is not None else float(c_row["spend_per_night_rm"]),
+                "spend_per_tourist_rm": float(s25["spend_per_tourist_rm"]) if s25 is not None else float(c_row["spend_per_tourist_rm"]),
+                "accommodation_share_pct": (
+                    round(float(s25["accommodation_share"]) * 100.0, 2)
+                    if (s25 is not None and s25["accommodation_share"] <= 1.0)
+                    else round(float(s25["accommodation_share"]), 2)
+                ) if s25 is not None else float(c_row["accommodation_share_pct"]),
+                "accommodation_expenditure_rm_million": float(s25["accommodation_expenditure_rm_million"]) if s25 is not None else float(c_row["accom_exp_rm_mil"]),
+                "total_expenditure_rm_million": float(s25["total_expenditure_rm_million"]) if s25 is not None else float(c_row["total_exp_rm_mil"]),
+                "hotel_rooms": int(s25["hotel_rooms_kpi"]) if (s25 is not None and pd.notnull(s25.get("hotel_rooms_kpi"))) else (int(c_row["hotel_rooms"]) if pd.notnull(c_row.get("hotel_rooms")) else None),
+                "aor_pct": float(s25["aor_pct"]) if (s25 is not None and pd.notnull(s25.get("aor_pct"))) else (float(c_row["aor_pct"]) if pd.notnull(c_row.get("aor_pct")) else None),
+                "resident_median_income_rm": float(s25["median_household_income_rm"]) if s25 is not None else float(c_row["resident_median_income_rm"]),
+            },
+            "clustering_profile": {
+                "reference_period": "2024–2025 Multi-Year Average",
+                "avg_visitors_thousands": float(c_row["avg_visitors_k"]),
+                "avg_tourists_thousands": float(c_row["avg_tourists_k"]),
+                "cluster_id": int(c_row["cluster_id"]),
+                "archetype_name": c_row["archetype_name"],
             },
             "demographics": {
                 "total_population_thousands": float(demog_info.get("total_population_thousands", 1000.0)),
@@ -214,28 +241,7 @@ def export_dashboard_data():
     print(f"  [3/6] Exported State Profiles: state_profiles.json ({len(states_dict)} states)")
 
     # 4. Origin-Destination Corridors (od_corridors.json)
-    # 2025 baseline corridors
-    df_corridors = con.execute("""
-        SELECT 
-            c.*,
-            c.corridor_tier as corridor_category,
-            g.expected_flow_thousands as gravity_flow_thousands,
-            g.performance_ratio as gravity_performance_ratio,
-            s_orig.latitude as orig_lat,
-            s_orig.longitude as orig_lon,
-            s_dest.latitude as dest_lat,
-            s_dest.longitude as dest_lon
-        FROM corridor_classification c
-        LEFT JOIN corridor_gravity_predictions g
-            ON c.origin = g.origin AND c.destination = g.destination
-        LEFT JOIN state_panel_year s_orig 
-            ON s_orig.year = 2025 AND c.origin = s_orig.state
-        LEFT JOIN state_panel_year s_dest 
-            ON s_dest.year = 2025 AND c.destination = s_dest.state
-        ORDER BY c.tourist_flow_thousands DESC
-    """).df()
-
-    # Multi-year panel corridors for longitudinal time travel
+    # Joining year-specific classifications and predictions across the full panel (Fixing Finding 4)
     df_panel_corridors = con.execute("""
         SELECT 
             p.year,
@@ -264,10 +270,10 @@ def export_dashboard_data():
             s_dest.latitude as dest_lat,
             s_dest.longitude as dest_lon
         FROM origin_destination_panel p
-        LEFT JOIN corridor_classification c
-            ON p.origin = c.origin AND p.destination = c.destination
-        LEFT JOIN corridor_gravity_predictions g
-            ON p.origin = g.origin AND p.destination = g.destination
+        LEFT JOIN corridor_classification_panel c
+            ON p.year = c.year AND p.origin = c.origin AND p.destination = c.destination
+        LEFT JOIN corridor_gravity_predictions_panel g
+            ON p.year = g.year AND p.origin = g.origin AND p.destination = g.destination
         LEFT JOIN state_panel_year s_orig 
             ON p.year = s_orig.year AND p.origin = s_orig.state
         LEFT JOIN state_panel_year s_dest 
@@ -280,21 +286,27 @@ def export_dashboard_data():
     for yr, yr_group in df_panel_corridors.groupby("year"):
         corridors_by_year[int(yr)] = yr_group.to_dict(orient="records")
 
-    # Destination concentration panel
-    df_hhi = con.execute("SELECT * FROM destination_concentration_panel WHERE year = 2025").df()
+    # Destination concentration panel (reporting both interstate and all-origin HHI)
+    df_hhi_panel = con.execute("SELECT * FROM destination_concentration_panel ORDER BY year, destination").df()
+    hhi_by_year = {}
+    for yr, yr_group in df_hhi_panel.groupby("year"):
+        hhi_by_year[int(yr)] = yr_group.to_dict(orient="records")
+
+    df_corridors_2025 = df_panel_corridors[df_panel_corridors["year"] == 2025].copy()
+    df_hhi_2025 = df_hhi_panel[df_hhi_panel["year"] == 2025].copy()
 
     corridor_data = {
-        "corridors_2025": df_corridors.to_dict(orient="records"),
+        "corridors_2025": df_corridors_2025.to_dict(orient="records"),
         "corridors_by_year": corridors_by_year,
-        "destination_concentration": df_hhi.to_dict(orient="records"),
-        "category_summary": df_corridors["corridor_tier"].value_counts().to_dict(),
+        "destination_concentration_2025": df_hhi_2025.to_dict(orient="records"),
+        "destination_concentration_by_year": hhi_by_year,
+        "category_summary_2025": df_corridors_2025["corridor_tier"].value_counts().to_dict(),
     }
     with open(DASHBOARD_DATA_DIR / "od_corridors.json", "w", encoding="utf-8") as f:
         json.dump(clean_nan(corridor_data), f, indent=2)
-    print(f"  [4/6] Exported OD Corridors: od_corridors.json ({len(df_corridors)} inter-state corridors)")
+    print(f"  [4/6] Exported OD Corridors: od_corridors.json ({len(df_corridors_2025)} 2025 corridors, {len(df_panel_corridors)} total panel rows)")
 
     # 5. Scenario Simulator Engine Data (scenario_engine.json)
-    # Provides baseline multipliers and state metrics for real-time frontend calculations
     state_sim_baselines = {}
     for st, sdata in states_dict.items():
         b = sdata["baseline_2025"]
@@ -302,41 +314,52 @@ def export_dashboard_data():
             "alos": b["alos_days"],
             "spend_per_night": b["spend_per_night_rm"],
             "tourists_k": b["tourists_thousands"],
+            "excursionists_k": b["excursionists_thousands"],
             "hotel_rooms": b["hotel_rooms"],
             "aor": b["aor_pct"],
         }
 
+    # Fetch dynamic gravity model parameters
+    df_grav_summary = con.execute("SELECT * FROM corridor_gravity_model_summary").df()
+    df_grav_val = con.execute("SELECT * FROM corridor_gravity_validation").df()
+
     scenario_config = {
         "constants": {
-            "accommodation_vai": 0.858,  # Official TSA 2025
-            "fnb_vai": 0.432,
-            "overall_tourism_vai": 0.528,
+            "accommodation_vai": 0.8579,  # Empirical post-recovery median
             "disclaimer": "Scenario estimate, not a causal forecast.",
+            "average_guests_per_room": 1.8,
+            "saturation_thresholds": {
+                "watch": 70.0,
+                "severe": 80.0,
+                "physical": 100.0,
+            }
         },
         "state_baselines": state_sim_baselines,
-        "gravity_elasticities": {
-            "distance_friction": -0.6031,
-            "origin_working_age": 0.8903,
-            "origin_income": 0.7250,
-            "destination_pull": 0.7035,
-            "cross_region_barrier": -1.3319,
-        },
+        "gravity_models": {
+            "validation": df_grav_val.to_dict(orient="records"),
+            "parameters": df_grav_summary.to_dict(orient="records"),
+        }
     }
     with open(DASHBOARD_DATA_DIR / "scenario_engine.json", "w", encoding="utf-8") as f:
         json.dump(clean_nan(scenario_config), f, indent=2)
     print(f"  [5/6] Exported Scenario Engine Config: scenario_engine.json")
 
-    # 6. Research Question 3 Driver Attribution (drivers_rq3.json)
+    # 6. Research Question 3 Driver Attribution & Panel Econometrics (drivers_rq3.json)
     df_drivers = con.execute("SELECT * FROM accommodation_drivers_summary").df()
     df_meta = con.execute("SELECT * FROM accommodation_drivers_meta").df()
+    df_panel_regs = con.execute("SELECT * FROM panel_regression_summary").df()
+    df_trajectories = con.execute("SELECT * FROM state_recovery_trajectory").df()
 
     drivers_data = {
         "model_metadata": df_meta.iloc[0].to_dict() if len(df_meta) > 0 else {},
         "feature_attributions": df_drivers.to_dict(orient="records"),
+        "panel_regressions": df_panel_regs.to_dict(orient="records"),
+        "recovery_trajectories": df_trajectories.to_dict(orient="records"),
+        "disclaimer": "Standardized regression weights reflect association in the sample, not causal spending shares.",
     }
     with open(DASHBOARD_DATA_DIR / "drivers_rq3.json", "w", encoding="utf-8") as f:
         json.dump(clean_nan(drivers_data), f, indent=2)
-    print(f"  [6/6] Exported RQ3 Drivers: drivers_rq3.json ({len(df_drivers)} drivers)")
+    print(f"  [6/6] Exported RQ3 Drivers & Panel Models: drivers_rq3.json ({len(df_drivers)} drivers, {len(df_panel_regs)} panel models)")
 
     con.close()
     print("=" * 70)

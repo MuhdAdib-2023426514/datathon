@@ -166,13 +166,20 @@ def run_state_clustering() -> pd.DataFrame:
     df_raw["archetype_color"] = df_raw["cluster_id"].map(lambda c: archetype_definitions[c][2])
 
     # Compute Normalized Radar Dimensions (0-100 scale for UI)
+    # Calibrated to empirical 5th-95th percentiles of Malaysian states to prevent artificial zero-collapse:
+    # - ALOS: 1.8 to 3.2 days (national range: 2.12 - 3.10)
+    # - Spend per Night: RM 20.0 to RM 110.0 (national range: RM 24.9 - RM 102.9)
+    # - Accommodation Share: 5.0% to 15.0% (national range: 6.3% - 13.6%)
+    # - Holiday Orientation: 15.0% to 50.0% (national range: 16.1% - 42.9%)
+    # - Luxury Supply: 10.0% to 90.0% (national range: 11.1% - 97.8%)
+    # - Resident Income: RM 3,500 to RM 11,500 (national range: RM 4,211 - RM 10,956)
     radar_metrics = {
-        "stay_duration_score": ("alos_days", 1.0, 3.5),
-        "nightly_yield_score": ("spend_per_night_rm", 80.0, 300.0),
-        "accom_intensity_score": ("accommodation_share_pct", 10.0, 35.0),
-        "leisure_orientation_score": ("holiday_pct", 20.0, 70.0),
-        "luxury_supply_score": ("luxury_room_pct", 5.0, 70.0),
-        "resident_affluence_score": ("resident_median_income_rm", 3500.0, 11000.0),
+        "stay_duration_score": ("alos_days", 1.8, 3.2),
+        "nightly_yield_score": ("spend_per_night_rm", 20.0, 110.0),
+        "accom_intensity_score": ("accommodation_share_pct", 5.0, 15.0),
+        "leisure_orientation_score": ("holiday_pct", 15.0, 50.0),
+        "luxury_supply_score": ("luxury_room_pct", 10.0, 90.0),
+        "resident_affluence_score": ("resident_median_income_rm", 3500.0, 11500.0),
     }
 
     for score_col, (raw_col, vmin, vmax) in radar_metrics.items():

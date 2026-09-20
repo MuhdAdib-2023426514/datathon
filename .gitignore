@@ -21,3 +21,6 @@ venv/
 *.swp
 *.tmp
 .DS_Store
+
+# Local baseline backups
+data/backup_*/

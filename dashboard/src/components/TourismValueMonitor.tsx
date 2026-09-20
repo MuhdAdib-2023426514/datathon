@@ -15,8 +15,8 @@ interface TourismValueMonitorProps {
 }
 
 export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }) => {
-  const macroSeries = data.macro_series || [];
-  const productSummary = data.product_summary || [];
+  const macroSeries = data.macro_series || data.macro_timeseries || [];
+  const productSummary = data.product_summary || data.product_rankings || [];
   const latest = macroSeries.find((year) => year.year === 2025);
   const baseline = macroSeries.find((year) => year.year === 2015);
   const accommodation = productSummary.find((product) => product.product_id === 'accommodation');

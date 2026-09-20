@@ -139,38 +139,64 @@ def compute_concentration_and_shares(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd
         0.0
     ).round(2)
 
-    # Calculate longitudinal HHI per destination-year
-    # HHI = sum((origin_share)^2) where shares are in percentages (0-100)
+    # Calculate longitudinal HHI per destination-year across both populations
+    # 1. All-origin HHI (including intra-state residents)
+    # 2. Interstate HHI (15 external feeder states only)
     hhi_records = []
     for (year, dest), grp in df.groupby(["year", "destination"]):
-        total_in = grp["tourist_flow_thousands"].sum()
-        if total_in > 0:
-            shares = (grp["tourist_flow_thousands"] / total_in) * 100.0
-            hhi = round((shares ** 2).sum(), 2)
-            # Top feeder
-            top_orig = grp.sort_values(by="tourist_flow_thousands", ascending=False).iloc[0]
-            top_feeder = top_orig["origin"]
-            top_share = round(shares.loc[top_orig.name], 2)
-        else:
-            hhi = 0.0
-            top_feeder = "None"
-            top_share = 0.0
+        total_all = grp["tourist_flow_thousands"].sum()
+        intra_row = grp[~grp["is_interstate"]]
+        intra_flow = intra_row["tourist_flow_thousands"].sum() if not intra_row.empty else 0.0
+        intrastate_share_pct = round((intra_flow / total_all * 100.0), 2) if total_all > 0 else 0.0
 
-        if hhi < 1500:
-            hhi_tier = "Diversified (<1,500)"
-        elif hhi <= 2500:
-            hhi_tier = "Moderate Concentration (1,500 - 2,500)"
+        # All-origin HHI
+        if total_all > 0:
+            shares_all = (grp["tourist_flow_thousands"] / total_all) * 100.0
+            hhi_all = round((shares_all ** 2).sum(), 2)
+            top_all_row = grp.sort_values(by="tourist_flow_thousands", ascending=False).iloc[0]
+            top_all_state = top_all_row["origin"]
+            top_all_share = round(shares_all.loc[top_all_row.name], 2)
         else:
-            hhi_tier = "High Concentration (>2,500)"
+            hhi_all = np.nan
+            top_all_state = "None"
+            top_all_share = 0.0
+
+        # Interstate-only HHI
+        grp_inter = grp[grp["is_interstate"]].copy()
+        total_inter = grp_inter["tourist_flow_thousands"].sum()
+        if total_inter > 0:
+            shares_inter = (grp_inter["tourist_flow_thousands"] / total_inter) * 100.0
+            hhi_inter = round((shares_inter ** 2).sum(), 2)
+            top_inter_row = grp_inter.sort_values(by="tourist_flow_thousands", ascending=False).iloc[0]
+            top_inter_state = top_inter_row["origin"]
+            top_inter_share = round(shares_inter.loc[top_inter_row.name], 2)
+            if hhi_inter < 1500:
+                inter_tier = "Diversified (<1,500)"
+            elif hhi_inter <= 2500:
+                inter_tier = "Moderate Concentration (1,500 - 2,500)"
+            else:
+                inter_tier = "High Concentration (>2,500)"
+        else:
+            hhi_inter = np.nan
+            top_inter_state = "None"
+            top_inter_share = 0.0
+            inter_tier = "No Inter-state Inbound"
 
         hhi_records.append({
             "year": year,
             "destination": dest,
-            "total_tourists_thousands": round(total_in, 2),
-            "top_feeder_state": top_feeder,
-            "top_feeder_share_pct": top_share,
-            "hhi": hhi,
-            "concentration_tier": hhi_tier
+            "total_tourists_thousands": round(total_all, 2),
+            "interstate_inbound_thousands": round(total_inter, 2),
+            "intrastate_tourists_thousands": round(intra_flow, 2),
+            "intrastate_share_pct": intrastate_share_pct,
+            "top_feeder_state": top_all_state,
+            "top_feeder_share_pct": top_all_share,
+            "all_origin_hhi": hhi_all,
+            "top_interstate_feeder": top_inter_state,
+            "top_interstate_feeder_share_pct": top_inter_share,
+            "interstate_origin_hhi": hhi_inter,
+            "hhi": hhi_inter,  # Default for downstream compatibility
+            "concentration_tier": inter_tier,
         })
 
     df_hhi = pd.DataFrame(hhi_records)

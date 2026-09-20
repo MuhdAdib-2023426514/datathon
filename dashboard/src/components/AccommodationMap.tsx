@@ -98,7 +98,7 @@ export const AccommodationMap: React.FC<AccommodationMapProps> = ({
 - **Accommodation Share**: ${b.accommodation_share_pct.toFixed(2)}% of total visitor spending
 - **Total Accommodation Receipts**: RM ${b.accommodation_expenditure_rm_million.toFixed(2)} Million
 - **Total Tourism Expenditure**: RM ${b.total_expenditure_rm_million.toFixed(2)} Million
-- **Hotel Capacity**: ${b.hotel_rooms.toLocaleString()} rooms | **Average Occupancy (AOR)**: ${b.aor_pct.toFixed(1)}%
+- **Hotel Capacity**: ${b.hotel_rooms != null ? b.hotel_rooms.toLocaleString() + ' rooms' : 'N/A (unobserved)'} | **Average Occupancy (AOR)**: ${b.aor_pct != null ? b.aor_pct.toFixed(1) + '%' : 'N/A'}
 
 ---
 

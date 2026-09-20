@@ -140,7 +140,8 @@ def run_accommodation_drivers_analysis() -> Tuple[pd.DataFrame, pd.DataFrame]:
         X_std[col] = (df[col] - df[col].mean()) / df[col].std()
 
     X_std_const = sm.add_constant(X_std)
-    model_std = sm.OLS(y_std, X_std_const).fit(cov_type="HC3")
+    # Use State-Clustered Standard Errors to account for panel repetition across 16 states
+    model_std = sm.OLS(y_std, X_std_const).fit(cov_type="cluster", cov_kwds={"groups": df["state"]})
 
     # 2. Multicollinearity Diagnostics (VIF)
     vif_data = []
@@ -157,7 +158,6 @@ def run_accommodation_drivers_analysis() -> Tuple[pd.DataFrame, pd.DataFrame]:
         p_val = model_std.pvalues[col]
         vif = vif_data[i]
 
-        # Importance weight: normalized absolute beta
         results.append({
             "feature_name": col,
             "feature_label": label,
@@ -172,13 +172,15 @@ def run_accommodation_drivers_analysis() -> Tuple[pd.DataFrame, pd.DataFrame]:
 
     df_drivers = pd.DataFrame(results)
 
-    # Relative importance percentage
+    # Relative coefficient weight percentage (normalized absolute standardized beta)
+    # Note: These are statistical association weights in explaining sample variance, not causal expenditure shares.
     abs_betas = df_drivers["std_beta"].abs()
-    df_drivers["importance_share_pct"] = np.round((abs_betas / abs_betas.sum()) * 100.0, 1)
-    df_drivers = df_drivers.sort_values("importance_share_pct", ascending=False).reset_index(drop=True)
+    df_drivers["coefficient_weight_pct"] = np.round((abs_betas / abs_betas.sum()) * 100.0, 1)
+    df_drivers["importance_share_pct"] = df_drivers["coefficient_weight_pct"]  # Backwards compatibility alias
+    df_drivers = df_drivers.sort_values("coefficient_weight_pct", ascending=False).reset_index(drop=True)
 
     print("\nFeature Attribution (Standardized Betas & Relative Importance):")
-    print(df_drivers[["feature_label", "std_beta", "p_value", "importance_share_pct", "vif"]])
+    print(df_drivers[["feature_label", "std_beta", "p_value", "coefficient_weight_pct", "vif"]])
 
     # Model fit metrics
     r2 = model_std.rsquared

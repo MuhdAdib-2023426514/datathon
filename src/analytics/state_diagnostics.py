@@ -21,12 +21,13 @@ from typing import Dict, Tuple, List
 import duckdb
 import numpy as np
 import pandas as pd
-from scipy import stats
-import statsmodels.api as sm
-
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
+
+from scipy import stats
+import statsmodels.api as sm
+from src.analytics.accounting import calc_sdg_attributable_gva, calc_value_retention_rate
 
 PROCESSED_DIR = ROOT_DIR / "data/processed"
 DUCKDB_PATH = PROCESSED_DIR / "tourism_data.duckdb"
@@ -107,13 +108,13 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
         high_spend = row["spend_per_tourist_rm"] >= spend_per_tourist_median
 
         if not high_stay and not high_spend:
-            return "Volume Trap (Low ALOS, Low Spend)"
+            return "Volume Trap (Low ALOS, Low Spend/Tourist)"
         elif not high_stay and high_spend:
-            return "Transit Spender (Short Stay, High Spend/Day)"
+            return "Transit Spender (Short Stay, High Spend/Tourist)"
         elif high_stay and not high_spend:
-            return "Budget Retreat (Long Stay, Low Spend/Day)"
+            return "Budget Retreat (Long Stay, Low Spend/Tourist)"
         else:
-            return "High-Yield Destination (Long Stay, High Spend)"
+            return "High-Yield Destination (Long Stay, High Spend/Tourist)"
 
     df["yield_typology"] = df.apply(categorize_state_yield, axis=1)
 
@@ -124,28 +125,48 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
     ).round(2)
 
     # B. Tourism Economic Yield per Visitor-Day (TEY in RM)
-    df["tourism_economic_yield_per_day_rm"] = (
-        (df["total_expenditure_rm_million"] * 1e6)
-        / (df["total_visitor_days_thousands"] * 1e3).replace(0, 1)
-    ).round(2)
+    vis_days_denom = df["total_visitor_days_thousands"] * 1e3
+    df["tourism_economic_yield_per_day_rm"] = np.where(
+        vis_days_denom > 0,
+        ((df["total_expenditure_rm_million"] * 1e6) / vis_days_denom).round(2),
+        np.nan,
+    )
 
     # C. Excursionist Pressure Ratio (EPR = Excursionists / Overnight Tourists)
-    df["excursionist_pressure_ratio"] = (
-        df["excursionists_thousands"] / df["tourists_thousands"].replace(0, 1)
-    ).round(2)
+    tour_denom = df["tourists_thousands"]
+    df["excursionist_pressure_ratio"] = np.where(
+        tour_denom > 0,
+        (df["excursionists_thousands"] / tour_denom).round(2),
+        np.nan,
+    )
 
     # D. Domestic Value Retention Multiplier (DVR GVA proxy using TSA Value-Added Intensities)
-    # Accommodation VAI = 0.8579, Food VAI = 0.4318, Shopping VAI = 0.7088, Transport VAI = 0.3000
-    df["estimated_retained_gva_rm_million"] = (
-        df["accommodation_expenditure_rm_million"] * 0.8579
-        + df["food_expenditure_rm_million"] * 0.4318
-        + df["shopping_expenditure_rm_million"] * 0.7088
-        + df["transport_expenditure_rm_million"] * 0.3000
-    ).round(2)
-
-    df["value_retention_rate_pct"] = (
-        (df["estimated_retained_gva_rm_million"] / df["total_expenditure_rm_million"].replace(0, 1)) * 100.0
-    ).round(2)
+    # Using dynamic 2025 empirical TSA VAI: Accommodation = 0.8659, Food = 0.4318, Shopping = 0.7088, Transport = 0.1621
+    vai_map_2025 = {
+        "accommodation": 0.8659,
+        "food_beverage": 0.4318,
+        "shopping": 0.7088,
+        "transport": 0.1621,
+        "other": 0.5000,
+    }
+    retained_gvas = []
+    for _, r in df.iterrows():
+        t_exp = r["total_expenditure_rm_million"] or 0.0
+        a_exp = r["accommodation_expenditure_rm_million"] or 0.0
+        f_exp = r["food_expenditure_rm_million"] or 0.0
+        s_exp = r["shopping_expenditure_rm_million"] or 0.0
+        tr_exp = r["transport_expenditure_rm_million"] or 0.0
+        o_exp = max(0.0, t_exp - (a_exp + f_exp + s_exp + tr_exp))
+        retained_gvas.append(
+            calc_sdg_attributable_gva(a_exp, f_exp, s_exp, tr_exp, o_exp, vai_map_2025)
+        )
+    df["estimated_retained_gva_rm_million"] = np.round(retained_gvas, 2)
+    tot_exp = df["total_expenditure_rm_million"]
+    df["value_retention_rate_pct"] = np.where(
+        tot_exp > 0,
+        ((df["estimated_retained_gva_rm_million"] / tot_exp) * 100.0).round(2),
+        np.nan,
+    )
 
     # 5. Strategic Policy Prescriptions
     def get_policy_prescription(row):
@@ -270,11 +291,28 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
             ).df()
             df_corr_raw = df_corr_raw.merge(df_cap, on="destination", how="left")
             daily_rooms_demanded = (df_corr_raw["additional_tourist_nights_thousands"] * 1000.0) / (365.0 * 1.8)
-            delta_aor = (daily_rooms_demanded / df_corr_raw["dest_available_rooms"].replace(0, 10000)) * 100.0
-            df_corr_raw["implied_dest_aor_pct"] = (df_corr_raw["dest_baseline_aor_pct"] + delta_aor).round(2)
-            df_corr_raw["capacity_constraint_alert"] = df_corr_raw["implied_dest_aor_pct"].apply(
-                lambda x: "Capacity Constraint Alert (>80% Saturation)" if x > 80.0 else "Feasible (Within Hotel Capacity)"
+            has_rooms = df_corr_raw["dest_available_rooms"].fillna(0) > 0
+            delta_aor = np.where(
+                has_rooms,
+                (daily_rooms_demanded / df_corr_raw["dest_available_rooms"]) * 100.0,
+                np.nan,
             )
+            df_corr_raw["implied_dest_aor_pct"] = np.where(
+                pd.notnull(delta_aor) & pd.notnull(df_corr_raw["dest_baseline_aor_pct"]),
+                (df_corr_raw["dest_baseline_aor_pct"] + delta_aor).round(2),
+                np.nan,
+            )
+            def _capacity_label(val):
+                if pd.isna(val):
+                    return "Unknown (Capacity Data Unavailable)"
+                if val > 100.0:
+                    return "Physical Capacity Breach (>100% Saturation)"
+                if val > 80.0:
+                    return "Capacity Constraint Alert (>80% Saturation)"
+                if val >= 70.0:
+                    return "Planning Watch (70-80% Saturation)"
+                return "Feasible (Within Hotel Capacity)"
+            df_corr_raw["capacity_constraint_alert"] = df_corr_raw["implied_dest_aor_pct"].apply(_capacity_label)
 
         # Merge spatial gravity metrics if available
         if "corridor_gravity_predictions" in existing_tables:

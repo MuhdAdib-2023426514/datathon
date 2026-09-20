@@ -1,0 +1,65 @@
+{
+  "stages": {
+    "validate": {
+      "success": true,
+      "completed_at": "2026-09-20 21:07:54",
+      "steps": [
+        {
+          "step": "accounting_fixtures",
+          "path": "tests/test_accounting_fixtures.py",
+          "success": true,
+          "duration_sec": 0.25,
+          "timestamp": "2026-09-20 21:07:53",
+          "log_snippet": ""
+        },
+        {
+          "step": "scenario_fixtures",
+          "path": "tests/test_scenario_fixtures.py",
+          "success": true,
+          "duration_sec": 0.09,
+          "timestamp": "2026-09-20 21:07:53",
+          "log_snippet": ""
+        },
+        {
+          "step": "gravity_fixtures",
+          "path": "tests/test_gravity_fixtures.py",
+          "success": true,
+          "duration_sec": 0.08,
+          "timestamp": "2026-09-20 21:07:53",
+          "log_snippet": ""
+        },
+        {
+          "step": "tsa_accounting",
+          "path": "src/validation/test_tsa_accounting.py",
+          "success": true,
+          "duration_sec": 0.3,
+          "timestamp": "2026-09-20 21:07:54",
+          "log_snippet": "ormula assertions PASSED.\n\n[TEST 2] Validating tsa_macro_year...\n  \u2713 tsa_macro_year values and benchmarks PASSED.\n\n[TEST 3] Validating Accommodation Hypothesis & Strategic Quadrants...\n  \u2713 Accommodation empirical hypothesis CONFIRMED (#1 VAI = 0.8579).\n  \u2713 Travel Agency 2025 structural margin dynamics CONFIRMED.\n\n======================================================================\nALL VALIDATION TESTS PASSED (100% SUCCESS)\n======================================================================\n"
+        },
+        {
+          "step": "state_and_corridors",
+          "path": "src/validation/test_state_and_corridors.py",
+          "success": true,
+          "duration_sec": 0.4,
+          "timestamp": "2026-09-20 21:07:54",
+          "log_snippet": "ons & Corridor Opportunity Gap...\n  \u2713 Granular DTS profiles (16 states), OLS driver regressions, and 240-corridor opportunity gap PASSED.\n\n[TEST 6] Validating MyTourism KPI Hotel & Homestay Operations...\n  \u2713 MyTourism KPI operations (160 hotel, 28 homestay), capacity table, and full 2018\u20132025 panel PASSED.\n\n======================================================================\nALL VALIDATION TEST SUITES PASSED (100% SUCCESS)\n======================================================================\n"
+        }
+      ]
+    },
+    "export": {
+      "success": true,
+      "completed_at": "2026-09-20 21:07:55",
+      "steps": [
+        {
+          "step": "dashboard_json",
+          "path": "src/analytics/export_dashboard_json.py",
+          "success": true,
+          "duration_sec": 0.48,
+          "timestamp": "2026-09-20 21:07:55",
+          "log_snippet": ")\n  [3/6] Exported State Profiles: state_profiles.json (16 states)\n  [4/6] Exported OD Corridors: od_corridors.json (240 2025 corridors, 1920 total panel rows)\n  [5/6] Exported Scenario Engine Config: scenario_engine.json\n  [6/6] Exported RQ3 Drivers & Panel Models: drivers_rq3.json (6 drivers, 8 panel models)\n======================================================================\nDashboard JSON Export Completed Successfully.\n======================================================================\n"
+        }
+      ]
+    }
+  },
+  "last_run": "2026-09-20 21:07:55"
+}

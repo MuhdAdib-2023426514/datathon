@@ -410,23 +410,23 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
           </div>
 
           <p className="text-xs text-stone-700 leading-relaxed">
-            High Herfindahl-Hirschman Index (HHI &gt; 2,500) indicates acute vulnerability to economic shocks or transport disruptions in a single source market (e.g. over-reliance on Klang Valley outbound visitors).
+            Market concentration distinguishes <strong>Interstate Origin HHI</strong> (evaluating vulnerability to external feeder shocks) from <strong>All-Origin HHI</strong> (which reflects local resident travel).
           </p>
 
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="p-2.5 rounded bg-white/60 border border-rose-500/20 space-y-1">
-              <span className="font-bold text-rose-700 text-xs">High Vulnerability Destinations</span>
-              <div className="text-stone-700 text-[11px]">
-                • <strong>Negeri Sembilan</strong> (HHI: 3,420 — 55% from Selangor/KL)<br />
-                • <strong>Melaka</strong> (HHI: 2,890 — 48% from Selangor/Johor)
+            <div className="p-2.5 rounded bg-white/60 border border-amber-500/20 space-y-1">
+              <span className="font-bold text-amber-700 text-xs">Interstate Concentrated Feeders</span>
+              <div className="text-stone-700 text-[11px] space-y-1">
+                <div>• <strong>Pulau Pinang</strong> (HHI: 2,462 — 44.5% from Selangor)</div>
+                <div>• <strong>Melaka</strong> (HHI: 2,156 — 38.8% from Selangor)</div>
               </div>
             </div>
 
             <div className="p-2.5 rounded bg-white/60 border border-violet-400/20 space-y-1">
-              <span className="font-bold text-violet-700 text-xs">Balanced Feeder Destinations</span>
-              <div className="text-stone-700 text-[11px]">
-                • <strong>Pulau Pinang</strong> (HHI: 1,480 — Diversified North/Central)<br />
-                • <strong>Sabah</strong> (HHI: 1,620 — Multi-state feeder pool)
+              <span className="font-bold text-violet-700 text-xs">Borneo & Diversified Feeders</span>
+              <div className="text-stone-700 text-[11px] space-y-1">
+                <div>• <strong>Sabah</strong>: Interstate HHI = 1,450 (Diversified); All-Origin HHI = 5,747 (75.2% Intrastate travel)</div>
+                <div>• <strong>Negeri Sembilan</strong>: Interstate HHI = 2,127 (32.5% from Selangor)</div>
               </div>
             </div>
           </div>

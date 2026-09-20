@@ -5,7 +5,7 @@ and Target 12.b (Monitoring Sustainable Development Impacts).
 
 Calculates core economic sustainability dimensions:
   1. Tourism Economic Yield per Visitor-Day (TEY, RM/day)
-  2. Domestic Value Retention Rate (DVR, %) using TSA Value-Added Intensities
+  2. Domestic Value Retention Rate (DVR, %) using empirical TSA Value-Added Intensities
   3. Excursionist Pressure Ratio (EPR = Excursionists / Overnight Tourists)
   4. Tourism Intensity Ratio (TIR = Total Visitors / Resident Population)
   5. Resident Yield per Household (RYH = Accommodation Spend / Resident Households)
@@ -28,17 +28,41 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
+from src.analytics.accounting import calc_sdg_attributable_gva, calc_value_retention_rate
+
 PROCESSED_DIR = ROOT_DIR / "data/processed"
 DUCKDB_PATH = PROCESSED_DIR / "tourism_data.duckdb"
 
-# TSA 2025 Value-Added Intensities (VAI)
-TSA_VAI = {
-    "accommodation": 0.858,  # 85.8% GVA per RM supply (Accommodation is highest value-efficiency)
-    "food_beverage": 0.432,  # 43.2%
-    "shopping": 0.709,       # 70.9% (Country-specific retail goods)
-    "transport": 0.285,      # 28.5%
-    "other": 0.500,          # 50.0%
+# Fallback Post-Recovery Medians (2023-2025) if specific year VAI missing
+FALLBACK_TSA_VAI = {
+    "accommodation": 0.8579,
+    "food_beverage": 0.4318,
+    "shopping": 0.7088,
+    "transport": 0.1627,
+    "other": 0.5000,
 }
+
+
+def load_annual_vai_table(con: duckdb.DuckDBPyConnection) -> Dict[int, Dict[str, float]]:
+    """Loads annual VAI mappings from tourism_product_year."""
+    try:
+        df_prod = con.execute(
+            "SELECT year, product_id, vai FROM tourism_product_year WHERE vai IS NOT NULL"
+        ).df()
+        annual_vai = {}
+        for yr, group in df_prod.groupby("year"):
+            vai_dict = dict(zip(group["product_id"], group["vai"]))
+            annual_vai[int(yr)] = {
+                "accommodation": float(vai_dict.get("accommodation", FALLBACK_TSA_VAI["accommodation"])),
+                "food_beverage": float(vai_dict.get("food_beverage", FALLBACK_TSA_VAI["food_beverage"])),
+                "shopping": float(vai_dict.get("country_specific_goods", FALLBACK_TSA_VAI["shopping"])),
+                "transport": float(vai_dict.get("passenger_transport", FALLBACK_TSA_VAI["transport"])),
+                "other": float(vai_dict.get("country_specific_services", FALLBACK_TSA_VAI["other"])),
+            }
+        return annual_vai
+    except Exception as e:
+        print(f"Warning: Could not load dynamic VAI table ({e}), using fallback medians.")
+        return {}
 
 
 def run_sdg_metrics() -> pd.DataFrame:
@@ -47,6 +71,7 @@ def run_sdg_metrics() -> pd.DataFrame:
     print("=" * 70)
 
     con = duckdb.connect(str(DUCKDB_PATH))
+    annual_vai_map = load_annual_vai_table(con)
 
     # Query state panel with demographics and expenditure breakdown
     query = """
@@ -108,26 +133,31 @@ def run_sdg_metrics() -> pd.DataFrame:
     df["epr_ratio"] = np.round(df["excursionists_thousands"] / df["tourists_thousands"].clip(lower=0.1), 2)
 
     # 4. Domestic Value Retention Rate (DVR %)
-    # Attributable GVA = Sum(Expenditure_k * VAI_k)
-    other_exp = (
-        df["total_expenditure_rm_million"]
-        - df["accommodation_expenditure_rm_million"]
-        - df["food_expenditure_rm_million"]
-        - df["shopping_expenditure_rm_million"]
-        - df["transport_expenditure_rm_million"]
-    ).clip(lower=0.0)
+    # Corrected Attributable GVA calculation:
+    # Explicitly calculate component by component without operator-precedence dropping accommodation
+    attributable_gvas = []
+    for _, row in df.iterrows():
+        yr = int(row["year"])
+        vai_dict = annual_vai_map.get(yr, FALLBACK_TSA_VAI)
 
-    gva_proxy = (
-        df["accommodation_expenditure_rm_million"] * TSA_VAI["accommodation"]
-        + df["food_beverage_expenditure_rm_million"] * TSA_VAI["food_beverage"]
-        if "food_beverage_expenditure_rm_million" in df.columns
-        else df["food_expenditure_rm_million"] * TSA_VAI["food_beverage"]
-    )
-    gva_proxy += df["shopping_expenditure_rm_million"] * TSA_VAI["shopping"]
-    gva_proxy += df["transport_expenditure_rm_million"] * TSA_VAI["transport"]
-    gva_proxy += other_exp * TSA_VAI["other"]
+        tot_exp = row["total_expenditure_rm_million"] or 0.0
+        accom_exp = row["accommodation_expenditure_rm_million"] or 0.0
+        food_exp = row["food_expenditure_rm_million"] or 0.0
+        shop_exp = row["shopping_expenditure_rm_million"] or 0.0
+        trans_exp = row["transport_expenditure_rm_million"] or 0.0
+        other_exp = max(0.0, tot_exp - (accom_exp + food_exp + shop_exp + trans_exp))
 
-    df["attributable_gva_rm_million"] = np.round(gva_proxy, 1)
+        gva_val = calc_sdg_attributable_gva(
+            accommodation_exp=accom_exp,
+            food_exp=food_exp,
+            shopping_exp=shop_exp,
+            transport_exp=trans_exp,
+            other_exp=other_exp,
+            vai_map=vai_dict,
+        )
+        attributable_gvas.append(gva_val)
+
+    df["attributable_gva_rm_million"] = np.round(attributable_gvas, 1)
     df["dvr_retention_rate_pct"] = np.round(
         (df["attributable_gva_rm_million"] / df["total_expenditure_rm_million"].clip(lower=1.0)) * 100.0, 1
     )

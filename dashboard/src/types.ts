@@ -39,9 +39,19 @@ export interface ProductSummary {
 }
 
 export interface TSAMacroData {
-  macro_series: TSAMacroYear[];
-  product_series: TourismProductYear[];
-  product_summary: ProductSummary[];
+  macro_series?: TSAMacroYear[];
+  product_series?: TourismProductYear[];
+  product_summary?: ProductSummary[];
+  macro_timeseries?: TSAMacroYear[];
+  product_timeseries?: TourismProductYear[];
+  product_rankings?: ProductSummary[];
+  summary?: {
+    total_tdgva_2025_b: number;
+    tdgva_share_2025_pct: number;
+    total_employment_2025_k: number;
+    highest_vai_product: string;
+    highest_vai_score: number;
+  };
 }
 
 export interface StateDemographics {
@@ -120,15 +130,24 @@ export interface StateProfile {
   baseline_2025: {
     visitors_thousands: number;
     tourists_thousands: number;
+    excursionists_thousands?: number;
+    trips_thousands?: number;
     alos_days: number;
     spend_per_night_rm: number;
     spend_per_tourist_rm: number;
     accommodation_share_pct: number;
     accommodation_expenditure_rm_million: number;
     total_expenditure_rm_million: number;
-    hotel_rooms: number;
-    aor_pct: number;
+    hotel_rooms: number | null;
+    aor_pct: number | null;
     resident_median_income_rm: number;
+  };
+  clustering_profile?: {
+    reference_period: string;
+    avg_visitors_thousands: number;
+    avg_tourists_thousands: number;
+    cluster_id: number;
+    archetype_name: string;
   };
   demographics: StateDemographics;
   lodging_shares?: StateLodgingShares;
@@ -155,13 +174,17 @@ export interface Corridor {
   origin: string;
   origin_code: string;
   origin_region: string;
-  origin_lat: number;
-  origin_lon: number;
+  origin_lat?: number;
+  origin_lon?: number;
+  orig_lat?: number;
+  orig_lon?: number;
   destination: string;
   destination_code: string;
   destination_region: string;
-  destination_lat: number;
-  destination_lon: number;
+  destination_lat?: number;
+  destination_lon?: number;
+  dest_lat?: number;
+  dest_lon?: number;
   is_interstate: boolean;
   tourist_flow_thousands: number;
   dest_alos: number;
@@ -172,44 +195,65 @@ export interface Corridor {
   corridor_category: string;
   corridor_tier?: string;
   origin_share_of_dest_pct: number;
-  gravity_flow_thousands?: number;
-  gravity_performance_ratio?: number;
-  orig_lat?: number;
-  orig_lon?: number;
-  dest_lat?: number;
-  dest_lon?: number;
+  gravity_flow_thousands?: number | null;
+  gravity_residual?: number | null;
+  performance_ratio?: number | null;
+  gravity_performance_ratio?: number | null;
   distance_km?: number;
   is_cross_region?: boolean;
+  corridor_gravity_category?: string;
+}
+
+export interface DestinationConcentration {
+  year: number;
+  destination: string;
+  total_inbound_thousands?: number;
+  total_tourists_thousands?: number;
+  interstate_inbound_thousands?: number;
+  intrastate_tourists_thousands?: number;
+  intrastate_share_pct?: number;
+  top_feeder_origin?: string;
+  top_feeder_state?: string;
+  top_feeder_share_pct?: number;
+  interstate_origin_hhi?: number | null;
+  all_origin_hhi?: number | null;
+  hhi?: number | null;
+  concentration_tier?: string;
 }
 
 export interface ODCorridorsData {
   corridors_2025: Corridor[];
   corridors_by_year?: Record<string | number, Corridor[]>;
-  destination_concentration: any[];
-  category_summary: Record<string, number>;
+  destination_concentration?: DestinationConcentration[];
+  destination_concentration_2025?: DestinationConcentration[];
+  destination_concentration_by_year?: Record<string | number, DestinationConcentration[]>;
+  category_summary?: Record<string, number>;
+  category_summary_2025?: Record<string, number>;
 }
 
 export interface ScenarioEngineConfig {
   constants: {
     accommodation_vai: number;
-    fnb_vai: number;
-    overall_tourism_vai: number;
+    fnb_vai?: number;
+    overall_tourism_vai?: number;
     disclaimer: string;
+    average_guests_per_room?: number;
+    saturation_thresholds?: {
+      watch: number;
+      severe: number;
+      physical: number;
+    };
   };
   state_baselines: Record<string, {
     alos: number;
     spend_per_night: number;
     tourists_k: number;
-    hotel_rooms: number;
-    aor: number;
+    excursionists_k?: number;
+    hotel_rooms: number | null;
+    aor: number | null;
   }>;
-  gravity_elasticities: {
-    distance_friction: number;
-    origin_working_age: number;
-    origin_income: number;
-    destination_pull: number;
-    cross_region_barrier: number;
-  };
+  gravity_elasticities?: Record<string, number>;
+  gravity_models?: any;
 }
 
 export interface DriverAttribution {
@@ -222,6 +266,7 @@ export interface DriverAttribution {
   is_significant_5pct: boolean;
   vif: number;
   direction: string;
+  coefficient_weight_pct?: number;
   importance_share_pct: number;
 }
 
@@ -236,4 +281,7 @@ export interface DriversData {
     description: string;
   };
   feature_attributions: DriverAttribution[];
+  panel_regressions?: any[];
+  recovery_trajectories?: any[];
+  disclaimer?: string;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
 import type { ScenarioEngineConfig, StateProfile } from '../types';
 import { 
@@ -7,8 +7,118 @@ import {
   Hotel, 
   ShieldAlert, 
   RotateCcw,
-  Home
+  Home,
+  Shield,
+  Zap,
+  Rocket,
+  ArrowUpRight
 } from 'lucide-react';
+
+// Custom smooth interpolation hook using requestAnimationFrame & cubic ease-out (~400ms)
+function useAnimatedCounter(targetValue: number, duration: number = 400, decimals: number = 1): string {
+  const [displayValue, setDisplayValue] = useState<number>(targetValue);
+  const startValueRef = useRef<number>(targetValue);
+  const startTimeRef = useRef<number | null>(null);
+  const targetRef = useRef<number>(targetValue);
+
+  useEffect(() => {
+    startValueRef.current = displayValue;
+    targetRef.current = targetValue;
+    startTimeRef.current = null;
+
+    let animFrameId: number;
+
+    const step = (timestamp: number) => {
+      if (!startTimeRef.current) startTimeRef.current = timestamp;
+      const elapsed = timestamp - startTimeRef.current;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease-out cubic: 1 - (1 - t)^3
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      const current = startValueRef.current + (targetRef.current - startValueRef.current) * easeOut;
+
+      setDisplayValue(current);
+
+      if (progress < 1) {
+        animFrameId = requestAnimationFrame(step);
+      } else {
+        setDisplayValue(targetRef.current);
+      }
+    };
+
+    animFrameId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animFrameId);
+  }, [targetValue, duration]);
+
+  return displayValue.toLocaleString('en-US', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
+}
+
+const AnimatedCounter: React.FC<{
+  value: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  className?: string;
+}> = ({ value, decimals = 1, prefix = '', suffix = '', className = '' }) => {
+  const formatted = useAnimatedCounter(value, 400, decimals);
+  return (
+    <span className={`tabular-nums transition-colors duration-150 ${className}`}>
+      {prefix}{formatted}{suffix}
+    </span>
+  );
+};
+
+type PresetKey = 'conservative' | 'moderate' | 'ambitious' | 'custom';
+
+interface PolicyPreset {
+  key: PresetKey;
+  label: string;
+  sublabel: string;
+  badge: string;
+  deltaAlos: number;
+  conversionRate: number;
+  yieldUplift: number;
+  vfrConversionRate: number;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+const PRESETS: PolicyPreset[] = [
+  {
+    key: 'conservative',
+    label: 'Conservative',
+    sublabel: '+0.2d / 5% conv',
+    badge: 'Baseline',
+    deltaAlos: 0.2,
+    conversionRate: 5,
+    yieldUplift: 5,
+    vfrConversionRate: 3,
+    icon: Shield,
+  },
+  {
+    key: 'moderate',
+    label: 'Moderate',
+    sublabel: '+0.4d / 10% conv',
+    badge: 'Targeted',
+    deltaAlos: 0.4,
+    conversionRate: 10,
+    yieldUplift: 10,
+    vfrConversionRate: 5,
+    icon: Zap,
+  },
+  {
+    key: 'ambitious',
+    label: 'Ambitious',
+    sublabel: '+0.6d / 20% conv',
+    badge: 'Transform',
+    deltaAlos: 0.6,
+    conversionRate: 20,
+    yieldUplift: 15,
+    vfrConversionRate: 10,
+    icon: Rocket,
+  },
+];
 
 interface ScenarioSimulatorProps {
   scenarioConfig: ScenarioEngineConfig;
@@ -20,10 +130,23 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
   stateProfiles 
 }) => {
   const [selectedState, setSelectedState] = useState<string>('Melaka');
-  const [deltaAlos, setDeltaAlos] = useState<number>(0.3); // +0.3 days
+  const [activePreset, setActivePreset] = useState<PresetKey>('moderate');
+  const [deltaAlos, setDeltaAlos] = useState<number>(0.4); // Moderate default
   const [conversionRate, setConversionRate] = useState<number>(10); // 10% day-trippers converted
   const [yieldUplift, setYieldUplift] = useState<number>(10); // +10% spend/night uplift
   const [vfrConversionRate, setVfrConversionRate] = useState<number>(5); // 5% VFR to paid lodging
+
+  const handleSelectPreset = (preset: PolicyPreset) => {
+    setActivePreset(preset.key);
+    setDeltaAlos(preset.deltaAlos);
+    setConversionRate(preset.conversionRate);
+    setYieldUplift(preset.yieldUplift);
+    setVfrConversionRate(preset.vfrConversionRate);
+  };
+
+  const handleReset = () => {
+    handleSelectPreset(PRESETS[1]); // Reset to moderate preset
+  };
 
   const stateList = Object.values(stateProfiles);
   const activeProfile = stateProfiles[selectedState] || stateList[0];
@@ -35,8 +158,9 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
   const baselineSpendPerNight = b.spend_per_night_rm;
   const accomVAI = scenarioConfig.constants?.accommodation_vai || 0.858;
   const residentHouseholds = activeProfile.demographics?.households_thousands || 250.0;
-  const totalRooms = b.hotel_rooms || 10000;
-  const baselineAor = b.aor_pct || 55.0;
+  const hasCapacityData = b.hotel_rooms != null && b.aor_pct != null;
+  const totalRooms = b.hotel_rooms;
+  const baselineAor = b.aor_pct;
 
   // Real-Time Scenario Calculations (AGENTS.md Stage F Formulas)
   // 1. Additional nights from extending stay of existing tourists
@@ -73,18 +197,14 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
   // Incremental Yield per Resident Household (RM / Household)
   const yieldPerHouseholdRM = (totalAdditionalAccomSpendMil * 1e6) / (residentHouseholds * 1e3);
 
-  // Capacity Feasibility (AOR impact)
-  const availableRoomNightsYearK = (totalRooms * 365) / 1e3;
-  const additionalAorPct = (totalAdditionalNightsK / Math.max(1, availableRoomNightsYearK)) * 100;
-  const simulatedAor = Math.min(100, baselineAor + additionalAorPct);
-
-  // Reset to default
-  const handleReset = () => {
-    setDeltaAlos(0.3);
-    setConversionRate(10);
-    setYieldUplift(10);
-    setVfrConversionRate(5);
-  };
+  // Capacity Feasibility (AOR impact) - Strict non-arbitrary computation
+  const availableRoomNightsYearK = (hasCapacityData && totalRooms && totalRooms > 0) ? (totalRooms * 365) / 1e3 : null;
+  const additionalAorPct = (hasCapacityData && availableRoomNightsYearK && availableRoomNightsYearK > 0)
+    ? (totalAdditionalNightsK / availableRoomNightsYearK) * 100
+    : null;
+  const simulatedAor = (hasCapacityData && baselineAor != null && additionalAorPct != null)
+    ? baselineAor + additionalAorPct
+    : null;
 
   // ECharts Comparison Waterfall / Bar
   const impactChartOption = {
@@ -182,6 +302,53 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
             <span className="text-xs text-stone-600">Simulate by Destination</span>
           </div>
 
+          {/* One-Click Strategic Policy Presets */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="block text-xs text-stone-600 uppercase font-bold tracking-wider">
+                One-Click Policy Presets
+              </label>
+              <span className="text-[11px] font-semibold text-violet-700 capitalize">
+                {activePreset === 'custom' ? 'Custom Tuning' : `${activePreset} Plan`}
+              </span>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {PRESETS.map((p) => {
+                const Icon = p.icon;
+                const isActive = activePreset === p.key;
+                return (
+                  <button
+                    key={p.key}
+                    type="button"
+                    onClick={() => handleSelectPreset(p)}
+                    className={`p-2.5 rounded-xl text-left border transition-all flex flex-col justify-between gap-1.5 ${
+                      isActive
+                        ? 'bg-violet-600 text-white border-violet-600 shadow-sm shadow-violet-500/20'
+                        : 'bg-white hover:bg-violet-50/60 border-violet-200/80 text-stone-800'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <span className={`p-1 rounded-md ${isActive ? 'bg-white/20 text-white' : 'bg-violet-100 text-violet-700'}`}>
+                        <Icon className="w-3.5 h-3.5" />
+                      </span>
+                      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
+                        isActive ? 'bg-white/25 text-white' : 'bg-stone-100 text-stone-600'
+                      }`}>
+                        {p.badge}
+                      </span>
+                    </div>
+                    <div>
+                      <div className="font-bold text-xs leading-tight">{p.label}</div>
+                      <div className={`text-[10px] leading-tight mt-0.5 ${isActive ? 'text-violet-100' : 'text-stone-500'}`}>
+                        {p.sublabel}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Destination Selector */}
           <div>
             <label className="block text-xs text-stone-600 uppercase font-semibold mb-1.5">
@@ -236,7 +403,10 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
               max="1.5"
               step="0.1"
               value={deltaAlos}
-              onChange={(e) => setDeltaAlos(parseFloat(e.target.value))}
+              onChange={(e) => {
+                setDeltaAlos(parseFloat(e.target.value));
+                setActivePreset('custom');
+              }}
             />
             <span className="text-[10px] text-stone-600 block">
               Policy lever: Sunset cultural programming, weekend retreat packages, multi-day attraction passes.
@@ -259,7 +429,10 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
               max="25"
               step="1"
               value={conversionRate}
-              onChange={(e) => setConversionRate(parseInt(e.target.value))}
+              onChange={(e) => {
+                setConversionRate(parseInt(e.target.value));
+                setActivePreset('custom');
+              }}
             />
             <span className="text-[10px] text-stone-600 block">
               Policy lever: Evening night markets, weekend hotel discounts for day-trippers from neighboring states.
@@ -282,7 +455,10 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
               max="30"
               step="5"
               value={yieldUplift}
-              onChange={(e) => setYieldUplift(parseInt(e.target.value))}
+              onChange={(e) => {
+                setYieldUplift(parseInt(e.target.value));
+                setActivePreset('custom');
+              }}
             />
             <span className="text-[10px] text-stone-600 block">
               Policy lever: Hotel quality upgrades, premium boutique packages, eco-tourism experiential add-ons.
@@ -306,7 +482,10 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
               max="20"
               step="1"
               value={vfrConversionRate}
-              onChange={(e) => setVfrConversionRate(parseInt(e.target.value))}
+              onChange={(e) => {
+                setVfrConversionRate(parseInt(e.target.value));
+                setActivePreset('custom');
+              }}
             />
             <div className="flex items-center justify-between text-[10px] text-stone-600">
               <span>Unpaid VFR Base: <strong className="text-stone-700 font-mono">{unpaidVfrPct.toFixed(1)}%</strong> ({vfrTouristsK.toFixed(0)}k tourists)</span>
@@ -339,44 +518,68 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
             <div className="metric-card p-3 border-l-2 border-l-violet-400">
               <span className="metric-label">Extra Nights</span>
               <div className="metric-value text-stone-900 text-xl">
-                +{(totalAdditionalNightsK / 1e3).toFixed(2)}M
+                +<AnimatedCounter value={totalAdditionalNightsK / 1e3} decimals={2} />M
               </div>
-              <span className="text-[10px] text-violet-700 font-medium">
-                +{totalAdditionalNightsK.toFixed(0)}k nights
-              </span>
+              <div className="mt-1 flex flex-col gap-0.5">
+                <span className="text-[10px] text-violet-700 font-medium">
+                  +<AnimatedCounter value={totalAdditionalNightsK} decimals={0} />k nights
+                </span>
+                <div className="inline-flex items-center gap-0.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200/60 w-fit">
+                  <ArrowUpRight className="w-3 h-3" />
+                  <span>+<AnimatedCounter value={totalAdditionalNightsK} decimals={0} />k</span>
+                </div>
+              </div>
             </div>
 
             {/* Additional Accommodation Revenue */}
             <div className="metric-card p-3 border-l-2 border-l-violet-400">
               <span className="metric-label">Accom Spend</span>
               <div className="metric-value text-indigo-600 text-xl">
-                +RM {totalAdditionalAccomSpendMil.toFixed(1)}M
+                +RM <AnimatedCounter value={totalAdditionalAccomSpendMil} decimals={1} />M
               </div>
-              <span className="text-[10px] text-indigo-600 font-medium">
-                +{((totalAdditionalAccomSpendMil / Math.max(1, b.accommodation_expenditure_rm_million)) * 100).toFixed(1)}% uplift
-              </span>
+              <div className="mt-1 flex flex-col gap-0.5">
+                <span className="text-[10px] text-indigo-600 font-medium">
+                  +<AnimatedCounter value={(totalAdditionalAccomSpendMil / Math.max(1, b.accommodation_expenditure_rm_million)) * 100} decimals={1} />% uplift
+                </span>
+                <div className="inline-flex items-center gap-0.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200/60 w-fit">
+                  <ArrowUpRight className="w-3 h-3" />
+                  <span>+RM <AnimatedCounter value={totalAdditionalAccomSpendMil} decimals={1} />M</span>
+                </div>
+              </div>
             </div>
 
             {/* Potential TDGVA Added */}
             <div className="metric-card p-3 border-l-2 border-l-violet-500">
               <span className="metric-label">Potential GVA</span>
               <div className="metric-value text-violet-700 text-xl">
-                +RM {potentialAdditionalTdgvaMil.toFixed(1)}M
+                +RM <AnimatedCounter value={potentialAdditionalTdgvaMil} decimals={1} />M
               </div>
-              <span className="text-[10px] text-violet-700 font-medium">
-                85.8% retained value
-              </span>
+              <div className="mt-1 flex flex-col gap-0.5">
+                <span className="text-[10px] text-violet-700 font-medium">
+                  85.8% retained value
+                </span>
+                <div className="inline-flex items-center gap-0.5 text-[10px] font-bold text-violet-700 bg-violet-50 px-1.5 py-0.5 rounded-full border border-violet-200/60 w-fit">
+                  <ArrowUpRight className="w-3 h-3" />
+                  <span>+RM <AnimatedCounter value={potentialAdditionalTdgvaMil} decimals={1} />M proxy</span>
+                </div>
+              </div>
             </div>
 
             {/* Return per Resident Household */}
             <div className="metric-card p-3 border-l-2 border-l-purple-400">
               <span className="metric-label">Household Yield</span>
               <div className="metric-value text-violet-700 text-xl">
-                +RM {yieldPerHouseholdRM.toFixed(0)}
+                +RM <AnimatedCounter value={yieldPerHouseholdRM} decimals={0} />
               </div>
-              <span className="text-[10px] text-violet-700 font-medium">
-                per resident HH
-              </span>
+              <div className="mt-1 flex flex-col gap-0.5">
+                <span className="text-[10px] text-violet-700 font-medium">
+                  per resident HH
+                </span>
+                <div className="inline-flex items-center gap-0.5 text-[10px] font-bold text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded-full border border-purple-200/60 w-fit">
+                  <ArrowUpRight className="w-3 h-3" />
+                  <span>+RM <AnimatedCounter value={yieldPerHouseholdRM} decimals={0} /> / HH</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -388,11 +591,11 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                 <span className="text-stone-700">
                   <strong className="text-violet-800">UN SDG Target 8.9 Community Retained Lodging:</strong>{' '}
                   Converting {vfrConversionRate}% of unpaid VFR stays injects{' '}
-                  <strong className="text-stone-900 font-mono">+RM {vfrAccomSpendRM.toFixed(1)}M</strong> directly into registered homestay operators and local host households.
+                  <strong className="text-stone-900 font-mono">+RM <AnimatedCounter value={vfrAccomSpendRM} decimals={1} />M</strong> directly into registered homestay operators and local host households.
                 </span>
               </div>
               <span className="px-2 py-0.5 rounded bg-violet-200/20 text-violet-800 font-mono font-bold text-[11px] shrink-0 ml-2">
-                +{vfrNightsK.toFixed(0)}k Paid Nights
+                +<AnimatedCounter value={vfrNightsK} decimals={0} />k Paid Nights
               </span>
             </div>
           )}
@@ -407,35 +610,59 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
             </div>
           </div>
 
-          {/* Hotel Capacity Feasibility Bar */}
+          {/* Hotel Capacity Feasibility Bar with 4 Saturation Tiers */}
           <div className="p-3 rounded-lg bg-white/80 border border-violet-100 space-y-1.5">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-stone-700 flex items-center gap-1.5">
                 <Hotel className="w-3.5 h-3.5 text-amber-700" />
                 Hotel Capacity Feasibility Check
               </span>
-              <span className="font-mono text-stone-700 text-xs">
-                Simulated AOR: <strong className={simulatedAor > 85 ? 'text-rose-700' : 'text-violet-700'}>{simulatedAor.toFixed(1)}%</strong> (Baseline: {baselineAor.toFixed(1)}%)
-              </span>
-            </div>
-
-            <div className="w-full h-2 rounded-full bg-violet-50 overflow-hidden">
-              <div 
-                className={`h-full rounded-full transition-all duration-300 ${
-                  simulatedAor > 85 ? 'bg-rose-500' : simulatedAor > 70 ? 'bg-amber-500' : 'bg-violet-600'
-                }`}
-                style={{ width: `${Math.min(100, simulatedAor)}%` }}
-              ></div>
-            </div>
-
-            <div className="flex items-center justify-between text-[10px] text-stone-600">
-              <span>Existing Rooms: {totalRooms.toLocaleString()}</span>
-              {simulatedAor > 85 ? (
-                <span className="text-rose-700 font-semibold">Caution: High occupancy constraint. New capacity needed.</span>
+              {hasCapacityData && simulatedAor != null && baselineAor != null ? (
+                <span className="font-mono text-stone-700 text-xs">
+                  Simulated AOR: <strong className={
+                    simulatedAor > 100 ? 'text-rose-700' :
+                    simulatedAor > 80 ? 'text-amber-700' :
+                    simulatedAor > 70 ? 'text-indigo-600' : 'text-violet-700'
+                  }>{simulatedAor.toFixed(1)}%</strong> (Baseline: {baselineAor.toFixed(1)}%)
+                </span>
               ) : (
-                <span className="text-violet-700">Feasible: Sufficient room inventory to absorb simulated stays.</span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-stone-100 text-stone-600 font-mono">
+                  Capacity Unobserved
+                </span>
               )}
             </div>
+
+            {hasCapacityData && simulatedAor != null ? (
+              <>
+                <div className="w-full h-2 rounded-full bg-violet-50 overflow-hidden">
+                  <div 
+                    className={`h-full rounded-full transition-all duration-300 ${
+                      simulatedAor > 100 ? 'bg-rose-600' :
+                      simulatedAor > 80 ? 'bg-amber-500' :
+                      simulatedAor > 70 ? 'bg-indigo-500' : 'bg-violet-600'
+                    }`}
+                    style={{ width: `${Math.min(100, simulatedAor)}%` }}
+                  ></div>
+                </div>
+
+                <div className="flex items-center justify-between text-[10px] text-stone-600">
+                  <span>Existing Rooms: {totalRooms ? totalRooms.toLocaleString() : 'N/A'}</span>
+                  {simulatedAor > 100 ? (
+                    <span className="text-rose-700 font-bold">Severe Deficit (&gt;100%): Room inventory physically exceeded.</span>
+                  ) : simulatedAor > 80 ? (
+                    <span className="text-amber-700 font-semibold">High Saturation (&gt;80%): Severe peak season bottleneck.</span>
+                  ) : simulatedAor > 70 ? (
+                    <span className="text-indigo-600 font-semibold">Moderate Saturation (70-80%): Capacity tight during surges.</span>
+                  ) : (
+                    <span className="text-violet-700 font-semibold">Optimal (&lt;70%): Ample room inventory to absorb simulated stays.</span>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className="text-[10px] text-stone-500 italic py-1">
+                Hotel room inventory or occupancy rate unobserved in official survey tables for {selectedState}. Capacity check skipped.
+              </div>
+            )}
           </div>
         </div>
       </div>
