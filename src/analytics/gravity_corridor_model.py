@@ -44,6 +44,7 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
             p.*,
             s_orig.visitors_thousands as origin_visitors_k,
             s_orig.alos_days as origin_alos_days,
+            s_orig.working_age_thousands as origin_working_age_k,
             s_orig.households_thousands as origin_households_k,
             s_orig.median_household_income_rm as origin_median_income_rm
         FROM origin_destination_panel p
@@ -53,12 +54,12 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
     """).df()
 
     # Filter clean rows
-    df_panel = df_panel.dropna(subset=["tourist_flow_thousands", "distance_km", "origin_households_k", "origin_median_income_rm", "dest_total_tourists_thousands"]).copy()
+    df_panel = df_panel.dropna(subset=["tourist_flow_thousands", "distance_km", "origin_working_age_k", "origin_median_income_rm", "dest_total_tourists_thousands"]).copy()
 
     # Ensure positive variables for log transformations
     df_panel["effective_dist_km"] = df_panel["distance_km"].clip(lower=40.0)
     df_panel["flow_clipped"] = df_panel["tourist_flow_thousands"].clip(lower=0.01)
-    df_panel["origin_hh_clipped"] = df_panel["origin_households_k"].clip(lower=10.0)
+    df_panel["origin_wa_clipped"] = df_panel["origin_working_age_k"].clip(lower=10.0)
     df_panel["origin_inc_clipped"] = df_panel["origin_median_income_rm"].clip(lower=1000.0)
     df_panel["dest_pull_clipped"] = df_panel["dest_total_tourists_thousands"].clip(lower=1.0)
     df_panel["dest_alos_clipped"] = df_panel["dest_alos_days"].clip(lower=0.5)
@@ -67,7 +68,7 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
     # Log transformations
     df_panel["ln_flow"] = np.log(df_panel["flow_clipped"])
     df_panel["ln_dist"] = np.log(df_panel["effective_dist_km"])
-    df_panel["ln_origin_hh"] = np.log(df_panel["origin_hh_clipped"])
+    df_panel["ln_origin_wa"] = np.log(df_panel["origin_wa_clipped"])
     df_panel["ln_origin_inc"] = np.log(df_panel["origin_inc_clipped"])
     df_panel["ln_dest_pull"] = np.log(df_panel["dest_pull_clipped"])
     df_panel["ln_dest_alos"] = np.log(df_panel["dest_alos_clipped"])
@@ -79,13 +80,13 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
     # MODEL 1: Cross-Sectional Structural Gravity Model (2025 Baseline, N = 240)
     # =========================================================================
     df_2025 = df_panel[df_panel["year"] == 2025].copy()
-    formula_cs = "ln_flow ~ ln_origin_hh + ln_origin_inc + ln_dest_pull + ln_dist + cross_region_int + ln_dest_alos"
+    formula_cs = "ln_flow ~ ln_origin_wa + ln_origin_inc + ln_dest_pull + ln_dist + cross_region_int + ln_dest_alos"
     model_cs = ols(formula_cs, data=df_2025).fit(cov_type="HC1")
 
     # =========================================================================
     # MODEL 2: Longitudinal Panel Gravity Model with Year Fixed Effects (2018–2025, N = 1,890)
     # =========================================================================
-    formula_panel = "ln_flow ~ ln_origin_hh + ln_origin_inc + ln_dest_pull + ln_dist + cross_region_int + ln_dest_alos + C(year_factor)"
+    formula_panel = "ln_flow ~ ln_origin_wa + ln_origin_inc + ln_dest_pull + ln_dist + cross_region_int + ln_dest_alos + C(year_factor)"
     model_panel = ols(formula_panel, data=df_panel).fit(cov_type="HC1")
 
     # =========================================================================
@@ -112,13 +113,13 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
         },
         {
             "model_type": "Panel Fixed Effects (2018–2025, N=1890)",
-            "variable": "ln(Origin Households)",
-            "coefficient": round(model_panel.params["ln_origin_hh"], 4),
-            "std_error": round(model_panel.bse["ln_origin_hh"], 4),
-            "t_statistic": round(model_panel.tvalues["ln_origin_hh"], 4),
-            "p_value": round(model_panel.pvalues["ln_origin_hh"], 4),
+            "variable": "ln(Origin Working-Age Population 15-64)",
+            "coefficient": round(model_panel.params["ln_origin_wa"], 4),
+            "std_error": round(model_panel.bse["ln_origin_wa"], 4),
+            "t_statistic": round(model_panel.tvalues["ln_origin_wa"], 4),
+            "p_value": round(model_panel.pvalues["ln_origin_wa"], 4),
             "significance": "p < 0.001",
-            "interpretation": f"A 10% expansion in origin household population increases outbound tourist generation by {model_panel.params['ln_origin_hh'] * 10:.1f}%."
+            "interpretation": f"A 10% expansion in origin working-age residents increases outbound tourist generation by {model_panel.params['ln_origin_wa'] * 10:.1f}%."
         },
         {
             "model_type": "Panel Fixed Effects (2018–2025, N=1890)",

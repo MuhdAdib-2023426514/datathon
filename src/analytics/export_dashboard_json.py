@@ -89,6 +89,7 @@ def export_dashboard_data():
     df_stars = con.execute("SELECT * FROM state_hotel_star_inventory WHERE year = 2025").df()
     df_purpose = con.execute("SELECT * FROM state_purpose_of_visit_panel WHERE year = 2025").df()
     df_tourist_inc = con.execute("SELECT * FROM state_tourist_income_panel WHERE year = 2025").df()
+    df_demog_2025 = con.execute("SELECT * FROM state_demographics_annual WHERE year = 2025").df()
     df_panel = con.execute("SELECT * FROM state_panel_year ORDER BY state, year").df()
 
     states_dict = {}
@@ -102,6 +103,8 @@ def export_dashboard_data():
         purp_info = purp_row.iloc[0].to_dict() if len(purp_row) > 0 else {}
         inc_row = df_tourist_inc[df_tourist_inc["state"] == st]
         inc_info = inc_row.iloc[0].to_dict() if len(inc_row) > 0 else {}
+        demog_row = df_demog_2025[df_demog_2025["state"] == st]
+        demog_info = demog_row.iloc[0].to_dict() if len(demog_row) > 0 else {}
 
         time_series = df_panel[df_panel["state"] == st].to_dict(orient="records")
 
@@ -133,6 +136,19 @@ def export_dashboard_data():
                 "hotel_rooms": int(c_row["hotel_rooms"]) if pd.notnull(c_row["hotel_rooms"]) else 0,
                 "aor_pct": float(c_row["aor_pct"]) if pd.notnull(c_row["aor_pct"]) else 0.0,
                 "resident_median_income_rm": float(c_row["resident_median_income_rm"]),
+            },
+            "demographics": {
+                "total_population_thousands": float(demog_info.get("total_population_thousands", 1000.0)),
+                "total_population_millions": float(demog_info.get("total_population_millions", 1.0)),
+                "working_age_thousands": float(demog_info.get("working_age_thousands", 700.0)),
+                "working_age_pct": float(demog_info.get("working_age_pct", 70.0)),
+                "youth_20_39_pct": float(demog_info.get("youth_20_39_pct", 35.0)),
+                "elderly_pct": float(demog_info.get("elderly_pct", 8.0)),
+                "children_pct": float(demog_info.get("children_pct", 20.0)),
+                "dependency_ratio": float(demog_info.get("dependency_ratio", 40.0)),
+                "households_thousands": float(demog_info.get("households_thousands", 250.0)),
+                "median_household_income_rm": float(demog_info.get("median_household_income_rm", 6000.0)),
+                "avg_household_size": float(demog_info.get("avg_household_size", 3.9)),
             },
             "sdg_metrics": {
                 "tey_rm_per_day": float(sdg_info.get("tey_rm_per_day", 0.0)),
@@ -230,11 +246,11 @@ def export_dashboard_data():
         },
         "state_baselines": state_sim_baselines,
         "gravity_elasticities": {
-            "distance_friction": -0.5913,
-            "origin_households": 0.9319,
-            "origin_income": 0.5673,
-            "destination_pull": 0.7098,
-            "cross_region_barrier": -1.2665,
+            "distance_friction": -0.6031,
+            "origin_working_age": 0.8903,
+            "origin_income": 0.7250,
+            "destination_pull": 0.7035,
+            "cross_region_barrier": -1.3319,
         },
     }
     with open(DASHBOARD_DATA_DIR / "scenario_engine.json", "w", encoding="utf-8") as f:

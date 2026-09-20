@@ -28,12 +28,25 @@
       "aor_pct": 53.25,
       "resident_median_income_rm": 7938.8
     },
+    "demographics": {
+      "total_population_thousands": 4204.1,
+      "total_population_millions": 4.2041,
+      "working_age_thousands": 2998.4,
+      "working_age_pct": 71.3,
+      "youth_20_39_pct": 35.3,
+      "elderly_pct": 7.7,
+      "children_pct": 20.9,
+      "dependency_ratio": 40.2,
+      "households_thousands": 1057.819,
+      "median_household_income_rm": 8165.6,
+      "avg_household_size": 3.97
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 251.4,
       "epr_ratio": 0.85,
       "dvr_retention_rate_pct": 47.4,
-      "tir_visitors_per_resident": 4.44,
-      "ryh_accom_per_household_rm": 1089.9,
+      "tir_visitors_per_resident": 4.33,
+      "ryh_accom_per_household_rm": 1069.4,
       "sdg_diagnosis": "Value Growth Frontier",
       "sdg_policy_action": "Healthy absorption capacity with significant upside to expand length of stay and accommodation spend. Priority: Expand accommodation inventory and targeted promotion.",
       "sdg_status_color": "#8b5cf6"
@@ -94,12 +107,18 @@
         "foreign_guest_share_pct": 34.33,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 3749.4,
+        "total_population_millions": 3.7494,
+        "working_age_thousands": 2605.2,
+        "working_age_pct": 69.5,
+        "youth_20_39_pct": 35.1,
+        "elderly_pct": 6.9,
+        "dependency_ratio": 43.9,
         "households_thousands": 863.968,
         "households_count": 863968,
         "median_household_income_rm": 6157.5,
         "mean_household_income_rm": 7633.7,
-        "income_skewness_ratio": 1.24,
-        "income_data_status": "e"
+        "avg_household_size": 4.34
       },
       {
         "year": 2019,
@@ -132,12 +151,18 @@
         "foreign_guest_share_pct": 33.67,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 3761.2,
+        "total_population_millions": 3.7612,
+        "working_age_thousands": 2608.9,
+        "working_age_pct": 69.4,
+        "youth_20_39_pct": 34.9,
+        "elderly_pct": 7.2,
+        "dependency_ratio": 44.2,
         "households_thousands": 879.3,
         "households_count": 879300,
         "median_household_income_rm": 6427.0,
         "mean_household_income_rm": 8013.0,
-        "income_skewness_ratio": 1.247,
-        "income_data_status": "official"
+        "avg_household_size": 4.28
       },
       {
         "year": 2020,
@@ -170,12 +195,18 @@
         "foreign_guest_share_pct": 10.75,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 4009.7,
+        "total_population_millions": 4.0097,
+        "working_age_thousands": 2805.7,
+        "working_age_pct": 70.0,
+        "youth_20_39_pct": 35.1,
+        "elderly_pct": 6.1,
+        "dependency_ratio": 42.9,
         "households_thousands": 917.638,
         "households_count": 917638,
         "median_household_income_rm": 6574.3,
         "mean_household_income_rm": 8177.6,
-        "income_skewness_ratio": 1.244,
-        "income_data_status": "e"
+        "avg_household_size": 4.37
       },
       {
         "year": 2021,
@@ -208,12 +239,18 @@
         "foreign_guest_share_pct": 0.52,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 4020.0,
+        "total_population_millions": 4.02,
+        "working_age_thousands": 2812.3,
+        "working_age_pct": 70.0,
+        "youth_20_39_pct": 35.0,
+        "elderly_pct": 6.4,
+        "dependency_ratio": 43.0,
         "households_thousands": 957.647,
         "households_count": 957647,
         "median_household_income_rm": 6724.9,
         "mean_household_income_rm": 8345.6,
-        "income_skewness_ratio": 1.241,
-        "income_data_status": "e"
+        "avg_household_size": 4.2
       },
       {
         "year": 2022,
@@ -246,12 +283,18 @@
         "foreign_guest_share_pct": 26.25,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 4028.3,
+        "total_population_millions": 4.0283,
+        "working_age_thousands": 2827.3,
+        "working_age_pct": 70.2,
+        "youth_20_39_pct": 35.0,
+        "elderly_pct": 6.7,
+        "dependency_ratio": 42.5,
         "households_thousands": 999.4,
         "households_count": 999400,
         "median_household_income_rm": 6879.0,
         "mean_household_income_rm": 8517.0,
-        "income_skewness_ratio": 1.238,
-        "income_data_status": "official"
+        "avg_household_size": 4.03
       },
       {
         "year": 2023,
@@ -284,12 +327,18 @@
         "foreign_guest_share_pct": 36.84,
         "homestay_rooms": 757.0,
         "homestay_operators": 465.0,
+        "total_population_thousands": 4107.2,
+        "total_population_millions": 4.1072,
+        "working_age_thousands": 2904.3,
+        "working_age_pct": 70.7,
+        "youth_20_39_pct": 35.3,
+        "elderly_pct": 7.0,
+        "dependency_ratio": 41.4,
         "households_thousands": 1018.505,
         "households_count": 1018505,
         "median_household_income_rm": 7283.6,
         "mean_household_income_rm": 8987.5,
-        "income_skewness_ratio": 1.234,
-        "income_data_status": "e"
+        "avg_household_size": 4.03
       },
       {
         "year": 2024,
@@ -322,12 +371,18 @@
         "foreign_guest_share_pct": 31.26,
         "homestay_rooms": 454.0,
         "homestay_operators": 477.0,
+        "total_population_thousands": 4184.4,
+        "total_population_millions": 4.1844,
+        "working_age_thousands": 2965.6,
+        "working_age_pct": 70.9,
+        "youth_20_39_pct": 35.5,
+        "elderly_pct": 7.4,
+        "dependency_ratio": 41.1,
         "households_thousands": 1037.976,
         "households_count": 1037976,
         "median_household_income_rm": 7712.0,
         "mean_household_income_rm": 9484.0,
-        "income_skewness_ratio": 1.23,
-        "income_data_status": "official"
+        "avg_household_size": 4.03
       },
       {
         "year": 2025,
@@ -360,12 +415,18 @@
         "foreign_guest_share_pct": 30.57,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 4204.1,
+        "total_population_millions": 4.2041,
+        "working_age_thousands": 2998.4,
+        "working_age_pct": 71.3,
+        "youth_20_39_pct": 35.3,
+        "elderly_pct": 7.7,
+        "dependency_ratio": 40.2,
         "households_thousands": 1057.819,
         "households_count": 1057819,
         "median_household_income_rm": 8165.6,
         "mean_household_income_rm": 10007.9,
-        "income_skewness_ratio": 1.226,
-        "income_data_status": "e"
+        "avg_household_size": 3.97
       }
     ]
   },
@@ -398,12 +459,25 @@
       "aor_pct": 48.75,
       "resident_median_income_rm": 5028.4
     },
+    "demographics": {
+      "total_population_thousands": 2227.1,
+      "total_population_millions": 2.2271,
+      "working_age_thousands": 1490.8,
+      "working_age_pct": 66.9,
+      "youth_20_39_pct": 34.3,
+      "elderly_pct": 9.4,
+      "children_pct": 23.7,
+      "dependency_ratio": 49.4,
+      "households_thousands": 561.327,
+      "median_household_income_rm": 5161.8,
+      "avg_household_size": 3.97
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 193.2,
       "epr_ratio": 1.19,
       "dvr_retention_rate_pct": 47.3,
-      "tir_visitors_per_resident": 7.09,
-      "ryh_accom_per_household_rm": 1064.9,
+      "tir_visitors_per_resident": 7.01,
+      "ryh_accom_per_household_rm": 1047.4,
       "sdg_diagnosis": "Value Growth Frontier",
       "sdg_policy_action": "Healthy absorption capacity with significant upside to expand length of stay and accommodation spend. Priority: Expand accommodation inventory and targeted promotion.",
       "sdg_status_color": "#8b5cf6"
@@ -464,12 +538,18 @@
         "foreign_guest_share_pct": 37.39,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2163.0,
+        "total_population_millions": 2.163,
+        "working_age_thousands": 1461.0,
+        "working_age_pct": 67.5,
+        "youth_20_39_pct": 32.8,
+        "elderly_pct": 7.7,
+        "dependency_ratio": 48.0,
         "households_thousands": 490.908,
         "households_count": 490908,
         "median_household_income_rm": 4146.4,
         "mean_household_income_rm": 5331.9,
-        "income_skewness_ratio": 1.286,
-        "income_data_status": "e"
+        "avg_household_size": 4.41
       },
       {
         "year": 2019,
@@ -502,12 +582,18 @@
         "foreign_guest_share_pct": 37.29,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2173.7,
+        "total_population_millions": 2.1737,
+        "working_age_thousands": 1466.2,
+        "working_age_pct": 67.5,
+        "youth_20_39_pct": 33.1,
+        "elderly_pct": 8.0,
+        "dependency_ratio": 48.3,
         "households_thousands": 497.7,
         "households_count": 497700,
         "median_household_income_rm": 4325.0,
         "mean_household_income_rm": 5522.0,
-        "income_skewness_ratio": 1.277,
-        "income_data_status": "official"
+        "avg_household_size": 4.37
       },
       {
         "year": 2020,
@@ -540,12 +626,18 @@
         "foreign_guest_share_pct": 15.06,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2131.4,
+        "total_population_millions": 2.1314,
+        "working_age_thousands": 1424.1,
+        "working_age_pct": 66.8,
+        "youth_20_39_pct": 33.0,
+        "elderly_pct": 7.9,
+        "dependency_ratio": 49.7,
         "households_thousands": 509.581,
         "households_count": 509581,
         "median_household_income_rm": 4350.5,
         "mean_household_income_rm": 5531.3,
-        "income_skewness_ratio": 1.271,
-        "income_data_status": "e"
+        "avg_household_size": 4.18
       },
       {
         "year": 2021,
@@ -578,12 +670,18 @@
         "foreign_guest_share_pct": 0.51,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2151.7,
+        "total_population_millions": 2.1517,
+        "working_age_thousands": 1436.0,
+        "working_age_pct": 66.7,
+        "youth_20_39_pct": 33.3,
+        "elderly_pct": 8.3,
+        "dependency_ratio": 49.8,
         "households_thousands": 521.745,
         "households_count": 521745,
         "median_household_income_rm": 4376.2,
         "mean_household_income_rm": 5540.7,
-        "income_skewness_ratio": 1.266,
-        "income_data_status": "e"
+        "avg_household_size": 4.12
       },
       {
         "year": 2022,
@@ -616,12 +714,18 @@
         "foreign_guest_share_pct": 15.5,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2163.1,
+        "total_population_millions": 2.1631,
+        "working_age_thousands": 1444.8,
+        "working_age_pct": 66.8,
+        "youth_20_39_pct": 33.7,
+        "elderly_pct": 8.6,
+        "dependency_ratio": 49.7,
         "households_thousands": 534.2,
         "households_count": 534200,
         "median_household_income_rm": 4402.0,
         "mean_household_income_rm": 5550.0,
-        "income_skewness_ratio": 1.261,
-        "income_data_status": "official"
+        "avg_household_size": 4.05
       },
       {
         "year": 2023,
@@ -654,12 +758,18 @@
         "foreign_guest_share_pct": 36.12,
         "homestay_rooms": 454.0,
         "homestay_operators": 206.0,
+        "total_population_thousands": 2189.3,
+        "total_population_millions": 2.1893,
+        "working_age_thousands": 1461.4,
+        "working_age_pct": 66.8,
+        "youth_20_39_pct": 34.0,
+        "elderly_pct": 8.8,
+        "dependency_ratio": 49.8,
         "households_thousands": 543.093,
         "households_count": 543093,
         "median_household_income_rm": 4642.0,
         "mean_household_income_rm": 5670.2,
-        "income_skewness_ratio": 1.221,
-        "income_data_status": "e"
+        "avg_household_size": 4.03
       },
       {
         "year": 2024,
@@ -692,12 +802,18 @@
         "foreign_guest_share_pct": 40.34,
         "homestay_rooms": 204.0,
         "homestay_operators": 183.0,
+        "total_population_thousands": 2217.1,
+        "total_population_millions": 2.2171,
+        "working_age_thousands": 1482.0,
+        "working_age_pct": 66.8,
+        "youth_20_39_pct": 34.3,
+        "elderly_pct": 9.1,
+        "dependency_ratio": 49.6,
         "households_thousands": 552.135,
         "households_count": 552135,
         "median_household_income_rm": 4895.0,
         "mean_household_income_rm": 5793.0,
-        "income_skewness_ratio": 1.183,
-        "income_data_status": "official"
+        "avg_household_size": 4.02
       },
       {
         "year": 2025,
@@ -730,12 +846,18 @@
         "foreign_guest_share_pct": 40.33,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2227.1,
+        "total_population_millions": 2.2271,
+        "working_age_thousands": 1490.8,
+        "working_age_pct": 66.9,
+        "youth_20_39_pct": 34.3,
+        "elderly_pct": 9.4,
+        "dependency_ratio": 49.4,
         "households_thousands": 561.327,
         "households_count": 561327,
         "median_household_income_rm": 5161.8,
         "mean_household_income_rm": 5918.5,
-        "income_skewness_ratio": 1.147,
-        "income_data_status": "e"
+        "avg_household_size": 3.97
       }
     ]
   },
@@ -768,12 +890,25 @@
       "aor_pct": 43.35,
       "resident_median_income_rm": 4211.45
     },
+    "demographics": {
+      "total_population_thousands": 1906.9,
+      "total_population_millions": 1.9069,
+      "working_age_thousands": 1239.0,
+      "working_age_pct": 65.0,
+      "youth_20_39_pct": 33.1,
+      "elderly_pct": 7.4,
+      "children_pct": 27.6,
+      "dependency_ratio": 53.9,
+      "households_thousands": 371.309,
+      "median_household_income_rm": 4339.9,
+      "avg_household_size": 5.14
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 209.9,
       "epr_ratio": 0.85,
       "dvr_retention_rate_pct": 48.9,
-      "tir_visitors_per_resident": 6.52,
-      "ryh_accom_per_household_rm": 1327.7,
+      "tir_visitors_per_resident": 6.33,
+      "ryh_accom_per_household_rm": 1311.4,
       "sdg_diagnosis": "Value Growth Frontier",
       "sdg_policy_action": "Healthy absorption capacity with significant upside to expand length of stay and accommodation spend. Priority: Expand accommodation inventory and targeted promotion.",
       "sdg_status_color": "#8b5cf6"
@@ -834,12 +969,18 @@
         "foreign_guest_share_pct": 4.42,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1860.5,
+        "total_population_millions": 1.8605,
+        "working_age_thousands": 1183.4,
+        "working_age_pct": 63.6,
+        "youth_20_39_pct": 31.9,
+        "elderly_pct": 6.3,
+        "dependency_ratio": 57.2,
         "households_thousands": 342.34,
         "households_count": 342340,
         "median_household_income_rm": 3393.8,
         "mean_household_income_rm": 4643.2,
-        "income_skewness_ratio": 1.368,
-        "income_data_status": "e"
+        "avg_household_size": 5.43
       },
       {
         "year": 2019,
@@ -872,12 +1013,18 @@
         "foreign_guest_share_pct": 4.47,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1883.8,
+        "total_population_millions": 1.8838,
+        "working_age_thousands": 1200.4,
+        "working_age_pct": 63.7,
+        "youth_20_39_pct": 32.5,
+        "elderly_pct": 6.5,
+        "dependency_ratio": 56.9,
         "households_thousands": 345.4,
         "households_count": 345400,
         "median_household_income_rm": 3563.0,
         "mean_household_income_rm": 4874.0,
-        "income_skewness_ratio": 1.368,
-        "income_data_status": "official"
+        "avg_household_size": 5.45
       },
       {
         "year": 2020,
@@ -910,12 +1057,18 @@
         "foreign_guest_share_pct": 0.81,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1792.5,
+        "total_population_millions": 1.7925,
+        "working_age_thousands": 1141.3,
+        "working_age_pct": 63.7,
+        "youth_20_39_pct": 29.4,
+        "elderly_pct": 6.4,
+        "dependency_ratio": 57.1,
         "households_thousands": 349.485,
         "households_count": 349485,
         "median_household_income_rm": 3579.9,
         "mean_household_income_rm": 4877.7,
-        "income_skewness_ratio": 1.363,
-        "income_data_status": "e"
+        "avg_household_size": 5.13
       },
       {
         "year": 2021,
@@ -948,12 +1101,18 @@
         "foreign_guest_share_pct": 0.38,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1812.3,
+        "total_population_millions": 1.8123,
+        "working_age_thousands": 1153.6,
+        "working_age_pct": 63.7,
+        "youth_20_39_pct": 30.1,
+        "elderly_pct": 6.6,
+        "dependency_ratio": 57.1,
         "households_thousands": 353.618,
         "households_count": 353618,
         "median_household_income_rm": 3596.9,
         "mean_household_income_rm": 4881.3,
-        "income_skewness_ratio": 1.357,
-        "income_data_status": "e"
+        "avg_household_size": 5.13
       },
       {
         "year": 2022,
@@ -986,12 +1145,18 @@
         "foreign_guest_share_pct": 2.83,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1830.6,
+        "total_population_millions": 1.8306,
+        "working_age_thousands": 1168.9,
+        "working_age_pct": 63.9,
+        "youth_20_39_pct": 30.7,
+        "elderly_pct": 6.7,
+        "dependency_ratio": 56.6,
         "households_thousands": 357.8,
         "households_count": 357800,
         "median_household_income_rm": 3614.0,
         "mean_household_income_rm": 4885.0,
-        "income_skewness_ratio": 1.352,
-        "income_data_status": "official"
+        "avg_household_size": 5.12
       },
       {
         "year": 2023,
@@ -1024,12 +1189,18 @@
         "foreign_guest_share_pct": 4.22,
         "homestay_rooms": 182.0,
         "homestay_operators": 122.0,
+        "total_population_thousands": 1859.8,
+        "total_population_millions": 1.8598,
+        "working_age_thousands": 1195.5,
+        "working_age_pct": 64.3,
+        "youth_20_39_pct": 31.8,
+        "elderly_pct": 6.9,
+        "dependency_ratio": 55.5,
         "households_thousands": 362.247,
         "households_count": 362247,
         "median_household_income_rm": 3841.3,
         "mean_household_income_rm": 5071.4,
-        "income_skewness_ratio": 1.32,
-        "income_data_status": "e"
+        "avg_household_size": 5.13
       },
       {
         "year": 2024,
@@ -1062,12 +1233,18 @@
         "foreign_guest_share_pct": 4.03,
         "homestay_rooms": 171.0,
         "homestay_operators": 136.0,
+        "total_population_thousands": 1887.9,
+        "total_population_millions": 1.8879,
+        "working_age_thousands": 1221.1,
+        "working_age_pct": 64.7,
+        "youth_20_39_pct": 32.6,
+        "elderly_pct": 7.0,
+        "dependency_ratio": 54.6,
         "households_thousands": 366.75,
         "households_count": 366750,
         "median_household_income_rm": 4083.0,
         "mean_household_income_rm": 5265.0,
-        "income_skewness_ratio": 1.289,
-        "income_data_status": "official"
+        "avg_household_size": 5.15
       },
       {
         "year": 2025,
@@ -1100,12 +1277,18 @@
         "foreign_guest_share_pct": 4.07,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1906.9,
+        "total_population_millions": 1.9069,
+        "working_age_thousands": 1239.0,
+        "working_age_pct": 65.0,
+        "youth_20_39_pct": 33.1,
+        "elderly_pct": 7.4,
+        "dependency_ratio": 53.9,
         "households_thousands": 371.309,
         "households_count": 371309,
         "median_household_income_rm": 4339.9,
         "mean_household_income_rm": 5465.9,
-        "income_skewness_ratio": 1.259,
-        "income_data_status": "e"
+        "avg_household_size": 5.14
       }
     ]
   },
@@ -1138,14 +1321,27 @@
       "aor_pct": 45.75,
       "resident_median_income_rm": 7075.0
     },
+    "demographics": {
+      "total_population_thousands": 1052.0,
+      "total_population_millions": 1.052,
+      "working_age_thousands": 745.9,
+      "working_age_pct": 70.9,
+      "youth_20_39_pct": 38.3,
+      "elderly_pct": 7.3,
+      "children_pct": 21.8,
+      "dependency_ratio": 41.1,
+      "households_thousands": 281.314,
+      "median_household_income_rm": 7259.0,
+      "avg_household_size": 3.74
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 303.2,
       "epr_ratio": 1.9,
       "dvr_retention_rate_pct": 49.7,
-      "tir_visitors_per_resident": 20.23,
-      "ryh_accom_per_household_rm": 3474.5,
+      "tir_visitors_per_resident": 19.8,
+      "ryh_accom_per_household_rm": 3393.1,
       "sdg_diagnosis": "Carrying Capacity Volume Pressure",
-      "sdg_policy_action": "High visitor intensity (20.2 visitors per resident). Priority: Shift from visitor volume targets to yield-per-visitor optimization.",
+      "sdg_policy_action": "High visitor intensity (19.8 visitors per resident). Priority: Shift from visitor volume targets to yield-per-visitor optimization.",
       "sdg_status_color": "#3b82f6"
     },
     "hotel_stars": {
@@ -1204,12 +1400,18 @@
         "foreign_guest_share_pct": 31.45,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 922.4,
+        "total_population_millions": 0.9224,
+        "working_age_thousands": 636.8,
+        "working_age_pct": 69.0,
+        "youth_20_39_pct": 36.1,
+        "elderly_pct": 8.0,
+        "dependency_ratio": 44.9,
         "households_thousands": 223.03,
         "households_count": 223030,
         "median_household_income_rm": 5894.5,
         "mean_household_income_rm": 7431.5,
-        "income_skewness_ratio": 1.261,
-        "income_data_status": "e"
+        "avg_household_size": 4.14
       },
       {
         "year": 2019,
@@ -1242,12 +1444,18 @@
         "foreign_guest_share_pct": 31.06,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 928.4,
+        "total_population_millions": 0.9284,
+        "working_age_thousands": 639.9,
+        "working_age_pct": 68.9,
+        "youth_20_39_pct": 36.1,
+        "elderly_pct": 8.3,
+        "dependency_ratio": 45.1,
         "households_thousands": 227.9,
         "households_count": 227900,
         "median_household_income_rm": 6054.0,
         "mean_household_income_rm": 7741.0,
-        "income_skewness_ratio": 1.279,
-        "income_data_status": "official"
+        "avg_household_size": 4.07
       },
       {
         "year": 2020,
@@ -1280,12 +1488,18 @@
         "foreign_guest_share_pct": 12.5,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 998.4,
+        "total_population_millions": 0.9984,
+        "working_age_thousands": 701.2,
+        "working_age_pct": 70.2,
+        "youth_20_39_pct": 35.3,
+        "elderly_pct": 6.3,
+        "dependency_ratio": 42.4,
         "households_thousands": 238.743,
         "households_count": 238743,
         "median_household_income_rm": 6105.6,
         "mean_household_income_rm": 7844.9,
-        "income_skewness_ratio": 1.285,
-        "income_data_status": "e"
+        "avg_household_size": 4.18
       },
       {
         "year": 2021,
@@ -1318,12 +1532,18 @@
         "foreign_guest_share_pct": 1.14,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1004.5,
+        "total_population_millions": 1.0045,
+        "working_age_thousands": 705.4,
+        "working_age_pct": 70.2,
+        "youth_20_39_pct": 35.6,
+        "elderly_pct": 6.5,
+        "dependency_ratio": 42.4,
         "households_thousands": 250.101,
         "households_count": 250101,
         "median_household_income_rm": 6157.6,
         "mean_household_income_rm": 7950.3,
-        "income_skewness_ratio": 1.291,
-        "income_data_status": "e"
+        "avg_household_size": 4.02
       },
       {
         "year": 2022,
@@ -1356,12 +1576,18 @@
         "foreign_guest_share_pct": 14.07,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1008.6,
+        "total_population_millions": 1.0086,
+        "working_age_thousands": 706.7,
+        "working_age_pct": 70.1,
+        "youth_20_39_pct": 35.4,
+        "elderly_pct": 6.6,
+        "dependency_ratio": 42.7,
         "households_thousands": 262.0,
         "households_count": 262000,
         "median_household_income_rm": 6210.0,
         "mean_household_income_rm": 8057.0,
-        "income_skewness_ratio": 1.297,
-        "income_data_status": "official"
+        "avg_household_size": 3.85
       },
       {
         "year": 2023,
@@ -1394,12 +1620,18 @@
         "foreign_guest_share_pct": 31.39,
         "homestay_rooms": 217.0,
         "homestay_operators": 157.0,
+        "total_population_thousands": 1028.3,
+        "total_population_millions": 1.0283,
+        "working_age_thousands": 724.3,
+        "working_age_pct": 70.4,
+        "youth_20_39_pct": 36.9,
+        "elderly_pct": 6.7,
+        "dependency_ratio": 42.0,
         "households_thousands": 268.286,
         "households_count": 268286,
         "median_household_income_rm": 6541.6,
         "mean_household_income_rm": 8365.6,
-        "income_skewness_ratio": 1.279,
-        "income_data_status": "e"
+        "avg_household_size": 3.83
       },
       {
         "year": 2024,
@@ -1432,12 +1664,18 @@
         "foreign_guest_share_pct": 30.66,
         "homestay_rooms": 129.0,
         "homestay_operators": 143.0,
+        "total_population_thousands": 1046.7,
+        "total_population_millions": 1.0467,
+        "working_age_thousands": 742.5,
+        "working_age_pct": 70.9,
+        "youth_20_39_pct": 38.7,
+        "elderly_pct": 6.8,
+        "dependency_ratio": 41.0,
         "households_thousands": 274.723,
         "households_count": 274723,
         "median_household_income_rm": 6891.0,
         "mean_household_income_rm": 8686.0,
-        "income_skewness_ratio": 1.26,
-        "income_data_status": "official"
+        "avg_household_size": 3.81
       },
       {
         "year": 2025,
@@ -1470,12 +1708,18 @@
         "foreign_guest_share_pct": 32.19,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1052.0,
+        "total_population_millions": 1.052,
+        "working_age_thousands": 745.9,
+        "working_age_pct": 70.9,
+        "youth_20_39_pct": 38.3,
+        "elderly_pct": 7.3,
+        "dependency_ratio": 41.1,
         "households_thousands": 281.314,
         "households_count": 281314,
         "median_household_income_rm": 7259.0,
         "mean_household_income_rm": 9018.7,
-        "income_skewness_ratio": 1.242,
-        "income_data_status": "e"
+        "avg_household_size": 3.74
       }
     ]
   },
@@ -1508,14 +1752,27 @@
       "aor_pct": 43.2,
       "resident_median_income_rm": 5687.0
     },
+    "demographics": {
+      "total_population_thousands": 1243.9,
+      "total_population_millions": 1.2439,
+      "working_age_thousands": 857.0,
+      "working_age_pct": 68.9,
+      "youth_20_39_pct": 34.1,
+      "elderly_pct": 8.1,
+      "children_pct": 23.0,
+      "dependency_ratio": 45.2,
+      "households_thousands": 329.771,
+      "median_household_income_rm": 5783.0,
+      "avg_household_size": 3.77
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 234.8,
       "epr_ratio": 1.96,
       "dvr_retention_rate_pct": 50.0,
-      "tir_visitors_per_resident": 16.0,
-      "ryh_accom_per_household_rm": 1758.4,
+      "tir_visitors_per_resident": 15.56,
+      "ryh_accom_per_household_rm": 1721.2,
       "sdg_diagnosis": "Carrying Capacity Volume Pressure",
-      "sdg_policy_action": "High visitor intensity (16.0 visitors per resident). Priority: Shift from visitor volume targets to yield-per-visitor optimization.",
+      "sdg_policy_action": "High visitor intensity (15.6 visitors per resident). Priority: Shift from visitor volume targets to yield-per-visitor optimization.",
       "sdg_status_color": "#3b82f6"
     },
     "hotel_stars": {
@@ -1574,12 +1831,18 @@
         "foreign_guest_share_pct": 18.64,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1122.9,
+        "total_population_millions": 1.1229,
+        "working_age_thousands": 777.1,
+        "working_age_pct": 69.2,
+        "youth_20_39_pct": 34.8,
+        "elderly_pct": 7.7,
+        "dependency_ratio": 44.5,
         "households_thousands": 265.08,
         "households_count": 265080,
         "median_household_income_rm": 4858.8,
         "mean_household_income_rm": 6421.7,
-        "income_skewness_ratio": 1.322,
-        "income_data_status": "e"
+        "avg_household_size": 4.24
       },
       {
         "year": 2019,
@@ -1612,12 +1875,18 @@
         "foreign_guest_share_pct": 19.24,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1126.2,
+        "total_population_millions": 1.1262,
+        "working_age_thousands": 778.4,
+        "working_age_pct": 69.1,
+        "youth_20_39_pct": 34.9,
+        "elderly_pct": 8.1,
+        "dependency_ratio": 44.7,
         "households_thousands": 270.8,
         "households_count": 270800,
         "median_household_income_rm": 5005.0,
         "mean_household_income_rm": 6707.0,
-        "income_skewness_ratio": 1.34,
-        "income_data_status": "official"
+        "avg_household_size": 4.16
       },
       {
         "year": 2021,
@@ -1650,12 +1919,18 @@
         "foreign_guest_share_pct": 1.32,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1204.2,
+        "total_population_millions": 1.2042,
+        "working_age_thousands": 817.2,
+        "working_age_pct": 67.9,
+        "youth_20_39_pct": 34.3,
+        "elderly_pct": 7.1,
+        "dependency_ratio": 47.3,
         "households_thousands": 295.894,
         "households_count": 295894,
         "median_household_income_rm": 5151.3,
         "mean_household_income_rm": 6760.9,
-        "income_skewness_ratio": 1.312,
-        "income_data_status": "e"
+        "avg_household_size": 4.07
       },
       {
         "year": 2022,
@@ -1688,12 +1963,18 @@
         "foreign_guest_share_pct": 4.5,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1207.9,
+        "total_population_millions": 1.2079,
+        "working_age_thousands": 820.3,
+        "working_age_pct": 67.9,
+        "youth_20_39_pct": 34.1,
+        "elderly_pct": 7.3,
+        "dependency_ratio": 47.3,
         "households_thousands": 309.3,
         "households_count": 309300,
         "median_household_income_rm": 5226.0,
         "mean_household_income_rm": 6788.0,
-        "income_skewness_ratio": 1.299,
-        "income_data_status": "official"
+        "avg_household_size": 3.91
       },
       {
         "year": 2023,
@@ -1726,12 +2007,18 @@
         "foreign_guest_share_pct": 13.96,
         "homestay_rooms": 435.0,
         "homestay_operators": 130.0,
+        "total_population_thousands": 1224.9,
+        "total_population_millions": 1.2249,
+        "working_age_thousands": 836.6,
+        "working_age_pct": 68.3,
+        "youth_20_39_pct": 34.4,
+        "elderly_pct": 7.5,
+        "dependency_ratio": 46.4,
         "households_thousands": 315.978,
         "households_count": 315978,
         "median_household_income_rm": 5405.4,
         "mean_household_income_rm": 7041.8,
-        "income_skewness_ratio": 1.303,
-        "income_data_status": "e"
+        "avg_household_size": 3.88
       },
       {
         "year": 2024,
@@ -1764,12 +2051,18 @@
         "foreign_guest_share_pct": 18.11,
         "homestay_rooms": 305.0,
         "homestay_operators": 145.0,
+        "total_population_thousands": 1239.5,
+        "total_population_millions": 1.2395,
+        "working_age_thousands": 850.5,
+        "working_age_pct": 68.6,
+        "youth_20_39_pct": 34.7,
+        "elderly_pct": 7.6,
+        "dependency_ratio": 45.8,
         "households_thousands": 322.801,
         "households_count": 322801,
         "median_household_income_rm": 5591.0,
         "mean_household_income_rm": 7305.0,
-        "income_skewness_ratio": 1.307,
-        "income_data_status": "official"
+        "avg_household_size": 3.84
       },
       {
         "year": 2025,
@@ -1802,12 +2095,18 @@
         "foreign_guest_share_pct": 18.75,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1243.9,
+        "total_population_millions": 1.2439,
+        "working_age_thousands": 857.0,
+        "working_age_pct": 68.9,
+        "youth_20_39_pct": 34.1,
+        "elderly_pct": 8.1,
+        "dependency_ratio": 45.2,
         "households_thousands": 329.771,
         "households_count": 329771,
         "median_household_income_rm": 5783.0,
         "mean_household_income_rm": 7578.1,
-        "income_skewness_ratio": 1.31,
-        "income_data_status": "e"
+        "avg_household_size": 3.77
       }
     ]
   },
@@ -1840,12 +2139,25 @@
       "aor_pct": 75.95,
       "resident_median_income_rm": 5032.45
     },
+    "demographics": {
+      "total_population_thousands": 1676.8,
+      "total_population_millions": 1.6768,
+      "working_age_thousands": 1168.5,
+      "working_age_pct": 69.7,
+      "youth_20_39_pct": 33.5,
+      "elderly_pct": 7.1,
+      "children_pct": 23.2,
+      "dependency_ratio": 43.5,
+      "households_thousands": 403.6,
+      "median_household_income_rm": 5089.9,
+      "avg_household_size": 4.15
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 269.6,
       "epr_ratio": 1.1,
       "dvr_retention_rate_pct": 47.3,
-      "tir_visitors_per_resident": 14.21,
-      "ryh_accom_per_household_rm": 3309.9,
+      "tir_visitors_per_resident": 13.81,
+      "ryh_accom_per_household_rm": 3251.5,
       "sdg_diagnosis": "Value Growth Frontier",
       "sdg_policy_action": "Healthy absorption capacity with significant upside to expand length of stay and accommodation spend. Priority: Expand accommodation inventory and targeted promotion.",
       "sdg_status_color": "#8b5cf6"
@@ -1906,12 +2218,18 @@
         "foreign_guest_share_pct": 23.07,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1664.7,
+        "total_population_millions": 1.6647,
+        "working_age_thousands": 1125.0,
+        "working_age_pct": 67.6,
+        "youth_20_39_pct": 35.7,
+        "elderly_pct": 7.0,
+        "dependency_ratio": 48.0,
         "households_thousands": 342.659,
         "households_count": 342659,
         "median_household_income_rm": 4280.7,
         "mean_household_income_rm": 5439.7,
-        "income_skewness_ratio": 1.271,
-        "income_data_status": "e"
+        "avg_household_size": 4.86
       },
       {
         "year": 2019,
@@ -1944,12 +2262,18 @@
         "foreign_guest_share_pct": 23.68,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1671.4,
+        "total_population_millions": 1.6714,
+        "working_age_thousands": 1130.4,
+        "working_age_pct": 67.6,
+        "youth_20_39_pct": 35.9,
+        "elderly_pct": 7.2,
+        "dependency_ratio": 47.9,
         "households_thousands": 348.8,
         "households_count": 348800,
         "median_household_income_rm": 4440.0,
         "mean_household_income_rm": 5667.0,
-        "income_skewness_ratio": 1.276,
-        "income_data_status": "official"
+        "avg_household_size": 4.79
       },
       {
         "year": 2020,
@@ -1982,12 +2306,18 @@
         "foreign_guest_share_pct": 7.09,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1591.3,
+        "total_population_millions": 1.5913,
+        "working_age_thousands": 1066.4,
+        "working_age_pct": 67.0,
+        "youth_20_39_pct": 32.3,
+        "elderly_pct": 6.3,
+        "dependency_ratio": 49.2,
         "households_thousands": 359.721,
         "households_count": 359721,
         "median_household_income_rm": 4542.0,
         "mean_household_income_rm": 5703.4,
-        "income_skewness_ratio": 1.256,
-        "income_data_status": "e"
+        "avg_household_size": 4.42
       },
       {
         "year": 2021,
@@ -2020,12 +2350,18 @@
         "foreign_guest_share_pct": 0.4,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1601.5,
+        "total_population_millions": 1.6015,
+        "working_age_thousands": 1079.1,
+        "working_age_pct": 67.4,
+        "youth_20_39_pct": 32.0,
+        "elderly_pct": 6.5,
+        "dependency_ratio": 48.4,
         "households_thousands": 370.984,
         "households_count": 370984,
         "median_household_income_rm": 4646.3,
         "mean_household_income_rm": 5740.1,
-        "income_skewness_ratio": 1.235,
-        "income_data_status": "e"
+        "avg_household_size": 4.32
       },
       {
         "year": 2022,
@@ -2058,12 +2394,18 @@
         "foreign_guest_share_pct": 16.86,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1614.3,
+        "total_population_millions": 1.6143,
+        "working_age_thousands": 1095.9,
+        "working_age_pct": 67.9,
+        "youth_20_39_pct": 31.9,
+        "elderly_pct": 6.6,
+        "dependency_ratio": 47.3,
         "households_thousands": 382.6,
         "households_count": 382600,
         "median_household_income_rm": 4753.0,
         "mean_household_income_rm": 5777.0,
-        "income_skewness_ratio": 1.215,
-        "income_data_status": "official"
+        "avg_household_size": 4.22
       },
       {
         "year": 2023,
@@ -2096,12 +2438,18 @@
         "foreign_guest_share_pct": 23.91,
         "homestay_rooms": 450.0,
         "homestay_operators": 331.0,
+        "total_population_thousands": 1643.2,
+        "total_population_millions": 1.6432,
+        "working_age_thousands": 1127.3,
+        "working_age_pct": 68.6,
+        "youth_20_39_pct": 32.5,
+        "elderly_pct": 6.7,
+        "dependency_ratio": 45.8,
         "households_thousands": 389.476,
         "households_count": 389476,
         "median_household_income_rm": 4862.7,
         "mean_household_income_rm": 5919.7,
-        "income_skewness_ratio": 1.217,
-        "income_data_status": "e"
+        "avg_household_size": 4.22
       },
       {
         "year": 2024,
@@ -2134,12 +2482,18 @@
         "foreign_guest_share_pct": 23.05,
         "homestay_rooms": 326.0,
         "homestay_operators": 363.0,
+        "total_population_thousands": 1667.7,
+        "total_population_millions": 1.6677,
+        "working_age_thousands": 1156.3,
+        "working_age_pct": 69.3,
+        "youth_20_39_pct": 33.2,
+        "elderly_pct": 6.8,
+        "dependency_ratio": 44.2,
         "households_thousands": 396.475,
         "households_count": 396475,
         "median_household_income_rm": 4975.0,
         "mean_household_income_rm": 6066.0,
-        "income_skewness_ratio": 1.219,
-        "income_data_status": "official"
+        "avg_household_size": 4.21
       },
       {
         "year": 2025,
@@ -2172,12 +2526,18 @@
         "foreign_guest_share_pct": 22.78,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1676.8,
+        "total_population_millions": 1.6768,
+        "working_age_thousands": 1168.5,
+        "working_age_pct": 69.7,
+        "youth_20_39_pct": 33.5,
+        "elderly_pct": 7.1,
+        "dependency_ratio": 43.5,
         "households_thousands": 403.6,
         "households_count": 403600,
         "median_household_income_rm": 5089.9,
         "mean_household_income_rm": 6215.9,
-        "income_skewness_ratio": 1.221,
-        "income_data_status": "e"
+        "avg_household_size": 4.15
       }
     ]
   },
@@ -2210,12 +2570,25 @@
       "aor_pct": 46.65,
       "resident_median_income_rm": 4736.8
     },
+    "demographics": {
+      "total_population_thousands": 2573.8,
+      "total_population_millions": 2.5738,
+      "working_age_thousands": 1780.2,
+      "working_age_pct": 69.2,
+      "youth_20_39_pct": 33.4,
+      "elderly_pct": 10.3,
+      "children_pct": 20.5,
+      "dependency_ratio": 44.6,
+      "households_thousands": 666.344,
+      "median_household_income_rm": 4786.6,
+      "avg_household_size": 3.86
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 207.5,
       "epr_ratio": 1.27,
       "dvr_retention_rate_pct": 48.1,
-      "tir_visitors_per_resident": 9.31,
-      "ryh_accom_per_household_rm": 1204.1,
+      "tir_visitors_per_resident": 9.19,
+      "ryh_accom_per_household_rm": 1194.1,
       "sdg_diagnosis": "Value Growth Frontier",
       "sdg_policy_action": "Healthy absorption capacity with significant upside to expand length of stay and accommodation spend. Priority: Expand accommodation inventory and targeted promotion.",
       "sdg_status_color": "#8b5cf6"
@@ -2276,12 +2649,18 @@
         "foreign_guest_share_pct": 10.03,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2503.5,
+        "total_population_millions": 2.5035,
+        "working_age_thousands": 1705.4,
+        "working_age_pct": 68.1,
+        "youth_20_39_pct": 32.5,
+        "elderly_pct": 10.2,
+        "dependency_ratio": 46.8,
         "households_thousands": 632.526,
         "households_count": 632526,
         "median_household_income_rm": 4182.1,
         "mean_household_income_rm": 5444.6,
-        "income_skewness_ratio": 1.302,
-        "income_data_status": "e"
+        "avg_household_size": 3.96
       },
       {
         "year": 2019,
@@ -2314,12 +2693,18 @@
         "foreign_guest_share_pct": 10.05,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2508.8,
+        "total_population_millions": 2.5088,
+        "working_age_thousands": 1712.6,
+        "working_age_pct": 68.3,
+        "youth_20_39_pct": 33.1,
+        "elderly_pct": 10.6,
+        "dependency_ratio": 46.5,
         "households_thousands": 639.4,
         "households_count": 639400,
         "median_household_income_rm": 4273.0,
         "mean_household_income_rm": 5645.0,
-        "income_skewness_ratio": 1.321,
-        "income_data_status": "official"
+        "avg_household_size": 3.92
       },
       {
         "year": 2020,
@@ -2352,12 +2737,18 @@
         "foreign_guest_share_pct": 4.66,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2496.0,
+        "total_population_millions": 2.496,
+        "working_age_thousands": 1694.2,
+        "working_age_pct": 67.9,
+        "youth_20_39_pct": 31.6,
+        "elderly_pct": 8.9,
+        "dependency_ratio": 47.3,
         "households_thousands": 642.881,
         "households_count": 642881,
         "median_household_income_rm": 4345.4,
         "mean_household_income_rm": 5689.3,
-        "income_skewness_ratio": 1.309,
-        "income_data_status": "e"
+        "avg_household_size": 3.88
       },
       {
         "year": 2021,
@@ -2390,12 +2781,18 @@
         "foreign_guest_share_pct": 0.36,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2515.8,
+        "total_population_millions": 2.5158,
+        "working_age_thousands": 1707.6,
+        "working_age_pct": 67.9,
+        "youth_20_39_pct": 31.8,
+        "elderly_pct": 9.3,
+        "dependency_ratio": 47.3,
         "households_thousands": 646.381,
         "households_count": 646381,
         "median_household_income_rm": 4419.1,
         "mean_household_income_rm": 5734.0,
-        "income_skewness_ratio": 1.298,
-        "income_data_status": "e"
+        "avg_household_size": 3.89
       },
       {
         "year": 2022,
@@ -2428,12 +2825,18 @@
         "foreign_guest_share_pct": 7.06,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2514.4,
+        "total_population_millions": 2.5144,
+        "working_age_thousands": 1710.0,
+        "working_age_pct": 68.0,
+        "youth_20_39_pct": 31.8,
+        "elderly_pct": 9.5,
+        "dependency_ratio": 47.0,
         "households_thousands": 649.9,
         "households_count": 649900,
         "median_household_income_rm": 4494.0,
         "mean_household_income_rm": 5779.0,
-        "income_skewness_ratio": 1.286,
-        "income_data_status": "official"
+        "avg_household_size": 3.87
       },
       {
         "year": 2023,
@@ -2466,12 +2869,18 @@
         "foreign_guest_share_pct": 16.87,
         "homestay_rooms": 409.0,
         "homestay_operators": 145.0,
+        "total_population_thousands": 2541.2,
+        "total_population_millions": 2.5412,
+        "working_age_thousands": 1740.1,
+        "working_age_pct": 68.5,
+        "youth_20_39_pct": 32.5,
+        "elderly_pct": 9.7,
+        "dependency_ratio": 46.0,
         "households_thousands": 655.336,
         "households_count": 655336,
         "median_household_income_rm": 4589.5,
         "mean_household_income_rm": 5972.8,
-        "income_skewness_ratio": 1.301,
-        "income_data_status": "e"
+        "avg_household_size": 3.88
       },
       {
         "year": 2024,
@@ -2504,12 +2913,18 @@
         "foreign_guest_share_pct": 18.51,
         "homestay_rooms": 180.0,
         "homestay_operators": 145.0,
+        "total_population_thousands": 2569.4,
+        "total_population_millions": 2.5694,
+        "working_age_thousands": 1769.7,
+        "working_age_pct": 68.9,
+        "youth_20_39_pct": 33.4,
+        "elderly_pct": 9.9,
+        "dependency_ratio": 45.2,
         "households_thousands": 660.817,
         "households_count": 660817,
         "median_household_income_rm": 4687.0,
         "mean_household_income_rm": 6173.0,
-        "income_skewness_ratio": 1.317,
-        "income_data_status": "official"
+        "avg_household_size": 3.89
       },
       {
         "year": 2025,
@@ -2542,12 +2957,18 @@
         "foreign_guest_share_pct": 18.04,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2573.8,
+        "total_population_millions": 2.5738,
+        "working_age_thousands": 1780.2,
+        "working_age_pct": 69.2,
+        "youth_20_39_pct": 33.4,
+        "elderly_pct": 10.3,
+        "dependency_ratio": 44.6,
         "households_thousands": 666.344,
         "households_count": 666344,
         "median_household_income_rm": 4786.6,
         "mean_household_income_rm": 6380.0,
-        "income_skewness_ratio": 1.333,
-        "income_data_status": "e"
+        "avg_household_size": 3.86
       }
     ]
   },
@@ -2580,12 +3001,25 @@
       "aor_pct": 41.35,
       "resident_median_income_rm": 5011.45
     },
+    "demographics": {
+      "total_population_thousands": 297.0,
+      "total_population_millions": 0.297,
+      "working_age_thousands": 214.6,
+      "working_age_pct": 72.3,
+      "youth_20_39_pct": 37.9,
+      "elderly_pct": 8.6,
+      "children_pct": 19.3,
+      "dependency_ratio": 38.5,
+      "households_thousands": 82.348,
+      "median_household_income_rm": 5072.9,
+      "avg_household_size": 3.61
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 216.3,
       "epr_ratio": 1.55,
       "dvr_retention_rate_pct": 47.6,
-      "tir_visitors_per_resident": 12.95,
-      "ryh_accom_per_household_rm": 1474.6,
+      "tir_visitors_per_resident": 12.65,
+      "ryh_accom_per_household_rm": 1434.4,
       "sdg_diagnosis": "Value Growth Frontier",
       "sdg_policy_action": "Healthy absorption capacity with significant upside to expand length of stay and accommodation spend. Priority: Expand accommodation inventory and targeted promotion.",
       "sdg_status_color": "#8b5cf6"
@@ -2646,12 +3080,18 @@
         "foreign_guest_share_pct": 3.22,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 253.5,
+        "total_population_millions": 0.2535,
+        "working_age_thousands": 169.3,
+        "working_age_pct": 66.8,
+        "youth_20_39_pct": 34.8,
+        "elderly_pct": 8.9,
+        "dependency_ratio": 49.9,
         "households_thousands": 57.955,
         "households_count": 57955,
         "median_household_income_rm": 4460.1,
         "mean_household_income_rm": 5311.8,
-        "income_skewness_ratio": 1.191,
-        "income_data_status": "e"
+        "avg_household_size": 4.37
       },
       {
         "year": 2019,
@@ -2684,12 +3124,18 @@
         "foreign_guest_share_pct": 2.32,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 254.0,
+        "total_population_millions": 0.254,
+        "working_age_thousands": 168.9,
+        "working_age_pct": 66.5,
+        "youth_20_39_pct": 34.8,
+        "elderly_pct": 9.1,
+        "dependency_ratio": 50.4,
         "households_thousands": 58.8,
         "households_count": 58800,
         "median_household_income_rm": 4594.0,
         "mean_household_income_rm": 5476.0,
-        "income_skewness_ratio": 1.192,
-        "income_data_status": "official"
+        "avg_household_size": 4.32
       },
       {
         "year": 2020,
@@ -2722,12 +3168,18 @@
         "foreign_guest_share_pct": 0.88,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 284.9,
+        "total_population_millions": 0.2849,
+        "working_age_thousands": 204.2,
+        "working_age_pct": 71.7,
+        "youth_20_39_pct": 32.3,
+        "elderly_pct": 7.9,
+        "dependency_ratio": 39.5,
         "households_thousands": 63.994,
         "households_count": 63994,
         "median_household_income_rm": 4633.3,
         "mean_household_income_rm": 5538.0,
-        "income_skewness_ratio": 1.195,
-        "income_data_status": "e"
+        "avg_household_size": 4.45
       },
       {
         "year": 2021,
@@ -2760,12 +3212,18 @@
         "foreign_guest_share_pct": 0.09,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 287.6,
+        "total_population_millions": 0.2876,
+        "working_age_thousands": 207.3,
+        "working_age_pct": 72.1,
+        "youth_20_39_pct": 33.3,
+        "elderly_pct": 8.0,
+        "dependency_ratio": 38.7,
         "households_thousands": 69.647,
         "households_count": 69647,
         "median_household_income_rm": 4673.0,
         "mean_household_income_rm": 5600.6,
-        "income_skewness_ratio": 1.199,
-        "income_data_status": "e"
+        "avg_household_size": 4.13
       },
       {
         "year": 2022,
@@ -2798,12 +3256,18 @@
         "foreign_guest_share_pct": 1.75,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 289.8,
+        "total_population_millions": 0.2898,
+        "working_age_thousands": 208.9,
+        "working_age_pct": 72.1,
+        "youth_20_39_pct": 34.4,
+        "elderly_pct": 8.0,
+        "dependency_ratio": 38.7,
         "households_thousands": 75.8,
         "households_count": 75800,
         "median_household_income_rm": 4713.0,
         "mean_household_income_rm": 5664.0,
-        "income_skewness_ratio": 1.202,
-        "income_data_status": "official"
+        "avg_household_size": 3.82
       },
       {
         "year": 2023,
@@ -2836,12 +3300,18 @@
         "foreign_guest_share_pct": 2.08,
         "homestay_rooms": 54.0,
         "homestay_operators": 42.0,
+        "total_population_thousands": 293.1,
+        "total_population_millions": 0.2931,
+        "working_age_thousands": 211.9,
+        "working_age_pct": 72.3,
+        "youth_20_39_pct": 34.7,
+        "elderly_pct": 8.2,
+        "dependency_ratio": 38.3,
         "households_thousands": 77.923,
         "households_count": 77923,
         "median_household_income_rm": 4830.0,
         "mean_household_income_rm": 5827.6,
-        "income_skewness_ratio": 1.207,
-        "income_data_status": "e"
+        "avg_household_size": 3.76
       },
       {
         "year": 2024,
@@ -2874,12 +3344,18 @@
         "foreign_guest_share_pct": 2.61,
         "homestay_rooms": 55.0,
         "homestay_operators": 42.0,
+        "total_population_thousands": 296.8,
+        "total_population_millions": 0.2968,
+        "working_age_thousands": 214.4,
+        "working_age_pct": 72.2,
+        "youth_20_39_pct": 36.9,
+        "elderly_pct": 8.3,
+        "dependency_ratio": 38.5,
         "households_thousands": 80.105,
         "households_count": 80105,
         "median_household_income_rm": 4950.0,
         "mean_household_income_rm": 5996.0,
-        "income_skewness_ratio": 1.211,
-        "income_data_status": "official"
+        "avg_household_size": 3.71
       },
       {
         "year": 2025,
@@ -2912,12 +3388,18 @@
         "foreign_guest_share_pct": 2.5,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 297.0,
+        "total_population_millions": 0.297,
+        "working_age_thousands": 214.6,
+        "working_age_pct": 72.3,
+        "youth_20_39_pct": 37.9,
+        "elderly_pct": 8.6,
+        "dependency_ratio": 38.5,
         "households_thousands": 82.348,
         "households_count": 82348,
         "median_household_income_rm": 5072.9,
         "mean_household_income_rm": 6169.2,
-        "income_skewness_ratio": 1.216,
-        "income_data_status": "e"
+        "avg_household_size": 3.61
       }
     ]
   },
@@ -2950,12 +3432,25 @@
       "aor_pct": 57.7,
       "resident_median_income_rm": 7629.05
     },
+    "demographics": {
+      "total_population_thousands": 1804.3,
+      "total_population_millions": 1.8043,
+      "working_age_thousands": 1320.7,
+      "working_age_pct": 73.2,
+      "youth_20_39_pct": 35.8,
+      "elderly_pct": 8.4,
+      "children_pct": 18.4,
+      "dependency_ratio": 36.6,
+      "households_thousands": 498.668,
+      "median_household_income_rm": 7872.1,
+      "avg_household_size": 3.62
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 314.4,
       "epr_ratio": 2.15,
       "dvr_retention_rate_pct": 49.7,
-      "tir_visitors_per_resident": 10.01,
-      "ryh_accom_per_household_rm": 2195.1,
+      "tir_visitors_per_resident": 9.82,
+      "ryh_accom_per_household_rm": 2164.8,
       "sdg_diagnosis": "Value Growth Frontier",
       "sdg_policy_action": "Healthy absorption capacity with significant upside to expand length of stay and accommodation spend. Priority: Expand accommodation inventory and targeted promotion.",
       "sdg_status_color": "#8b5cf6"
@@ -3016,12 +3511,18 @@
         "foreign_guest_share_pct": 45.32,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1762.8,
+        "total_population_millions": 1.7628,
+        "working_age_thousands": 1274.3,
+        "working_age_pct": 72.3,
+        "youth_20_39_pct": 36.8,
+        "elderly_pct": 8.4,
+        "dependency_ratio": 38.3,
         "households_thousands": 442.652,
         "households_count": 442652,
         "median_household_income_rm": 5904.5,
         "mean_household_income_rm": 7424.2,
-        "income_skewness_ratio": 1.257,
-        "income_data_status": "e"
+        "avg_household_size": 3.98
       },
       {
         "year": 2019,
@@ -3054,12 +3555,18 @@
         "foreign_guest_share_pct": 44.58,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1768.8,
+        "total_population_millions": 1.7688,
+        "working_age_thousands": 1278.2,
+        "working_age_pct": 72.3,
+        "youth_20_39_pct": 36.7,
+        "elderly_pct": 8.7,
+        "dependency_ratio": 38.4,
         "households_thousands": 448.7,
         "households_count": 448700,
         "median_household_income_rm": 6169.0,
         "mean_household_income_rm": 7774.0,
-        "income_skewness_ratio": 1.26,
-        "income_data_status": "official"
+        "avg_household_size": 3.94
       },
       {
         "year": 2020,
@@ -3092,12 +3599,18 @@
         "foreign_guest_share_pct": 18.39,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1740.4,
+        "total_population_millions": 1.7404,
+        "working_age_thousands": 1275.6,
+        "working_age_pct": 73.3,
+        "youth_20_39_pct": 36.7,
+        "elderly_pct": 6.6,
+        "dependency_ratio": 36.4,
         "households_thousands": 458.357,
         "households_count": 458357,
         "median_household_income_rm": 6278.1,
         "mean_household_income_rm": 7935.0,
-        "income_skewness_ratio": 1.264,
-        "income_data_status": "e"
+        "avg_household_size": 3.8
       },
       {
         "year": 2021,
@@ -3130,12 +3643,18 @@
         "foreign_guest_share_pct": 0.85,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1740.0,
+        "total_population_millions": 1.74,
+        "working_age_thousands": 1274.4,
+        "working_age_pct": 73.2,
+        "youth_20_39_pct": 36.4,
+        "elderly_pct": 7.0,
+        "dependency_ratio": 36.5,
         "households_thousands": 468.222,
         "households_count": 468222,
         "median_household_income_rm": 6389.0,
         "mean_household_income_rm": 8099.3,
-        "income_skewness_ratio": 1.268,
-        "income_data_status": "e"
+        "avg_household_size": 3.72
       },
       {
         "year": 2022,
@@ -3168,12 +3687,18 @@
         "foreign_guest_share_pct": 22.5,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1740.9,
+        "total_population_millions": 1.7409,
+        "working_age_thousands": 1275.8,
+        "working_age_pct": 73.3,
+        "youth_20_39_pct": 36.2,
+        "elderly_pct": 7.4,
+        "dependency_ratio": 36.5,
         "households_thousands": 478.3,
         "households_count": 478300,
         "median_household_income_rm": 6502.0,
         "mean_household_income_rm": 8267.0,
-        "income_skewness_ratio": 1.271,
-        "income_data_status": "official"
+        "avg_household_size": 3.64
       },
       {
         "year": 2023,
@@ -3206,12 +3731,18 @@
         "foreign_guest_share_pct": 34.06,
         "homestay_rooms": 264.0,
         "homestay_operators": 155.0,
+        "total_population_thousands": 1772.6,
+        "total_population_millions": 1.7726,
+        "working_age_thousands": 1299.1,
+        "working_age_pct": 73.3,
+        "youth_20_39_pct": 36.3,
+        "elderly_pct": 7.7,
+        "dependency_ratio": 36.4,
         "households_thousands": 484.995,
         "households_count": 484995,
         "median_household_income_rm": 6929.9,
         "mean_household_income_rm": 8698.3,
-        "income_skewness_ratio": 1.255,
-        "income_data_status": "e"
+        "avg_household_size": 3.65
       },
       {
         "year": 2024,
@@ -3244,12 +3775,18 @@
         "foreign_guest_share_pct": 38.57,
         "homestay_rooms": 154.0,
         "homestay_operators": 165.0,
+        "total_population_thousands": 1800.5,
+        "total_population_millions": 1.8005,
+        "working_age_thousands": 1319.1,
+        "working_age_pct": 73.3,
+        "youth_20_39_pct": 36.2,
+        "elderly_pct": 8.0,
+        "dependency_ratio": 36.5,
         "households_thousands": 491.784,
         "households_count": 491784,
         "median_household_income_rm": 7386.0,
         "mean_household_income_rm": 9152.0,
-        "income_skewness_ratio": 1.239,
-        "income_data_status": "official"
+        "avg_household_size": 3.66
       },
       {
         "year": 2025,
@@ -3282,12 +3819,18 @@
         "foreign_guest_share_pct": 39.61,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1804.3,
+        "total_population_millions": 1.8043,
+        "working_age_thousands": 1320.7,
+        "working_age_pct": 73.2,
+        "youth_20_39_pct": 35.8,
+        "elderly_pct": 8.4,
+        "dependency_ratio": 36.6,
         "households_thousands": 498.668,
         "households_count": 498668,
         "median_household_income_rm": 7872.1,
         "mean_household_income_rm": 9629.4,
-        "income_skewness_ratio": 1.223,
-        "income_data_status": "e"
+        "avg_household_size": 3.62
       }
     ]
   },
@@ -3320,12 +3863,25 @@
       "aor_pct": 52.85,
       "resident_median_income_rm": 4972.2
     },
+    "demographics": {
+      "total_population_thousands": 3754.5,
+      "total_population_millions": 3.7545,
+      "working_age_thousands": 2647.0,
+      "working_age_pct": 70.5,
+      "youth_20_39_pct": 38.4,
+      "elderly_pct": 6.3,
+      "children_pct": 23.2,
+      "dependency_ratio": 41.8,
+      "households_thousands": 651.763,
+      "median_household_income_rm": 5054.4,
+      "avg_household_size": 5.76
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 255.4,
       "epr_ratio": 2.04,
       "dvr_retention_rate_pct": 49.3,
-      "tir_visitors_per_resident": 6.04,
-      "ryh_accom_per_household_rm": 1692.0,
+      "tir_visitors_per_resident": 5.96,
+      "ryh_accom_per_household_rm": 1647.2,
       "sdg_diagnosis": "Single-Origin Fragility",
       "sdg_policy_action": "Excessive market concentration (HHI: 5747) with over-reliance on a single origin feeder. Priority: Aggressively diversify marketing to secondary origin states.",
       "sdg_status_color": "#ef4444"
@@ -3386,12 +3942,18 @@
         "foreign_guest_share_pct": 41.96,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 3904.4,
+        "total_population_millions": 3.9044,
+        "working_age_thousands": 2858.1,
+        "working_age_pct": 73.2,
+        "youth_20_39_pct": 42.1,
+        "elderly_pct": 3.4,
+        "dependency_ratio": 36.6,
         "households_thousands": 513.2,
         "households_count": 513200,
         "median_household_income_rm": 4235.0,
         "mean_household_income_rm": 5745.0,
-        "income_skewness_ratio": 1.357,
-        "income_data_status": "official"
+        "avg_household_size": 7.61
       },
       {
         "year": 2020,
@@ -3424,12 +3986,18 @@
         "foreign_guest_share_pct": 27.05,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 3418.8,
+        "total_population_millions": 3.4188,
+        "working_age_thousands": 2319.7,
+        "working_age_pct": 67.9,
+        "youth_20_39_pct": 38.1,
+        "elderly_pct": 5.6,
+        "dependency_ratio": 47.4,
         "households_thousands": 541.03,
         "households_count": 541030,
         "median_household_income_rm": 4346.1,
         "mean_household_income_rm": 5883.6,
-        "income_skewness_ratio": 1.354,
-        "income_data_status": "e"
+        "avg_household_size": 6.32
       },
       {
         "year": 2021,
@@ -3462,12 +4030,18 @@
         "foreign_guest_share_pct": 0.26,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 3412.6,
+        "total_population_millions": 3.4126,
+        "working_age_thousands": 2334.0,
+        "working_age_pct": 68.4,
+        "youth_20_39_pct": 38.1,
+        "elderly_pct": 5.7,
+        "dependency_ratio": 46.2,
         "households_thousands": 570.37,
         "households_count": 570370,
         "median_household_income_rm": 4460.0,
         "mean_household_income_rm": 6025.6,
-        "income_skewness_ratio": 1.351,
-        "income_data_status": "e"
+        "avg_household_size": 5.98
       },
       {
         "year": 2022,
@@ -3500,12 +4074,18 @@
         "foreign_guest_share_pct": 12.52,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 3414.9,
+        "total_population_millions": 3.4149,
+        "working_age_thousands": 2357.6,
+        "working_age_pct": 69.0,
+        "youth_20_39_pct": 38.1,
+        "elderly_pct": 5.9,
+        "dependency_ratio": 44.9,
         "households_thousands": 601.3,
         "households_count": 601300,
         "median_household_income_rm": 4577.0,
         "mean_household_income_rm": 6171.0,
-        "income_skewness_ratio": 1.348,
-        "income_data_status": "official"
+        "avg_household_size": 5.68
       },
       {
         "year": 2023,
@@ -3538,12 +4118,18 @@
         "foreign_guest_share_pct": 33.1,
         "homestay_rooms": 716.0,
         "homestay_operators": 441.0,
+        "total_population_thousands": 3596.7,
+        "total_population_millions": 3.5967,
+        "working_age_thousands": 2501.9,
+        "working_age_pct": 69.6,
+        "youth_20_39_pct": 38.4,
+        "elderly_pct": 6.0,
+        "dependency_ratio": 43.8,
         "households_thousands": 617.671,
         "households_count": 617671,
         "median_household_income_rm": 4730.9,
         "mean_household_income_rm": 6332.4,
-        "income_skewness_ratio": 1.339,
-        "income_data_status": "e"
+        "avg_household_size": 5.82
       },
       {
         "year": 2024,
@@ -3576,12 +4162,18 @@
         "foreign_guest_share_pct": 41.71,
         "homestay_rooms": 1072.0,
         "homestay_operators": 538.0,
+        "total_population_thousands": 3742.0,
+        "total_population_millions": 3.742,
+        "working_age_thousands": 2621.9,
+        "working_age_pct": 70.1,
+        "youth_20_39_pct": 38.6,
+        "elderly_pct": 6.2,
+        "dependency_ratio": 42.7,
         "households_thousands": 634.488,
         "households_count": 634488,
         "median_household_income_rm": 4890.0,
         "mean_household_income_rm": 6498.0,
-        "income_skewness_ratio": 1.329,
-        "income_data_status": "official"
+        "avg_household_size": 5.9
       },
       {
         "year": 2025,
@@ -3614,12 +4206,18 @@
         "foreign_guest_share_pct": 39.48,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 3754.5,
+        "total_population_millions": 3.7545,
+        "working_age_thousands": 2647.0,
+        "working_age_pct": 70.5,
+        "youth_20_39_pct": 38.4,
+        "elderly_pct": 6.3,
+        "dependency_ratio": 41.8,
         "households_thousands": 651.763,
         "households_count": 651763,
         "median_household_income_rm": 5054.4,
         "mean_household_income_rm": 6667.9,
-        "income_skewness_ratio": 1.319,
-        "income_data_status": "e"
+        "avg_household_size": 5.76
       }
     ]
   },
@@ -3652,12 +4250,25 @@
       "aor_pct": 47.5,
       "resident_median_income_rm": 5645.75
     },
+    "demographics": {
+      "total_population_thousands": 2528.9,
+      "total_population_millions": 2.5289,
+      "working_age_thousands": 1801.6,
+      "working_age_pct": 71.2,
+      "youth_20_39_pct": 34.4,
+      "elderly_pct": 9.2,
+      "children_pct": 19.6,
+      "dependency_ratio": 40.4,
+      "households_thousands": 620.199,
+      "median_household_income_rm": 5787.5,
+      "avg_household_size": 4.08
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 253.7,
       "epr_ratio": 2.59,
       "dvr_retention_rate_pct": 50.7,
-      "tir_visitors_per_resident": 9.09,
-      "ryh_accom_per_household_rm": 1425.1,
+      "tir_visitors_per_resident": 8.98,
+      "ryh_accom_per_household_rm": 1407.0,
       "sdg_diagnosis": "Single-Origin Fragility",
       "sdg_policy_action": "Excessive market concentration (HHI: 4424) with over-reliance on a single origin feeder. Priority: Aggressively diversify marketing to secondary origin states.",
       "sdg_status_color": "#ef4444"
@@ -3718,12 +4329,18 @@
         "foreign_guest_share_pct": 11.31,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2791.7,
+        "total_population_millions": 2.7917,
+        "working_age_thousands": 1938.0,
+        "working_age_pct": 69.4,
+        "youth_20_39_pct": 35.0,
+        "elderly_pct": 7.2,
+        "dependency_ratio": 44.0,
         "households_thousands": 618.047,
         "households_count": 618047,
         "median_household_income_rm": 4413.2,
         "mean_household_income_rm": 5761.9,
-        "income_skewness_ratio": 1.306,
-        "income_data_status": "e"
+        "avg_household_size": 4.52
       },
       {
         "year": 2019,
@@ -3756,12 +4373,18 @@
         "foreign_guest_share_pct": 10.93,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2806.0,
+        "total_population_millions": 2.806,
+        "working_age_thousands": 1957.2,
+        "working_age_pct": 69.8,
+        "youth_20_39_pct": 35.2,
+        "elderly_pct": 7.6,
+        "dependency_ratio": 43.4,
         "households_thousands": 625.4,
         "households_count": 625400,
         "median_household_income_rm": 4544.0,
         "mean_household_income_rm": 5959.0,
-        "income_skewness_ratio": 1.311,
-        "income_data_status": "official"
+        "avg_household_size": 4.49
       },
       {
         "year": 2020,
@@ -3794,12 +4417,18 @@
         "foreign_guest_share_pct": 3.57,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2453.7,
+        "total_population_millions": 2.4537,
+        "working_age_thousands": 1728.6,
+        "working_age_pct": 70.4,
+        "youth_20_39_pct": 33.9,
+        "elderly_pct": 7.5,
+        "dependency_ratio": 41.9,
         "households_thousands": 615.718,
         "households_count": 615718,
         "median_household_income_rm": 4684.3,
         "mean_household_income_rm": 6120.6,
-        "income_skewness_ratio": 1.307,
-        "income_data_status": "e"
+        "avg_household_size": 3.99
       },
       {
         "year": 2021,
@@ -3832,12 +4461,18 @@
         "foreign_guest_share_pct": 0.31,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2465.6,
+        "total_population_millions": 2.4656,
+        "working_age_thousands": 1739.7,
+        "working_age_pct": 70.6,
+        "youth_20_39_pct": 33.9,
+        "elderly_pct": 7.8,
+        "dependency_ratio": 41.7,
         "households_thousands": 606.185,
         "households_count": 606185,
         "median_household_income_rm": 4828.9,
         "mean_household_income_rm": 6286.5,
-        "income_skewness_ratio": 1.302,
-        "income_data_status": "e"
+        "avg_household_size": 4.07
       },
       {
         "year": 2022,
@@ -3870,12 +4505,18 @@
         "foreign_guest_share_pct": 9.82,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2473.5,
+        "total_population_millions": 2.4735,
+        "working_age_thousands": 1753.7,
+        "working_age_pct": 70.9,
+        "youth_20_39_pct": 34.0,
+        "elderly_pct": 8.0,
+        "dependency_ratio": 41.1,
         "households_thousands": 596.8,
         "households_count": 596800,
         "median_household_income_rm": 4978.0,
         "mean_household_income_rm": 6457.0,
-        "income_skewness_ratio": 1.297,
-        "income_data_status": "official"
+        "avg_household_size": 4.14
       },
       {
         "year": 2023,
@@ -3908,12 +4549,18 @@
         "foreign_guest_share_pct": 18.4,
         "homestay_rooms": 973.0,
         "homestay_operators": 706.0,
+        "total_population_thousands": 2502.3,
+        "total_population_millions": 2.5023,
+        "working_age_thousands": 1780.3,
+        "working_age_pct": 71.1,
+        "youth_20_39_pct": 34.3,
+        "elderly_pct": 8.3,
+        "dependency_ratio": 40.6,
         "households_thousands": 604.5,
         "households_count": 604500,
         "median_household_income_rm": 5234.4,
         "mean_household_income_rm": 6697.5,
-        "income_skewness_ratio": 1.28,
-        "income_data_status": "e"
+        "avg_household_size": 4.14
       },
       {
         "year": 2024,
@@ -3946,12 +4593,18 @@
         "foreign_guest_share_pct": 17.73,
         "homestay_rooms": 1889.0,
         "homestay_operators": 810.0,
+        "total_population_thousands": 2517.5,
+        "total_population_millions": 2.5175,
+        "working_age_thousands": 1793.0,
+        "working_age_pct": 71.2,
+        "youth_20_39_pct": 34.5,
+        "elderly_pct": 8.6,
+        "dependency_ratio": 40.4,
         "households_thousands": 612.299,
         "households_count": 612299,
         "median_household_income_rm": 5504.0,
         "mean_household_income_rm": 6947.0,
-        "income_skewness_ratio": 1.262,
-        "income_data_status": "official"
+        "avg_household_size": 4.11
       },
       {
         "year": 2025,
@@ -3984,12 +4637,18 @@
         "foreign_guest_share_pct": 17.51,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2528.9,
+        "total_population_millions": 2.5289,
+        "working_age_thousands": 1801.6,
+        "working_age_pct": 71.2,
+        "youth_20_39_pct": 34.4,
+        "elderly_pct": 9.2,
+        "dependency_ratio": 40.4,
         "households_thousands": 620.199,
         "households_count": 620199,
         "median_household_income_rm": 5787.5,
         "mean_household_income_rm": 7205.8,
-        "income_skewness_ratio": 1.245,
-        "income_data_status": "e"
+        "avg_household_size": 4.08
       }
     ]
   },
@@ -4022,12 +4681,25 @@
       "aor_pct": 53.2,
       "resident_median_income_rm": 10922.0
     },
+    "demographics": {
+      "total_population_thousands": 7408.7,
+      "total_population_millions": 7.4087,
+      "working_age_thousands": 5261.7,
+      "working_age_pct": 71.0,
+      "youth_20_39_pct": 34.7,
+      "elderly_pct": 8.4,
+      "children_pct": 20.6,
+      "dependency_ratio": 40.8,
+      "households_thousands": 1900.221,
+      "median_household_income_rm": 11118.0,
+      "avg_household_size": 3.9
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 313.6,
       "epr_ratio": 2.43,
       "dvr_retention_rate_pct": 51.6,
-      "tir_visitors_per_resident": 5.05,
-      "ryh_accom_per_household_rm": 800.8,
+      "tir_visitors_per_resident": 4.91,
+      "ryh_accom_per_household_rm": 782.8,
       "sdg_diagnosis": "Value Growth Frontier",
       "sdg_policy_action": "Healthy absorption capacity with significant upside to expand length of stay and accommodation spend. Priority: Expand accommodation inventory and targeted promotion.",
       "sdg_status_color": "#8b5cf6"
@@ -4088,12 +4760,18 @@
         "foreign_guest_share_pct": 35.5,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 6475.0,
+        "total_population_millions": 6.475,
+        "working_age_thousands": 4638.3,
+        "working_age_pct": 71.6,
+        "youth_20_39_pct": 39.5,
+        "elderly_pct": 5.0,
+        "dependency_ratio": 39.6,
         "households_thousands": 1598.53,
         "households_count": 1598530,
         "median_household_income_rm": 7867.6,
         "mean_household_income_rm": 10351.8,
-        "income_skewness_ratio": 1.316,
-        "income_data_status": "e"
+        "avg_household_size": 4.05
       },
       {
         "year": 2019,
@@ -4126,12 +4804,18 @@
         "foreign_guest_share_pct": 34.46,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 6506.1,
+        "total_population_millions": 6.5061,
+        "working_age_thousands": 4654.3,
+        "working_age_pct": 71.5,
+        "youth_20_39_pct": 38.8,
+        "elderly_pct": 5.2,
+        "dependency_ratio": 39.8,
         "households_thousands": 1623.1,
         "households_count": 1623100,
         "median_household_income_rm": 8210.0,
         "mean_household_income_rm": 10827.0,
-        "income_skewness_ratio": 1.319,
-        "income_data_status": "official"
+        "avg_household_size": 4.01
       },
       {
         "year": 2020,
@@ -4164,12 +4848,18 @@
         "foreign_guest_share_pct": 16.33,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 6994.4,
+        "total_population_millions": 6.9944,
+        "working_age_thousands": 4962.2,
+        "working_age_pct": 70.9,
+        "youth_20_39_pct": 37.3,
+        "elderly_pct": 6.9,
+        "dependency_ratio": 41.0,
         "households_thousands": 1672.168,
         "households_count": 1672168,
         "median_household_income_rm": 8762.9,
         "mean_household_income_rm": 11276.7,
-        "income_skewness_ratio": 1.287,
-        "income_data_status": "e"
+        "avg_household_size": 4.18
       },
       {
         "year": 2021,
@@ -4202,12 +4892,18 @@
         "foreign_guest_share_pct": 3.84,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 7014.7,
+        "total_population_millions": 7.0147,
+        "working_age_thousands": 4978.8,
+        "working_age_pct": 71.0,
+        "youth_20_39_pct": 36.6,
+        "elderly_pct": 7.2,
+        "dependency_ratio": 40.9,
         "households_thousands": 1722.72,
         "households_count": 1722720,
         "median_household_income_rm": 9353.1,
         "mean_household_income_rm": 11745.1,
-        "income_skewness_ratio": 1.256,
-        "income_data_status": "e"
+        "avg_household_size": 4.07
       },
       {
         "year": 2022,
@@ -4240,12 +4936,18 @@
         "foreign_guest_share_pct": 23.32,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 7050.3,
+        "total_population_millions": 7.0503,
+        "working_age_thousands": 5008.9,
+        "working_age_pct": 71.0,
+        "youth_20_39_pct": 36.0,
+        "elderly_pct": 7.4,
+        "dependency_ratio": 40.8,
         "households_thousands": 1774.8,
         "households_count": 1774800,
         "median_household_income_rm": 9983.0,
         "mean_household_income_rm": 12233.0,
-        "income_skewness_ratio": 1.225,
-        "income_data_status": "official"
+        "avg_household_size": 3.97
       },
       {
         "year": 2023,
@@ -4278,12 +4980,18 @@
         "foreign_guest_share_pct": 31.77,
         "homestay_rooms": 713.0,
         "homestay_operators": 222.0,
+        "total_population_thousands": 7209.7,
+        "total_population_millions": 7.2097,
+        "working_age_thousands": 5120.0,
+        "working_age_pct": 71.0,
+        "youth_20_39_pct": 35.7,
+        "elderly_pct": 7.7,
+        "dependency_ratio": 40.8,
         "households_thousands": 1815.659,
         "households_count": 1815659,
         "median_household_income_rm": 10347.8,
         "mean_household_income_rm": 12753.4,
-        "income_skewness_ratio": 1.232,
-        "income_data_status": "e"
+        "avg_household_size": 3.97
       },
       {
         "year": 2024,
@@ -4316,12 +5024,18 @@
         "foreign_guest_share_pct": 36.05,
         "homestay_rooms": 322.0,
         "homestay_operators": 232.0,
+        "total_population_thousands": 7362.7,
+        "total_population_millions": 7.3627,
+        "working_age_thousands": 5228.5,
+        "working_age_pct": 71.0,
+        "youth_20_39_pct": 35.3,
+        "elderly_pct": 8.1,
+        "dependency_ratio": 40.8,
         "households_thousands": 1857.459,
         "households_count": 1857459,
         "median_household_income_rm": 10726.0,
         "mean_household_income_rm": 13296.0,
-        "income_skewness_ratio": 1.24,
-        "income_data_status": "official"
+        "avg_household_size": 3.96
       },
       {
         "year": 2025,
@@ -4354,12 +5068,18 @@
         "foreign_guest_share_pct": 36.47,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 7408.7,
+        "total_population_millions": 7.4087,
+        "working_age_thousands": 5261.7,
+        "working_age_pct": 71.0,
+        "youth_20_39_pct": 34.7,
+        "elderly_pct": 8.4,
+        "dependency_ratio": 40.8,
         "households_thousands": 1900.221,
         "households_count": 1900221,
         "median_household_income_rm": 11118.0,
         "mean_household_income_rm": 13861.7,
-        "income_skewness_ratio": 1.247,
-        "income_data_status": "e"
+        "avg_household_size": 3.9
       }
     ]
   },
@@ -4392,12 +5112,25 @@
       "aor_pct": 45.95,
       "resident_median_income_rm": 6831.8
     },
+    "demographics": {
+      "total_population_thousands": 1245.8,
+      "total_population_millions": 1.2458,
+      "working_age_thousands": 823.6,
+      "working_age_pct": 66.1,
+      "youth_20_39_pct": 32.9,
+      "elderly_pct": 6.3,
+      "children_pct": 27.5,
+      "dependency_ratio": 51.2,
+      "households_thousands": 301.731,
+      "median_household_income_rm": 7036.6,
+      "avg_household_size": 4.13
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 234.8,
       "epr_ratio": 1.95,
       "dvr_retention_rate_pct": 51.3,
-      "tir_visitors_per_resident": 12.78,
-      "ryh_accom_per_household_rm": 1659.1,
+      "tir_visitors_per_resident": 12.41,
+      "ryh_accom_per_household_rm": 1620.9,
       "sdg_diagnosis": "Value Growth Frontier",
       "sdg_policy_action": "Healthy absorption capacity with significant upside to expand length of stay and accommodation spend. Priority: Expand accommodation inventory and targeted promotion.",
       "sdg_status_color": "#8b5cf6"
@@ -4458,12 +5191,18 @@
         "foreign_guest_share_pct": 9.49,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1228.3,
+        "total_population_millions": 1.2283,
+        "working_age_thousands": 788.3,
+        "working_age_pct": 64.2,
+        "youth_20_39_pct": 33.0,
+        "elderly_pct": 5.5,
+        "dependency_ratio": 55.8,
         "households_thousands": 251.174,
         "households_count": 251174,
         "median_household_income_rm": 5245.4,
         "mean_household_income_rm": 6449.4,
-        "income_skewness_ratio": 1.23,
-        "income_data_status": "e"
+        "avg_household_size": 4.89
       },
       {
         "year": 2019,
@@ -4496,12 +5235,18 @@
         "foreign_guest_share_pct": 9.35,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1244.5,
+        "total_population_millions": 1.2445,
+        "working_age_thousands": 797.9,
+        "working_age_pct": 64.1,
+        "youth_20_39_pct": 33.1,
+        "elderly_pct": 5.7,
+        "dependency_ratio": 56.0,
         "households_thousands": 257.6,
         "households_count": 257600,
         "median_household_income_rm": 5545.0,
         "mean_household_income_rm": 6815.0,
-        "income_skewness_ratio": 1.229,
-        "income_data_status": "official"
+        "avg_household_size": 4.83
       },
       {
         "year": 2020,
@@ -4534,12 +5279,18 @@
         "foreign_guest_share_pct": 1.47,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1149.4,
+        "total_population_millions": 1.1494,
+        "working_age_thousands": 757.1,
+        "working_age_pct": 65.9,
+        "youth_20_39_pct": 32.7,
+        "elderly_pct": 5.5,
+        "dependency_ratio": 51.8,
         "households_thousands": 265.301,
         "households_count": 265301,
         "median_household_income_rm": 5653.8,
         "mean_household_income_rm": 6956.4,
-        "income_skewness_ratio": 1.23,
-        "income_data_status": "e"
+        "avg_household_size": 4.33
       },
       {
         "year": 2021,
@@ -4572,12 +5323,18 @@
         "foreign_guest_share_pct": 0.14,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1170.7,
+        "total_population_millions": 1.1707,
+        "working_age_thousands": 770.1,
+        "working_age_pct": 65.8,
+        "youth_20_39_pct": 33.0,
+        "elderly_pct": 5.7,
+        "dependency_ratio": 52.0,
         "households_thousands": 273.232,
         "households_count": 273232,
         "median_household_income_rm": 5764.8,
         "mean_household_income_rm": 7100.7,
-        "income_skewness_ratio": 1.232,
-        "income_data_status": "e"
+        "avg_household_size": 4.28
       },
       {
         "year": 2022,
@@ -4610,12 +5367,18 @@
         "foreign_guest_share_pct": 3.11,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1186.6,
+        "total_population_millions": 1.1866,
+        "working_age_thousands": 781.2,
+        "working_age_pct": 65.8,
+        "youth_20_39_pct": 32.9,
+        "elderly_pct": 5.8,
+        "dependency_ratio": 51.9,
         "households_thousands": 281.4,
         "households_count": 281400,
         "median_household_income_rm": 5878.0,
         "mean_household_income_rm": 7248.0,
-        "income_skewness_ratio": 1.233,
-        "income_data_status": "official"
+        "avg_household_size": 4.22
       },
       {
         "year": 2023,
@@ -4648,12 +5411,18 @@
         "foreign_guest_share_pct": 7.98,
         "homestay_rooms": 231.0,
         "homestay_operators": 104.0,
+        "total_population_thousands": 1210.0,
+        "total_population_millions": 1.21,
+        "working_age_thousands": 798.1,
+        "working_age_pct": 66.0,
+        "youth_20_39_pct": 33.1,
+        "elderly_pct": 5.9,
+        "dependency_ratio": 51.6,
         "households_thousands": 288.02,
         "households_count": 288020,
         "median_household_income_rm": 6241.3,
         "mean_household_income_rm": 7435.1,
-        "income_skewness_ratio": 1.191,
-        "income_data_status": "e"
+        "avg_household_size": 4.2
       },
       {
         "year": 2024,
@@ -4686,12 +5455,18 @@
         "foreign_guest_share_pct": 10.25,
         "homestay_rooms": 136.0,
         "homestay_operators": 119.0,
+        "total_population_thousands": 1231.5,
+        "total_population_millions": 1.2315,
+        "working_age_thousands": 813.8,
+        "working_age_pct": 66.1,
+        "youth_20_39_pct": 33.2,
+        "elderly_pct": 6.1,
+        "dependency_ratio": 51.3,
         "households_thousands": 294.796,
         "households_count": 294796,
         "median_household_income_rm": 6627.0,
         "mean_household_income_rm": 7627.0,
-        "income_skewness_ratio": 1.151,
-        "income_data_status": "official"
+        "avg_household_size": 4.18
       },
       {
         "year": 2025,
@@ -4724,12 +5499,18 @@
         "foreign_guest_share_pct": 10.28,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1245.8,
+        "total_population_millions": 1.2458,
+        "working_age_thousands": 823.6,
+        "working_age_pct": 66.1,
+        "youth_20_39_pct": 32.9,
+        "elderly_pct": 6.3,
+        "dependency_ratio": 51.2,
         "households_thousands": 301.731,
         "households_count": 301731,
         "median_household_income_rm": 7036.6,
         "mean_household_income_rm": 7823.9,
-        "income_skewness_ratio": 1.112,
-        "income_data_status": "e"
+        "avg_household_size": 4.13
       }
     ]
   },
@@ -4762,14 +5543,27 @@
       "aor_pct": 64.75,
       "resident_median_income_rm": 10949.85
     },
+    "demographics": {
+      "total_population_thousands": 2075.2,
+      "total_population_millions": 2.0752,
+      "working_age_thousands": 1578.5,
+      "working_age_pct": 76.1,
+      "youth_20_39_pct": 35.3,
+      "elderly_pct": 7.1,
+      "children_pct": 16.9,
+      "dependency_ratio": 31.5,
+      "households_thousands": 585.627,
+      "median_household_income_rm": 11097.7,
+      "avg_household_size": 3.54
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 348.8,
       "epr_ratio": 2.48,
       "dvr_retention_rate_pct": 51.5,
-      "tir_visitors_per_resident": 17.53,
-      "ryh_accom_per_household_rm": 3385.9,
+      "tir_visitors_per_resident": 16.89,
+      "ryh_accom_per_household_rm": 3321.8,
       "sdg_diagnosis": "Carrying Capacity Volume Pressure",
-      "sdg_policy_action": "High visitor intensity (17.5 visitors per resident). Priority: Shift from visitor volume targets to yield-per-visitor optimization.",
+      "sdg_policy_action": "High visitor intensity (16.9 visitors per resident). Priority: Shift from visitor volume targets to yield-per-visitor optimization.",
       "sdg_status_color": "#3b82f6"
     },
     "hotel_stars": {
@@ -4828,12 +5622,18 @@
         "foreign_guest_share_pct": 59.13,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1790.0,
+        "total_population_millions": 1.79,
+        "working_age_thousands": 1304.6,
+        "working_age_pct": 72.9,
+        "youth_20_39_pct": 37.9,
+        "elderly_pct": 6.8,
+        "dependency_ratio": 37.2,
         "households_thousands": 476.612,
         "households_count": 476612,
         "median_household_income_rm": 10032.1,
         "mean_household_income_rm": 12713.3,
-        "income_skewness_ratio": 1.267,
-        "income_data_status": "e"
+        "avg_household_size": 3.76
       },
       {
         "year": 2019,
@@ -4866,12 +5666,18 @@
         "foreign_guest_share_pct": 59.64,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1782.5,
+        "total_population_millions": 1.7825,
+        "working_age_thousands": 1295.8,
+        "working_age_pct": 72.7,
+        "youth_20_39_pct": 36.9,
+        "elderly_pct": 7.2,
+        "dependency_ratio": 37.6,
         "households_thousands": 484.3,
         "households_count": 484300,
         "median_household_income_rm": 10549.0,
         "mean_household_income_rm": 13257.0,
-        "income_skewness_ratio": 1.257,
-        "income_data_status": "official"
+        "avg_household_size": 3.68
       },
       {
         "year": 2020,
@@ -4904,12 +5710,18 @@
         "foreign_guest_share_pct": 25.98,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1982.1,
+        "total_population_millions": 1.9821,
+        "working_age_thousands": 1455.9,
+        "working_age_pct": 73.5,
+        "youth_20_39_pct": 39.1,
+        "elderly_pct": 6.6,
+        "dependency_ratio": 36.1,
         "households_thousands": 506.195,
         "households_count": 506195,
         "median_household_income_rm": 10442.9,
         "mean_household_income_rm": 13279.6,
-        "income_skewness_ratio": 1.272,
-        "income_data_status": "e"
+        "avg_household_size": 3.92
       },
       {
         "year": 2021,
@@ -4942,12 +5754,18 @@
         "foreign_guest_share_pct": 1.81,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1964.0,
+        "total_population_millions": 1.964,
+        "working_age_thousands": 1449.7,
+        "working_age_pct": 73.8,
+        "youth_20_39_pct": 37.8,
+        "elderly_pct": 6.7,
+        "dependency_ratio": 35.5,
         "households_thousands": 529.08,
         "households_count": 529080,
         "median_household_income_rm": 10337.9,
         "mean_household_income_rm": 13302.3,
-        "income_skewness_ratio": 1.287,
-        "income_data_status": "e"
+        "avg_household_size": 3.71
       },
       {
         "year": 2022,
@@ -4980,12 +5798,18 @@
         "foreign_guest_share_pct": 33.95,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 1961.2,
+        "total_population_millions": 1.9612,
+        "working_age_thousands": 1457.0,
+        "working_age_pct": 74.3,
+        "youth_20_39_pct": 36.4,
+        "elderly_pct": 6.8,
+        "dependency_ratio": 34.6,
         "households_thousands": 553.0,
         "households_count": 553000,
         "median_household_income_rm": 10234.0,
         "mean_household_income_rm": 13325.0,
-        "income_skewness_ratio": 1.302,
-        "income_data_status": "official"
+        "avg_household_size": 3.55
       },
       {
         "year": 2023,
@@ -5018,12 +5842,18 @@
         "foreign_guest_share_pct": 47.26,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2005.7,
+        "total_population_millions": 2.0057,
+        "working_age_thousands": 1504.4,
+        "working_age_pct": 75.0,
+        "youth_20_39_pct": 36.3,
+        "elderly_pct": 6.8,
+        "dependency_ratio": 33.3,
         "households_thousands": 563.669,
         "households_count": 563669,
         "median_household_income_rm": 10514.2,
         "mean_household_income_rm": 13651.0,
-        "income_skewness_ratio": 1.298,
-        "income_data_status": "e"
+        "avg_household_size": 3.56
       },
       {
         "year": 2024,
@@ -5056,12 +5886,18 @@
         "foreign_guest_share_pct": 55.36,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2067.5,
+        "total_population_millions": 2.0675,
+        "working_age_thousands": 1569.0,
+        "working_age_pct": 75.9,
+        "youth_20_39_pct": 36.2,
+        "elderly_pct": 6.8,
+        "dependency_ratio": 31.8,
         "households_thousands": 574.543,
         "households_count": 574543,
         "median_household_income_rm": 10802.0,
         "mean_household_income_rm": 13985.0,
-        "income_skewness_ratio": 1.295,
-        "income_data_status": "official"
+        "avg_household_size": 3.6
       },
       {
         "year": 2025,
@@ -5094,12 +5930,18 @@
         "foreign_guest_share_pct": 56.38,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 2075.2,
+        "total_population_millions": 2.0752,
+        "working_age_thousands": 1578.5,
+        "working_age_pct": 76.1,
+        "youth_20_39_pct": 35.3,
+        "elderly_pct": 7.1,
+        "dependency_ratio": 31.5,
         "households_thousands": 585.627,
         "households_count": 585627,
         "median_household_income_rm": 11097.7,
         "mean_household_income_rm": 14327.2,
-        "income_skewness_ratio": 1.291,
-        "income_data_status": "e"
+        "avg_household_size": 3.54
       }
     ]
   },
@@ -5132,12 +5974,25 @@
       "aor_pct": 38.2,
       "resident_median_income_rm": 7508.9
     },
+    "demographics": {
+      "total_population_thousands": 100.9,
+      "total_population_millions": 0.1009,
+      "working_age_thousands": 69.9,
+      "working_age_pct": 69.3,
+      "youth_20_39_pct": 34.3,
+      "elderly_pct": 5.5,
+      "children_pct": 25.3,
+      "dependency_ratio": 44.3,
+      "households_thousands": 23.262,
+      "median_household_income_rm": 7634.8,
+      "avg_household_size": 4.34
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 376.6,
       "epr_ratio": 1.27,
       "dvr_retention_rate_pct": 46.6,
-      "tir_visitors_per_resident": 6.04,
-      "ryh_accom_per_household_rm": 1995.2,
+      "tir_visitors_per_resident": 5.99,
+      "ryh_accom_per_household_rm": 1946.5,
       "sdg_diagnosis": "Value Growth Frontier",
       "sdg_policy_action": "Healthy absorption capacity with significant upside to expand length of stay and accommodation spend. Priority: Expand accommodation inventory and targeted promotion.",
       "sdg_status_color": "#8b5cf6"
@@ -5198,12 +6053,18 @@
         "foreign_guest_share_pct": 16.81,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 99.0,
+        "total_population_millions": 0.099,
+        "working_age_thousands": 68.3,
+        "working_age_pct": 69.0,
+        "youth_20_39_pct": 38.1,
+        "elderly_pct": 4.1,
+        "dependency_ratio": 44.8,
         "households_thousands": 22.691,
         "households_count": 22691,
         "median_household_income_rm": 6448.7,
         "mean_household_income_rm": 8270.4,
-        "income_skewness_ratio": 1.282,
-        "income_data_status": "e"
+        "avg_household_size": 4.36
       },
       {
         "year": 2019,
@@ -5236,12 +6097,18 @@
         "foreign_guest_share_pct": 14.93,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 99.3,
+        "total_population_millions": 0.0993,
+        "working_age_thousands": 68.7,
+        "working_age_pct": 69.2,
+        "youth_20_39_pct": 37.7,
+        "elderly_pct": 4.3,
+        "dependency_ratio": 44.5,
         "households_thousands": 23.7,
         "households_count": 23700,
         "median_household_income_rm": 6726.0,
         "mean_household_income_rm": 8319.0,
-        "income_skewness_ratio": 1.237,
-        "income_data_status": "official"
+        "avg_household_size": 4.19
       },
       {
         "year": 2020,
@@ -5274,12 +6141,18 @@
         "foreign_guest_share_pct": 7.95,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 95.1,
+        "total_population_millions": 0.0951,
+        "working_age_thousands": 65.0,
+        "working_age_pct": 68.3,
+        "youth_20_39_pct": 37.2,
+        "elderly_pct": 4.2,
+        "dependency_ratio": 46.2,
         "households_thousands": 22.978,
         "households_count": 22978,
         "median_household_income_rm": 6784.8,
         "mean_household_income_rm": 8295.9,
-        "income_skewness_ratio": 1.223,
-        "income_data_status": "e"
+        "avg_household_size": 4.14
       },
       {
         "year": 2021,
@@ -5312,12 +6185,18 @@
         "foreign_guest_share_pct": 1.35,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 96.0,
+        "total_population_millions": 0.096,
+        "working_age_thousands": 65.6,
+        "working_age_pct": 68.3,
+        "youth_20_39_pct": 37.7,
+        "elderly_pct": 4.3,
+        "dependency_ratio": 46.2,
         "households_thousands": 22.278,
         "households_count": 22278,
         "median_household_income_rm": 6844.1,
         "mean_household_income_rm": 8272.9,
-        "income_skewness_ratio": 1.209,
-        "income_data_status": "e"
+        "avg_household_size": 4.31
       },
       {
         "year": 2022,
@@ -5350,12 +6229,18 @@
         "foreign_guest_share_pct": 8.04,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 96.9,
+        "total_population_millions": 0.0969,
+        "working_age_thousands": 65.9,
+        "working_age_pct": 68.0,
+        "youth_20_39_pct": 36.5,
+        "elderly_pct": 4.7,
+        "dependency_ratio": 47.0,
         "households_thousands": 21.6,
         "households_count": 21600,
         "median_household_income_rm": 6904.0,
         "mean_household_income_rm": 8250.0,
-        "income_skewness_ratio": 1.195,
-        "income_data_status": "official"
+        "avg_household_size": 4.49
       },
       {
         "year": 2023,
@@ -5388,12 +6273,18 @@
         "foreign_guest_share_pct": 11.54,
         "homestay_rooms": 97.0,
         "homestay_operators": 80.0,
+        "total_population_thousands": 99.0,
+        "total_population_millions": 0.099,
+        "working_age_thousands": 68.0,
+        "working_age_pct": 68.7,
+        "youth_20_39_pct": 36.2,
+        "elderly_pct": 4.9,
+        "dependency_ratio": 45.7,
         "households_thousands": 22.14,
         "households_count": 22140,
         "median_household_income_rm": 7139.5,
         "mean_household_income_rm": 8401.1,
-        "income_skewness_ratio": 1.177,
-        "income_data_status": "e"
+        "avg_household_size": 4.47
       },
       {
         "year": 2024,
@@ -5426,12 +6317,18 @@
         "foreign_guest_share_pct": 11.51,
         "homestay_rooms": 155.0,
         "homestay_operators": 80.0,
+        "total_population_thousands": 100.8,
+        "total_population_millions": 0.1008,
+        "working_age_thousands": 69.1,
+        "working_age_pct": 68.6,
+        "youth_20_39_pct": 35.2,
+        "elderly_pct": 5.2,
+        "dependency_ratio": 46.0,
         "households_thousands": 22.694,
         "households_count": 22694,
         "median_household_income_rm": 7383.0,
         "mean_household_income_rm": 8555.0,
-        "income_skewness_ratio": 1.159,
-        "income_data_status": "official"
+        "avg_household_size": 4.44
       },
       {
         "year": 2025,
@@ -5464,12 +6361,18 @@
         "foreign_guest_share_pct": 11.5,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 100.9,
+        "total_population_millions": 0.1009,
+        "working_age_thousands": 69.9,
+        "working_age_pct": 69.3,
+        "youth_20_39_pct": 34.3,
+        "elderly_pct": 5.5,
+        "dependency_ratio": 44.3,
         "households_thousands": 23.262,
         "households_count": 23262,
         "median_household_income_rm": 7634.8,
         "mean_household_income_rm": 8711.7,
-        "income_skewness_ratio": 1.141,
-        "income_data_status": "e"
+        "avg_household_size": 4.34
       }
     ]
   },
@@ -5502,14 +6405,27 @@
       "aor_pct": 56.25,
       "resident_median_income_rm": 10956.6
     },
+    "demographics": {
+      "total_population_thousands": 120.7,
+      "total_population_millions": 0.1207,
+      "working_age_thousands": 77.9,
+      "working_age_pct": 64.5,
+      "youth_20_39_pct": 24.3,
+      "elderly_pct": 2.1,
+      "children_pct": 33.3,
+      "dependency_ratio": 54.8,
+      "households_thousands": 33.892,
+      "median_household_income_rm": 11144.2,
+      "avg_household_size": 3.56
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 274.3,
       "epr_ratio": 2.47,
       "dvr_retention_rate_pct": 51.7,
-      "tir_visitors_per_resident": 26.22,
-      "ryh_accom_per_household_rm": 2165.6,
+      "tir_visitors_per_resident": 26.07,
+      "ryh_accom_per_household_rm": 2099.9,
       "sdg_diagnosis": "Carrying Capacity Volume Pressure",
-      "sdg_policy_action": "High visitor intensity (26.2 visitors per resident). Priority: Shift from visitor volume targets to yield-per-visitor optimization.",
+      "sdg_policy_action": "High visitor intensity (26.1 visitors per resident). Priority: Shift from visitor volume targets to yield-per-visitor optimization.",
       "sdg_status_color": "#3b82f6"
     },
     "hotel_stars": {
@@ -5568,12 +6484,18 @@
         "foreign_guest_share_pct": 35.03,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 97.2,
+        "total_population_millions": 0.0972,
+        "working_age_thousands": 60.4,
+        "working_age_pct": 62.1,
+        "youth_20_39_pct": 36.5,
+        "elderly_pct": 1.4,
+        "dependency_ratio": 60.9,
         "households_thousands": 30.64,
         "households_count": 30640,
         "median_household_income_rm": 9377.7,
         "mean_household_income_rm": 12396.5,
-        "income_skewness_ratio": 1.322,
-        "income_data_status": "e"
+        "avg_household_size": 3.17
       },
       {
         "year": 2019,
@@ -5606,12 +6528,18 @@
         "foreign_guest_share_pct": 36.77,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 103.7,
+        "total_population_millions": 0.1037,
+        "working_age_thousands": 65.0,
+        "working_age_pct": 62.7,
+        "youth_20_39_pct": 35.7,
+        "elderly_pct": 1.6,
+        "dependency_ratio": 59.4,
         "households_thousands": 32.7,
         "households_count": 32700,
         "median_household_income_rm": 9983.0,
         "mean_household_income_rm": 12840.0,
-        "income_skewness_ratio": 1.286,
-        "income_data_status": "official"
+        "avg_household_size": 3.17
       },
       {
         "year": 2020,
@@ -5644,12 +6572,18 @@
         "foreign_guest_share_pct": 10.74,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 109.2,
+        "total_population_millions": 0.1092,
+        "working_age_thousands": 66.1,
+        "working_age_pct": 60.5,
+        "youth_20_39_pct": 36.3,
+        "elderly_pct": 1.5,
+        "dependency_ratio": 65.2,
         "households_thousands": 32.089,
         "households_count": 32089,
         "median_household_income_rm": 10007.3,
         "mean_household_income_rm": 13047.6,
-        "income_skewness_ratio": 1.304,
-        "income_data_status": "e"
+        "avg_household_size": 3.4
       },
       {
         "year": 2021,
@@ -5682,12 +6616,18 @@
         "foreign_guest_share_pct": 1.08,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 115.2,
+        "total_population_millions": 0.1152,
+        "working_age_thousands": 70.3,
+        "working_age_pct": 61.0,
+        "youth_20_39_pct": 33.8,
+        "elderly_pct": 1.6,
+        "dependency_ratio": 64.2,
         "households_thousands": 31.489,
         "households_count": 31489,
         "median_household_income_rm": 10031.6,
         "mean_household_income_rm": 13258.6,
-        "income_skewness_ratio": 1.322,
-        "income_data_status": "e"
+        "avg_household_size": 3.66
       },
       {
         "year": 2022,
@@ -5720,12 +6660,18 @@
         "foreign_guest_share_pct": 12.43,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 117.0,
+        "total_population_millions": 0.117,
+        "working_age_thousands": 71.9,
+        "working_age_pct": 61.5,
+        "youth_20_39_pct": 31.1,
+        "elderly_pct": 1.6,
+        "dependency_ratio": 62.9,
         "households_thousands": 30.9,
         "households_count": 30900,
         "median_household_income_rm": 10056.0,
         "mean_household_income_rm": 13473.0,
-        "income_skewness_ratio": 1.34,
-        "income_data_status": "official"
+        "avg_household_size": 3.79
       },
       {
         "year": 2023,
@@ -5758,12 +6704,18 @@
         "foreign_guest_share_pct": 22.98,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 118.8,
+        "total_population_millions": 0.1188,
+        "working_age_thousands": 73.8,
+        "working_age_pct": 62.1,
+        "youth_20_39_pct": 28.9,
+        "elderly_pct": 1.9,
+        "dependency_ratio": 61.1,
         "households_thousands": 31.867,
         "households_count": 31867,
         "median_household_income_rm": 10406.4,
         "mean_household_income_rm": 13658.2,
-        "income_skewness_ratio": 1.312,
-        "income_data_status": "e"
+        "avg_household_size": 3.73
       },
       {
         "year": 2024,
@@ -5796,12 +6748,18 @@
         "foreign_guest_share_pct": 28.5,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 120.3,
+        "total_population_millions": 0.1203,
+        "working_age_thousands": 76.3,
+        "working_age_pct": 63.4,
+        "youth_20_39_pct": 26.7,
+        "elderly_pct": 1.9,
+        "dependency_ratio": 57.7,
         "households_thousands": 32.864,
         "households_count": 32864,
         "median_household_income_rm": 10769.0,
         "mean_household_income_rm": 13846.0,
-        "income_skewness_ratio": 1.286,
-        "income_data_status": "official"
+        "avg_household_size": 3.66
       },
       {
         "year": 2025,
@@ -5834,12 +6792,18 @@
         "foreign_guest_share_pct": 28.16,
         "homestay_rooms": null,
         "homestay_operators": null,
+        "total_population_thousands": 120.7,
+        "total_population_millions": 0.1207,
+        "working_age_thousands": 77.9,
+        "working_age_pct": 64.5,
+        "youth_20_39_pct": 24.3,
+        "elderly_pct": 2.1,
+        "dependency_ratio": 54.8,
         "households_thousands": 33.892,
         "households_count": 33892,
         "median_household_income_rm": 11144.2,
         "mean_household_income_rm": 14036.4,
-        "income_skewness_ratio": 1.26,
-        "income_data_status": "e"
+        "avg_household_size": 3.56
       }
     ]
   }

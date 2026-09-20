@@ -67,12 +67,13 @@ def run_sdg_metrics() -> pd.DataFrame:
             p.transport_expenditure_rm_million,
             p.accommodation_share,
             p.hotel_rooms_kpi,
-            d.population_thousands,
-            d.households_thousands,
-            d.households_count,
-            d.median_income_rm as resident_median_income_rm
+            p.total_population_thousands,
+            p.working_age_thousands,
+            p.households_thousands,
+            p.households_count,
+            p.median_household_income_rm as resident_median_income_rm,
+            p.avg_household_size
         FROM state_panel_year p
-        LEFT JOIN state_demographics d ON p.state = d.state
         WHERE p.year BETWEEN 2018 AND 2025
     ),
     hhi_base AS (
@@ -133,10 +134,10 @@ def run_sdg_metrics() -> pd.DataFrame:
 
     # 5. Tourism Intensity Ratio (TIR = Visitors / Resident Population)
     df["tir_visitors_per_resident"] = np.round(
-        df["visitors_thousands"] / df["population_thousands"].clip(lower=10.0), 2
+        df["visitors_thousands"] / df["total_population_thousands"].clip(lower=10.0), 2
     )
     df["tir_tourists_per_resident"] = np.round(
-        df["tourists_thousands"] / df["population_thousands"].clip(lower=10.0), 2
+        df["tourists_thousands"] / df["total_population_thousands"].clip(lower=10.0), 2
     )
 
     # 6. Resident Economic Yield per Household (RYH in RM accommodation yield per resident household)

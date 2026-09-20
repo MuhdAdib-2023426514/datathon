@@ -1,17 +1,17 @@
-year,state,state_code,region,population_thousands,population_millions,median_household_income_rm,mean_household_income_rm
-2024,Johor,MY-01,Southern,4100.0,4.1,6071.0,7700.0
-2024,Kedah,MY-02,Northern,2200.0,2.2,4402.0,5500.0
-2024,Kelantan,MY-03,East Coast,1850.0,1.85,3614.0,4800.0
-2024,Melaka,MY-04,Southern,1030.0,1.03,6210.0,8000.0
-2024,Negeri Sembilan,MY-05,Central,1210.0,1.21,5226.0,6700.0
-2024,Pahang,MY-06,East Coast,1630.0,1.63,4753.0,5900.0
-2024,Pulau Pinang,MY-07,Northern,1770.0,1.77,6502.0,8200.0
-2024,Perak,MY-08,Northern,2540.0,2.54,4594.0,5700.0
-2024,Perlis,MY-09,Northern,290.0,0.29,4713.0,5600.0
-2024,Selangor,MY-10,Central,7200.0,7.2,9983.0,12200.0
-2024,Terengganu,MY-11,East Coast,1210.0,1.21,5878.0,7200.0
-2024,Sabah,MY-12,East Malaysia,3700.0,3.7,4577.0,5700.0
-2024,Sarawak,MY-13,East Malaysia,2500.0,2.5,4978.0,6400.0
-2024,W.P. Kuala Lumpur,MY-14,Central,2000.0,2.0,10234.0,13300.0
-2024,W.P. Labuan,MY-15,East Malaysia,100.0,0.1,6904.0,8500.0
-2024,W.P. Putrajaya,MY-16,Central,120.0,0.12,13473.0,16800.0
+year,state,total_population_thousands,total_population_millions,working_age_thousands,youth_20_39_thousands,elderly_65plus_thousands,children_0_14_thousands,working_age_pct,youth_20_39_pct,elderly_pct,children_pct,dependency_ratio,state_code,region,households_thousands,households_count,median_household_income_rm,mean_household_income_rm,avg_household_size,data_status
+2025,Johor,4204.1,4.2041,2998.4,1486.0,325.1,880.5,71.3,35.3,7.7,20.9,40.2,MY-01,Southern,1057.819,1057819,8165.6,10007.9,3.97,official_dosm_estimates
+2025,Kedah,2227.1,2.2271,1490.8,764.5,209.4,527.0,66.9,34.3,9.4,23.7,49.4,MY-02,Northern,561.327,561327,5161.8,5918.5,3.97,official_dosm_estimates
+2025,Kelantan,1906.9,1.9069,1239.0,631.1,141.2,526.7,65.0,33.1,7.4,27.6,53.9,MY-03,East Coast,371.309,371309,4339.9,5465.9,5.14,official_dosm_estimates
+2025,Melaka,1052.0,1.052,745.9,402.7,76.4,229.8,70.9,38.3,7.3,21.8,41.1,MY-04,Southern,281.314,281314,7259.0,9018.7,3.74,official_dosm_estimates
+2025,Negeri Sembilan,1243.9,1.2439,857.0,424.3,100.5,286.7,68.9,34.1,8.1,23.0,45.2,MY-05,Central,329.771,329771,5783.0,7578.1,3.77,official_dosm_estimates
+2025,Pahang,1676.8,1.6768,1168.5,560.9,119.3,389.2,69.7,33.5,7.1,23.2,43.5,MY-06,East Coast,403.6,403600,5089.9,6215.9,4.15,official_dosm_estimates
+2025,Perak,2573.8,2.5738,1780.2,859.0,266.0,527.8,69.2,33.4,10.3,20.5,44.6,MY-08,Northern,666.344,666344,4786.6,6380.0,3.86,official_dosm_estimates
+2025,Perlis,297.0,0.297,214.6,112.5,25.4,57.3,72.3,37.9,8.6,19.3,38.5,MY-09,Northern,82.348,82348,5072.9,6169.2,3.61,official_dosm_estimates
+2025,Pulau Pinang,1804.3,1.8043,1320.7,646.7,151.9,331.7,73.2,35.8,8.4,18.4,36.6,MY-07,Northern,498.668,498668,7872.1,9629.4,3.62,official_dosm_estimates
+2025,Sabah,3754.5,3.7545,2647.0,1442.0,237.5,869.9,70.5,38.4,6.3,23.2,41.8,MY-12,East Malaysia,651.763,651763,5054.4,6667.9,5.76,official_dosm_estimates
+2025,Sarawak,2528.9,2.5289,1801.6,869.3,232.4,494.9,71.2,34.4,9.2,19.6,40.4,MY-13,East Malaysia,620.199,620199,5787.5,7205.8,4.08,official_dosm_estimates
+2025,Selangor,7408.7,7.4087,5261.7,2571.2,619.5,1527.3,71.0,34.7,8.4,20.6,40.8,MY-10,Central,1900.221,1900221,11118.0,13861.7,3.9,official_dosm_estimates
+2025,Terengganu,1245.8,1.2458,823.6,410.2,78.7,343.2,66.1,32.9,6.3,27.5,51.2,MY-11,East Coast,301.731,301731,7036.6,7823.9,4.13,official_dosm_estimates
+2025,W.P. Kuala Lumpur,2075.2,2.0752,1578.5,733.2,146.7,349.9,76.1,35.3,7.1,16.9,31.5,MY-14,Central,585.627,585627,11097.7,14327.2,3.54,official_dosm_estimates
+2025,W.P. Labuan,100.9,0.1009,69.9,34.6,5.5,25.5,69.3,34.3,5.5,25.3,44.3,MY-15,East Malaysia,23.262,23262,7634.8,8711.7,4.34,official_dosm_estimates
+2025,W.P. Putrajaya,120.7,0.1207,77.9,29.3,2.5,40.2,64.5,24.3,2.1,33.3,54.8,MY-16,Central,33.892,33892,11144.2,14036.4,3.56,official_dosm_estimates

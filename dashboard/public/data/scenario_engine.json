@@ -120,10 +120,10 @@
     }
   },
   "gravity_elasticities": {
-    "distance_friction": -0.5913,
-    "origin_households": 0.9319,
-    "origin_income": 0.5673,
-    "destination_pull": 0.7098,
-    "cross_region_barrier": -1.2665
+    "distance_friction": -0.6031,
+    "origin_working_age": 0.8903,
+    "origin_income": 0.725,
+    "destination_pull": 0.7035,
+    "cross_region_barrier": -1.3319
   }
 }
