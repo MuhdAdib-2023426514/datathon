@@ -1,0 +1,241 @@
+year,origin,destination,origin_code,destination_code,distance_km,is_cross_region,tourist_flow_thousands,expected_flow_thousands,gravity_residual,performance_ratio,corridor_gravity_category
+2025,Johor,Kedah,MY-01,MY-02,571.32,False,740.539,601.95,138.59,1.23,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Johor,Kelantan,MY-01,MY-03,404.5,False,576.493,649.78,-73.29,0.89,Market-Aligned Normal Corridor
+2025,Johor,Melaka,MY-01,MY-04,125.4,False,1344.569,1132.14,212.43,1.19,Market-Aligned Normal Corridor
+2025,Johor,Negeri Sembilan,MY-01,MY-05,152.02,False,1671.469,969.26,702.21,1.72,Market-Aligned Normal Corridor
+2025,Johor,Pahang,MY-01,MY-06,238.28,False,981.156,1257.86,-276.7,0.78,Market-Aligned Normal Corridor
+2025,Johor,Pulau Pinang,MY-01,MY-07,512.56,False,106.412,509.68,-403.27,0.21,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Johor,Perak,MY-01,MY-08,396.95,False,173.172,968.0,-794.83,0.18,Under-Performing Corridor (Low Connectivity)
+2025,Johor,Perlis,MY-01,MY-09,611.4,False,50.178,143.26,-93.08,0.35,Under-Performing Corridor (Low Connectivity)
+2025,Johor,Selangor,MY-01,MY-10,240.52,False,629.355,1213.6,-584.24,0.52,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Johor,Terengganu,MY-01,MY-11,328.75,False,286.182,582.52,-296.34,0.49,Under-Performing Corridor (Low Connectivity)
+2025,Johor,Sabah,MY-01,MY-12,1480.31,True,112.834,176.11,-63.28,0.64,Market-Aligned Normal Corridor
+2025,Johor,Sarawak,MY-01,MY-13,1073.6,True,348.024,176.99,171.03,1.97,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Johor,W.P. Kuala Lumpur,MY-01,MY-14,228.98,False,494.101,1187.56,-693.46,0.42,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Johor,W.P. Labuan,MY-01,MY-15,1368.92,True,3.471,9.68,-6.21,0.36,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Johor,W.P. Putrajaya,MY-01,MY-16,215.11,False,76.891,148.49,-71.6,0.52,Market-Aligned Normal Corridor
+2025,Kedah,Johor,MY-02,MY-01,571.32,False,114.898,325.14,-210.24,0.35,Under-Performing Corridor (Low Connectivity)
+2025,Kedah,Kelantan,MY-02,MY-03,201.97,False,285.999,359.63,-73.63,0.8,Market-Aligned Normal Corridor
+2025,Kedah,Melaka,MY-02,MY-04,479.66,False,259.897,259.6,0.3,1.0,Market-Aligned Normal Corridor
+2025,Kedah,Negeri Sembilan,MY-02,MY-05,430.68,False,112.4,253.09,-140.69,0.44,Under-Performing Corridor (Low Connectivity)
+2025,Kedah,Pahang,MY-02,MY-06,335.76,False,282.067,444.35,-162.28,0.63,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Kedah,Pulau Pinang,MY-02,MY-07,78.44,False,431.179,470.58,-39.4,0.92,Market-Aligned Normal Corridor
+2025,Kedah,Perak,MY-02,MY-08,177.39,False,698.16,562.09,136.07,1.24,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Kedah,Perlis,MY-02,MY-09,40.56,False,160.158,189.91,-29.75,0.84,Market-Aligned Normal Corridor
+2025,Kedah,Selangor,MY-02,MY-10,361.73,False,329.094,416.8,-87.71,0.79,Market-Aligned Normal Corridor
+2025,Kedah,Terengganu,MY-02,MY-11,333.85,False,341.083,237.12,103.96,1.44,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Kedah,Sabah,MY-02,MY-12,1736.8,True,128.284,67.34,60.94,1.91,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Kedah,Sarawak,MY-02,MY-13,1455.33,True,85.125,63.58,21.54,1.34,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Kedah,W.P. Kuala Lumpur,MY-02,MY-14,362.08,False,734.346,399.1,335.25,1.84,Market-Aligned Normal Corridor
+2025,Kedah,W.P. Labuan,MY-02,MY-15,1647.0,True,7.389,3.66,3.73,2.02,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Kedah,W.P. Putrajaya,MY-02,MY-16,384.24,False,85.02,47.34,37.68,1.8,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Kelantan,Johor,MY-03,MY-01,404.5,False,103.148,279.43,-176.28,0.37,Under-Performing Corridor (Low Connectivity)
+2025,Kelantan,Kedah,MY-03,MY-02,201.97,False,101.463,286.32,-184.86,0.35,Under-Performing Corridor (Low Connectivity)
+2025,Kelantan,Melaka,MY-03,MY-04,342.23,False,181.902,222.37,-40.47,0.82,Market-Aligned Normal Corridor
+2025,Kelantan,Negeri Sembilan,MY-03,MY-05,288.76,False,66.973,222.7,-155.73,0.3,Under-Performing Corridor (Low Connectivity)
+2025,Kelantan,Pahang,MY-03,MY-06,170.46,False,212.844,441.01,-228.17,0.48,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Kelantan,Pulau Pinang,MY-03,MY-07,185.81,False,93.324,239.81,-146.49,0.39,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Kelantan,Perak,MY-03,MY-08,122.33,False,132.166,488.61,-356.44,0.27,Under-Performing Corridor (Low Connectivity)
+2025,Kelantan,Perlis,MY-03,MY-09,235.54,False,12.1,65.65,-53.55,0.18,Under-Performing Corridor (Low Connectivity)
+2025,Kelantan,Selangor,MY-03,MY-10,254.61,False,690.727,359.12,331.61,1.92,Market-Aligned Normal Corridor
+2025,Kelantan,Terengganu,MY-03,MY-11,132.22,False,752.094,262.04,490.05,2.87,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Kelantan,Sabah,MY-03,MY-12,1558.79,True,80.149,52.23,27.92,1.53,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Kelantan,Sarawak,MY-03,MY-13,1257.68,True,126.632,50.13,76.5,2.53,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Kelantan,W.P. Kuala Lumpur,MY-03,MY-14,244.14,False,297.176,350.33,-53.15,0.85,Market-Aligned Normal Corridor
+2025,Kelantan,W.P. Labuan,MY-03,MY-15,1464.45,True,2.559,2.85,-0.29,0.9,Market-Aligned Normal Corridor
+2025,Kelantan,W.P. Putrajaya,MY-03,MY-16,267.42,False,104.006,40.99,63.02,2.54,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Melaka,Johor,MY-04,MY-01,125.4,False,685.258,450.7,234.56,1.52,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Melaka,Kedah,MY-04,MY-02,479.66,False,120.369,191.33,-70.96,0.63,Market-Aligned Normal Corridor
+2025,Melaka,Kelantan,MY-04,MY-03,342.23,False,59.714,205.85,-146.14,0.29,Under-Performing Corridor (Low Connectivity)
+2025,Melaka,Negeri Sembilan,MY-04,MY-05,53.49,False,280.267,448.86,-168.59,0.62,Market-Aligned Normal Corridor
+2025,Melaka,Pahang,MY-04,MY-06,174.31,False,469.616,424.37,45.25,1.11,Market-Aligned Normal Corridor
+2025,Melaka,Pulau Pinang,MY-04,MY-07,413.14,False,99.282,164.89,-65.61,0.6,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Melaka,Perak,MY-04,MY-08,302.28,False,288.792,320.95,-32.16,0.9,Market-Aligned Normal Corridor
+2025,Melaka,Perlis,MY-04,MY-09,520.22,False,57.367,45.27,12.1,1.27,Market-Aligned Normal Corridor
+2025,Melaka,Selangor,MY-04,MY-10,124.6,False,348.921,475.38,-126.46,0.73,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Melaka,Terengganu,MY-04,MY-11,307.58,False,286.532,176.68,109.85,1.62,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Melaka,Sabah,MY-04,MY-12,1585.67,True,7.035,50.38,-43.34,0.14,Under-Performing Corridor (Low Connectivity)
+2025,Melaka,Sarawak,MY-04,MY-13,1192.25,True,55.149,49.84,5.31,1.11,Market-Aligned Normal Corridor
+2025,Melaka,W.P. Kuala Lumpur,MY-04,MY-14,118.82,False,463.246,464.85,-1.6,1.0,Market-Aligned Normal Corridor
+2025,Melaka,W.P. Labuan,MY-04,MY-15,1476.57,True,26.775,2.76,24.02,9.7,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Melaka,W.P. Putrajaya,MY-04,MY-16,99.22,False,59.888,61.16,-1.27,0.98,Market-Aligned Normal Corridor
+2025,Negeri Sembilan,Johor,MY-05,MY-01,152.02,False,467.594,394.68,72.91,1.18,Market-Aligned Normal Corridor
+2025,Negeri Sembilan,Kedah,MY-05,MY-02,430.68,False,112.049,190.8,-78.75,0.59,Market-Aligned Normal Corridor
+2025,Negeri Sembilan,Kelantan,MY-05,MY-03,288.76,False,203.938,210.87,-6.93,0.97,Market-Aligned Normal Corridor
+2025,Negeri Sembilan,Melaka,MY-05,MY-04,53.49,False,377.289,459.12,-81.83,0.82,Market-Aligned Normal Corridor
+2025,Negeri Sembilan,Pahang,MY-05,MY-06,121.19,False,444.428,472.71,-28.28,0.94,Market-Aligned Normal Corridor
+2025,Negeri Sembilan,Pulau Pinang,MY-05,MY-07,366.64,False,65.536,165.26,-99.72,0.4,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Negeri Sembilan,Perak,MY-05,MY-08,253.5,False,275.019,329.65,-54.63,0.83,Market-Aligned Normal Corridor
+2025,Negeri Sembilan,Perlis,MY-05,MY-09,471.21,False,18.698,44.97,-26.27,0.42,Under-Performing Corridor (Low Connectivity)
+2025,Negeri Sembilan,Selangor,MY-05,MY-10,89.3,False,448.828,522.62,-73.79,0.86,Market-Aligned Normal Corridor
+2025,Negeri Sembilan,Terengganu,MY-05,MY-11,258.51,False,190.562,181.3,9.26,1.05,Market-Aligned Normal Corridor
+2025,Negeri Sembilan,Sabah,MY-05,MY-12,1575.5,True,78.882,48.08,30.8,1.64,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Negeri Sembilan,Sarawak,MY-05,MY-13,1195.13,True,87.136,47.39,39.75,1.84,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Negeri Sembilan,W.P. Kuala Lumpur,MY-05,MY-14,76.97,False,442.738,533.89,-91.15,0.83,Market-Aligned Normal Corridor
+2025,Negeri Sembilan,W.P. Labuan,MY-05,MY-15,1468.31,True,47.15,2.63,44.52,17.93,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Negeri Sembilan,W.P. Putrajaya,MY-05,MY-16,64.67,False,63.288,70.06,-6.77,0.9,Market-Aligned Normal Corridor
+2025,Pahang,Johor,MY-06,MY-01,238.28,False,585.252,374.95,210.3,1.56,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Pahang,Kedah,MY-06,MY-02,335.76,False,193.689,245.23,-51.54,0.79,Market-Aligned Normal Corridor
+2025,Pahang,Kelantan,MY-06,MY-03,170.46,False,655.129,305.69,349.44,2.14,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Pahang,Melaka,MY-06,MY-04,174.31,False,305.141,317.76,-12.62,0.96,Market-Aligned Normal Corridor
+2025,Pahang,Negeri Sembilan,MY-06,MY-05,121.19,False,287.89,346.05,-58.16,0.83,Market-Aligned Normal Corridor
+2025,Pahang,Pulau Pinang,MY-06,MY-07,284.06,False,241.717,212.97,28.75,1.13,Market-Aligned Normal Corridor
+2025,Pahang,Perak,MY-06,MY-08,168.45,False,701.131,454.02,247.11,1.54,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Pahang,Perlis,MY-06,MY-09,375.27,False,60.726,57.27,3.46,1.06,Market-Aligned Normal Corridor
+2025,Pahang,Selangor,MY-06,MY-10,121.56,False,930.401,527.75,402.65,1.76,Market-Aligned Normal Corridor
+2025,Pahang,Terengganu,MY-06,MY-11,147.67,False,903.281,266.58,636.7,3.39,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Pahang,Sabah,MY-06,MY-12,1542.13,True,7.808,56.0,-48.19,0.14,Under-Performing Corridor (Low Connectivity)
+2025,Pahang,Sarawak,MY-06,MY-13,1193.4,True,63.906,54.72,9.19,1.17,Market-Aligned Normal Corridor
+2025,Pahang,W.P. Kuala Lumpur,MY-06,MY-14,103.13,False,824.776,542.83,281.95,1.52,Market-Aligned Normal Corridor
+2025,Pahang,W.P. Labuan,MY-06,MY-15,1439.73,True,22.741,3.06,19.68,7.43,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Pahang,W.P. Putrajaya,MY-06,MY-16,120.78,False,55.202,61.7,-6.5,0.89,Market-Aligned Normal Corridor
+2025,Pulau Pinang,Johor,MY-07,MY-01,512.56,False,123.784,418.04,-294.26,0.3,Under-Performing Corridor (Low Connectivity)
+2025,Pulau Pinang,Kedah,MY-07,MY-02,78.44,False,952.233,714.57,237.66,1.33,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Pulau Pinang,Kelantan,MY-07,MY-03,185.81,False,227.934,457.38,-229.45,0.5,Market-Aligned Normal Corridor
+2025,Pulau Pinang,Melaka,MY-07,MY-04,413.14,False,74.643,339.72,-265.08,0.22,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Pulau Pinang,Negeri Sembilan,MY-07,MY-05,366.64,False,56.642,332.88,-276.24,0.17,Under-Performing Corridor (Low Connectivity)
+2025,Pulau Pinang,Pahang,MY-07,MY-06,284.06,False,537.067,586.01,-48.94,0.92,Market-Aligned Normal Corridor
+2025,Pulau Pinang,Perak,MY-07,MY-08,116.28,False,893.223,827.82,65.4,1.08,Market-Aligned Normal Corridor
+2025,Pulau Pinang,Perlis,MY-07,MY-09,115.44,False,285.678,148.16,137.52,1.93,Market-Aligned Normal Corridor
+2025,Pulau Pinang,Selangor,MY-07,MY-10,291.75,False,459.411,561.16,-101.75,0.82,Market-Aligned Normal Corridor
+2025,Pulau Pinang,Terengganu,MY-07,MY-11,314.39,False,140.537,298.54,-158.0,0.47,Under-Performing Corridor (Low Connectivity)
+2025,Pulau Pinang,Sabah,MY-07,MY-12,1743.35,True,243.929,82.48,161.45,2.96,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Pulau Pinang,Sarawak,MY-07,MY-13,1440.98,True,134.36,78.33,56.03,1.72,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Pulau Pinang,W.P. Kuala Lumpur,MY-07,MY-14,294.4,False,746.837,535.46,211.38,1.39,Market-Aligned Normal Corridor
+2025,Pulau Pinang,W.P. Labuan,MY-07,MY-15,1649.84,True,1.795,4.49,-2.7,0.4,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Pulau Pinang,W.P. Putrajaya,MY-07,MY-16,315.46,False,40.206,63.25,-23.04,0.64,Market-Aligned Normal Corridor
+2025,Perak,Johor,MY-08,MY-01,396.95,False,492.392,417.65,74.74,1.18,Market-Aligned Normal Corridor
+2025,Perak,Kedah,MY-08,MY-02,177.39,False,622.506,448.99,173.52,1.39,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Perak,Kelantan,MY-08,MY-03,122.33,False,473.886,490.22,-16.33,0.97,Market-Aligned Normal Corridor
+2025,Perak,Melaka,MY-08,MY-04,302.28,False,448.906,347.85,101.06,1.29,Market-Aligned Normal Corridor
+2025,Perak,Negeri Sembilan,MY-08,MY-05,253.5,False,266.798,349.3,-82.5,0.76,Market-Aligned Normal Corridor
+2025,Perak,Pahang,MY-08,MY-06,168.45,False,648.824,657.16,-8.34,0.99,Market-Aligned Normal Corridor
+2025,Perak,Pulau Pinang,MY-08,MY-07,116.28,False,836.185,435.46,400.72,1.92,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Perak,Perlis,MY-08,MY-09,217.95,False,190.379,100.66,89.72,1.89,Market-Aligned Normal Corridor
+2025,Perak,Selangor,MY-08,MY-10,186.32,False,1716.467,609.43,1107.04,2.82,Market-Aligned Normal Corridor
+2025,Perak,Terengganu,MY-08,MY-11,225.52,False,361.679,308.32,53.36,1.17,Market-Aligned Normal Corridor
+2025,Perak,Sabah,MY-08,MY-12,1665.12,True,144.916,75.25,69.67,1.93,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Perak,Sarawak,MY-08,MY-13,1342.9,True,143.923,72.24,71.68,1.99,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Perak,W.P. Kuala Lumpur,MY-08,MY-14,185.15,False,1771.244,585.39,1185.85,3.03,Market-Aligned Normal Corridor
+2025,Perak,W.P. Labuan,MY-08,MY-15,1567.75,True,3.518,4.1,-0.58,0.86,Market-Aligned Normal Corridor
+2025,Perak,W.P. Putrajaya,MY-08,MY-16,207.74,False,97.231,67.78,29.45,1.43,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Perlis,Johor,MY-09,MY-01,611.4,False,40.988,63.71,-22.72,0.64,Market-Aligned Normal Corridor
+2025,Perlis,Kedah,MY-09,MY-02,40.56,False,279.678,156.36,123.32,1.79,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Perlis,Kelantan,MY-09,MY-03,235.54,False,85.72,67.9,17.82,1.26,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Perlis,Melaka,MY-09,MY-04,520.22,False,92.885,50.58,42.31,1.84,"Hyper-Connected Day-Trip Corridor (High Flow, Leakage Risk)"
+2025,Perlis,Negeri Sembilan,MY-09,MY-05,471.21,False,64.994,49.12,15.87,1.32,Market-Aligned Normal Corridor
+2025,Perlis,Pahang,MY-09,MY-06,375.27,False,78.512,85.45,-6.94,0.92,Market-Aligned Normal Corridor
+2025,Perlis,Pulau Pinang,MY-09,MY-07,115.44,False,177.172,80.33,96.84,2.21,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Perlis,Perak,MY-09,MY-08,217.95,False,196.268,103.75,92.52,1.89,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Perlis,Selangor,MY-09,MY-10,402.11,False,82.253,80.34,1.91,1.02,Market-Aligned Normal Corridor
+2025,Perlis,Terengganu,MY-09,MY-11,366.13,False,33.064,45.97,-12.91,0.72,Market-Aligned Normal Corridor
+2025,Perlis,Sabah,MY-09,MY-12,1755.05,True,4.048,13.53,-9.48,0.3,Under-Performing Corridor (Low Connectivity)
+2025,Perlis,Sarawak,MY-09,MY-13,1482.63,True,1.2,12.73,-11.53,0.09,Under-Performing Corridor (Low Connectivity)
+2025,Perlis,W.P. Kuala Lumpur,MY-09,MY-14,402.61,False,79.659,76.92,2.74,1.04,Market-Aligned Normal Corridor
+2025,Perlis,W.P. Labuan,MY-09,MY-15,1667.01,True,6.994,0.73,6.26,9.58,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Perlis,W.P. Putrajaya,MY-09,MY-16,424.72,False,11.752,9.15,2.6,1.28,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Selangor,Johor,MY-10,MY-01,240.52,False,1995.977,2317.33,-321.35,0.86,Market-Aligned Normal Corridor
+2025,Selangor,Kedah,MY-10,MY-02,361.73,False,1676.138,1473.45,202.69,1.14,Market-Aligned Normal Corridor
+2025,Selangor,Kelantan,MY-10,MY-03,254.61,False,1506.201,1594.57,-88.37,0.94,Market-Aligned Normal Corridor
+2025,Selangor,Melaka,MY-10,MY-04,124.6,False,2725.941,2280.2,445.74,1.2,Market-Aligned Normal Corridor
+2025,Selangor,Negeri Sembilan,MY-10,MY-05,89.3,False,1980.107,2450.76,-470.65,0.81,Market-Aligned Normal Corridor
+2025,Selangor,Pahang,MY-10,MY-06,121.56,False,2517.564,3380.61,-863.05,0.74,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Selangor,Pulau Pinang,MY-10,MY-07,291.75,False,2362.7,1306.4,1056.3,1.81,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Selangor,Perak,MY-10,MY-08,186.32,False,3116.563,2697.1,419.46,1.16,Market-Aligned Normal Corridor
+2025,Selangor,Perlis,MY-10,MY-09,402.11,False,480.281,344.94,135.34,1.39,Market-Aligned Normal Corridor
+2025,Selangor,Terengganu,MY-10,MY-11,267.99,False,762.677,1278.17,-515.49,0.6,Market-Aligned Normal Corridor
+2025,Selangor,Sabah,MY-10,MY-12,1645.43,True,531.665,337.89,193.77,1.57,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Selangor,Sarawak,MY-10,MY-13,1276.58,True,125.515,329.83,-204.32,0.38,Under-Performing Corridor (Low Connectivity)
+2025,Selangor,W.P. Kuala Lumpur,MY-10,MY-14,20.07,False,1819.35,5075.06,-3255.71,0.36,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Selangor,W.P. Labuan,MY-10,MY-15,1540.31,True,46.372,18.47,27.9,2.51,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Selangor,W.P. Putrajaya,MY-10,MY-16,25.69,False,71.394,617.65,-546.26,0.12,Under-Performing Corridor (Low Connectivity)
+2025,Terengganu,Johor,MY-11,MY-01,328.75,False,106.704,312.72,-206.02,0.34,Under-Performing Corridor (Low Connectivity)
+2025,Terengganu,Kedah,MY-11,MY-02,333.85,False,83.693,235.68,-151.99,0.36,Under-Performing Corridor (Low Connectivity)
+2025,Terengganu,Kelantan,MY-11,MY-03,132.22,False,520.817,327.12,193.7,1.59,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Terengganu,Melaka,MY-11,MY-04,307.58,False,115.592,238.26,-122.67,0.49,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Terengganu,Negeri Sembilan,MY-11,MY-05,258.51,False,105.86,239.02,-133.16,0.44,Under-Performing Corridor (Low Connectivity)
+2025,Terengganu,Pahang,MY-11,MY-06,147.67,False,373.96,480.1,-106.14,0.78,Market-Aligned Normal Corridor
+2025,Terengganu,Pulau Pinang,MY-11,MY-07,314.39,False,126.461,195.41,-68.95,0.65,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Terengganu,Perak,MY-11,MY-08,225.52,False,151.705,383.63,-231.92,0.4,Under-Performing Corridor (Low Connectivity)
+2025,Terengganu,Perlis,MY-11,MY-09,366.13,False,5.675,55.5,-49.82,0.1,Under-Performing Corridor (Low Connectivity)
+2025,Terengganu,Selangor,MY-11,MY-10,267.99,False,248.322,359.36,-111.04,0.69,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Terengganu,Sabah,MY-11,MY-12,1439.6,True,6.117,55.31,-49.19,0.11,Under-Performing Corridor (Low Connectivity)
+2025,Terengganu,Sarawak,MY-11,MY-13,1126.73,True,64.251,53.78,10.47,1.19,Market-Aligned Normal Corridor
+2025,Terengganu,W.P. Kuala Lumpur,MY-11,MY-14,250.34,False,419.675,354.54,65.13,1.18,Market-Aligned Normal Corridor
+2025,Terengganu,W.P. Labuan,MY-11,MY-15,1342.45,True,4.999,3.03,1.97,1.65,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Terengganu,W.P. Putrajaya,MY-11,MY-16,268.44,False,84.339,41.86,42.48,2.01,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Sabah,Johor,MY-12,MY-01,1480.31,True,73.52,138.02,-64.5,0.53,Market-Aligned Normal Corridor
+2025,Sabah,Kedah,MY-12,MY-02,1736.8,True,315.743,97.71,218.03,3.23,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Sabah,Kelantan,MY-12,MY-03,1558.79,True,296.511,95.19,201.32,3.11,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Sabah,Melaka,MY-12,MY-04,1585.67,True,50.586,99.17,-48.58,0.51,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Sabah,Negeri Sembilan,MY-12,MY-05,1575.5,True,95.545,92.54,3.0,1.03,Market-Aligned Normal Corridor
+2025,Sabah,Pahang,MY-12,MY-06,1542.13,True,212.016,147.23,64.79,1.44,Market-Aligned Normal Corridor
+2025,Sabah,Pulau Pinang,MY-12,MY-07,1743.35,True,64.458,78.81,-14.35,0.82,Market-Aligned Normal Corridor
+2025,Sabah,Perak,MY-12,MY-08,1665.12,True,110.004,136.69,-26.69,0.8,Market-Aligned Normal Corridor
+2025,Sabah,Perlis,MY-12,MY-09,1755.05,True,14.672,23.84,-9.17,0.62,Market-Aligned Normal Corridor
+2025,Sabah,Selangor,MY-12,MY-10,1645.43,True,574.081,138.68,435.4,4.14,Market-Aligned Normal Corridor
+2025,Sabah,Terengganu,MY-12,MY-11,1439.6,True,83.995,80.74,3.26,1.04,Market-Aligned Normal Corridor
+2025,Sabah,Sarawak,MY-12,MY-13,510.78,False,561.921,356.19,205.73,1.58,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Sabah,W.P. Kuala Lumpur,MY-12,MY-14,1625.63,True,783.67,133.55,650.12,5.87,Market-Aligned Normal Corridor
+2025,Sabah,W.P. Labuan,MY-12,MY-15,121.31,False,71.595,40.3,31.3,1.78,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Sabah,W.P. Putrajaya,MY-12,MY-16,1629.56,True,53.724,16.24,37.48,3.31,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Sarawak,Johor,MY-13,MY-01,1073.6,True,30.223,132.44,-102.22,0.23,Under-Performing Corridor (Low Connectivity)
+2025,Sarawak,Kedah,MY-13,MY-02,1455.33,True,25.911,88.08,-62.17,0.29,Under-Performing Corridor (Low Connectivity)
+2025,Sarawak,Kelantan,MY-13,MY-03,1257.68,True,89.927,87.22,2.71,1.03,Market-Aligned Normal Corridor
+2025,Sarawak,Melaka,MY-13,MY-04,1192.25,True,96.988,93.69,3.3,1.04,Market-Aligned Normal Corridor
+2025,Sarawak,Negeri Sembilan,MY-13,MY-05,1195.13,True,51.548,87.09,-35.54,0.59,Market-Aligned Normal Corridor
+2025,Sarawak,Pahang,MY-13,MY-06,1193.4,True,8.759,137.37,-128.61,0.06,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Sarawak,Pulau Pinang,MY-13,MY-07,1440.98,True,138.204,71.47,66.73,1.93,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,Sarawak,Perak,MY-13,MY-08,1342.9,True,18.356,125.28,-106.92,0.15,Under-Performing Corridor (Low Connectivity)
+2025,Sarawak,Perlis,MY-13,MY-09,1482.63,True,4.4,21.41,-17.01,0.21,Under-Performing Corridor (Low Connectivity)
+2025,Sarawak,Selangor,MY-13,MY-10,1276.58,True,322.421,129.25,193.17,2.49,Market-Aligned Normal Corridor
+2025,Sarawak,Terengganu,MY-13,MY-11,1126.73,True,3.502,74.97,-71.47,0.05,Under-Performing Corridor (Low Connectivity)
+2025,Sarawak,Sabah,MY-13,MY-12,510.78,False,149.61,340.09,-190.48,0.44,Under-Performing Corridor (Low Connectivity)
+2025,Sarawak,W.P. Kuala Lumpur,MY-13,MY-14,1258.19,True,575.284,124.6,450.68,4.62,Market-Aligned Normal Corridor
+2025,Sarawak,W.P. Labuan,MY-13,MY-15,391.18,False,9.609,20.28,-10.67,0.47,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,Sarawak,W.P. Putrajaya,MY-13,MY-16,1256.26,True,12.667,15.17,-2.5,0.84,Market-Aligned Normal Corridor
+2025,W.P. Kuala Lumpur,Johor,MY-14,MY-01,228.98,False,1469.998,874.57,595.43,1.68,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,W.P. Kuala Lumpur,Kedah,MY-14,MY-02,362.08,False,619.59,544.15,75.44,1.14,Market-Aligned Normal Corridor
+2025,W.P. Kuala Lumpur,Kelantan,MY-14,MY-03,244.14,False,524.898,599.93,-75.03,0.87,Market-Aligned Normal Corridor
+2025,W.P. Kuala Lumpur,Melaka,MY-14,MY-04,118.82,False,915.968,859.93,56.04,1.07,Market-Aligned Normal Corridor
+2025,W.P. Kuala Lumpur,Negeri Sembilan,MY-14,MY-05,76.97,False,937.425,965.59,-28.17,0.97,Market-Aligned Normal Corridor
+2025,W.P. Kuala Lumpur,Pahang,MY-14,MY-06,103.13,False,1635.111,1341.1,294.01,1.22,Market-Aligned Normal Corridor
+2025,W.P. Kuala Lumpur,Pulau Pinang,MY-14,MY-07,294.4,False,548.438,480.78,67.66,1.14,Market-Aligned Normal Corridor
+2025,W.P. Kuala Lumpur,Perak,MY-14,MY-08,185.15,False,2017.802,999.18,1018.62,2.02,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,W.P. Kuala Lumpur,Perlis,MY-14,MY-09,402.61,False,97.926,127.37,-29.44,0.77,Market-Aligned Normal Corridor
+2025,W.P. Kuala Lumpur,Selangor,MY-14,MY-10,20.07,False,1335.438,1957.34,-621.9,0.68,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,W.P. Kuala Lumpur,Terengganu,MY-14,MY-11,250.34,False,387.107,486.36,-99.25,0.8,Market-Aligned Normal Corridor
+2025,W.P. Kuala Lumpur,Sabah,MY-14,MY-12,1625.63,True,138.292,125.49,12.8,1.1,Market-Aligned Normal Corridor
+2025,W.P. Kuala Lumpur,Sarawak,MY-14,MY-13,1258.19,True,390.144,122.62,267.52,3.18,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,W.P. Kuala Lumpur,W.P. Labuan,MY-14,MY-15,1520.65,True,6.772,6.86,-0.09,0.99,Market-Aligned Normal Corridor
+2025,W.P. Kuala Lumpur,W.P. Putrajaya,MY-14,MY-16,23.66,False,86.169,228.19,-142.02,0.38,Under-Performing Corridor (Low Connectivity)
+2025,W.P. Labuan,Johor,MY-15,MY-01,1368.92,True,19.247,10.18,9.07,1.89,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,W.P. Labuan,Kedah,MY-15,MY-02,1647.0,True,12.186,7.13,5.06,1.71,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,W.P. Labuan,Kelantan,MY-15,MY-03,1464.45,True,21.278,6.97,14.31,3.05,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,W.P. Labuan,Melaka,MY-15,MY-04,1476.57,True,20.01,7.29,12.72,2.74,"Hyper-Connected Day-Trip Corridor (High Flow, Leakage Risk)"
+2025,W.P. Labuan,Negeri Sembilan,MY-15,MY-05,1468.31,True,30.209,6.8,23.41,4.44,Market-Aligned Normal Corridor
+2025,W.P. Labuan,Pahang,MY-15,MY-06,1439.73,True,5.708,10.81,-5.1,0.53,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,W.P. Labuan,Pulau Pinang,MY-15,MY-07,1649.84,True,10.798,5.75,5.05,1.88,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,W.P. Labuan,Perak,MY-15,MY-08,1567.75,True,3.732,10.0,-6.27,0.37,Under-Performing Corridor (Low Connectivity)
+2025,W.P. Labuan,Perlis,MY-15,MY-09,1667.01,True,5.148,1.74,3.41,2.96,Market-Aligned Normal Corridor
+2025,W.P. Labuan,Selangor,MY-15,MY-10,1540.31,True,21.329,10.17,11.16,2.1,Market-Aligned Normal Corridor
+2025,W.P. Labuan,Terengganu,MY-15,MY-11,1342.45,True,5.35,5.93,-0.58,0.9,Market-Aligned Normal Corridor
+2025,W.P. Labuan,Sabah,MY-15,MY-12,121.31,False,188.746,54.08,134.67,3.49,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,W.P. Labuan,Sarawak,MY-15,MY-13,391.18,False,11.257,28.5,-17.24,0.39,Under-Performing Corridor (Low Connectivity)
+2025,W.P. Labuan,W.P. Kuala Lumpur,MY-15,MY-14,1520.65,True,19.928,9.8,10.13,2.03,Market-Aligned Normal Corridor
+2025,W.P. Labuan,W.P. Putrajaya,MY-15,MY-16,1523.67,True,1.53,1.19,0.34,1.29,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,W.P. Putrajaya,Johor,MY-16,MY-01,215.11,False,90.693,75.05,15.64,1.21,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,W.P. Putrajaya,Kedah,MY-16,MY-02,384.24,False,35.052,44.29,-9.24,0.79,Market-Aligned Normal Corridor
+2025,W.P. Putrajaya,Kelantan,MY-16,MY-03,267.42,False,71.385,48.17,23.22,1.48,Prime Sustainable Corridor (High Flow & Strong Stay)
+2025,W.P. Putrajaya,Melaka,MY-16,MY-04,99.22,False,19.15,77.65,-58.5,0.25,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,W.P. Putrajaya,Negeri Sembilan,MY-16,MY-05,64.67,False,78.057,86.96,-8.9,0.9,Market-Aligned Normal Corridor
+2025,W.P. Putrajaya,Pahang,MY-16,MY-06,120.78,False,38.547,104.61,-66.06,0.37,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,W.P. Putrajaya,Pulau Pinang,MY-16,MY-07,315.46,False,4.592,38.97,-34.38,0.12,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,W.P. Putrajaya,Perak,MY-16,MY-08,207.74,False,46.413,79.4,-32.99,0.58,Market-Aligned Normal Corridor
+2025,W.P. Putrajaya,Perlis,MY-16,MY-09,424.72,False,5.634,10.39,-4.76,0.54,Market-Aligned Normal Corridor
+2025,W.P. Putrajaya,Selangor,MY-16,MY-10,25.69,False,29.555,163.48,-133.92,0.18,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,W.P. Putrajaya,Terengganu,MY-16,MY-11,268.44,False,14.576,39.41,-24.83,0.37,Under-Performing Corridor (Low Connectivity)
+2025,W.P. Putrajaya,Sabah,MY-16,MY-12,1629.56,True,1.533,10.47,-8.94,0.15,Under-Performing Corridor (Low Connectivity)
+2025,W.P. Putrajaya,Sarawak,MY-16,MY-13,1256.26,True,3.212,10.25,-7.04,0.31,Under-Performing Corridor (Low Connectivity)
+2025,W.P. Putrajaya,W.P. Kuala Lumpur,MY-16,MY-14,23.66,False,27.634,156.6,-128.97,0.18,"High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
+2025,W.P. Putrajaya,W.P. Labuan,MY-16,MY-15,1523.67,True,2.292,0.57,1.72,4.02,Prime Sustainable Corridor (High Flow & Strong Stay)

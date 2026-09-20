@@ -54,14 +54,14 @@ To evaluate the true intra-state elasticity of accommodation spend per tourist w
 
 ---
 
-### C. Granular DTS Root Causes: Commercial Penetration vs. Unpaid VFR Trap
-Ingesting sub-tables (`Jadual 8`, `11`, `12`, `13a`, `14`) across all 16 state DTS publications isolates the root cause of state-level spend discrepancies:
+### C. Granular DTS Structural Diagnostics: Commercial Penetration and VFR Opportunity
+Ingesting sub-tables (`Jadual 8`, `11`, `12`, `13a`, `14`) across all 16 state DTS publications identifies structural factors associated with state-level spend discrepancies:
 * **The East Coast VFR Paradox**:
   * **Kelantan** records an average stay of **2.89 nights** (2nd longest in Malaysia), but the lowest spend per night (**RM 16.10**) and low occupancy (**43.5% AOR** across 6,392 rooms).
-  * **Root Cause**: Over **66.3%** of overnight stays in Kelantan are absorbed by unpaid private homes of friends and relatives (VFR). In Terengganu, unpaid VFR represents **55.1%**.
-  * **Policy Insight**: The goal is **not** to induce more vehicle congestion on highways; it is to introduce experiential boutique lodging and certified community homestays that transition unpaid family stays into commercial overnight revenue.
+  * **Structural Driver**: Over **66.3%** of overnight stays in Kelantan are absorbed by private homes of friends and relatives (VFR). In Terengganu, unpaid VFR represents **55.1%**.
+  * **Policy Insight**: The goal is **not** to induce more vehicle congestion on highways; it is to introduce experiential boutique lodging and certified community homestays that transition unpaid family stays into commercial overnight revenue, while recognizing that VFR visitors contribute significantly to local food, retail shopping, and transport sectors.
 * **High-Capture Transit States**:
-  * **Melaka** (**58.3%** paid commercial lodging) and **Pulau Pinang** (**54.6%**) achieve higher spend per night (**RM 63.00** and **RM 72.28**), but face high day-tripper leakage.
+  * **Melaka** (**58.3%** paid commercial lodging) and **Pulau Pinang** (**54.6%**) achieve higher spend per night (**RM 63.00** and **RM 72.28**), but face high day-trip congestion with low overnight stay conversion.
 
 ---
 

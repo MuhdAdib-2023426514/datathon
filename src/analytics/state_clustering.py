@@ -4,7 +4,7 @@ Uses Ward's Hierarchical Agglomerative Clustering to classify Malaysia's 16 stat
 into 4 strategic tourism value archetypes:
   1. High-Yield Extended Stay Destinations (e.g. High ALOS, High Spend/Night, Strong Eco/Nature/Leisure)
   2. High-Volume Urban & Commercial Gateways (e.g. High Total Tourists, High Luxury Capacity, Commercial/Transit)
-  3. Excursionist / High-Leakage Conversion Corridors (e.g. High Visitors, Low ALOS, High Day-Tripper Share)
+  3. Excursionist / Low-Capture Conversion Corridors (e.g. High Visitors, Low ALOS, High Day-Tripper Share)
   4. Emerging / Untapped Value Frontiers (e.g. Moderate Flow, Lower Current Spend, High Expansion Potential)
 
 Features used (standardized via StandardScaler):
@@ -156,7 +156,7 @@ def run_state_clustering() -> pd.DataFrame:
         ),
         4: (
             "Emerging Extended-Stay Conversion",
-            "Longest stay durations (2.65 days) but lowest nightly spend (RM 34/night) due to VFR dominance. Prime target to convert stays to paid lodging.",
+            "Longest stay durations (2.65 days) with lower commercial accommodation capture (RM 34/night) due to private VFR lodging. High non-lodging economic contribution with strong commercial lodging conversion opportunity.",
             "#f59e0b"
         ),
     }

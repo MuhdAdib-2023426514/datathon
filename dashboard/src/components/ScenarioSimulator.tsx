@@ -171,12 +171,13 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
   const addNightsFromConvertedK = convertedTouristsK * (baselineAlos + deltaAlos);
 
   // 3. Converted unpaid VFR stays into registered paid lodging/homestays (Recommendation 3)
-  const unpaidVfrPct = activeProfile.lodging_shares?.unpaid_vfr_pct ?? 50.0;
+  const hasVfrData = activeProfile.lodging_shares?.unpaid_vfr_pct != null;
+  const unpaidVfrPct = hasVfrData ? activeProfile.lodging_shares!.unpaid_vfr_pct : 0.0;
   const vfrTouristsK = baselineTouristsK * (unpaidVfrPct / 100.0);
   const convertedVfrTouristsK = vfrTouristsK * (vfrConversionRate / 100.0);
   const vfrNightsK = convertedVfrTouristsK * (baselineAlos + deltaAlos);
   const homestayNightlyRate = Math.max(75, baselineSpendPerNight * 0.85);
-  const vfrAccomSpendRM = (vfrNightsK * 1e3 * homestayNightlyRate) / 1e6;
+  const vfrAccomSpendRM = hasVfrData ? (vfrNightsK * 1e3 * homestayNightlyRate) / 1e6 : 0.0;
 
   // Total additional tourist nights (thousands)
   const totalAdditionalNightsK = addNightsFromAlosK + addNightsFromConvertedK;
@@ -488,9 +489,14 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
               }}
             />
             <div className="flex items-center justify-between text-[10px] text-stone-600">
-              <span>Unpaid VFR Base: <strong className="text-stone-700 font-mono">{unpaidVfrPct.toFixed(1)}%</strong> ({vfrTouristsK.toFixed(0)}k tourists)</span>
+              <span>Unpaid VFR Base: <strong className="text-stone-700 font-mono">{hasVfrData ? `${unpaidVfrPct.toFixed(1)}%` : 'N/A'}</strong> {hasVfrData ? `(${vfrTouristsK.toFixed(0)}k tourists)` : ''}</span>
               <span>Rate: <strong className="text-violet-800 font-mono">RM {homestayNightlyRate.toFixed(0)}/night</strong></span>
             </div>
+            {!hasVfrData && (
+              <span className="text-[10px] text-amber-700 block bg-amber-50 border border-amber-200/60 p-1.5 rounded">
+                Note: DTS lodging share data unavailable for {selectedState}. VFR conversion impact set to 0 to prevent synthetic imputation.
+              </span>
+            )}
             <span className="text-[10px] text-violet-800/90 block bg-violet-50/30 border border-violet-200/20 p-1.5 rounded">
               UN SDG 8.9 Policy lever: Transition visiting-friends-and-relatives (VFR) into licensed village Kampungstay, certified community homestays, and boutique heritage inns.
             </span>

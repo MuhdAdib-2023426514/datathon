@@ -1,0 +1,89 @@
+year,period,product_id,product,industry,domestic_supply,gva,itc,tourism_ratio,employment_thousands,vai,estimated_tourism_gva,data_status
+2025,Post-Recovery (2023-2025),accommodation,Accommodation services,Accommodation services,34663.4,30015.7,33534.7,0.967,241.4,0.8659,29038.34,preliminary
+2025,Post-Recovery (2023-2025),country_specific_goods,Country-specific tourism characteristic goods,Retail trade of tourism characteristic goods,230674.4,163511.2,88868.7,0.385,1388.0,0.7088,62993.67,preliminary
+2025,Post-Recovery (2023-2025),country_specific_services,Country-specific tourism characteristic services,Country-specific tourism characteristic services,77233.5,42265.4,8600.5,0.111,383.6,0.5472,4706.55,preliminary
+2025,Post-Recovery (2023-2025),travel_agency,Travel agencies and other reservation services,Travel agencies and other reservation services,12547.6,5813.5,8918.6,0.711,30.2,0.4633,4132.13,preliminary
+2025,Post-Recovery (2023-2025),food_beverage,Food and beverage serving services,Food and beverage serving services,122759.0,53006.3,38121.5,0.311,1344.3,0.4318,16460.54,preliminary
+2025,Post-Recovery (2023-2025),cultural_sports_recreation,"Cultural, sports and recreational services","Cultural, sports and recreational services",32532.7,13746.7,9322.5,0.287,58.6,0.4226,3939.22,preliminary
+2025,Post-Recovery (2023-2025),passenger_transport,Passenger transport services,Passenger transport services,56501.0,9160.3,31940.8,0.565,182.2,0.1621,5178.44,preliminary
+2025,Post-Recovery (2023-2025),automotive_fuel,Retail sale of automotive fuel,Retail sale of automotive fuel,53022.4,5510.9,17615.7,0.332,32.5,0.1039,1830.89,preliminary
+2024,Post-Recovery (2023-2025),accommodation,Accommodation services,Accommodation services,32406.8,26101.8,31247.1,0.964,231.9,0.8054,25167.73,estimate
+2024,Post-Recovery (2023-2025),country_specific_goods,Country-specific tourism characteristic goods,Retail trade of tourism characteristic goods,203979.7,154591.7,78570.7,0.385,1339.5,0.7579,59546.99,estimate
+2024,Post-Recovery (2023-2025),travel_agency,Travel agencies and other reservation services,Travel agencies and other reservation services,7856.3,4855.5,5572.0,0.709,29.4,0.618,3443.71,estimate
+2024,Post-Recovery (2023-2025),country_specific_services,Country-specific tourism characteristic services,Country-specific tourism characteristic services,66504.2,38874.2,7362.5,0.111,377.1,0.5845,4303.66,estimate
+2024,Post-Recovery (2023-2025),cultural_sports_recreation,"Cultural, sports and recreational services","Cultural, sports and recreational services",20567.7,11922.2,5856.9,0.285,58.4,0.5797,3394.99,estimate
+2024,Post-Recovery (2023-2025),food_beverage,Food and beverage serving services,Food and beverage serving services,111544.9,47726.0,34439.6,0.309,1294.4,0.4279,14735.45,estimate
+2024,Post-Recovery (2023-2025),passenger_transport,Passenger transport services,Passenger transport services,51041.7,8305.7,27958.6,0.548,175.7,0.1627,4549.53,estimate
+2024,Post-Recovery (2023-2025),automotive_fuel,Retail sale of automotive fuel,Retail sale of automotive fuel,44165.6,5175.8,14583.2,0.33,31.4,0.1172,1709.02,estimate
+2023,Post-Recovery (2023-2025),accommodation,Accommodation services,Accommodation services,26707.6,22912.2,25022.5,0.937,225.6,0.8579,21466.57,actual
+2023,Post-Recovery (2023-2025),country_specific_goods,Country-specific tourism characteristic goods,Retail trade of tourism characteristic goods,189589.6,145940.6,56230.3,0.297,1254.9,0.7698,43284.46,actual
+2023,Post-Recovery (2023-2025),travel_agency,Travel agencies and other reservation services,Travel agencies and other reservation services,6090.0,4109.0,4345.4,0.714,27.7,0.6747,2931.9,actual
+2023,Post-Recovery (2023-2025),cultural_sports_recreation,"Cultural, sports and recreational services","Cultural, sports and recreational services",18217.4,10307.3,5115.3,0.281,54.6,0.5658,2894.21,actual
+2023,Post-Recovery (2023-2025),food_beverage,Food and beverage serving services,Food and beverage serving services,82070.4,45159.9,24377.4,0.297,1244.5,0.5503,13413.86,actual
+2023,Post-Recovery (2023-2025),country_specific_services,Country-specific tourism characteristic services,Country-specific tourism characteristic services,65366.7,35375.0,5454.7,0.083,372.6,0.5412,2951.96,actual
+2023,Post-Recovery (2023-2025),passenger_transport,Passenger transport services,Passenger transport services,40571.0,7286.1,21981.8,0.542,171.9,0.1796,3947.69,actual
+2023,Post-Recovery (2023-2025),automotive_fuel,Retail sale of automotive fuel,Retail sale of automotive fuel,37714.1,4897.1,11975.6,0.318,30.4,0.1298,1555.01,actual
+2022,Disruption & Recovery (2020-2022),travel_agency,Travel agencies and other reservation services,Travel agencies and other reservation services,3825.7,3265.9,1515.2,0.396,25.7,0.8537,1293.49,actual
+2022,Disruption & Recovery (2020-2022),country_specific_goods,Country-specific tourism characteristic goods,Retail trade of tourism characteristic goods,175561.3,134633.2,36227.6,0.206,1178.2,0.7669,27781.96,actual
+2022,Disruption & Recovery (2020-2022),accommodation,Accommodation services,Accommodation services,21437.2,14727.5,11190.6,0.522,218.7,0.687,7688.02,actual
+2022,Disruption & Recovery (2020-2022),country_specific_services,Country-specific tourism characteristic services,Country-specific tourism characteristic services,53283.9,31591.0,3846.0,0.072,364.8,0.5929,2280.22,actual
+2022,Disruption & Recovery (2020-2022),food_beverage,Food and beverage serving services,Food and beverage serving services,75812.7,42052.4,15328.1,0.202,1189.5,0.5547,8502.31,actual
+2022,Disruption & Recovery (2020-2022),cultural_sports_recreation,"Cultural, sports and recreational services","Cultural, sports and recreational services",16746.2,8873.0,3778.2,0.226,50.2,0.5299,2001.89,actual
+2022,Disruption & Recovery (2020-2022),passenger_transport,Passenger transport services,Passenger transport services,31708.8,5790.0,11977.4,0.378,167.9,0.1826,2187.06,actual
+2022,Disruption & Recovery (2020-2022),automotive_fuel,Retail sale of automotive fuel,Retail sale of automotive fuel,37013.3,4300.8,9165.6,0.248,29.7,0.1162,1065.01,actual
+2021,Disruption & Recovery (2020-2022),travel_agency,Travel agencies and other reservation services,Travel agencies and other reservation services,226.5,1092.9,21.6,0.096,23.6,4.8252,104.22,actual
+2021,Disruption & Recovery (2020-2022),accommodation,Accommodation services,Accommodation services,5612.1,9712.6,1152.2,0.205,202.8,1.7307,1994.06,actual
+2021,Disruption & Recovery (2020-2022),food_beverage,Food and beverage serving services,Food and beverage serving services,24541.9,33845.9,2861.7,0.117,1164.4,1.3791,3946.59,actual
+2021,Disruption & Recovery (2020-2022),country_specific_goods,Country-specific tourism characteristic goods,Retail trade of tourism characteristic goods,159968.0,111617.8,9308.3,0.058,1166.7,0.6978,6494.87,actual
+2021,Disruption & Recovery (2020-2022),country_specific_services,Country-specific tourism characteristic services,Country-specific tourism characteristic services,47675.9,30013.2,1005.5,0.021,347.9,0.6295,632.99,actual
+2021,Disruption & Recovery (2020-2022),cultural_sports_recreation,"Cultural, sports and recreational services","Cultural, sports and recreational services",9718.9,4215.3,466.8,0.048,48.0,0.4337,202.46,actual
+2021,Disruption & Recovery (2020-2022),automotive_fuel,Retail sale of automotive fuel,Retail sale of automotive fuel,24292.7,4361.6,2038.9,0.084,29.5,0.1795,366.07,actual
+2021,Disruption & Recovery (2020-2022),passenger_transport,Passenger transport services,Passenger transport services,27113.3,3682.1,1066.9,0.039,154.1,0.1358,144.89,actual
+2020,Disruption & Recovery (2020-2022),country_specific_goods,Country-specific tourism characteristic goods,Retail trade of tourism characteristic goods,153134.5,106560.0,25985.2,0.17,1156.6,0.6959,18082.03,actual
+2020,Disruption & Recovery (2020-2022),accommodation,Accommodation services,Accommodation services,18490.3,12137.9,5231.9,0.283,209.9,0.6564,3434.46,actual
+2020,Disruption & Recovery (2020-2022),country_specific_services,Country-specific tourism characteristic services,Country-specific tourism characteristic services,53316.3,29036.5,1390.9,0.026,342.5,0.5446,757.5,actual
+2020,Disruption & Recovery (2020-2022),food_beverage,Food and beverage serving services,Food and beverage serving services,75318.3,35571.2,9508.6,0.126,1189.1,0.4723,4490.71,actual
+2020,Disruption & Recovery (2020-2022),cultural_sports_recreation,"Cultural, sports and recreational services","Cultural, sports and recreational services",13993.9,6307.6,964.2,0.069,63.2,0.4507,434.6,actual
+2020,Disruption & Recovery (2020-2022),travel_agency,Travel agencies and other reservation services,Travel agencies and other reservation services,3943.1,1641.5,677.1,0.172,31.0,0.4163,281.87,actual
+2020,Disruption & Recovery (2020-2022),passenger_transport,Passenger transport services,Passenger transport services,31300.1,4863.0,4919.3,0.157,158.2,0.1554,764.3,actual
+2020,Disruption & Recovery (2020-2022),automotive_fuel,Retail sale of automotive fuel,Retail sale of automotive fuel,27042.4,4181.6,3651.2,0.135,31.0,0.1546,564.59,actual
+2019,Pre-COVID (2015-2019),accommodation,Accommodation services,Accommodation services,31824.3,26406.8,30633.0,0.963,233.8,0.8298,25418.3,actual
+2019,Pre-COVID (2015-2019),country_specific_goods,Country-specific tourism characteristic goods,Retail trade of tourism characteristic goods,159423.4,111121.6,68957.8,0.433,1158.1,0.697,48065.1,actual
+2019,Pre-COVID (2015-2019),travel_agency,Travel agencies and other reservation services,Travel agencies and other reservation services,6973.1,4226.9,5650.6,0.81,40.7,0.6062,3425.24,actual
+2019,Pre-COVID (2015-2019),country_specific_services,Country-specific tourism characteristic services,Country-specific tourism characteristic services,55584.1,29695.0,7500.2,0.135,356.9,0.5342,4006.87,actual
+2019,Pre-COVID (2015-2019),cultural_sports_recreation,"Cultural, sports and recreational services","Cultural, sports and recreational services",24776.6,11307.1,4222.0,0.17,81.2,0.4564,1926.76,actual
+2019,Pre-COVID (2015-2019),food_beverage,Food and beverage serving services,Food and beverage serving services,96026.7,43166.7,26721.7,0.278,1237.7,0.4495,12012.16,actual
+2019,Pre-COVID (2015-2019),passenger_transport,Passenger transport services,Passenger transport services,42379.5,9379.5,22408.3,0.529,177.3,0.2213,4959.44,actual
+2019,Pre-COVID (2015-2019),automotive_fuel,Retail sale of automotive fuel,Retail sale of automotive fuel,47612.6,4725.9,15965.7,0.335,34.7,0.0993,1584.71,actual
+2018,Pre-COVID (2015-2019),accommodation,Accommodation services,Accommodation services,31647.4,24733.1,29505.5,0.932,222.4,0.7815,23059.16,actual
+2018,Pre-COVID (2015-2019),country_specific_goods,Country-specific tourism characteristic goods,Retail trade of tourism characteristic goods,147239.8,102523.9,64131.6,0.436,1147.9,0.6963,44655.19,actual
+2018,Pre-COVID (2015-2019),travel_agency,Travel agencies and other reservation services,Travel agencies and other reservation services,6861.3,3818.9,5270.5,0.768,38.7,0.5566,2933.48,actual
+2018,Pre-COVID (2015-2019),country_specific_services,Country-specific tourism characteristic services,Country-specific tourism characteristic services,51805.6,27778.3,7898.1,0.152,370.5,0.5362,4234.98,actual
+2018,Pre-COVID (2015-2019),cultural_sports_recreation,"Cultural, sports and recreational services","Cultural, sports and recreational services",23227.1,10482.2,3756.5,0.162,80.9,0.4513,1695.28,actual
+2018,Pre-COVID (2015-2019),food_beverage,Food and beverage serving services,Food and beverage serving services,87025.2,37782.1,24570.2,0.282,1183.0,0.4342,10667.18,actual
+2018,Pre-COVID (2015-2019),passenger_transport,Passenger transport services,Passenger transport services,38609.9,8798.6,20965.4,0.543,171.3,0.2279,4777.69,actual
+2018,Pre-COVID (2015-2019),automotive_fuel,Retail sale of automotive fuel,Retail sale of automotive fuel,44232.9,4467.9,14325.9,0.324,34.6,0.101,1447.04,actual
+2017,Pre-COVID (2015-2019),accommodation,Accommodation services,Accommodation services,30806.8,22948.4,28198.3,0.915,210.5,0.7449,21005.29,actual
+2017,Pre-COVID (2015-2019),country_specific_goods,Country-specific tourism characteristic goods,Retail trade of tourism characteristic goods,133617.0,92847.3,58290.9,0.436,1104.5,0.6949,40504.97,actual
+2017,Pre-COVID (2015-2019),country_specific_services,Country-specific tourism characteristic services,Country-specific tourism characteristic services,48625.2,26045.4,7449.0,0.153,348.6,0.5356,3989.95,actual
+2017,Pre-COVID (2015-2019),travel_agency,Travel agencies and other reservation services,Travel agencies and other reservation services,6861.4,3453.0,5501.0,0.802,40.1,0.5033,2768.38,actual
+2017,Pre-COVID (2015-2019),cultural_sports_recreation,"Cultural, sports and recreational services","Cultural, sports and recreational services",21886.0,9895.3,3789.9,0.173,78.9,0.4521,1713.52,actual
+2017,Pre-COVID (2015-2019),food_beverage,Food and beverage serving services,Food and beverage serving services,79928.0,33154.9,22896.4,0.286,1087.0,0.4148,9497.65,actual
+2017,Pre-COVID (2015-2019),passenger_transport,Passenger transport services,Passenger transport services,37460.3,8352.1,20065.6,0.536,162.5,0.223,4473.8,actual
+2017,Pre-COVID (2015-2019),automotive_fuel,Retail sale of automotive fuel,Retail sale of automotive fuel,41300.3,3985.4,13201.8,0.32,34.4,0.0965,1273.95,actual
+2016,Pre-COVID (2015-2019),accommodation,Accommodation services,Accommodation services,28663.3,21269.0,26740.8,0.933,207.4,0.742,19842.45,actual
+2016,Pre-COVID (2015-2019),country_specific_goods,Country-specific tourism characteristic goods,Retail trade of tourism characteristic goods,118858.8,82570.4,52297.7,0.44,1106.0,0.6947,36330.86,actual
+2016,Pre-COVID (2015-2019),country_specific_services,Country-specific tourism characteristic services,Country-specific tourism characteristic services,45592.1,24545.0,6865.9,0.151,317.1,0.5384,3696.33,actual
+2016,Pre-COVID (2015-2019),travel_agency,Travel agencies and other reservation services,Travel agencies and other reservation services,6840.2,3139.6,5877.7,0.859,35.8,0.459,2697.82,actual
+2016,Pre-COVID (2015-2019),cultural_sports_recreation,"Cultural, sports and recreational services","Cultural, sports and recreational services",21080.7,9440.2,3479.5,0.165,74.8,0.4478,1558.16,actual
+2016,Pre-COVID (2015-2019),food_beverage,Food and beverage serving services,Food and beverage serving services,70692.4,29380.0,20914.6,0.296,1002.6,0.4156,8692.18,actual
+2016,Pre-COVID (2015-2019),passenger_transport,Passenger transport services,Passenger transport services,35284.2,7834.5,19344.3,0.548,164.5,0.222,4295.21,actual
+2016,Pre-COVID (2015-2019),automotive_fuel,Retail sale of automotive fuel,Retail sale of automotive fuel,40203.6,3490.5,12597.0,0.313,33.4,0.0868,1093.68,actual
+2015,Pre-COVID (2015-2019),accommodation,Accommodation services,Accommodation services,25793.5,19810.0,23789.7,0.922,184.1,0.768,18271.04,actual
+2015,Pre-COVID (2015-2019),country_specific_goods,Country-specific tourism characteristic goods,Retail trade of tourism characteristic goods,106878.9,74792.8,47019.6,0.44,992.5,0.6998,32903.85,actual
+2015,Pre-COVID (2015-2019),country_specific_services,Country-specific tourism characteristic services,Country-specific tourism characteristic services,42099.2,22593.0,6507.2,0.155,294.5,0.5367,3492.16,actual
+2015,Pre-COVID (2015-2019),travel_agency,Travel agencies and other reservation services,Travel agencies and other reservation services,6379.7,2897.8,5219.6,0.818,32.7,0.4542,2370.86,actual
+2015,Pre-COVID (2015-2019),cultural_sports_recreation,"Cultural, sports and recreational services","Cultural, sports and recreational services",19982.8,8987.0,3169.1,0.159,75.6,0.4497,1425.26,actual
+2015,Pre-COVID (2015-2019),food_beverage,Food and beverage serving services,Food and beverage serving services,63907.1,26355.7,19424.0,0.304,912.7,0.4124,8010.58,actual
+2015,Pre-COVID (2015-2019),passenger_transport,Passenger transport services,Passenger transport services,33286.9,7331.1,17922.5,0.538,159.2,0.2202,3947.25,actual
+2015,Pre-COVID (2015-2019),automotive_fuel,Retail sale of automotive fuel,Retail sale of automotive fuel,36759.0,3170.6,12126.8,0.33,32.9,0.0863,1045.98,actual

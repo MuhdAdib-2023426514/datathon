@@ -17,8 +17,9 @@ import numpy as np
 import pandas as pd
 from src.ingestion.tsa_parser import ingest_tsa_tables
 
-PROCESSED_DIR = Path("/home/muhammad_adib/dosm/data/processed")
-DUCKDB_PATH = PROCESSED_DIR / "tourism_data.duckdb"
+from src.config.paths import PROCESSED_DATA_DIR, DUCKDB_PATH
+
+PROCESSED_DIR = PROCESSED_DATA_DIR
 
 
 def compute_period_metrics(df: pd.DataFrame) -> pd.DataFrame:

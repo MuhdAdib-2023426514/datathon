@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
 import * as echarts from 'echarts';
-import type { ODCorridorsData, Corridor, StateProfile } from '../types';
+import type { ODCorridorsData, Corridor, StateProfile, ModelMetricsData } from '../types';
 import {
   ArrowRight,
   Filter,
@@ -23,6 +23,7 @@ interface CorridorNetworkProps {
   geoJson: any;
   stateProfiles?: Record<string, StateProfile>;
   selectedYear?: number;
+  modelMetrics?: ModelMetricsData | null;
   onSelectCorridorForScenario?: (destination: string) => void;
 }
 
@@ -31,6 +32,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
   geoJson,
   stateProfiles,
   selectedYear = 2025,
+  modelMetrics,
   onSelectCorridorForScenario
 }) => {
   const [selectedTier, setSelectedTier] = useState<string>('All');
@@ -108,15 +110,15 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
         if (params.data && params.data.corridorMeta) {
           const c: Corridor = params.data.corridorMeta;
           const isCross = c.is_cross_region ?? (c.origin_region !== c.destination_region);
-          const distKm = c.distance_km ?? 250;
+          const distKm = c.distance_km != null ? `${c.distance_km.toFixed(0)} km` : 'N/A';
           return `<div style="font-weight: bold; margin-bottom: 4px;">
               ${c.origin} → ${c.destination}
             </div>
             <div>Category: <strong style="color: ${tierColorMap[c.corridor_category]};">${c.corridor_category}</strong></div>
             <div>Tourist Flow: <strong>${c.tourist_flow_thousands.toFixed(1)}k tourists</strong></div>
-            <div>Distance: <strong>${distKm.toFixed(0)} km</strong> (${isCross ? 'Flight' : 'Overland'})</div>
-            <div>Dest ALOS: <strong>${c.dest_alos?.toFixed(2) || 'N/A'} days</strong></div>
-            <div>Dest Spend/Night: <strong>RM ${c.dest_spend_per_night?.toFixed(1) || 'N/A'}</strong></div>`;
+            <div>Distance: <strong>${distKm}</strong> (${isCross ? 'Flight' : 'Overland'})</div>
+            <div>Dest ALOS: <strong>${c.dest_alos != null ? `${c.dest_alos.toFixed(2)} days` : 'N/A'}</strong></div>
+            <div>Dest Spend/Night: <strong>${c.dest_spend_per_night != null ? `RM ${c.dest_spend_per_night.toFixed(1)}` : 'N/A'}</strong></div>`;
         }
         return params.name;
       },
@@ -162,7 +164,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Top Banner: Tinbergen Gravity Model & RQ6 Target */}
+      {/* Top Banner: Structural PPML Gravity Model & RQ6 Target */}
       <div className="glass-panel p-6 border-l-4 border-l-cyan-500">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -170,25 +172,33 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
               <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-indigo-400/20 text-indigo-600">
                 Spatial Econometrics & RQ6
               </span>
-              <span className="text-xs text-stone-600">Tinbergen Gravity Model (R² = 0.7092)</span>
+              <span className="text-xs text-stone-600 font-mono">
+                Structural PPML Gravity (OOS R² = {modelMetrics?.gravity?.r2_oos?.toFixed(4) || '0.5890'})
+              </span>
             </div>
             <h2 className="text-2xl font-bold text-stone-900 tracking-tight">
               Domestic Tourism Value Corridors & Mobility Gravity
             </h2>
             <p className="text-sm text-stone-700 mt-1 max-w-3xl">
-              Targeting high-flow corridors with weak accommodation capture enables Malaysia to generate additional overnight tourism value without needing new visitor headcount. Structural gravity modeling reveals that <strong>Origin Working-Age Population (+0.890)</strong> and <strong>Origin Median Income (+0.725)</strong> are powerful outbound mobility engines.
+              Targeting high-flow corridors with weak accommodation capture enables Malaysia to generate additional overnight tourism value without needing new visitor headcount. Structural PPML gravity modeling with Origin, Destination, and Year Fixed Effects eliminates target leakage while estimating distance decay (β = {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'}) and Borneo flight barrier friction.
             </p>
           </div>
 
           <div className="flex items-center gap-3">
             <div className="p-3.5 rounded-xl bg-white/90 border border-indigo-300/30 text-center min-w-[130px]">
-              <span className="text-xs text-stone-600 uppercase font-semibold">Origin Income</span>
-              <div className="text-2xl font-extrabold text-indigo-600 font-mono">+0.725</div>
+              <span className="text-xs text-stone-600 uppercase font-semibold">Distance Friction</span>
+              <div className="text-2xl font-extrabold text-indigo-600 font-mono">
+                {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'}
+              </div>
               <span className="text-[10px] text-indigo-600">Elasticity (p &lt; 0.001)</span>
             </div>
             <div className="p-3.5 rounded-xl bg-white/90 border border-rose-500/30 text-center min-w-[130px]">
               <span className="text-xs text-stone-600 uppercase font-semibold">Borneo Barrier</span>
-              <div className="text-2xl font-extrabold text-rose-700 font-mono">-73.6%</div>
+              <div className="text-2xl font-extrabold text-rose-700 font-mono">
+                {modelMetrics?.gravity?.cross_region_barrier
+                  ? `${(-((1 - Math.exp(modelMetrics.gravity.cross_region_barrier)) * 100)).toFixed(1)}%`
+                  : '-55.2%'}
+              </div>
               <span className="text-[10px] text-rose-700">Flight Volume Penalty</span>
             </div>
           </div>
@@ -366,37 +376,73 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold text-stone-900 flex items-center gap-2">
               <Activity className="w-4 h-4 text-indigo-600" />
-              Structural Tinbergen Gravity Equation Parameters
+              Structural Poisson Pseudo-Maximum Likelihood (PPML) Gravity
             </h3>
-            <span className="text-xs text-stone-600 font-mono">N = 1,890 observations</span>
+            <span className="text-xs text-stone-600 font-mono">
+              N = {modelMetrics?.gravity?.total_panel_observations || 1920} panel obs (Holdout: 2025)
+            </span>
           </div>
 
           <p className="text-xs text-stone-700 leading-relaxed font-mono bg-white/80 p-2.5 rounded border border-violet-100">
-            ln(Flow) = β₀ + 0.890 ln(Origin WA Pop) + 0.725 ln(Origin Income) + 0.704 ln(Dest Pull) - 0.603 ln(Dist) - 1.332 CrossRegion
+            E[Flow_ijt] = exp(α_origin + γ_dest + δ_year + {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'} · ln(Dist) {modelMetrics?.gravity?.cross_region_barrier?.toFixed(3) || '-0.802'} · Borneo)
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
             <div className="p-2 rounded bg-white/60 border border-violet-100">
-              <span className="text-[10px] text-stone-600 block">Origin Working Age</span>
-              <strong className="text-violet-700 font-mono text-sm">+0.890</strong>
-              <span className="text-[9px] text-stone-600 block">p &lt; 0.001</span>
-            </div>
-            <div className="p-2 rounded bg-white/60 border border-violet-100">
-              <span className="text-[10px] text-stone-600 block">Origin Income</span>
-              <strong className="text-violet-700 font-mono text-sm">+0.725</strong>
-              <span className="text-[9px] text-stone-600 block">p &lt; 0.001</span>
-            </div>
-            <div className="p-2 rounded bg-white/60 border border-violet-100">
               <span className="text-[10px] text-stone-600 block">Distance Friction</span>
-              <strong className="text-rose-700 font-mono text-sm">-0.603</strong>
+              <strong className="text-rose-700 font-mono text-sm">
+                {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'}
+              </strong>
+              <span className="text-[9px] text-stone-600 block">p &lt; 0.001</span>
+            </div>
+            <div className="p-2 rounded bg-white/60 border border-violet-100">
+              <span className="text-[10px] text-stone-600 block">Borneo Barrier</span>
+              <strong className="text-rose-700 font-mono text-sm">
+                {modelMetrics?.gravity?.cross_region_barrier
+                  ? `${(-((1 - Math.exp(modelMetrics.gravity.cross_region_barrier)) * 100)).toFixed(1)}%`
+                  : '-55.2%'}
+              </strong>
               <span className="text-[9px] text-stone-600 block">p &lt; 0.001</span>
             </div>
             <div className="p-2 rounded bg-white/60 border border-violet-100">
               <span className="text-[10px] text-stone-600 block">Out-of-Sample R²</span>
-              <strong className="text-indigo-600 font-mono text-sm">0.5900</strong>
-              <span className="text-[9px] text-stone-600 block">Tested on 2025</span>
+              <strong className="text-indigo-600 font-mono text-sm">
+                {modelMetrics?.gravity?.r2_oos?.toFixed(4) || '0.5890'}
+              </strong>
+              <span className="text-[9px] text-stone-600 block">2025 Holdout</span>
+            </div>
+            <div className="p-2 rounded bg-white/60 border border-violet-100">
+              <span className="text-[10px] text-stone-600 block">Distance Invariance</span>
+              <strong className="text-emerald-700 font-mono text-sm">p = 0.120</strong>
+              <span className="text-[9px] text-stone-600 block">No Structural Break</span>
             </div>
           </div>
+
+          {/* Model Comparison / Naive Baselines Table */}
+          {modelMetrics?.gravity?.naive_baselines && (
+            <div className="mt-2 pt-2 border-t border-violet-100">
+              <div className="text-[11px] font-semibold text-stone-700 mb-1 flex items-center justify-between">
+                <span>Holdout Validation Comparison (2025 Actuals)</span>
+                <span className="text-[10px] font-normal text-stone-500">True R² = 1 - SSE/SST</span>
+              </div>
+              <div className="grid grid-cols-4 gap-1.5 text-center text-[10px]">
+                {modelMetrics.gravity.naive_baselines.map((b) => (
+                  <div
+                    key={b.name}
+                    className={`p-1.5 rounded border ${
+                      b.name.includes('PPML')
+                        ? 'bg-indigo-50/80 border-indigo-200 font-bold text-indigo-950'
+                        : 'bg-white/50 border-stone-200 text-stone-700'
+                    }`}
+                  >
+                    <div className="truncate text-[9px]">{b.name}</div>
+                    <div className="font-mono text-xs mt-0.5">R² {b.r2_oos.toFixed(3)}</div>
+                    <div className="text-[9px] text-stone-500">RMSE {b.rmse.toFixed(0)}k</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Market Fragility & Feeder Concentration (HHI) */}
@@ -609,7 +655,9 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                         <div className="p-2 rounded bg-white/80 border border-violet-100">
                           <span className="text-stone-600 block text-[10px]">4/5-Star Luxury Share</span>
                           <strong className="text-amber-700 font-mono text-xs">
-                            {dest?.hotel_stars?.luxury_room_share_pct?.toFixed(1) || '25.0'}%
+                            {dest?.hotel_stars?.luxury_room_share_pct != null
+                              ? `${dest.hotel_stars.luxury_room_share_pct.toFixed(1)}%`
+                              : 'N/A'}
                           </strong>
                         </div>
                       </div>
@@ -617,30 +665,42 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                       <div className="space-y-1.5 bg-white/50 p-2.5 rounded-lg border border-violet-100/60">
                         <div className="flex justify-between text-[10px] text-stone-700">
                           <span>Lodging Mix (Commercial vs Unpaid VFR)</span>
-                          <span className="font-mono text-amber-700 font-semibold">{dest?.lodging_shares?.unpaid_vfr_pct ?? 50}% VFR</span>
+                          <span className="font-mono text-amber-700 font-semibold">
+                            {dest?.lodging_shares?.unpaid_vfr_pct != null
+                              ? `${dest.lodging_shares.unpaid_vfr_pct}% VFR`
+                              : 'N/A'}
+                          </span>
                         </div>
-                        <div className="w-full h-2 rounded-full bg-violet-50 overflow-hidden flex">
-                          <div
-                            className="bg-violet-600 h-full"
-                            style={{ width: `${dest?.lodging_shares?.paid_commercial_pct ?? 50}%` }}
-                            title={`Paid Commercial: ${dest?.lodging_shares?.paid_commercial_pct ?? 50}%`}
-                          ></div>
-                          <div
-                            className="bg-amber-500 h-full"
-                            style={{ width: `${dest?.lodging_shares?.unpaid_vfr_pct ?? 50}%` }}
-                            title={`Unpaid VFR: ${dest?.lodging_shares?.unpaid_vfr_pct ?? 50}%`}
-                          ></div>
-                        </div>
-                        <div className="flex justify-between text-[9px] text-stone-600 pt-0.5">
-                          <span>Paid Hotel / Commercial: <strong className="text-violet-700 font-mono">{dest?.lodging_shares?.paid_commercial_pct ?? 50}%</strong></span>
-                          <span>Unpaid VFR / Relatives: <strong className="text-amber-700 font-mono">{dest?.lodging_shares?.unpaid_vfr_pct ?? 50}%</strong></span>
-                        </div>
+                        {dest?.lodging_shares?.paid_commercial_pct != null && dest?.lodging_shares?.unpaid_vfr_pct != null ? (
+                          <>
+                            <div className="w-full h-2 rounded-full bg-violet-50 overflow-hidden flex">
+                              <div
+                                className="bg-violet-600 h-full"
+                                style={{ width: `${dest.lodging_shares.paid_commercial_pct}%` }}
+                                title={`Paid Commercial: ${dest.lodging_shares.paid_commercial_pct}%`}
+                              ></div>
+                              <div
+                                className="bg-amber-500 h-full"
+                                style={{ width: `${dest.lodging_shares.unpaid_vfr_pct}%` }}
+                                title={`Unpaid VFR: ${dest.lodging_shares.unpaid_vfr_pct}%`}
+                              ></div>
+                            </div>
+                            <div className="flex justify-between text-[9px] text-stone-600 pt-0.5">
+                              <span>Paid Hotel / Commercial: <strong className="text-violet-700 font-mono">{dest.lodging_shares.paid_commercial_pct}%</strong></span>
+                              <span>Unpaid VFR / Relatives: <strong className="text-amber-700 font-mono">{dest.lodging_shares.unpaid_vfr_pct}%</strong></span>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-[10px] text-stone-400 italic py-1">Lodging shares unavailable</div>
+                        )}
                       </div>
 
                       <div className="p-2.5 rounded-lg bg-white/80 border border-violet-100 flex items-center justify-between text-[11px]">
                         <span className="text-stone-600">Average Room Occupancy (AOR):</span>
                         <strong className="text-indigo-600 font-mono text-xs">
-                          {dest?.baseline_2025?.aor_pct?.toFixed(1) || '55.0'}%
+                          {dest?.baseline_2025?.aor_pct != null
+                            ? `${dest.baseline_2025.aor_pct.toFixed(1)}%`
+                            : 'N/A'}
                         </strong>
                       </div>
                     </div>
@@ -658,7 +718,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                 </div>
 
                 <p className="text-xs text-stone-700 leading-relaxed">
-                  Under the Tinbergen Gravity Model (R² = 0.7092), outbound flow from <strong>{selectedCorridor.origin}</strong> is heavily propelled by its working-age demographic mass (β = +0.890) and median household income (β = +0.725).
+                  Under the Structural PPML Gravity Model (OOS R² = {modelMetrics?.gravity?.r2_oos?.toFixed(4) || '0.5890'}), bilateral travel between <strong>{selectedCorridor.origin}</strong> and <strong>{selectedCorridor.destination}</strong> is shaped by origin push mass, destination pull attractiveness, distance impedance (β = {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'}), and Borneo flight barrier friction ({modelMetrics?.gravity?.cross_region_barrier ? `${(-((1 - Math.exp(modelMetrics.gravity.cross_region_barrier)) * 100)).toFixed(1)}%` : '-55.2%'}).
                 </p>
 
                 {/* Specific Policy Playbook Box */}
@@ -689,7 +749,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                   )}
                   {selectedCorridor.corridor_category === 'Growth Opportunity' && (
                     <ul className="text-stone-800 text-[11px] space-y-1 list-disc list-inside">
-                      <li><strong>Transport Friction Relief:</strong> Subsidize direct inter-state flight or express coach frequencies to overcome distance friction (β = -0.603).</li>
+                      <li><strong>Transport Friction Relief:</strong> Subsidize direct inter-state flight or express coach frequencies to overcome distance friction (β = {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'}).</li>
                       <li><strong>Targeted Feeder Marketing:</strong> Launch focused digital marketing campaigns targeting the 25–39 prime mobile demographic in {selectedCorridor.origin}.</li>
                       <li><strong>Bundled Thematic Circuits:</strong> Partner with neighboring states to offer multi-destination regional passes.</li>
                     </ul>
@@ -702,7 +762,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                 </div>
 
                 <div className="text-[10px] text-stone-600 italic">
-                  * Structural gravity equation: ln(Flow) = β₀ + 0.890 ln(Origin WA Pop) + 0.725 ln(Origin Income) - 0.603 ln(Distance) - 1.332 CrossRegionBarrier.
+                  * Structural PPML Gravity Specification: E[Flow_ijt] = exp(α_i + γ_j + δ_t + {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'} ln(Dist_ij) + {modelMetrics?.gravity?.cross_region_barrier?.toFixed(3) || '-0.802'} Borneo_ij). Zero target leakage (absorbed via Destination FE); validated on 2025 holdout.
                 </div>
               </div>
             </div>

@@ -28,7 +28,9 @@
       "total_expenditure_rm_million": 8722.92,
       "hotel_rooms": 35799,
       "aor_pct": 54.2,
-      "resident_median_income_rm": 8165.6
+      "resident_median_income_rm": 8165.6,
+      "yield_typology": "Long Stay / Low Yield",
+      "policy_prescription": "Commercial accommodation capture opportunity: Deepen commercial accommodation penetration, expand boutique eco-resorts, and monetize local heritage."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -71,12 +73,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 251.4,
+      "tvay_rm_per_day": 104.2,
+      "accommodation_yield_rm_per_night": 43.0,
+      "tourism_gva_intensity_pct": 61.2,
+      "mapping_coverage_pct": 67.7,
+      "estimated_tourism_gva_rm_million": 3614.58,
+      "dvr_retention_rate_pct": 61.2,
+      "real_tey_rm_per_day": 251.4,
+      "real_tvay_rm_per_day": 104.2,
+      "real_accommodation_yield_rm_per_night": 43.0,
       "epr_ratio": 0.85,
-      "dvr_retention_rate_pct": 59.1,
       "tir_visitors_per_resident": 4.33,
       "ryh_accom_per_household_rm": 1069.4,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Long Stay / Low Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
@@ -551,7 +562,7 @@
     "state_code": "MY-02",
     "region": "Northern",
     "archetype_name": "Emerging Extended-Stay Conversion",
-    "archetype_desc": "Longest stay durations (2.65 days) but lowest nightly spend (RM 34/night) due to VFR dominance. Prime target to convert stays to paid lodging.",
+    "archetype_desc": "Longest stay durations (2.65 days) with lower commercial accommodation capture (RM 34/night) due to private VFR lodging. High non-lodging economic contribution with strong commercial lodging conversion opportunity.",
     "archetype_color": "#f59e0b",
     "cluster_id": 4,
     "radar_scores": {
@@ -575,7 +586,9 @@
       "total_expenditure_rm_million": 5520.25,
       "hotel_rooms": 18679,
       "aor_pct": 50.9,
-      "resident_median_income_rm": 5161.8
+      "resident_median_income_rm": 5161.8,
+      "yield_typology": "Long Stay / Low Yield",
+      "policy_prescription": "Commercial accommodation capture opportunity: Deepen commercial accommodation penetration, expand boutique eco-resorts, and monetize local heritage."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -618,12 +631,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 193.2,
+      "tvay_rm_per_day": 75.6,
+      "accommodation_yield_rm_per_night": 29.3,
+      "tourism_gva_intensity_pct": 58.0,
+      "mapping_coverage_pct": 67.5,
+      "estimated_tourism_gva_rm_million": 2160.13,
+      "dvr_retention_rate_pct": 58.0,
+      "real_tey_rm_per_day": 193.2,
+      "real_tvay_rm_per_day": 75.6,
+      "real_accommodation_yield_rm_per_night": 29.3,
       "epr_ratio": 1.19,
-      "dvr_retention_rate_pct": 56.9,
       "tir_visitors_per_resident": 7.01,
       "ryh_accom_per_household_rm": 1047.4,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Long Stay / Low Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
@@ -1098,7 +1120,7 @@
     "state_code": "MY-03",
     "region": "East Coast",
     "archetype_name": "Emerging Extended-Stay Conversion",
-    "archetype_desc": "Longest stay durations (2.65 days) but lowest nightly spend (RM 34/night) due to VFR dominance. Prime target to convert stays to paid lodging.",
+    "archetype_desc": "Longest stay durations (2.65 days) with lower commercial accommodation capture (RM 34/night) due to private VFR lodging. High non-lodging economic contribution with strong commercial lodging conversion opportunity.",
     "archetype_color": "#f59e0b",
     "cluster_id": 4,
     "radar_scores": {
@@ -1122,7 +1144,9 @@
       "total_expenditure_rm_million": 5239.01,
       "hotel_rooms": 6392,
       "aor_pct": 43.5,
-      "resident_median_income_rm": 4339.9
+      "resident_median_income_rm": 4339.9,
+      "yield_typology": "Long Stay / Low Yield",
+      "policy_prescription": "Commercial accommodation capture opportunity: Deepen commercial accommodation penetration, expand boutique eco-resorts, and monetize local heritage."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -1165,12 +1189,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 209.9,
+      "tvay_rm_per_day": 79.8,
+      "accommodation_yield_rm_per_night": 25.1,
+      "tourism_gva_intensity_pct": 59.6,
+      "mapping_coverage_pct": 63.8,
+      "estimated_tourism_gva_rm_million": 1990.9,
+      "dvr_retention_rate_pct": 59.6,
+      "real_tey_rm_per_day": 209.9,
+      "real_tvay_rm_per_day": 79.8,
+      "real_accommodation_yield_rm_per_night": 25.1,
       "epr_ratio": 0.85,
-      "dvr_retention_rate_pct": 57.8,
       "tir_visitors_per_resident": 6.33,
       "ryh_accom_per_household_rm": 1311.4,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Long Stay / Low Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
@@ -1669,7 +1702,9 @@
       "total_expenditure_rm_million": 8732.4,
       "hotel_rooms": 20655,
       "aor_pct": 46.1,
-      "resident_median_income_rm": 7259.0
+      "resident_median_income_rm": 7259.0,
+      "yield_typology": "Short Stay / High Yield",
+      "policy_prescription": "High day-trip and short-stay spend capture; develop evening cultural circuits and overnight incentive packaging to deepen stay."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -1712,12 +1747,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 303.2,
+      "tvay_rm_per_day": 130.2,
+      "accommodation_yield_rm_per_night": 63.0,
+      "tourism_gva_intensity_pct": 62.3,
+      "mapping_coverage_pct": 69.0,
+      "estimated_tourism_gva_rm_million": 3750.89,
+      "dvr_retention_rate_pct": 62.3,
+      "real_tey_rm_per_day": 303.2,
+      "real_tvay_rm_per_day": 130.2,
+      "real_accommodation_yield_rm_per_night": 63.0,
       "epr_ratio": 1.9,
-      "dvr_retention_rate_pct": 59.9,
       "tir_visitors_per_resident": 19.8,
       "ryh_accom_per_household_rm": 3393.1,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Short Stay / High Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
@@ -2192,7 +2236,7 @@
     "state_code": "MY-05",
     "region": "Central",
     "archetype_name": "Emerging Extended-Stay Conversion",
-    "archetype_desc": "Longest stay durations (2.65 days) but lowest nightly spend (RM 34/night) due to VFR dominance. Prime target to convert stays to paid lodging.",
+    "archetype_desc": "Longest stay durations (2.65 days) with lower commercial accommodation capture (RM 34/night) due to private VFR lodging. High non-lodging economic contribution with strong commercial lodging conversion opportunity.",
     "archetype_color": "#f59e0b",
     "cluster_id": 4,
     "radar_scores": {
@@ -2216,7 +2260,9 @@
       "total_expenditure_rm_million": 6529.26,
       "hotel_rooms": 11527,
       "aor_pct": 44.2,
-      "resident_median_income_rm": 5783.0
+      "resident_median_income_rm": 5783.0,
+      "yield_typology": "Short Stay / Low Yield",
+      "policy_prescription": "Shift focus from volume to length of stay; bundle evening cultural events, weekend passes, and premium boutique lodging."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -2259,12 +2305,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 234.8,
+      "tvay_rm_per_day": 93.2,
+      "accommodation_yield_rm_per_night": 37.9,
+      "tourism_gva_intensity_pct": 60.2,
+      "mapping_coverage_pct": 65.9,
+      "estimated_tourism_gva_rm_million": 2592.16,
+      "dvr_retention_rate_pct": 60.2,
+      "real_tey_rm_per_day": 234.8,
+      "real_tvay_rm_per_day": 93.2,
+      "real_accommodation_yield_rm_per_night": 37.9,
       "epr_ratio": 1.96,
-      "dvr_retention_rate_pct": 58.4,
       "tir_visitors_per_resident": 15.56,
       "ryh_accom_per_household_rm": 1721.2,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Short Stay / Low Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
@@ -2708,7 +2763,9 @@
       "total_expenditure_rm_million": 9846.77,
       "hotel_rooms": 34401,
       "aor_pct": 76.3,
-      "resident_median_income_rm": 5089.9
+      "resident_median_income_rm": 5089.9,
+      "yield_typology": "Short Stay / Low Yield",
+      "policy_prescription": "Shift focus from volume to length of stay; bundle evening cultural events, weekend passes, and premium boutique lodging."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -2751,12 +2808,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 269.6,
+      "tvay_rm_per_day": 108.4,
+      "accommodation_yield_rm_per_night": 53.8,
+      "tourism_gva_intensity_pct": 62.6,
+      "mapping_coverage_pct": 64.3,
+      "estimated_tourism_gva_rm_million": 3960.42,
+      "dvr_retention_rate_pct": 62.6,
+      "real_tey_rm_per_day": 269.6,
+      "real_tvay_rm_per_day": 108.4,
+      "real_accommodation_yield_rm_per_night": 53.8,
       "epr_ratio": 1.1,
-      "dvr_retention_rate_pct": 59.8,
       "tir_visitors_per_resident": 13.81,
       "ryh_accom_per_household_rm": 3251.5,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Short Stay / Low Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
@@ -3231,7 +3297,7 @@
     "state_code": "MY-08",
     "region": "Northern",
     "archetype_name": "Emerging Extended-Stay Conversion",
-    "archetype_desc": "Longest stay durations (2.65 days) but lowest nightly spend (RM 34/night) due to VFR dominance. Prime target to convert stays to paid lodging.",
+    "archetype_desc": "Longest stay durations (2.65 days) with lower commercial accommodation capture (RM 34/night) due to private VFR lodging. High non-lodging economic contribution with strong commercial lodging conversion opportunity.",
     "archetype_color": "#f59e0b",
     "cluster_id": 4,
     "radar_scores": {
@@ -3255,7 +3321,9 @@
       "total_expenditure_rm_million": 8018.54,
       "hotel_rooms": 19572,
       "aor_pct": 46.4,
-      "resident_median_income_rm": 4786.6
+      "resident_median_income_rm": 4786.6,
+      "yield_typology": "Short Stay / Low Yield",
+      "policy_prescription": "Commercial lodging conversion: Upgrade private VFR lodging into certified homestays; bundle multi-day experiential packages to lift ALOS."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -3298,12 +3366,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 207.5,
+      "tvay_rm_per_day": 79.7,
+      "accommodation_yield_rm_per_night": 31.3,
+      "tourism_gva_intensity_pct": 58.9,
+      "mapping_coverage_pct": 65.2,
+      "estimated_tourism_gva_rm_million": 3079.03,
+      "dvr_retention_rate_pct": 58.9,
+      "real_tey_rm_per_day": 207.5,
+      "real_tvay_rm_per_day": 79.7,
+      "real_accommodation_yield_rm_per_night": 31.3,
       "epr_ratio": 1.27,
-      "dvr_retention_rate_pct": 57.5,
       "tir_visitors_per_resident": 9.19,
       "ryh_accom_per_household_rm": 1194.1,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Long Stay / Low Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
@@ -3778,7 +3855,7 @@
     "state_code": "MY-09",
     "region": "Northern",
     "archetype_name": "Emerging Extended-Stay Conversion",
-    "archetype_desc": "Longest stay durations (2.65 days) but lowest nightly spend (RM 34/night) due to VFR dominance. Prime target to convert stays to paid lodging.",
+    "archetype_desc": "Longest stay durations (2.65 days) with lower commercial accommodation capture (RM 34/night) due to private VFR lodging. High non-lodging economic contribution with strong commercial lodging conversion opportunity.",
     "archetype_color": "#f59e0b",
     "cluster_id": 4,
     "radar_scores": {
@@ -3802,7 +3879,9 @@
       "total_expenditure_rm_million": 1211.2,
       "hotel_rooms": 1553,
       "aor_pct": 41.7,
-      "resident_median_income_rm": 5072.9
+      "resident_median_income_rm": 5072.9,
+      "yield_typology": "Short Stay / Low Yield",
+      "policy_prescription": "Commercial lodging conversion: Upgrade private VFR lodging into certified homestays; bundle multi-day experiential packages to lift ALOS."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -3845,12 +3924,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 216.3,
+      "tvay_rm_per_day": 81.7,
+      "accommodation_yield_rm_per_night": 35.6,
+      "tourism_gva_intensity_pct": 57.6,
+      "mapping_coverage_pct": 65.5,
+      "estimated_tourism_gva_rm_million": 457.31,
+      "dvr_retention_rate_pct": 57.6,
+      "real_tey_rm_per_day": 216.3,
+      "real_tvay_rm_per_day": 81.7,
+      "real_accommodation_yield_rm_per_night": 35.6,
       "epr_ratio": 1.55,
-      "dvr_retention_rate_pct": 56.6,
       "tir_visitors_per_resident": 12.65,
       "ryh_accom_per_household_rm": 1434.4,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Short Stay / Low Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
@@ -4349,7 +4437,9 @@
       "total_expenditure_rm_million": 8490.36,
       "hotel_rooms": 28045,
       "aor_pct": 58.6,
-      "resident_median_income_rm": 7872.1
+      "resident_median_income_rm": 7872.1,
+      "yield_typology": "Long Stay / High Yield",
+      "policy_prescription": "Preserve premium yield; monitor environmental carrying capacity; protect luxury nature and heritage assets."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -4392,12 +4482,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 314.4,
+      "tvay_rm_per_day": 149.6,
+      "accommodation_yield_rm_per_night": 72.4,
+      "tourism_gva_intensity_pct": 63.2,
+      "mapping_coverage_pct": 75.3,
+      "estimated_tourism_gva_rm_million": 4039.52,
+      "dvr_retention_rate_pct": 63.2,
+      "real_tey_rm_per_day": 314.4,
+      "real_tvay_rm_per_day": 149.6,
+      "real_accommodation_yield_rm_per_night": 72.4,
       "epr_ratio": 2.15,
-      "dvr_retention_rate_pct": 61.1,
       "tir_visitors_per_resident": 9.82,
       "ryh_accom_per_household_rm": 2164.8,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Long Stay / High Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
@@ -4896,7 +4995,9 @@
       "total_expenditure_rm_million": 9753.33,
       "hotel_rooms": 27254,
       "aor_pct": 54.1,
-      "resident_median_income_rm": 5054.4
+      "resident_median_income_rm": 5054.4,
+      "yield_typology": "Long Stay / High Yield",
+      "policy_prescription": "Preserve premium yield; monitor environmental carrying capacity; protect luxury nature and heritage assets."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -4939,13 +5040,22 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 255.4,
+      "tvay_rm_per_day": 111.0,
+      "accommodation_yield_rm_per_night": 46.3,
+      "tourism_gva_intensity_pct": 60.9,
+      "mapping_coverage_pct": 71.3,
+      "estimated_tourism_gva_rm_million": 4239.21,
+      "dvr_retention_rate_pct": 60.9,
+      "real_tey_rm_per_day": 255.4,
+      "real_tvay_rm_per_day": 111.0,
+      "real_accommodation_yield_rm_per_night": 46.3,
       "epr_ratio": 2.04,
-      "dvr_retention_rate_pct": 59.1,
       "tir_visitors_per_resident": 5.96,
       "ryh_accom_per_household_rm": 1647.2,
-      "sdg_diagnosis": "Single-Origin Fragility",
-      "sdg_policy_action": "Excessive market concentration (HHI: 5747) with over-reliance on a single origin feeder. Priority: Aggressively diversify marketing to secondary origin states.",
-      "sdg_status_color": "#ef4444"
+      "yield_typology": "Long Stay / Low Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
       "hotels_5star": 11,
@@ -5364,7 +5474,7 @@
     "state_code": "MY-13",
     "region": "East Malaysia",
     "archetype_name": "Emerging Extended-Stay Conversion",
-    "archetype_desc": "Longest stay durations (2.65 days) but lowest nightly spend (RM 34/night) due to VFR dominance. Prime target to convert stays to paid lodging.",
+    "archetype_desc": "Longest stay durations (2.65 days) with lower commercial accommodation capture (RM 34/night) due to private VFR lodging. High non-lodging economic contribution with strong commercial lodging conversion opportunity.",
     "archetype_color": "#f59e0b",
     "cluster_id": 4,
     "radar_scores": {
@@ -5388,7 +5498,9 @@
       "total_expenditure_rm_million": 9138.38,
       "hotel_rooms": 28236,
       "aor_pct": 47.3,
-      "resident_median_income_rm": 5787.5
+      "resident_median_income_rm": 5787.5,
+      "yield_typology": "Long Stay / High Yield",
+      "policy_prescription": "Preserve premium yield; monitor environmental carrying capacity; protect luxury nature and heritage assets."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -5431,13 +5543,22 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 253.7,
+      "tvay_rm_per_day": 112.1,
+      "accommodation_yield_rm_per_night": 44.5,
+      "tourism_gva_intensity_pct": 60.9,
+      "mapping_coverage_pct": 72.5,
+      "estimated_tourism_gva_rm_million": 4036.72,
+      "dvr_retention_rate_pct": 60.9,
+      "real_tey_rm_per_day": 253.7,
+      "real_tvay_rm_per_day": 112.1,
+      "real_accommodation_yield_rm_per_night": 44.5,
       "epr_ratio": 2.59,
-      "dvr_retention_rate_pct": 59.2,
       "tir_visitors_per_resident": 8.98,
       "ryh_accom_per_household_rm": 1407.0,
-      "sdg_diagnosis": "Single-Origin Fragility",
-      "sdg_policy_action": "Excessive market concentration (HHI: 4424) with over-reliance on a single origin feeder. Priority: Aggressively diversify marketing to secondary origin states.",
-      "sdg_status_color": "#ef4444"
+      "yield_typology": "Long Stay / High Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
       "hotels_5star": 7,
@@ -5935,7 +6056,9 @@
       "total_expenditure_rm_million": 15761.73,
       "hotel_rooms": 35066,
       "aor_pct": 54.8,
-      "resident_median_income_rm": 11118.0
+      "resident_median_income_rm": 11118.0,
+      "yield_typology": "Short Stay / High Yield",
+      "policy_prescription": "High day-trip and short-stay spend capture; develop evening cultural circuits and overnight incentive packaging to deepen stay."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -5978,12 +6101,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 313.6,
+      "tvay_rm_per_day": 144.3,
+      "accommodation_yield_rm_per_night": 60.8,
+      "tourism_gva_intensity_pct": 62.1,
+      "mapping_coverage_pct": 74.1,
+      "estimated_tourism_gva_rm_million": 7250.82,
+      "dvr_retention_rate_pct": 62.1,
+      "real_tey_rm_per_day": 313.6,
+      "real_tvay_rm_per_day": 144.3,
+      "real_accommodation_yield_rm_per_night": 60.8,
       "epr_ratio": 2.43,
-      "dvr_retention_rate_pct": 60.2,
       "tir_visitors_per_resident": 4.91,
       "ryh_accom_per_household_rm": 782.8,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Short Stay / High Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
@@ -6458,7 +6590,7 @@
     "state_code": "MY-11",
     "region": "East Coast",
     "archetype_name": "Emerging Extended-Stay Conversion",
-    "archetype_desc": "Longest stay durations (2.65 days) but lowest nightly spend (RM 34/night) due to VFR dominance. Prime target to convert stays to paid lodging.",
+    "archetype_desc": "Longest stay durations (2.65 days) with lower commercial accommodation capture (RM 34/night) due to private VFR lodging. High non-lodging economic contribution with strong commercial lodging conversion opportunity.",
     "archetype_color": "#f59e0b",
     "cluster_id": 4,
     "radar_scores": {
@@ -6482,7 +6614,9 @@
       "total_expenditure_rm_million": 5795.14,
       "hotel_rooms": 11314,
       "aor_pct": 45.6,
-      "resident_median_income_rm": 7036.6
+      "resident_median_income_rm": 7036.6,
+      "yield_typology": "Long Stay / Low Yield",
+      "policy_prescription": "Formalize homestays and commercial lodging; monetize culinary and local craft experiences to increase spend per day."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -6525,12 +6659,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 234.8,
+      "tvay_rm_per_day": 102.8,
+      "accommodation_yield_rm_per_night": 33.8,
+      "tourism_gva_intensity_pct": 60.8,
+      "mapping_coverage_pct": 72.0,
+      "estimated_tourism_gva_rm_million": 2537.27,
+      "dvr_retention_rate_pct": 60.8,
+      "real_tey_rm_per_day": 234.8,
+      "real_tvay_rm_per_day": 102.8,
+      "real_accommodation_yield_rm_per_night": 33.8,
       "epr_ratio": 1.95,
-      "dvr_retention_rate_pct": 59.1,
       "tir_visitors_per_resident": 12.41,
       "ryh_accom_per_household_rm": 1620.9,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Long Stay / Low Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
@@ -7029,7 +7172,9 @@
       "total_expenditure_rm_million": 16906.19,
       "hotel_rooms": 66133,
       "aor_pct": 66.9,
-      "resident_median_income_rm": 11097.7
+      "resident_median_income_rm": 11097.7,
+      "yield_typology": "Short Stay / High Yield",
+      "policy_prescription": "High day-trip and short-stay spend capture; develop evening cultural circuits and overnight incentive packaging to deepen stay."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -7072,12 +7217,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 348.8,
+      "tvay_rm_per_day": 174.9,
+      "accommodation_yield_rm_per_night": 82.8,
+      "tourism_gva_intensity_pct": 63.4,
+      "mapping_coverage_pct": 79.1,
+      "estimated_tourism_gva_rm_million": 8474.12,
+      "dvr_retention_rate_pct": 63.4,
+      "real_tey_rm_per_day": 348.8,
+      "real_tvay_rm_per_day": 174.9,
+      "real_accommodation_yield_rm_per_night": 82.8,
       "epr_ratio": 2.48,
-      "dvr_retention_rate_pct": 61.6,
       "tir_visitors_per_resident": 16.89,
       "ryh_accom_per_household_rm": 3321.8,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Short Stay / High Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
@@ -7576,7 +7730,9 @@
       "total_expenditure_rm_million": 379.29,
       "hotel_rooms": 2298,
       "aor_pct": 39.4,
-      "resident_median_income_rm": 7634.8
+      "resident_median_income_rm": 7634.8,
+      "yield_typology": "Long Stay / High Yield",
+      "policy_prescription": "Preserve premium yield; monitor environmental carrying capacity; protect luxury nature and heritage assets."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -7619,12 +7775,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 376.6,
+      "tvay_rm_per_day": 164.7,
+      "accommodation_yield_rm_per_night": 67.6,
+      "tourism_gva_intensity_pct": 56.8,
+      "mapping_coverage_pct": 77.0,
+      "estimated_tourism_gva_rm_million": 165.9,
+      "dvr_retention_rate_pct": 56.8,
+      "real_tey_rm_per_day": 376.6,
+      "real_tvay_rm_per_day": 164.7,
+      "real_accommodation_yield_rm_per_night": 67.6,
       "epr_ratio": 1.27,
-      "dvr_retention_rate_pct": 56.3,
       "tir_visitors_per_resident": 5.99,
       "ryh_accom_per_household_rm": 1946.5,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Long Stay / High Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {
@@ -8123,7 +8288,9 @@
       "total_expenditure_rm_million": 1235.86,
       "hotel_rooms": 2656,
       "aor_pct": 56.0,
-      "resident_median_income_rm": 11144.2
+      "resident_median_income_rm": 11144.2,
+      "yield_typology": "Short Stay / High Yield",
+      "policy_prescription": "High day-trip and short-stay spend capture; develop evening cultural circuits and overnight incentive packaging to deepen stay."
     },
     "clustering_profile": {
       "reference_period": "2024\u20132025 Multi-Year Average",
@@ -8166,12 +8333,21 @@
     },
     "sdg_metrics": {
       "tey_rm_per_day": 274.3,
+      "tvay_rm_per_day": 113.9,
+      "accommodation_yield_rm_per_night": 31.4,
+      "tourism_gva_intensity_pct": 57.6,
+      "mapping_coverage_pct": 72.1,
+      "estimated_tourism_gva_rm_million": 513.32,
+      "dvr_retention_rate_pct": 57.6,
+      "real_tey_rm_per_day": 274.3,
+      "real_tvay_rm_per_day": 113.9,
+      "real_accommodation_yield_rm_per_night": 31.4,
       "epr_ratio": 2.47,
-      "dvr_retention_rate_pct": 56.8,
       "tir_visitors_per_resident": 26.07,
       "ryh_accom_per_household_rm": 2099.9,
-      "sdg_diagnosis": "Sustainable High-Value Benchmark",
-      "sdg_policy_action": "Exceptional domestic value retention and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
+      "yield_typology": "Long Stay / High Yield",
+      "sdg_diagnosis": "Sustainable High-Yield Benchmark",
+      "sdg_policy_action": "Exceptional tourism GVA intensity and high economic return per visitor-day. Priority: Monitor carrying capacity and safeguard natural/cultural assets.",
       "sdg_status_color": "#10b981"
     },
     "hotel_stars": {

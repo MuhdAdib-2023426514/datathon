@@ -32,7 +32,7 @@ export const AccommodationMap: React.FC<AccommodationMapProps> = ({
   selectedYear = 2025
 }) => {
   const [selectedMetric, setSelectedMetric] = useState<
-    'accom_share' | 'spend_per_night' | 'alos' | 'tir' | 'archetype'
+    'accom_share' | 'spend_per_night' | 'alos' | 'tey' | 'tvay' | 'gva_intensity' | 'tir' | 'archetype'
   >('accom_share');
   const [selectedStateName, setSelectedStateName] = useState<string>('Pulau Pinang');
   const [sdgFilter, setSdgFilter] = useState<'all' | 'carrying_capacity' | 'high_yield' | 'extended_stay' | 'leisure'>('all');
@@ -112,14 +112,17 @@ export const AccommodationMap: React.FC<AccommodationMapProps> = ({
   - **Ages 40–54 (Pertengahan Umur / Family Travelers)**: ${dts?.age_40_54_pct.toFixed(1) || '0'}% (${dts?.age_40_54_k.toFixed(0) || '0'}k pax)
   - **Ages ≥ 55 (Warga Emas / Seniors & Retirees)**: ${dts?.age_55plus_pct.toFixed(1) || '0'}% (${dts?.age_55plus_k.toFixed(0) || '0'}k pax)
 - **Resident Median Household Income**: RM ${b.resident_median_income_rm.toLocaleString()}
-- **Unpaid VFR Lodging Share**: ${state.lodging_shares?.unpaid_vfr_pct ?? 50.0}% of overnight stays
+- **Unpaid VFR Lodging Share**: ${state.lodging_shares?.unpaid_vfr_pct != null ? `${state.lodging_shares.unpaid_vfr_pct}%` : 'N/A (unobserved)'} of overnight stays
+- **Strategic Typology Quadrant**: ${b.yield_typology || sdg.yield_typology || 'N/A'}
 
 ---
 
-## 4. UN SDG 8.9 & 12.b Carrying Capacity Status
+## 4. UN SDG 8.9 & 12.b Carrying Capacity & Yield Status
+- **Tourism Economic Yield (TEY)**: RM ${sdg.tey_rm_per_day.toFixed(1)} / visitor-day
+- **Tourism Value-Added Yield (TVAY)**: RM ${(sdg.tvay_rm_per_day ?? 0).toFixed(1)} / visitor-day
+- **Tourism GVA Intensity**: ${(sdg.tourism_gva_intensity_pct ?? sdg.dvr_retention_rate_pct).toFixed(1)}% (TSA Mapping Coverage: ${(sdg.mapping_coverage_pct ?? 100).toFixed(1)}%)
 - **Tourist Intensity Ratio (TIR)**: ${sdg.tir_visitors_per_resident.toFixed(1)} visitors / resident
 - **Excursionist Pressure Ratio (EPR)**: ${sdg.epr_ratio.toFixed(2)} day-trippers per overnight tourist
-- **Destination Value Retention (DVR)**: ${sdg.dvr_retention_rate_pct.toFixed(1)}% economic retention
 - **Sustainability Diagnosis**: ${sdg.sdg_diagnosis}
 - **Recommended Policy Action**: ${sdg.sdg_policy_action}
 
@@ -181,6 +184,30 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
       getValue: (s: StateProfile) => s.baseline_2025.alos_days,
       min: 2.0,
       max: 3.2,
+      colorRange: ['#eee9f6', '#b7a3df', '#6041b0'],
+    },
+    tey: {
+      label: 'Tourism Economic Yield (TEY)',
+      unit: 'RM/day',
+      getValue: (s: StateProfile) => s.sdg_metrics.tey_rm_per_day,
+      min: 150,
+      max: 350,
+      colorRange: ['#eee9f6', '#b7a3df', '#6041b0'],
+    },
+    tvay: {
+      label: 'Tourism Value-Added Yield (TVAY)',
+      unit: 'RM/day',
+      getValue: (s: StateProfile) => s.sdg_metrics.tvay_rm_per_day || 0,
+      min: 70,
+      max: 180,
+      colorRange: ['#eee9f6', '#b7a3df', '#6041b0'],
+    },
+    gva_intensity: {
+      label: 'Tourism GVA Intensity (%)',
+      unit: '%',
+      getValue: (s: StateProfile) => s.sdg_metrics.tourism_gva_intensity_pct || s.sdg_metrics.dvr_retention_rate_pct,
+      min: 55,
+      max: 65,
       colorRange: ['#eee9f6', '#b7a3df', '#6041b0'],
     },
     tir: {
@@ -369,6 +396,9 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
               ['accom_share', 'Accom Share (%)'],
               ['spend_per_night', 'Spend / Night (RM)'],
               ['alos', 'Length of Stay (ALOS)'],
+              ['tey', 'TEY (RM/day)'],
+              ['tvay', 'TVAY (RM/day)'],
+              ['gva_intensity', 'GVA Intensity (%)'],
               ['tir', 'Tourism Intensity (SDG)'],
               ['archetype', 'Typology Archetype'],
             ] as const
@@ -500,26 +530,49 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
             </div>
           </div>
 
+          {/* Typology Quadrant & Mapping Coverage Strip */}
+          <div className="flex items-center justify-between p-2.5 rounded-lg bg-violet-50/80 border border-violet-200/60 text-xs">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] uppercase font-semibold text-stone-600">Typology Quadrant:</span>
+              <span className="font-bold text-violet-800">
+                {activeState.baseline_2025.yield_typology || activeState.sdg_metrics?.yield_typology || 'Short Stay / High Yield'}
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5 text-[11px] font-mono">
+              <span className="text-stone-500">TSA Mapping Coverage:</span>
+              <span className="px-1.5 py-0.5 rounded bg-white text-violet-700 font-semibold border border-violet-100">
+                {(activeState.sdg_metrics?.mapping_coverage_pct ?? 100).toFixed(1)}%
+              </span>
+            </div>
+          </div>
+
           {/* Key Metric Cards */}
-          <div className="grid grid-cols-3 gap-2 text-center text-xs">
-            <div className="p-2.5 rounded-lg bg-white/80 border border-violet-100">
-              <span className="text-stone-600 text-[10px] uppercase font-semibold">ALOS (Days)</span>
-              <div className="text-lg font-bold text-stone-900 font-mono mt-0.5">
+          <div className="grid grid-cols-4 gap-2 text-center text-xs">
+            <div className="p-2 rounded-lg bg-white/80 border border-violet-100">
+              <span className="text-stone-600 text-[10px] uppercase font-semibold">ALOS</span>
+              <div className="text-base font-bold text-stone-900 font-mono mt-0.5">
                 {activeState.baseline_2025.alos_days.toFixed(2)}d
               </div>
             </div>
 
-            <div className="p-2.5 rounded-lg bg-white/80 border border-violet-100">
+            <div className="p-2 rounded-lg bg-white/80 border border-violet-100">
               <span className="text-stone-600 text-[10px] uppercase font-semibold">Spend/Night</span>
-              <div className="text-lg font-bold text-violet-700 font-mono mt-0.5">
+              <div className="text-base font-bold text-violet-700 font-mono mt-0.5">
                 RM {activeState.baseline_2025.spend_per_night_rm.toFixed(0)}
               </div>
             </div>
 
-            <div className="p-2.5 rounded-lg bg-white/80 border border-violet-100">
-              <span className="text-stone-600 text-[10px] uppercase font-semibold">Accom Share</span>
-              <div className="text-lg font-bold text-indigo-600 font-mono mt-0.5">
-                {activeState.baseline_2025.accommodation_share_pct.toFixed(1)}%
+            <div className="p-2 rounded-lg bg-white/80 border border-violet-100">
+              <span className="text-stone-600 text-[10px] uppercase font-semibold">TEY (Yield/Day)</span>
+              <div className="text-base font-bold text-indigo-600 font-mono mt-0.5">
+                RM {(activeState.sdg_metrics?.tey_rm_per_day ?? 0).toFixed(0)}
+              </div>
+            </div>
+
+            <div className="p-2 rounded-lg bg-white/80 border border-violet-100">
+              <span className="text-stone-600 text-[10px] uppercase font-semibold">TVAY (GVA/Day)</span>
+              <div className="text-base font-bold text-emerald-700 font-mono mt-0.5">
+                RM {(activeState.sdg_metrics?.tvay_rm_per_day ?? 0).toFixed(0)}
               </div>
             </div>
           </div>

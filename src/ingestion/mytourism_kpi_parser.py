@@ -1,6 +1,6 @@
 """
 MyTourism KPI Ingestion Parser (2016–2025)
-Extracts official operational indicators from /home/muhammad_adib/dosm/mytourism_kpi/:
+Extracts official operational indicators from mytourism_kpi/:
   1. Average Occupancy Rates (AOR %) by State (2016–2025)
   2. Hotel & Room Supply by State (2016–2025)
   3. Hotel Guests (Domestic vs. Foreign) by State (2016–2025)

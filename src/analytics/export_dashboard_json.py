@@ -22,6 +22,7 @@ from typing import Any, Dict, List
 import duckdb
 import numpy as np
 import pandas as pd
+import yaml
 
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 if str(ROOT_DIR) not in sys.path:
@@ -74,6 +75,14 @@ def export_dashboard_data():
     df_tsa_products = con.execute("SELECT * FROM tourism_product_year ORDER BY year, vai DESC").df()
     df_product_summary = con.execute("SELECT * FROM product_value_summary ORDER BY post_recovery_median_vai DESC").df()
 
+    price_csv = PROCESSED_DIR / "price_index.csv"
+    price_index_data = []
+    if price_csv.exists():
+        df_price = pd.read_csv(price_csv)
+        price_index_data = df_price.to_dict(orient="records")
+        with open(DASHBOARD_DATA_DIR / "price_index.json", "w", encoding="utf-8") as f:
+            json.dump(clean_nan(price_index_data), f, indent=2)
+
     tsa_data = {
         "macro_series": df_tsa_macro.to_dict(orient="records"),
         "macro_timeseries": df_tsa_macro.to_dict(orient="records"),
@@ -81,6 +90,7 @@ def export_dashboard_data():
         "product_timeseries": df_tsa_products.to_dict(orient="records"),
         "product_summary": df_product_summary.to_dict(orient="records"),
         "product_rankings": df_product_summary.to_dict(orient="records"),
+        "price_index": price_index_data,
         "summary": {
             "total_tdgva_2025_b": round(float(df_tsa_macro[df_tsa_macro["year"] == 2025]["tdgva"].values[0]) / 1000.0, 2),
             "tdgva_share_2025_pct": float(df_tsa_macro[df_tsa_macro["year"] == 2025]["tdgva_share_gva"].values[0]),
@@ -103,6 +113,7 @@ def export_dashboard_data():
     df_granular = con.execute("SELECT * FROM state_granular_profile").df()
     df_panel = con.execute("SELECT * FROM state_panel_year ORDER BY state, year").df()
     df_state_2025 = con.execute("SELECT * FROM state_panel_year WHERE year = 2025").df().set_index("state")
+    df_state_year_2025 = con.execute("SELECT * FROM state_year").df().set_index("state")
 
     states_dict = {}
     for _, c_row in df_clusters.iterrows():
@@ -124,6 +135,8 @@ def export_dashboard_data():
 
         # Verified 2025 baseline row directly from state_panel_year (Fixing Finding 3: KL 35.06M actuals)
         s25 = df_state_2025.loc[st] if st in df_state_2025.index else None
+
+        sy25 = df_state_year_2025.loc[st] if st in df_state_year_2025.index else None
 
         states_dict[st] = {
             "state": st,
@@ -159,6 +172,8 @@ def export_dashboard_data():
                 "hotel_rooms": int(s25["hotel_rooms_kpi"]) if (s25 is not None and pd.notnull(s25.get("hotel_rooms_kpi"))) else (int(c_row["hotel_rooms"]) if pd.notnull(c_row.get("hotel_rooms")) else None),
                 "aor_pct": float(s25["aor_pct"]) if (s25 is not None and pd.notnull(s25.get("aor_pct"))) else (float(c_row["aor_pct"]) if pd.notnull(c_row.get("aor_pct")) else None),
                 "resident_median_income_rm": float(s25["median_household_income_rm"]) if s25 is not None else float(c_row["resident_median_income_rm"]),
+                "yield_typology": str(sy25["yield_typology"]) if (sy25 is not None and "yield_typology" in sy25) else str(sdg_info.get("yield_typology", "")),
+                "policy_prescription": str(sy25["policy_prescription"]) if (sy25 is not None and "policy_prescription" in sy25) else "",
             },
             "clustering_profile": {
                 "reference_period": "2024–2025 Multi-Year Average",
@@ -201,10 +216,19 @@ def export_dashboard_data():
             },
             "sdg_metrics": {
                 "tey_rm_per_day": float(sdg_info.get("tey_rm_per_day", 0.0)),
-                "epr_ratio": float(sdg_info.get("epr_ratio", 1.0)),
+                "tvay_rm_per_day": float(sdg_info.get("tvay_rm_per_day", 0.0)),
+                "accommodation_yield_rm_per_night": float(sdg_info.get("accommodation_yield_rm_per_night", 0.0)),
+                "tourism_gva_intensity_pct": float(sdg_info.get("tourism_gva_intensity_pct", sdg_info.get("dvr_retention_rate_pct", 50.0))),
+                "mapping_coverage_pct": float(sdg_info.get("mapping_coverage_pct", 100.0)),
+                "estimated_tourism_gva_rm_million": float(sdg_info.get("estimated_tourism_gva_rm_million", 0.0)),
                 "dvr_retention_rate_pct": float(sdg_info.get("dvr_retention_rate_pct", 50.0)),
+                "real_tey_rm_per_day": float(sdg_info.get("real_tey_rm_per_day", sdg_info.get("tey_rm_per_day", 0.0))),
+                "real_tvay_rm_per_day": float(sdg_info.get("real_tvay_rm_per_day", sdg_info.get("tvay_rm_per_day", 0.0))),
+                "real_accommodation_yield_rm_per_night": float(sdg_info.get("real_accommodation_yield_rm_per_night", 0.0)),
+                "epr_ratio": float(sdg_info.get("epr_ratio", 1.0)),
                 "tir_visitors_per_resident": float(sdg_info.get("tir_visitors_per_resident", 5.0)),
                 "ryh_accom_per_household_rm": float(sdg_info.get("ryh_accom_per_household_rm", 0.0)),
+                "yield_typology": str(sdg_info.get("yield_typology", "Short Stay / Low Yield")),
                 "sdg_diagnosis": sdg_info.get("sdg_diagnosis", "Value Growth Frontier"),
                 "sdg_policy_action": sdg_info.get("sdg_policy_action", ""),
                 "sdg_status_color": sdg_info.get("sdg_status_color", "#10b981"),
@@ -350,16 +374,52 @@ def export_dashboard_data():
     df_panel_regs = con.execute("SELECT * FROM panel_regression_summary").df()
     df_trajectories = con.execute("SELECT * FROM state_recovery_trajectory").df()
 
+    tables_in_db = [t[0] for t in con.execute("SHOW TABLES").fetchall()]
+    df_loo = con.execute("SELECT * FROM panel_leave_one_out").df() if "panel_leave_one_out" in tables_in_db else pd.DataFrame()
+    df_infl = con.execute("SELECT * FROM panel_influence_diagnostics").df() if "panel_influence_diagnostics" in tables_in_db else pd.DataFrame()
+
+    loo_summary = {}
+    if not df_loo.empty:
+        for var in df_loo["variable"].unique():
+            sub = df_loo[df_loo["variable"] == var]
+            mean_c = float(sub["coefficient"].mean())
+            loo_summary[var] = {
+                "mean_coefficient": round(mean_c, 4),
+                "min_coefficient": round(float(sub["coefficient"].min()), 4),
+                "max_coefficient": round(float(sub["coefficient"].max()), 4),
+                "sign_stability_pct": round(float((sub["coefficient"] > 0).mean() * 100), 1) if mean_c > 0 else round(float((sub["coefficient"] < 0).mean() * 100), 1),
+                "n_iterations": len(sub),
+            }
+
+    infl_summary = {}
+    if not df_infl.empty:
+        infl_summary = {
+            "total_observations": len(df_infl),
+            "high_leverage_count": int(df_infl["is_high_leverage"].sum()),
+            "influential_outlier_count": int(df_infl["is_influential"].sum()),
+        }
+
     drivers_data = {
         "model_metadata": df_meta.iloc[0].to_dict() if len(df_meta) > 0 else {},
         "feature_attributions": df_drivers.to_dict(orient="records"),
         "panel_regressions": df_panel_regs.to_dict(orient="records"),
         "recovery_trajectories": df_trajectories.to_dict(orient="records"),
+        "leave_one_out_stability": loo_summary,
+        "influence_diagnostics": infl_summary,
         "disclaimer": "Standardized regression weights reflect association in the sample, not causal spending shares.",
     }
     with open(DASHBOARD_DATA_DIR / "drivers_rq3.json", "w", encoding="utf-8") as f:
         json.dump(clean_nan(drivers_data), f, indent=2)
     print(f"  [6/6] Exported RQ3 Drivers & Panel Models: drivers_rq3.json ({len(df_drivers)} drivers, {len(df_panel_regs)} panel models)")
+
+    # 7. Compile Official Source Provenance Registry
+    source_reg_file = ROOT_DIR / "data/metadata/source_registry.yaml"
+    if source_reg_file.exists():
+        with open(source_reg_file, "r", encoding="utf-8") as f:
+            registry_data = yaml.safe_load(f)
+        with open(DASHBOARD_DATA_DIR / "source_metadata.json", "w", encoding="utf-8") as f:
+            json.dump(registry_data, f, indent=2)
+        print(f"  [7/7] Compiled Source Provenance: source_metadata.json ({len(registry_data.get('sources', {}))} sources)")
 
     con.close()
     print("=" * 70)

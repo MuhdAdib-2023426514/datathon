@@ -16,11 +16,18 @@ import time
 import subprocess
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
-import duckdb
-
 ROOT_DIR = Path(__file__).resolve().parent.parent
-STATUS_FILE = ROOT_DIR / "data/pipeline_status.json"
-DUCKDB_PATH = ROOT_DIR / "data/processed/tourism_data.duckdb"
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+try:
+    from src.config.paths import PROJECT_ROOT, DATA_DIR, DUCKDB_PATH
+except ImportError:
+    PROJECT_ROOT = ROOT_DIR
+    DATA_DIR = ROOT_DIR / "data"
+    DUCKDB_PATH = DATA_DIR / "processed" / "tourism_data.duckdb"
+
+STATUS_FILE = DATA_DIR / "pipeline_status.json"
 PYTHON_BIN = sys.executable
 
 STAGES = {
@@ -47,8 +54,14 @@ STAGES = {
         ("accounting_fixtures", "tests/test_accounting_fixtures.py"),
         ("scenario_fixtures", "tests/test_scenario_fixtures.py"),
         ("gravity_fixtures", "tests/test_gravity_fixtures.py"),
+        ("missing_values", "tests/test_missing_values.py"),
+        ("paths_and_metadata", "tests/test_paths_and_metadata.py"),
+        ("economic_metrics", "tests/test_economic_metrics.py"),
+        ("panel_econometrics_tests", "tests/test_panel_econometrics.py"),
+        ("gravity_model_tests", "tests/test_gravity_model.py"),
         ("tsa_accounting", "src/validation/test_tsa_accounting.py"),
         ("state_and_corridors", "src/validation/test_state_and_corridors.py"),
+        ("data_quality_report", "src/validation/data_quality_report.py"),
     ],
     "export": [
         ("dashboard_json", "src/analytics/export_dashboard_json.py"),
@@ -101,12 +114,15 @@ def run_step(step_name: str, script_rel_path: str) -> Tuple[bool, float, str]:
 
     start_time = time.time()
     try:
+        env = os.environ.copy()
+        env["PYTHONPATH"] = str(ROOT_DIR) + (f":{env['PYTHONPATH']}" if "PYTHONPATH" in env else "")
         res = subprocess.run(
             [PYTHON_BIN, str(script_path)],
             cwd=str(ROOT_DIR),
             capture_output=True,
             text=True,
             timeout=300,
+            env=env,
         )
         elapsed = time.time() - start_time
         success = (res.returncode == 0)

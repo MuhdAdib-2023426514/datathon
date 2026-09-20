@@ -1,0 +1,151 @@
+# Malaysia Tourism Value Optimizer — Official Source Provenance Registry
+# Standardized data catalog aligned with AGENTS.md Section 4 and IMPLEMENTATION_PLAN.md Phase 3.
+
+sources:
+  tsa_macro_and_products:
+    id: "tsa_2015_2025"
+    organization: "Department of Statistics Malaysia (DOSM)"
+    publication: "Tourism Satellite Account Malaysia (2015–2025)"
+    reference_period: "2015–2025"
+    publication_date: "2026-09-15"
+    data_status: "official / preliminary (2025p)"
+    geography: "Malaysia (National)"
+    tables:
+      - "Jadual 4: Internal Tourism Consumption (ITC)"
+      - "Jadual 5: Production Accounts of Tourism Industries (GVA)"
+      - "Jadual 6: Domestic Supply and Tourism Ratios"
+      - "Jadual 1: Macro Aggregates (TDGVA, TDGDP, Tourism Employment)"
+    normalized_units:
+      monetary: "RM Million"
+      vai: "Ratio [0, 1] (GVA / Domestic Supply)"
+      tourism_ratio: "Percentage / Ratio [0, 1]"
+    transformation: "Extracted via openpyxl into DuckDB tourism_product_year and tsa_macro_year."
+
+  state_domestic_tourism_2025:
+    id: "dts_state_2025"
+    organization: "Department of Statistics Malaysia (DOSM)"
+    publication: "Survei Pelancongan Domestik Mengikut Negeri 2025"
+    reference_period: "2025"
+    publication_date: "2026-06-30"
+    data_status: "official"
+    geography: "16 Malaysian States and Federal Territories"
+    tables:
+      - "Jadual 1: Pelawat Domestik & Perbelanjaan Pelancongan Mengikut Negeri"
+      - "Jadual 8: Tujuan Utama Lawatan"
+      - "Jadual 11 & 12: Mod Pengangkutan & Jenis Penginapan"
+      - "Jadual 13a: Taburan Pendapatan Isi Rumah Pelancong"
+      - "Jadual 14 & 15: Penawaran Hotel & Bilangan Bilik"
+    normalized_units:
+      visitors: "Thousands (k pax)"
+      tourists: "Thousands (k pax)"
+      expenditure: "RM Million"
+      alos: "Days / Nights"
+    transformation: "Parsed into state_year, state_granular_profile, and destination_concentration."
+
+  multi_year_state_panel:
+    id: "dts_panel_2018_2025"
+    organization: "Department of Statistics Malaysia (DOSM)"
+    publication: "Domestic Tourism Survey State Series (2018–2025)"
+    reference_period: "2018–2025"
+    publication_date: "2019–2026"
+    data_status: "official"
+    geography: "16 Malaysian States and Federal Territories"
+    coverage: "126 state-year observations"
+    normalized_units:
+      expenditure: "RM Million"
+      tourists: "Thousands"
+      alos: "Days"
+    transformation: "Consolidated longitudinal panel in state_panel_year."
+
+  origin_destination_flows:
+    id: "od_matrix_2018_2025"
+    organization: "Department of Statistics Malaysia (DOSM)"
+    publication: "DTS Inter-State Matrix of Tourist Movements"
+    reference_period: "2018–2025 (2025 cross-section: 240 directional corridors)"
+    publication_date: "2026-06-30"
+    data_status: "official"
+    geography: "16x16 Inter-state OD pairs"
+    normalized_units:
+      tourist_flow: "Thousands of overnight tourists"
+      distance: "Great-circle / Road centroid Distance (km)"
+    transformation: "Consolidated in origin_destination and origin_destination_panel."
+
+  motac_hotel_kpi:
+    id: "motac_kpi_2016_2025"
+    organization: "Ministry of Tourism, Arts and Culture Malaysia (MOTAC)"
+    publication: "Malaysia Tourism Operational Indicators & Hotel Statistics"
+    reference_period: "2016–2025"
+    publication_date: "2026-07-20"
+    data_status: "official"
+    geography: "16 Malaysian States"
+    tables:
+      - "Average Occupancy Rate (AOR %) by State"
+      - "Hotel Guests (Domestic vs. Foreign)"
+      - "Registered Tourist Accommodation & Room Inventory"
+      - "Homestay Operations & Kampungstay Indicators"
+    normalized_units:
+      aor: "Percentage (%)"
+      hotels: "Establishments count"
+      rooms: "Room count"
+    transformation: "Materialized into hotel_operations_annual and accommodation_capacity."
+
+  state_demographics:
+    id: "dosm_demographics_2015_2025"
+    organization: "Department of Statistics Malaysia (DOSM)"
+    publication: "Current Population Estimates by State & Administrative District"
+    reference_period: "2015–2025"
+    publication_date: "2025-11-15"
+    data_status: "official"
+    geography: "16 Malaysian States"
+    normalized_units:
+      population: "Thousands / Millions"
+      median_income: "RM / month (HIES 2022/2024)"
+    transformation: "Merged into state_demographics_annual and state_panel_year."
+
+  consumer_price_index:
+    id: "cpi_2015_2025"
+    organization: "Department of Statistics Malaysia (DOSM)"
+    publication: "Consumer Price Index Malaysia (2015–2025)"
+    reference_period: "2015–2025"
+    publication_date: "2026-01-22"
+    data_status: "official"
+    geography: "Malaysia (National)"
+    base_year: "2010=100"
+    normalized_units:
+      index: "Index points (2010=100)"
+      deflator_base: "2025 = 134.6"
+    transformation: "Compiled into data/processed/price_index.csv for Constant 2025 RM conversions."
+
+  geospatial_boundaries:
+    id: "malaysia_state_geojson"
+    organization: "DOSM / Department of Survey and Mapping Malaysia (JUPEM)"
+    publication: "National Boundary Topology (States & Federal Territories)"
+    reference_period: "2025"
+    publication_date: "2025-01-10"
+    data_status: "official"
+    geography: "WGS84 EPSG:4326 GeoJSON"
+    transformation: "Simplified topology in data/geo/malaysia.geojson and dashboard/public/data/geo_malaysia.json."
+
+derived_models:
+  econometric_panel:
+    id: "panel_fe_models"
+    model_type: "Two-Way Fixed Effects & One-Way FE with State-Clustered SEs"
+    data_status: "model_estimate"
+    dependent_variable: "ln(Accommodation Expenditure per Tourist)"
+    sample_size: "126 state-years (2018–2025)"
+    source_datasets: ["dts_panel_2018_2025", "motac_kpi_2016_2025", "dosm_demographics_2015_2025"]
+
+  spatial_gravity:
+    id: "gravity_corridor_models"
+    model_type: "Poisson Pseudo-Maximum Likelihood (PPML) & Log-OLS"
+    data_status: "model_estimate"
+    dependent_variable: "Interstate Tourist Flow (thousands)"
+    sample_size: "1,650 observed corridor-years (rolling holdout validation)"
+    source_datasets: ["od_matrix_2018_2025", "dts_panel_2018_2025"]
+
+  scenario_simulator:
+    id: "decoupled_scenario_engine"
+    model_type: "Deterministic What-If Policy Simulator"
+    data_status: "scenario_assumption"
+    disclaimer: "Scenario estimate, not a causal forecast. Never guarantees future economic yield."
+    source_datasets: ["dts_state_2025", "tsa_2015_2025", "motac_kpi_2016_2025"]

@@ -52,6 +52,7 @@ export interface TSAMacroData {
     highest_vai_product: string;
     highest_vai_score: number;
   };
+  price_index?: PriceIndexItem[];
 }
 
 export interface StateDemographics {
@@ -80,12 +81,28 @@ export interface StateDemographics {
   avg_household_size: number;
 }
 
+export interface PriceIndexItem {
+  year: number;
+  index: number;
+  base_year: string;
+  source: string;
+}
+
 export interface StateSDGMetrics {
   tey_rm_per_day: number;
-  epr_ratio: number;
+  tvay_rm_per_day?: number;
+  accommodation_yield_rm_per_night?: number;
+  tourism_gva_intensity_pct?: number;
+  mapping_coverage_pct?: number;
+  estimated_tourism_gva_rm_million?: number;
   dvr_retention_rate_pct: number;
+  real_tey_rm_per_day?: number;
+  real_tvay_rm_per_day?: number;
+  real_accommodation_yield_rm_per_night?: number;
+  epr_ratio: number;
   tir_visitors_per_resident: number;
   ryh_accom_per_household_rm: number;
+  yield_typology?: string;
   sdg_diagnosis: string;
   sdg_policy_action: string;
   sdg_status_color: string;
@@ -141,6 +158,8 @@ export interface StateProfile {
     hotel_rooms: number | null;
     aor_pct: number | null;
     resident_median_income_rm: number;
+    yield_typology?: string;
+    policy_prescription?: string;
   };
   clustering_profile?: {
     reference_period: string;
@@ -283,5 +302,68 @@ export interface DriversData {
   feature_attributions: DriverAttribution[];
   panel_regressions?: any[];
   recovery_trajectories?: any[];
+  leave_one_out_stability?: Record<string, any>;
+  influence_diagnostics?: Record<string, any>;
   disclaimer?: string;
 }
+
+export interface ModelMetricsData {
+  gravity: {
+    model: string;
+    specification: string;
+    train_period: string;
+    test_period: string;
+    train_observations: number;
+    test_observations: number;
+    total_panel_observations: number;
+    r2_oos: number;
+    correlation: number;
+    squared_correlation: number;
+    mae: number;
+    rmse: number;
+    rmsle: number;
+    smape: number;
+    distance_decay_friction: number;
+    distance_decay_se: number;
+    distance_decay_pval: number;
+    cross_region_barrier: number;
+    cross_region_se: number;
+    target_leakage_status?: string;
+    structural_change_test?: {
+      interaction_variable: string;
+      interaction_coef: number;
+      std_error: number;
+      t_statistic: number;
+      p_value: number;
+      h0_rejected_5pct: boolean;
+      conclusion: string;
+    };
+    naive_baselines: Array<{
+      name: string;
+      r2_oos: number;
+      mae: number;
+      rmse: number;
+      rmsle: number;
+      smape: number;
+    }>;
+  };
+  panel: {
+    primary_model: string;
+    sample_period: string;
+    observations: number;
+    states: number;
+    years: number;
+    alos_elasticity: number;
+    alos_pvalue: number;
+    tourist_elasticity: number;
+    tourist_pvalue: number;
+    yield_model?: {
+      id: string;
+      r_squared: number;
+      aor_elasticity: number;
+      foreign_share_coef: number;
+      holiday_share_coef: number;
+    };
+  };
+}
+

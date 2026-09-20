@@ -10,10 +10,21 @@ import io
 import os
 import traceback
 from pathlib import Path
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 from mcp.server.mcpserver import MCPServer
 
-DB_PATH = Path("/home/muhammad_adib/dosm/data/processed/tourism_data.duckdb")
-CHART_DIR = Path("/home/muhammad_adib/dosm/data/charts")
+try:
+    from src.config.paths import DUCKDB_PATH, CHARTS_DIR
+except ImportError:
+    DUCKDB_PATH = ROOT_DIR / "data" / "processed" / "tourism_data.duckdb"
+    CHARTS_DIR = ROOT_DIR / "data" / "charts"
+
+DB_PATH = DUCKDB_PATH
+CHART_DIR = CHARTS_DIR
 
 mcp = MCPServer(
     "datasci",
@@ -58,16 +69,15 @@ from sklearn.metrics import silhouette_score
 import warnings
 warnings.filterwarnings('ignore')
 
-# Connect to tourism database (read-only)
-_db = duckdb.connect('{DB_PATH}', read_only=True)
-
 def sql(query):
     \"\"\"Execute a SQL query against the tourism database and return a DataFrame.\"\"\"
-    return _db.execute(query).df()
+    with duckdb.connect(f'{DB_PATH}', read_only=True) as con:
+        return con.execute(query).df()
 
 def tables():
     \"\"\"List all tables in the tourism database.\"\"\"
-    return [t[0] for t in _db.execute("SHOW TABLES").fetchall()]
+    with duckdb.connect(f'{DB_PATH}', read_only=True) as con:
+        return [t[0] for t in con.execute("SHOW TABLES").fetchall()]
 
 # Pre-load core analytical tables
 _available_tables = tables()

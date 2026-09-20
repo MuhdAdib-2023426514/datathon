@@ -62,7 +62,34 @@ def test_state_year_table():
     for col in ["paid_commercial_share_pct", "unpaid_vfr_share_pct", "affluence_index", "yield_typology", "policy_prescription"]:
         assert col in df.columns, f"Missing enriched column '{col}' in state_year"
 
-    print("  ✓ state_year schema, bounds, decomposition formulas, and enriched profiles PASSED.")
+    # Verify Sprint 2 economic metrics (Phases 6-8)
+    for col in [
+        "total_visitor_days_thousands",
+        "tourism_economic_yield_per_day_rm",
+        "tourism_value_added_yield_per_day_rm",
+        "tourism_gva_intensity_pct",
+        "mapping_coverage_pct",
+    ]:
+        assert col in df.columns, f"Missing Sprint 2 economic metric '{col}' in state_year"
+        assert (df[col] > 0).all(), f"Values in '{col}' must be strictly positive"
+
+    # Verify Phase 8 typology quadrant labels
+    valid_quadrants = {
+        "Short Stay / Low Yield",
+        "Short Stay / High Yield",
+        "Long Stay / Low Yield",
+        "Long Stay / High Yield",
+    }
+    assert set(df["yield_typology"]).issubset(valid_quadrants), (
+        f"Invalid typology quadrants found: {set(df['yield_typology']) - valid_quadrants}"
+    )
+
+    # Verify mapping coverage is bounded in (50%, 100%]
+    assert (df["mapping_coverage_pct"] > 50.0).all() and (df["mapping_coverage_pct"] <= 100.0).all(), (
+        "Mapping coverage must be between 50% and 100%"
+    )
+
+    print("  ✓ state_year schema, bounds, decomposition formulas, Sprint 2 yields, and typologies PASSED.")
 
 
 def test_origin_destination_matrix():

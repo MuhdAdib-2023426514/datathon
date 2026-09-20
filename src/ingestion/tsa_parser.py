@@ -10,8 +10,9 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 import openpyxl
 import pandas as pd
+from src.config.paths import TSA_DIR
 
-TSA_FILE_PATH = Path("/home/muhammad_adib/dosm/data/tsa/tourism_2025.xlsx")
+TSA_FILE_PATH = TSA_DIR / "tourism_2025.xlsx"
 
 # Canonical English naming for the 8 TSA characteristic product categories
 CANONICAL_PRODUCTS = [

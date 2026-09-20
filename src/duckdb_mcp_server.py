@@ -6,10 +6,21 @@ to eliminate file lock conflicts with background ingestion/analytical pipelines.
 
 import sys
 from pathlib import Path
+
+# Ensure project root is on sys.path when invoked directly as an MCP server
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 import duckdb
 from mcp.server.mcpserver import MCPServer
 
-DEFAULT_DB_PATH = Path("/home/muhammad_adib/dosm/data/processed/tourism_data.duckdb")
+try:
+    from src.config.paths import DUCKDB_PATH
+except ImportError:
+    DUCKDB_PATH = ROOT_DIR / "data" / "processed" / "tourism_data.duckdb"
+
+DEFAULT_DB_PATH = DUCKDB_PATH
 
 # Parse optional db-path argument if provided
 db_path = DEFAULT_DB_PATH

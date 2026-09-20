@@ -142,88 +142,102 @@
   "gravity_models": {
     "validation": [
       {
-        "model_specification": "PPML (Poisson Pseudo-Maximum Likelihood)",
-        "training_sample": "2018\u20132024 (N = 1650 corridors)",
+        "model_specification": "PPML Structural Gravity (Primary)",
+        "training_sample": "2018\u20132024 (N = 1680 corridors)",
         "testing_sample": "2025 Actuals (N = 240 corridors)",
-        "predictive_r2": 0.5177,
-        "correlation": 0.812,
-        "squared_correlation": 0.6593,
-        "rmse_thousands": 356.45,
+        "predictive_r2": 0.589,
+        "correlation": 0.8759,
+        "squared_correlation": 0.7671,
+        "mae": 175.5,
+        "rmse": 329.04,
+        "rmsle": 0.9993,
+        "smape": 75.43,
         "is_primary": true,
-        "status": "Validated: Primary zero-robust gravity specification."
+        "status": "Validated: Primary zero-robust gravity specification without target leakage."
       },
       {
-        "model_specification": "Log-OLS Classical Gravity",
-        "training_sample": "2018\u20132024 (N = 1650 corridors)",
+        "model_specification": "Log-OLS Classical Gravity (Comparison)",
+        "training_sample": "2018\u20132024 (N = 1680 corridors)",
         "testing_sample": "2025 Actuals (N = 240 corridors)",
-        "predictive_r2": 0.4863,
-        "correlation": 0.7672,
-        "squared_correlation": 0.5886,
-        "rmse_thousands": 367.88,
+        "predictive_r2": 0.2936,
+        "correlation": 0.7139,
+        "squared_correlation": 0.5097,
+        "mae": 233.35,
+        "rmse": 431.4,
+        "rmsle": 1.5231,
+        "smape": 105.68,
         "is_primary": false,
         "status": "Comparison: Classical log-linear model (exhibits retransformation bias)."
+      },
+      {
+        "model_specification": "Naive Baseline 1: Lagged Persistence (2024 Flow)",
+        "training_sample": "2024 Actuals (N = 240 corridors)",
+        "testing_sample": "2025 Actuals (N = 240 corridors)",
+        "predictive_r2": 0.7637,
+        "correlation": 0.8816,
+        "squared_correlation": 0.7773,
+        "mae": 134.92,
+        "rmse": 249.51,
+        "rmsle": 1.1712,
+        "smape": 70.54,
+        "is_primary": false,
+        "status": "Benchmark: Naive no-change forecast."
+      },
+      {
+        "model_specification": "Naive Baseline 2: Historical Corridor Mean (2018\u20132024)",
+        "training_sample": "2018\u20132024 (N = 1680 corridors)",
+        "testing_sample": "2025 Actuals (N = 240 corridors)",
+        "predictive_r2": 0.6732,
+        "correlation": 0.9343,
+        "squared_correlation": 0.873,
+        "mae": 163.35,
+        "rmse": 293.39,
+        "rmsle": 1.0788,
+        "smape": 80.13,
+        "is_primary": false,
+        "status": "Benchmark: Naive 7-year corridor historical average."
       }
     ],
     "parameters": [
       {
-        "model_type": "PPML Panel (Primary, 2018\u20132025)",
+        "model_type": "PPML Structural Gravity (Primary, 2018\u20132025)",
         "variable": "Distance Decay Friction (PPML)",
-        "coefficient": -0.4328,
-        "std_error": 0.0474,
-        "t_statistic": -9.1339,
+        "coefficient": -0.4104,
+        "std_error": 0.0517,
+        "t_statistic": -7.9442,
         "p_value": 0.0,
         "significance": "p < 0.001",
-        "interpretation": "Under PPML (zero-flow robust), a 10% increase in corridor distance reduces tourist flow by 4.3%."
+        "interpretation": "Under PPML (zero-flow robust, zero target leakage), a 10% increase in corridor distance reduces tourist flow by 4.1%."
       },
       {
-        "model_type": "Log-OLS Panel (Comparison, 2018\u20132025)",
-        "variable": "Distance Decay Friction (Log-OLS)",
-        "coefficient": -0.6037,
-        "std_error": 0.0521,
-        "t_statistic": -11.5988,
-        "p_value": 0.0,
-        "significance": "p < 0.001",
-        "interpretation": "Under Log-OLS, a 10% distance increase reduces flow by 6.0%."
-      },
-      {
-        "model_type": "PPML Panel (Primary, 2018\u20132025)",
-        "variable": "Origin Adult Population 15+ (PPML)",
-        "coefficient": 0.8108,
-        "std_error": 0.0271,
-        "t_statistic": 29.9049,
-        "p_value": 0.0,
-        "significance": "p < 0.001",
-        "interpretation": "A 10% expansion in origin adult population expands tourist generation by 8.1%."
-      },
-      {
-        "model_type": "PPML Panel (Primary, 2018\u20132025)",
+        "model_type": "PPML Structural Gravity (Primary, 2018\u20132025)",
         "variable": "Cross-Region Flight Barrier (Peninsula <-> Borneo)",
-        "coefficient": -0.8574,
-        "std_error": 0.1191,
-        "t_statistic": -7.1983,
+        "coefficient": -0.8022,
+        "std_error": 0.1289,
+        "t_statistic": -6.2238,
         "p_value": 0.0,
         "significance": "p < 0.001",
-        "interpretation": "Corridors crossing Peninsula and Borneo face an extra 57.6% flow penalty."
+        "interpretation": "Corridors crossing between Peninsular Malaysia and Borneo face an extra 55.2% flight barrier penalty."
       },
       {
-        "model_type": "Pre-COVID (2018\u20132019)",
-        "variable": "Distance Decay Friction (Pre-COVID)",
-        "coefficient": -0.6229,
-        "std_error": 0.1206,
-        "t_statistic": -5.164,
+        "model_type": "Log-OLS Classical Gravity (Comparison, 2018\u20132025)",
+        "variable": "Distance Decay Friction (Log-OLS)",
+        "coefficient": -0.491,
+        "std_error": 0.0569,
+        "t_statistic": -8.6289,
         "p_value": 0.0,
         "significance": "p < 0.001",
-        "interpretation": "Pre-COVID baseline distance friction."
+        "interpretation": "Under Log-OLS, distance friction is 4.9%; exhibits retransformation bias on small flows."
       },
       {
-        "model_type": "Post-Recovery (2023\u20132025)",
-        "variable": "Distance Decay Friction (Post-Recovery)",
-        "coefficient": -0.5936,
-        "std_error": 0.0668,
-        "t_statistic": -8.8906,
-        "p_value": 0.0,
-        "significance": "p < 0.001",
-        "interpretation": "Post-recovery distance decay friction (shows persistent preference for proximate intra-peninsular travel)."
+        "model_type": "Structural Shift Interaction Model (Phase 18)",
+        "variable": "ln(Distance) * PostRecovery(2023\u20132025)",
+        "coefficient": 0.1023,
+        "std_error": 0.0658,
+        "t_statistic": 1.5557,
+        "p_value": 0.1198,
+        "significance": "Not sig (Stable)",
+        "interpretation": "No statistically significant post-recovery break in distance sensitivity (interaction beta = +0.1023, p = 0.1198). Spatial friction remains structurally invariant."
       }
     ]
   }

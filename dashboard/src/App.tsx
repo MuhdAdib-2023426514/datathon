@@ -9,7 +9,8 @@ import type {
   StateProfile, 
   ODCorridorsData, 
   ScenarioEngineConfig, 
-  DriversData 
+  DriversData,
+  ModelMetricsData
 } from './types';
 import { 
   Loader2, 
@@ -29,6 +30,7 @@ export function App() {
   const [corridorData, setCorridorData] = useState<ODCorridorsData | null>(null);
   const [scenarioConfig, setScenarioConfig] = useState<ScenarioEngineConfig | null>(null);
   const [driversData, setDriversData] = useState<DriversData | null>(null);
+  const [modelMetrics, setModelMetrics] = useState<ModelMetricsData | null>(null);
 
   useEffect(() => {
     async function loadAllDatasets() {
@@ -45,7 +47,8 @@ export function App() {
           geoRes, 
           corridorsRes, 
           scenarioRes, 
-          driversRes
+          driversRes,
+          metricsRes
         ] = await Promise.all([
           fetch(`${cleanBase}data/tsa_macro.json`),
           fetch(`${cleanBase}data/state_profiles.json`),
@@ -53,6 +56,7 @@ export function App() {
           fetch(`${cleanBase}data/od_corridors.json`),
           fetch(`${cleanBase}data/scenario_engine.json`),
           fetch(`${cleanBase}data/drivers_rq3.json`),
+          fetch(`${cleanBase}data/model_metrics.json`),
         ]);
 
         if (!tsaRes.ok || !statesRes.ok || !geoRes.ok || !corridorsRes.ok || !scenarioRes.ok || !driversRes.ok) {
@@ -65,14 +69,16 @@ export function App() {
           geoData,
           corridorsJson,
           scenarioJson,
-          driversJson
+          driversJson,
+          metricsJson
         ] = await Promise.all([
           tsaRes.json(),
           statesRes.json(),
           geoRes.json(),
           corridorsRes.json(),
           scenarioRes.json(),
-          driversRes.json()
+          driversRes.json(),
+          metricsRes.ok ? metricsRes.json() : null,
         ]);
 
         setTsaData(tsaJson);
@@ -81,6 +87,7 @@ export function App() {
         setCorridorData(corridorsJson);
         setScenarioConfig(scenarioJson);
         setDriversData(driversJson);
+        setModelMetrics(metricsJson);
       } catch (err: any) {
         console.error('Failed to load dataset:', err);
         setError(err.message || 'Error loading dashboard datasets.');
@@ -161,6 +168,7 @@ export function App() {
                 geoJson={geoJson} 
                 stateProfiles={stateProfiles || undefined}
                 selectedYear={selectedYear}
+                modelMetrics={modelMetrics}
                 onSelectCorridorForScenario={(_dest) => {
                   setActiveTab('simulator');
                 }}

@@ -1,0 +1,238 @@
+{
+  "timestamp": "2026-09-20 15:35:31 UTC",
+  "database_path": "/home/muhammad_adib/dosm/data/processed/tourism_data.duckdb",
+  "total_tables": 42,
+  "table_inventory": {
+    "accommodation_capacity": 16,
+    "accommodation_drivers_meta": 1,
+    "accommodation_drivers_summary": 6,
+    "corridor_classification": 240,
+    "corridor_classification_panel": 1920,
+    "corridor_gravity_model_summary": 4,
+    "corridor_gravity_predictions": 240,
+    "corridor_gravity_predictions_panel": 1920,
+    "corridor_gravity_validation": 4,
+    "corridor_opportunity_gap": 240,
+    "destination_concentration": 16,
+    "destination_concentration_panel": 128,
+    "homestay_operations_annual": 28,
+    "hotel_operations_annual": 160,
+    "meta": 1,
+    "national_household_income_panel": 91,
+    "national_income_class_panel": 63,
+    "origin_destination": 256,
+    "origin_destination_panel": 2048,
+    "panel_influence_diagnostics": 126,
+    "panel_leave_one_out": 80,
+    "panel_regression_summary": 11,
+    "product_value_summary": 8,
+    "sdg_sustainable_metrics": 126,
+    "state_clusters": 16,
+    "state_demographics": 16,
+    "state_demographics_annual": 128,
+    "state_diagnostics_correlations": 9,
+    "state_driver_regression_summary": 8,
+    "state_granular_profile": 16,
+    "state_hotel_star_inventory": 126,
+    "state_household_income_annual": 128,
+    "state_household_income_panel": 208,
+    "state_panel_year": 126,
+    "state_purpose_of_visit_panel": 126,
+    "state_recovery_trajectory": 16,
+    "state_top_destinations": 640,
+    "state_top_districts": 465,
+    "state_tourist_income_panel": 126,
+    "state_year": 16,
+    "tourism_product_year": 88,
+    "tsa_macro_year": 11
+  },
+  "key_uniqueness_checks": {
+    "tourism_product_year": {
+      "primary_keys": [
+        "product_id",
+        "year"
+      ],
+      "duplicates_found": 0,
+      "status": "PASS"
+    },
+    "tsa_macro_year": {
+      "primary_keys": [
+        "year"
+      ],
+      "duplicates_found": 0,
+      "status": "PASS"
+    },
+    "state_year": {
+      "primary_keys": [
+        "state",
+        "year"
+      ],
+      "duplicates_found": 0,
+      "status": "PASS"
+    },
+    "state_panel_year": {
+      "primary_keys": [
+        "state",
+        "year"
+      ],
+      "duplicates_found": 0,
+      "status": "PASS"
+    },
+    "hotel_operations_annual": {
+      "primary_keys": [
+        "state",
+        "year"
+      ],
+      "duplicates_found": 0,
+      "status": "PASS"
+    },
+    "origin_destination": {
+      "primary_keys": [
+        "origin",
+        "destination",
+        "year"
+      ],
+      "duplicates_found": 0,
+      "status": "PASS"
+    },
+    "origin_destination_panel": {
+      "primary_keys": [
+        "origin",
+        "destination",
+        "year"
+      ],
+      "duplicates_found": 0,
+      "status": "PASS"
+    },
+    "destination_concentration": {
+      "primary_keys": [
+        "destination",
+        "year"
+      ],
+      "duplicates_found": 0,
+      "status": "PASS"
+    },
+    "corridor_classification": {
+      "primary_keys": [
+        "origin",
+        "destination",
+        "year"
+      ],
+      "duplicates_found": 0,
+      "status": "PASS"
+    }
+  },
+  "range_validations": [
+    {
+      "table": "tourism_product_year",
+      "metric": "vai (structural: 2015-2019, 2023-2025)",
+      "condition": "0.0 <= vai <= 1.0",
+      "violations": 0,
+      "status": "PASS",
+      "note": "Excludes 2020-2022 MCO lockdown disruption as mandated by AGENTS.md Section 7 Stage A."
+    },
+    {
+      "table": "tourism_product_year",
+      "metric": "vai (disruption: 2020-2022)",
+      "condition": "Documented MCO lockdown accounting anomaly",
+      "violations": 3,
+      "status": "DOCUMENTED",
+      "note": "3 records in 2021 where domestic supply dropped faster than annual GVA in official source tables."
+    },
+    {
+      "table": "hotel_operations_annual",
+      "metric": "aor_pct",
+      "condition": "0.0 <= aor_pct <= 100.0",
+      "violations": 0,
+      "status": "PASS",
+      "note": "All annual hotel occupancy rates within valid percentage range."
+    },
+    {
+      "table": "origin_destination",
+      "metric": "tourist_flow_thousands",
+      "condition": "tourist_flow_thousands >= 0.0",
+      "violations": 0,
+      "status": "PASS",
+      "note": "Zero negative corridor flows."
+    },
+    {
+      "table": "state_panel_year",
+      "metric": "alos_days",
+      "condition": "alos_days > 0.0",
+      "violations": 0,
+      "status": "PASS",
+      "note": "All state Average Length of Stay observations are positive."
+    },
+    {
+      "table": "state_year",
+      "metric": "mapping_coverage_pct (Sprint 2)",
+      "condition": "0.0 <= mapping_coverage_pct <= 100.0",
+      "violations": 0,
+      "status": "PASS",
+      "note": "TSA empirical VAI mapping coverage properly bounded."
+    },
+    {
+      "table": "state_year",
+      "metric": "tourism_gva_intensity_pct (Sprint 2)",
+      "condition": "0.0 <= tourism_gva_intensity_pct <= 100.0",
+      "violations": 0,
+      "status": "PASS",
+      "note": "Tourism GVA intensity within valid percentage range."
+    },
+    {
+      "table": "state_year",
+      "metric": "tourism_economic_yield_per_day_rm (TEY)",
+      "condition": "TEY > 0.0",
+      "violations": 0,
+      "status": "PASS",
+      "note": "Tourism Economic Yield per visitor-day strictly positive."
+    }
+  ],
+  "missing_value_summary": {
+    "tourism_product_year": {
+      "total_rows": 88,
+      "columns_with_nulls": {}
+    },
+    "state_year": {
+      "total_rows": 16,
+      "columns_with_nulls": {}
+    },
+    "state_panel_year": {
+      "total_rows": 126,
+      "columns_with_nulls": {
+        "homestay_rooms": 77.78,
+        "homestay_operators": 77.78
+      }
+    },
+    "origin_destination": {
+      "total_rows": 256,
+      "columns_with_nulls": {}
+    },
+    "hotel_operations_annual": {
+      "total_rows": 160,
+      "columns_with_nulls": {
+        "domestic_hotel_guests": 0.62,
+        "foreign_hotel_guests": 0.62,
+        "total_hotel_guests": 0.62,
+        "foreign_guest_share_pct": 0.62
+      }
+    }
+  },
+  "provenance_summary": {
+    "tourism_product_year": [
+      {
+        "status": "preliminary",
+        "count": 8
+      },
+      {
+        "status": "actual",
+        "count": 72
+      },
+      {
+        "status": "estimate",
+        "count": 8
+      }
+    ]
+  },
+  "overall_status": "PASS"
+}

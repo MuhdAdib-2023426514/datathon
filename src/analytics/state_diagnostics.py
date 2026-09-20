@@ -1,9 +1,9 @@
 """
-State Econometric Diagnostics & Yield Analysis (Stage C & Advanced Root-Cause Drivers)
+State Econometric Diagnostics & Yield Analysis (Stage C & Structural Diagnostic Drivers)
 Computes:
 1. Cross-sectional descriptive statistics, Spearman rank correlations.
-2. State Yield Typologies (Volume Trap, Transit Spender, Budget Retreat, High-Yield Destination).
-3. SDG 8.9 & 12.b Economic Indicators (TEY, EPR, DVR GVA Retained).
+2. State Yield Typologies (Short Stay / Low Yield, Short Stay / High Yield, Long Stay / Low Yield, Long Stay / High Yield).
+3. SDG 8.9 & 12.b Economic Indicators (TEY, TVAY, Tourism GVA Intensity, Mapping Coverage, EPR).
 4. Granular DTS Sub-Table Integration (Paid Commercial vs Unpaid VFR, Demographics, Affluence).
 5. Cross-Sectional OLS Econometric Driver Regressions (Explaining Spend Per Night & Accom Share).
 6. Corridor Opportunity Gap Matrix (Quantifying incremental economic value for +0.5 nights across active corridors).
@@ -21,13 +21,25 @@ from typing import Dict, Tuple, List
 import duckdb
 import numpy as np
 import pandas as pd
+
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from scipy import stats
 import statsmodels.api as sm
-from src.analytics.accounting import calc_sdg_attributable_gva, calc_value_retention_rate
+from src.analytics.accounting import (
+    calc_visitor_days,
+    calc_tey,
+    calc_accommodation_yield,
+    calc_estimated_tourism_gva_state,
+    calc_mapping_coverage,
+    calc_tourism_gva_intensity,
+    calc_tvay,
+    classify_state_yield_typology,
+    calc_sdg_attributable_gva,
+    calc_value_retention_rate,
+)
 
 PROCESSED_DIR = ROOT_DIR / "data/processed"
 DUCKDB_PATH = PROCESSED_DIR / "tourism_data.duckdb"
@@ -43,10 +55,12 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
     """
     con = duckdb.connect(str(DUCKDB_PATH))
     existing_tables = [t[0] for t in con.execute("SHOW TABLES").fetchall()]
+
+    # Load 2025 cross-sectional baseline from state_year table
     df = con.execute("SELECT * FROM state_year").df()
 
-    # Clean up any existing granular or suffixed columns from previous runs
-    cols_to_drop = [c for c in df.columns if c.endswith("_x") or c.endswith("_y")]
+    # Drop columns that will be re-merged or recalculated
+    cols_to_drop = []
     if "state_granular_profile" in existing_tables:
         df_gran = con.execute("SELECT * FROM state_granular_profile").df()
         for c in df_gran.columns:
@@ -55,7 +69,7 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
     if cols_to_drop:
         df = df.drop(columns=list(set(cols_to_drop)))
 
-    # 1. Merge Granular DTS 2025 Sub-Table Profiles (Root Cause Drivers)
+    # 1. Merge Granular DTS 2025 Sub-Table Profiles (Exploratory Driver Analysis)
     if "state_granular_profile" in existing_tables:
         drop_cols = [c for c in ["state_code", "region"] if c in df_gran.columns]
         df = df.merge(df_gran.drop(columns=drop_cols), on="state", how="left")
@@ -99,40 +113,28 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
 
     df_corr = pd.DataFrame(corr_records)
 
-    # 3. Cross-Sectional State Profiles & Yield Typologies
-    alos_median = df["alos_days"].median()
-    spend_per_tourist_median = df["spend_per_tourist_rm"].median()
-
-    def categorize_state_yield(row):
-        high_stay = row["alos_days"] >= alos_median
-        high_spend = row["spend_per_tourist_rm"] >= spend_per_tourist_median
-
-        if not high_stay and not high_spend:
-            return "Volume Trap (Low ALOS, Low Spend/Tourist)"
-        elif not high_stay and high_spend:
-            return "Transit Spender (Short Stay, High Spend/Tourist)"
-        elif high_stay and not high_spend:
-            return "Budget Retreat (Long Stay, Low Spend/Tourist)"
-        else:
-            return "High-Yield Destination (Long Stay, High Spend/Tourist)"
-
-    df["yield_typology"] = df.apply(categorize_state_yield, axis=1)
-
-    # 4. Sustainable Tourism & SDG 8.9 / 12.b Economic Indicators
+    # 3. Sustainable Tourism & SDG 8.9 / 12.b Economic Indicators
     # A. Total Visitor-Days Footprint = (Overnight Tourists * ALOS) + Excursionists
-    df["total_visitor_days_thousands"] = (
-        (df["tourists_thousands"] * df["alos_days"]) + df["excursionists_thousands"]
-    ).round(2)
+    df["total_visitor_days_thousands"] = [
+        calc_visitor_days(t, alos, exc)
+        for t, alos, exc in zip(df["tourists_thousands"], df["alos_days"], df["excursionists_thousands"])
+    ]
 
     # B. Tourism Economic Yield per Visitor-Day (TEY in RM)
-    vis_days_denom = df["total_visitor_days_thousands"] * 1e3
-    df["tourism_economic_yield_per_day_rm"] = np.where(
-        vis_days_denom > 0,
-        ((df["total_expenditure_rm_million"] * 1e6) / vis_days_denom).round(2),
-        np.nan,
-    )
+    df["tourism_economic_yield_per_day_rm"] = [
+        np.round(calc_tey(tot_exp * 1e6, vis_days * 1e3), 2)
+        for tot_exp, vis_days in zip(df["total_expenditure_rm_million"], df["total_visitor_days_thousands"])
+    ]
 
-    # C. Excursionist Pressure Ratio (EPR = Excursionists / Overnight Tourists)
+    # C. Accommodation Yield per Overnight Night (RM/night)
+    df["accommodation_yield_per_night_rm"] = [
+        np.round(calc_accommodation_yield(accom_exp * 1e6, t * 1e3, alos), 2)
+        for accom_exp, t, alos in zip(
+            df["accommodation_expenditure_rm_million"], df["tourists_thousands"], df["alos_days"]
+        )
+    ]
+
+    # D. Excursionist Pressure Ratio (EPR = Excursionists / Overnight Tourists)
     tour_denom = df["tourists_thousands"]
     df["excursionist_pressure_ratio"] = np.where(
         tour_denom > 0,
@@ -140,51 +142,72 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
         np.nan,
     )
 
-    # D. Domestic Value Retention Multiplier (DVR GVA proxy using TSA Value-Added Intensities)
-    # Using dynamic 2025 empirical TSA VAI: Accommodation = 0.8659, Food = 0.4318, Shopping = 0.7088, Transport = 0.1621
+    # E. Tourism GVA Intensity (%) & Mapping Coverage (%) — Phase 6 & 6.1 (No 0.50 fallback)
     vai_map_2025 = {
-        "accommodation": 0.8659,
+        "accommodation": 0.8579,
         "food_beverage": 0.4318,
         "shopping": 0.7088,
-        "transport": 0.1621,
-        "other": 0.5000,
+        "transport": 0.1627,
     }
-    retained_gvas = []
+
+    gvas, mapped_exps, coverages, intensities, tvays = [], [], [], [], []
     for _, r in df.iterrows():
         t_exp = r["total_expenditure_rm_million"] or 0.0
-        a_exp = r["accommodation_expenditure_rm_million"] or 0.0
-        f_exp = r["food_expenditure_rm_million"] or 0.0
-        s_exp = r["shopping_expenditure_rm_million"] or 0.0
-        tr_exp = r["transport_expenditure_rm_million"] or 0.0
-        o_exp = max(0.0, t_exp - (a_exp + f_exp + s_exp + tr_exp))
-        retained_gvas.append(
-            calc_sdg_attributable_gva(a_exp, f_exp, s_exp, tr_exp, o_exp, vai_map_2025)
-        )
-    df["estimated_retained_gva_rm_million"] = np.round(retained_gvas, 2)
-    tot_exp = df["total_expenditure_rm_million"]
-    df["value_retention_rate_pct"] = np.where(
-        tot_exp > 0,
-        ((df["estimated_retained_gva_rm_million"] / tot_exp) * 100.0).round(2),
-        np.nan,
-    )
+        exp_dict = {
+            "accommodation": r["accommodation_expenditure_rm_million"],
+            "food_beverage": r["food_expenditure_rm_million"],
+            "shopping": r["shopping_expenditure_rm_million"],
+            "transport": r["transport_expenditure_rm_million"],
+        }
+        gva, mapped = calc_estimated_tourism_gva_state(exp_dict, vai_map_2025)
+        cov = calc_mapping_coverage(mapped, t_exp)
+        intensity = calc_tourism_gva_intensity(gva, mapped)
+
+        vis_days_k = r["total_visitor_days_thousands"]
+        tvay = calc_tvay(gva * 1e6, vis_days_k * 1e3) if vis_days_k and vis_days_k > 0 else np.nan
+
+        gvas.append(gva)
+        mapped_exps.append(mapped)
+        coverages.append(cov)
+        intensities.append(intensity)
+        tvays.append(tvay)
+
+    df["estimated_tourism_gva_rm_million"] = np.round(gvas, 2)
+    df["mapped_expenditure_rm_million"] = np.round(mapped_exps, 2)
+    df["mapping_coverage_pct"] = np.round(coverages, 1)
+    df["tourism_gva_intensity_pct"] = np.round(intensities, 1)
+    df["tourism_value_added_yield_per_day_rm"] = np.round(tvays, 2)
+
+    # Backward compatibility aliases
+    df["estimated_retained_gva_rm_million"] = df["estimated_tourism_gva_rm_million"]
+    df["value_retention_rate_pct"] = df["tourism_gva_intensity_pct"]
+
+    # 4. Cross-Sectional State Profiles & Yield Typologies (Phase 8: ALOS vs TVAY)
+    alos_median = df["alos_days"].median()
+    tvay_median = df["tourism_value_added_yield_per_day_rm"].median()
+
+    df["yield_typology"] = [
+        classify_state_yield_typology(alos, tvay, alos_median, tvay_median)
+        for alos, tvay in zip(df["alos_days"], df["tourism_value_added_yield_per_day_rm"])
+    ]
 
     # 5. Strategic Policy Prescriptions
     def get_policy_prescription(row):
         typology = str(row.get("yield_typology", ""))
         paid_share = row.get("paid_commercial_share_pct", 50.0)
-        
-        if "Volume Trap" in typology:
+
+        if "Short Stay / Low Yield" in typology:
             if paid_share < 40.0:
                 return "Commercial lodging conversion: Upgrade private VFR lodging into certified homestays; bundle multi-day experiential packages to lift ALOS."
             return "Shift focus from volume to length of stay; bundle evening cultural events, weekend passes, and premium boutique lodging."
-        elif "Transit Spender" in typology:
-            return "Capture day-trip leakage through night-time economy, cultural evening showcases, and secondary district circuit packaging."
-        elif "High-Yield" in typology:
-            return "Preserve premium yield; monitor environmental carrying capacity; protect luxury nature and heritage assets."
-        elif "Budget Retreat" in typology:
+        elif "Short Stay / High Yield" in typology:
+            return "High day-trip and short-stay spend capture; develop evening cultural circuits and overnight incentive packaging to deepen stay."
+        elif "Long Stay / Low Yield" in typology:
             if paid_share < 40.0:
-                return "VFR monetization priority: Deepen commercial accommodation penetration, expand boutique eco-resorts, and monetize local heritage."
+                return "Commercial accommodation capture opportunity: Deepen commercial accommodation penetration, expand boutique eco-resorts, and monetize local heritage."
             return "Formalize homestays and commercial lodging; monetize culinary and local craft experiences to increase spend per day."
+        elif "Long Stay / High Yield" in typology:
+            return "Preserve premium yield; monitor environmental carrying capacity; protect luxury nature and heritage assets."
         return "Maintain balanced sustainable growth."
 
     df["policy_prescription"] = df.apply(get_policy_prescription, axis=1)
@@ -192,7 +215,6 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
     # 6. Merge Historical 2019-2025 Recovery Trajectory from Panel Model
     if "state_recovery_trajectory" in existing_tables:
         df_traj = con.execute("SELECT state, visitor_growth_pct, alos_delta_days, recovery_pattern FROM state_recovery_trajectory").df()
-        # Drop if already merged to avoid duplicates
         drop_traj_cols = [c for c in ["visitor_growth_pct", "alos_delta_days", "recovery_pattern"] if c in df.columns]
         if drop_traj_cols:
             df = df.drop(columns=drop_traj_cols)
@@ -202,7 +224,6 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
     regression_records = []
 
     # Model 1: Spend Per Night Drivers
-    # spend_per_night = beta0 + beta1(paid_commercial_share) + beta2(holiday_share) + beta3(affluence_index)
     if all(c in df.columns for c in ["paid_commercial_share_pct", "holiday_leisure_share_pct", "affluence_index", "spend_per_night_rm"]):
         X1 = df[["paid_commercial_share_pct", "holiday_leisure_share_pct", "affluence_index"]]
         X1 = sm.add_constant(X1)
@@ -221,22 +242,22 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
                 "regressor": var_name,
                 "coefficient": round(coef, 4),
                 "std_error": round(se, 4),
-                "t_statistic": round(t_stat, 4),
+                "t_statistic": round(t_stat, 3),
                 "p_value": round(pval, 4),
-                "significance": "p < 0.01" if pval < 0.01 else ("p < 0.05" if pval < 0.05 else ("p < 0.10" if pval < 0.10 else "Not significant")),
+                "significance": "p < 0.01" if pval < 0.01 else ("p < 0.05" if pval < 0.05 else "Not significant"),
                 "r_squared": round(ols1.rsquared, 4),
                 "adj_r_squared": round(ols1.rsquared_adj, 4),
-                "f_statistic": round(ols1.fvalue, 4),
+                "f_statistic": round(ols1.fvalue, 3),
                 "f_pvalue": round(ols1.f_pvalue, 4),
-                "n_obs": int(ols1.nobs)
+                "n_obs": int(ols1.nobs),
+                "causal_disclaimer": "This exploratory driver analysis identifies associations and should not be interpreted as causal evidence."
             })
 
     # Model 2: Accommodation Share Drivers
-    # accommodation_share = alpha0 + alpha1(paid_commercial_share) + alpha2(holiday_share) + alpha3(alos_days)
-    if all(c in df.columns for c in ["paid_commercial_share_pct", "holiday_leisure_share_pct", "alos_days", "accommodation_share"]):
-        X2 = df[["paid_commercial_share_pct", "holiday_leisure_share_pct", "alos_days"]]
+    if all(c in df.columns for c in ["alos_days", "paid_commercial_share_pct", "holiday_leisure_share_pct", "accommodation_share"]):
+        X2 = df[["alos_days", "paid_commercial_share_pct", "holiday_leisure_share_pct"]]
         X2 = sm.add_constant(X2)
-        y2 = df["accommodation_share"]
+        y2 = df["accommodation_share"] * 100.0
         ols2 = sm.OLS(y2, X2).fit()
 
         for var_name in X2.columns:
@@ -246,25 +267,25 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
             pval = ols2.pvalues[var_name]
             regression_records.append({
                 "model_id": "M2_AccommodationShare",
-                "model_description": "Cross-Sectional Drivers of Tourism Accommodation Expenditure Share",
-                "dependent_variable": "accommodation_share",
+                "model_description": "Cross-Sectional Drivers of Accommodation Expenditure Share (%)",
+                "dependent_variable": "accommodation_share_pct",
                 "regressor": var_name,
                 "coefficient": round(coef, 4),
                 "std_error": round(se, 4),
-                "t_statistic": round(t_stat, 4),
+                "t_statistic": round(t_stat, 3),
                 "p_value": round(pval, 4),
-                "significance": "p < 0.01" if pval < 0.01 else ("p < 0.05" if pval < 0.05 else ("p < 0.10" if pval < 0.10 else "Not significant")),
+                "significance": "p < 0.01" if pval < 0.01 else ("p < 0.05" if pval < 0.05 else "Not significant"),
                 "r_squared": round(ols2.rsquared, 4),
                 "adj_r_squared": round(ols2.rsquared_adj, 4),
-                "f_statistic": round(ols2.fvalue, 4),
+                "f_statistic": round(ols2.fvalue, 3),
                 "f_pvalue": round(ols2.f_pvalue, 4),
-                "n_obs": int(ols2.nobs)
+                "n_obs": int(ols2.nobs),
+                "causal_disclaimer": "This exploratory driver analysis identifies associations and should not be interpreted as causal evidence."
             })
 
     df_reg = pd.DataFrame(regression_records)
 
-    # 8. Corridor "Value Leakage" & Opportunity Gap Matrix
-    # Computes incremental accommodation value if ALOS expands by +0.5 nights across all 240 active corridors
+    # 8. Corridor Economic Yield & Opportunity Gap Matrix
     df_gap = pd.DataFrame()
     if "corridor_classification" in existing_tables:
         df_corr_raw = con.execute("SELECT * FROM corridor_classification WHERE is_interstate = true").df()
@@ -276,9 +297,10 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
         df_corr_raw["additional_accom_expenditure_rm_million"] = (
             (df_corr_raw["additional_tourist_nights_thousands"] * df_corr_raw["dest_spend_per_night"]) / 1000.0
         ).round(2)
-        df_corr_raw["potential_retained_gva_rm_million"] = (
+        df_corr_raw["potential_additional_value_added_rm_million"] = (
             df_corr_raw["additional_accom_expenditure_rm_million"] * ACCOMMODATION_VAI
         ).round(2)
+        df_corr_raw["potential_retained_gva_rm_million"] = df_corr_raw["potential_additional_value_added_rm_million"]
         df_corr_raw["policy_disclaimer"] = MANDATORY_SCENARIO_DISCLAIMER
 
         # Merge hotel capacity feasibility metrics if available
@@ -331,7 +353,7 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
     # 9. Export All Tables to DuckDB & Parquet
     con.execute("CREATE OR REPLACE TABLE state_year AS SELECT * FROM df")
     con.execute("CREATE OR REPLACE TABLE state_diagnostics_correlations AS SELECT * FROM df_corr")
-    
+
     if not df_reg.empty:
         con.execute("CREATE OR REPLACE TABLE state_driver_regression_summary AS SELECT * FROM df_reg")
         reg_parquet = PROCESSED_DIR / "state_driver_regression_summary.parquet"

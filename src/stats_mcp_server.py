@@ -5,14 +5,25 @@ proper inference (confidence intervals, effect sizes), and
 language guardrails aligned with AGENTS.md.
 """
 
+import sys
 from pathlib import Path
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 import duckdb
 import pandas as pd
 import numpy as np
 from scipy import stats
 from mcp.server.mcpserver import MCPServer
 
-DB_PATH = Path("/home/muhammad_adib/dosm/data/processed/tourism_data.duckdb")
+try:
+    from src.config.paths import DUCKDB_PATH
+except ImportError:
+    DUCKDB_PATH = ROOT_DIR / "data" / "processed" / "tourism_data.duckdb"
+
+DB_PATH = DUCKDB_PATH
 
 mcp = MCPServer(
     "stats_engine",
