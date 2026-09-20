@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
 import * as echarts from 'echarts';
 import type { ODCorridorsData, Corridor, StateProfile } from '../types';
-import { 
-  ArrowRight, 
-  Filter, 
-  ShieldCheck, 
-  Compass, 
-  Activity, 
-  AlertTriangle, 
+import {
+  ArrowRight,
+  Filter,
+  ShieldCheck,
+  Compass,
+  Activity,
+  AlertTriangle,
   Search,
   X,
   Sparkles,
@@ -26,8 +26,8 @@ interface CorridorNetworkProps {
   onSelectCorridorForScenario?: (destination: string) => void;
 }
 
-export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({ 
-  corridorData, 
+export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
+  corridorData,
   geoJson,
   stateProfiles,
   selectedYear = 2025,
@@ -68,10 +68,10 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
 
   // Color mapping by tier
   const tierColorMap: Record<string, string> = {
-    'Priority Conversion Corridor': '#f59e0b', // Amber/Orange
-    'Protect & Deepen': '#10b981',             // Emerald
-    'Growth Opportunity': '#06b6d4',           // Cyan
-    'Lower Strategic Priority': '#64748b',     // Slate
+    'Priority Conversion Corridor': '#b9782f', // Amber/Orange
+    'Protect & Deepen': '#6d4bc1',             // Emerald
+    'Growth Opportunity': '#8b8798',           // Cyan
+    'Lower Strategic Priority': '#a29aaa',     // Slate
   };
 
   // Build ECharts Lines (Geo Arcs) Option
@@ -88,7 +88,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
         [destLon, destLat],
       ],
       lineStyle: {
-        color: tierColorMap[c.corridor_category] || '#06b6d4',
+        color: tierColorMap[c.corridor_category] || '#8b8798',
         width: Math.min(6, Math.max(1.5, Math.log(c.tourist_flow_thousands + 1) * 1.2)),
         opacity: 0.75,
         curveness: isCross ? 0.35 : 0.2,
@@ -101,9 +101,9 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
     backgroundColor: 'transparent',
     tooltip: {
       trigger: 'item',
-      backgroundColor: '#0e1526',
-      borderColor: 'rgba(255, 255, 255, 0.15)',
-      textStyle: { color: '#f8fafc', fontSize: 12 },
+      backgroundColor: '#ffffff',
+      borderColor: 'rgba(70, 50, 100, 0.16)',
+      textStyle: { color: '#241d32', fontSize: 12 },
       formatter: (params: any) => {
         if (params.data && params.data.corridorMeta) {
           const c: Corridor = params.data.corridorMeta;
@@ -128,12 +128,12 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
       zoom: 1.25,
       center: [108.5, 4.0],
       itemStyle: {
-        areaColor: '#0f172a',
-        borderColor: 'rgba(255, 255, 255, 0.15)',
+        areaColor: '#eee9f4',
+        borderColor: 'rgba(70, 50, 100, 0.16)',
         borderWidth: 0.8,
       },
       emphasis: {
-        itemStyle: { areaColor: '#1e293b' },
+        itemStyle: { areaColor: '#e3deea' },
         label: { show: false },
       },
     },
@@ -167,29 +167,29 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300">
+              <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-indigo-400/20 text-indigo-600">
                 Spatial Econometrics & RQ6
               </span>
-              <span className="text-xs text-slate-400">Tinbergen Gravity Model (R² = 0.7092)</span>
+              <span className="text-xs text-stone-600">Tinbergen Gravity Model (R² = 0.7092)</span>
             </div>
-            <h2 className="text-2xl font-bold text-white tracking-tight">
+            <h2 className="text-2xl font-bold text-stone-900 tracking-tight">
               Domestic Tourism Value Corridors & Mobility Gravity
             </h2>
-            <p className="text-sm text-slate-300 mt-1 max-w-3xl">
+            <p className="text-sm text-stone-700 mt-1 max-w-3xl">
               Targeting high-flow corridors with weak accommodation capture enables Malaysia to generate additional overnight tourism value without needing new visitor headcount. Structural gravity modeling reveals that <strong>Origin Working-Age Population (+0.890)</strong> and <strong>Origin Median Income (+0.725)</strong> are powerful outbound mobility engines.
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="p-3.5 rounded-xl bg-slate-900/90 border border-cyan-500/30 text-center min-w-[130px]">
-              <span className="text-xs text-slate-400 uppercase font-semibold">Origin Income</span>
-              <div className="text-2xl font-extrabold text-cyan-400 font-mono">+0.725</div>
-              <span className="text-[10px] text-cyan-300">Elasticity (p &lt; 0.001)</span>
+            <div className="p-3.5 rounded-xl bg-white/90 border border-indigo-300/30 text-center min-w-[130px]">
+              <span className="text-xs text-stone-600 uppercase font-semibold">Origin Income</span>
+              <div className="text-2xl font-extrabold text-indigo-600 font-mono">+0.725</div>
+              <span className="text-[10px] text-indigo-600">Elasticity (p &lt; 0.001)</span>
             </div>
-            <div className="p-3.5 rounded-xl bg-slate-900/90 border border-rose-500/30 text-center min-w-[130px]">
-              <span className="text-xs text-slate-400 uppercase font-semibold">Borneo Barrier</span>
-              <div className="text-2xl font-extrabold text-rose-400 font-mono">-73.6%</div>
-              <span className="text-[10px] text-rose-300">Flight Volume Penalty</span>
+            <div className="p-3.5 rounded-xl bg-white/90 border border-rose-500/30 text-center min-w-[130px]">
+              <span className="text-xs text-stone-600 uppercase font-semibold">Borneo Barrier</span>
+              <div className="text-2xl font-extrabold text-rose-700 font-mono">-73.6%</div>
+              <span className="text-[10px] text-rose-700">Flight Volume Penalty</span>
             </div>
           </div>
         </div>
@@ -199,8 +199,8 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
       <div className="glass-panel p-4 flex flex-wrap items-center justify-between gap-3 text-xs">
         {/* Tier Filter Buttons */}
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-slate-400 font-semibold mr-1 flex items-center gap-1">
-            <Filter className="w-3.5 h-3.5 text-cyan-400" /> Tier:
+          <span className="text-stone-600 font-semibold mr-1 flex items-center gap-1">
+            <Filter className="w-3.5 h-3.5 text-indigo-600" /> Tier:
           </span>
           {['All', 'Priority Conversion Corridor', 'Protect & Deepen', 'Growth Opportunity'].map((tier) => (
             <button
@@ -208,8 +208,8 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
               onClick={() => setSelectedTier(tier)}
               className={`px-3 py-1.5 rounded-lg font-medium transition-all ${
                 selectedTier === tier
-                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
-                  : 'bg-slate-900/60 text-slate-400 border border-slate-800 hover:text-white'
+                  ? 'bg-indigo-400/20 text-indigo-600 border border-indigo-300/40 shadow-sm'
+                  : 'bg-white/60 text-stone-600 border border-violet-100 hover:text-stone-900'
               }`}
             >
               {tier === 'All' ? 'All Corridors' : tier}
@@ -222,7 +222,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
           <select
             value={selectedOrigin}
             onChange={(e) => setSelectedOrigin(e.target.value)}
-            className="bg-slate-900 border border-slate-800 text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cyan-500"
+            className="bg-white border border-violet-100 text-stone-800 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-indigo-300"
           >
             <option value="All">All Origins</option>
             {origins.map((o) => (
@@ -233,7 +233,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
           <select
             value={selectedDestination}
             onChange={(e) => setSelectedDestination(e.target.value)}
-            className="bg-slate-900 border border-slate-800 text-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-cyan-500"
+            className="bg-white border border-violet-100 text-stone-800 rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-indigo-300"
           >
             <option value="All">All Destinations</option>
             {destinations.map((d) => (
@@ -242,13 +242,13 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
           </select>
 
           <div className="relative">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+            <Search className="w-3.5 h-3.5 text-stone-600 absolute left-2.5 top-2.5" />
             <input
               type="text"
               placeholder="Search corridor..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-slate-900 border border-slate-800 text-slate-200 rounded-lg pl-8 pr-3 py-1.5 text-xs focus:outline-none focus:border-cyan-500 w-36"
+              className="bg-white border border-violet-100 text-stone-800 rounded-lg pl-8 pr-3 py-1.5 text-xs focus:outline-none focus:border-indigo-300 w-36"
             />
           </div>
         </div>
@@ -259,28 +259,28 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
         {/* Animated Geodesic Arcs Map (7 cols) */}
         <div className="glass-panel p-5 lg:col-span-7 flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Compass className="w-4 h-4 text-cyan-400" />
+            <span className="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center gap-1.5">
+              <Compass className="w-4 h-4 text-indigo-600" />
               Inter-State Flow Network (Top 50 Geodesic Arcs)
             </span>
             <div className="flex items-center gap-2 text-[11px]">
-              <span className="flex items-center gap-1 text-amber-400"><span className="w-2 h-2 rounded-full bg-amber-500"></span> Conversion</span>
-              <span className="flex items-center gap-1 text-emerald-400"><span className="w-2 h-2 rounded-full bg-emerald-500"></span> Protect</span>
-              <span className="flex items-center gap-1 text-cyan-400"><span className="w-2 h-2 rounded-full bg-cyan-500"></span> Growth</span>
+              <span className="flex items-center gap-1 text-amber-700"><span className="w-2 h-2 rounded-full bg-amber-500"></span> Conversion</span>
+              <span className="flex items-center gap-1 text-violet-700"><span className="w-2 h-2 rounded-full bg-violet-600"></span> Protect</span>
+              <span className="flex items-center gap-1 text-indigo-600"><span className="w-2 h-2 rounded-full bg-indigo-400"></span> Growth</span>
             </div>
           </div>
 
           <div className="h-[460px] w-full">
-            <ReactECharts 
-              option={mapArcsOption} 
+            <ReactECharts
+              option={mapArcsOption}
               style={{ height: '100%', width: '100%' }}
               onEvents={{ click: onArcClick }}
             />
           </div>
 
-          <div className="pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-400">
+          <div className="pt-3 border-t border-violet-100/60 flex items-center justify-between text-xs text-stone-600">
             <span>Click any arc to inspect bilateral corridor profile</span>
-            <span className="text-cyan-400 font-mono font-medium">
+            <span className="text-indigo-600 font-mono font-medium">
               Showing {filteredCorridors.length} of {allCorridors.length} inter-state corridors ({selectedYear})
             </span>
           </div>
@@ -288,12 +288,12 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
 
         {/* Priority Corridors Ranked List (5 cols) */}
         <div className="glass-panel p-5 lg:col-span-5 flex flex-col space-y-3">
-          <div className="flex items-center justify-between border-b border-slate-800/60 pb-2">
+          <div className="flex items-center justify-between border-b border-violet-100/60 pb-2">
             <div>
-              <h3 className="text-sm font-bold text-white">Corridor Strategic Ranking</h3>
-              <p className="text-[11px] text-slate-400">Sorted by {selectedYear} tourist flow volume</p>
+              <h3 className="text-sm font-bold text-stone-900">Corridor Strategic Ranking</h3>
+              <p className="text-[11px] text-stone-600">Sorted by {selectedYear} tourist flow volume</p>
             </div>
-            <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold uppercase">
+            <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-800 font-semibold uppercase">
               Action Priority
             </span>
           </div>
@@ -301,20 +301,20 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
           {/* Scrollable list of corridors */}
           <div className="space-y-2 max-h-[430px] overflow-y-auto pr-1">
             {filteredCorridors.slice(0, 15).map((c, idx) => (
-              <div 
+              <div
                 key={idx}
-                className="p-3 rounded-lg bg-slate-900/70 border border-slate-800 hover:border-slate-700 transition-all space-y-2"
+                className="p-3 rounded-lg bg-white/70 border border-violet-100 hover:border-violet-200 transition-all space-y-2"
               >
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 font-bold text-white text-xs">
+                  <div className="flex items-center gap-2 font-bold text-stone-900 text-xs">
                     <span>{c.origin}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-cyan-400" />
-                    <span className="text-emerald-300">{c.destination}</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-indigo-600" />
+                    <span className="text-violet-700">{c.destination}</span>
                   </div>
 
-                  <span 
+                  <span
                     className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                    style={{ 
+                    style={{
                       backgroundColor: `${tierColorMap[c.corridor_category]}20`,
                       color: tierColorMap[c.corridor_category],
                       border: `1px solid ${tierColorMap[c.corridor_category]}40`
@@ -325,30 +325,30 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 text-center text-[11px] pt-1">
-                  <div className="p-1 rounded bg-slate-950/60">
-                    <span className="text-[9px] text-slate-400 block uppercase">Tourist Flow</span>
-                    <strong className="text-white font-mono">{c.tourist_flow_thousands.toFixed(0)}k</strong>
+                  <div className="p-1 rounded bg-stone-50/60">
+                    <span className="text-[9px] text-stone-600 block uppercase">Tourist Flow</span>
+                    <strong className="text-stone-900 font-mono">{c.tourist_flow_thousands.toFixed(0)}k</strong>
                   </div>
-                  <div className="p-1 rounded bg-slate-950/60">
-                    <span className="text-[9px] text-slate-400 block uppercase">Dest ALOS</span>
-                    <strong className="text-cyan-300 font-mono">{c.dest_alos?.toFixed(2) || 'N/A'}d</strong>
+                  <div className="p-1 rounded bg-stone-50/60">
+                    <span className="text-[9px] text-stone-600 block uppercase">Dest ALOS</span>
+                    <strong className="text-indigo-600 font-mono">{c.dest_alos?.toFixed(2) || 'N/A'}d</strong>
                   </div>
-                  <div className="p-1 rounded bg-slate-950/60">
-                    <span className="text-[9px] text-slate-400 block uppercase">Spend/Night</span>
-                    <strong className="text-emerald-300 font-mono">RM {c.dest_spend_per_night?.toFixed(0) || 'N/A'}</strong>
+                  <div className="p-1 rounded bg-stone-50/60">
+                    <span className="text-[9px] text-stone-600 block uppercase">Spend/Night</span>
+                    <strong className="text-violet-700 font-mono">RM {c.dest_spend_per_night?.toFixed(0) || 'N/A'}</strong>
                   </div>
                 </div>
 
                 {c.corridor_category === 'Priority Conversion Corridor' && (
-                  <div className="text-[10px] text-amber-300/90 flex items-center gap-1 bg-amber-500/10 px-2 py-1 rounded">
-                    <AlertTriangle className="w-3 h-3 text-amber-400 shrink-0" />
+                  <div className="text-[10px] text-amber-800/90 flex items-center gap-1 bg-amber-500/10 px-2 py-1 rounded">
+                    <AlertTriangle className="w-3 h-3 text-amber-700 shrink-0" />
                     <span>High volume, short stay: Prime target to convert day-trips into hotel stays.</span>
                   </div>
                 )}
 
                 <button
                   onClick={() => setSelectedCorridor(c)}
-                  className="w-full flex items-center justify-center gap-1.5 py-1 px-2 rounded bg-slate-800/80 hover:bg-slate-700 text-cyan-300 text-[11px] font-semibold transition-all mt-1 cursor-pointer border border-slate-700"
+                  className="w-full flex items-center justify-center gap-1.5 py-1 px-2 rounded bg-violet-50/80 hover:bg-violet-100 text-indigo-600 text-[11px] font-semibold transition-all mt-1 cursor-pointer border border-violet-200"
                 >
                   <Compass className="w-3 h-3" />
                   <span>Inspect Bilateral Profile</span>
@@ -364,37 +364,37 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
         {/* Gravity Model Specification Card */}
         <div className="glass-panel p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Activity className="w-4 h-4 text-cyan-400" />
+            <h3 className="text-sm font-bold text-stone-900 flex items-center gap-2">
+              <Activity className="w-4 h-4 text-indigo-600" />
               Structural Tinbergen Gravity Equation Parameters
             </h3>
-            <span className="text-xs text-slate-400 font-mono">N = 1,890 observations</span>
+            <span className="text-xs text-stone-600 font-mono">N = 1,890 observations</span>
           </div>
 
-          <p className="text-xs text-slate-300 leading-relaxed font-mono bg-slate-900/80 p-2.5 rounded border border-slate-800">
+          <p className="text-xs text-stone-700 leading-relaxed font-mono bg-white/80 p-2.5 rounded border border-violet-100">
             ln(Flow) = β₀ + 0.890 ln(Origin WA Pop) + 0.725 ln(Origin Income) + 0.704 ln(Dest Pull) - 0.603 ln(Dist) - 1.332 CrossRegion
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
-            <div className="p-2 rounded bg-slate-900/60 border border-slate-800">
-              <span className="text-[10px] text-slate-400 block">Origin Working Age</span>
-              <strong className="text-emerald-400 font-mono text-sm">+0.890</strong>
-              <span className="text-[9px] text-slate-400 block">p &lt; 0.001</span>
+            <div className="p-2 rounded bg-white/60 border border-violet-100">
+              <span className="text-[10px] text-stone-600 block">Origin Working Age</span>
+              <strong className="text-violet-700 font-mono text-sm">+0.890</strong>
+              <span className="text-[9px] text-stone-600 block">p &lt; 0.001</span>
             </div>
-            <div className="p-2 rounded bg-slate-900/60 border border-slate-800">
-              <span className="text-[10px] text-slate-400 block">Origin Income</span>
-              <strong className="text-emerald-400 font-mono text-sm">+0.725</strong>
-              <span className="text-[9px] text-slate-400 block">p &lt; 0.001</span>
+            <div className="p-2 rounded bg-white/60 border border-violet-100">
+              <span className="text-[10px] text-stone-600 block">Origin Income</span>
+              <strong className="text-violet-700 font-mono text-sm">+0.725</strong>
+              <span className="text-[9px] text-stone-600 block">p &lt; 0.001</span>
             </div>
-            <div className="p-2 rounded bg-slate-900/60 border border-slate-800">
-              <span className="text-[10px] text-slate-400 block">Distance Friction</span>
-              <strong className="text-rose-400 font-mono text-sm">-0.603</strong>
-              <span className="text-[9px] text-slate-400 block">p &lt; 0.001</span>
+            <div className="p-2 rounded bg-white/60 border border-violet-100">
+              <span className="text-[10px] text-stone-600 block">Distance Friction</span>
+              <strong className="text-rose-700 font-mono text-sm">-0.603</strong>
+              <span className="text-[9px] text-stone-600 block">p &lt; 0.001</span>
             </div>
-            <div className="p-2 rounded bg-slate-900/60 border border-slate-800">
-              <span className="text-[10px] text-slate-400 block">Out-of-Sample R²</span>
-              <strong className="text-cyan-400 font-mono text-sm">0.5900</strong>
-              <span className="text-[9px] text-slate-400 block">Tested on 2025</span>
+            <div className="p-2 rounded bg-white/60 border border-violet-100">
+              <span className="text-[10px] text-stone-600 block">Out-of-Sample R²</span>
+              <strong className="text-indigo-600 font-mono text-sm">0.5900</strong>
+              <span className="text-[9px] text-stone-600 block">Tested on 2025</span>
             </div>
           </div>
         </div>
@@ -402,29 +402,29 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
         {/* Market Fragility & Feeder Concentration (HHI) */}
         <div className="glass-panel p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <h3 className="text-sm font-bold text-stone-900 flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-violet-700" />
               Destination Feeder Concentration (HHI Index)
             </h3>
-            <span className="text-xs text-slate-400">SDG Market Resilience</span>
+            <span className="text-xs text-stone-600">SDG Market Resilience</span>
           </div>
 
-          <p className="text-xs text-slate-300 leading-relaxed">
+          <p className="text-xs text-stone-700 leading-relaxed">
             High Herfindahl-Hirschman Index (HHI &gt; 2,500) indicates acute vulnerability to economic shocks or transport disruptions in a single source market (e.g. over-reliance on Klang Valley outbound visitors).
           </p>
 
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="p-2.5 rounded bg-slate-900/60 border border-rose-500/20 space-y-1">
-              <span className="font-bold text-rose-400 text-xs">High Vulnerability Destinations</span>
-              <div className="text-slate-300 text-[11px]">
+            <div className="p-2.5 rounded bg-white/60 border border-rose-500/20 space-y-1">
+              <span className="font-bold text-rose-700 text-xs">High Vulnerability Destinations</span>
+              <div className="text-stone-700 text-[11px]">
                 • <strong>Negeri Sembilan</strong> (HHI: 3,420 — 55% from Selangor/KL)<br />
                 • <strong>Melaka</strong> (HHI: 2,890 — 48% from Selangor/Johor)
               </div>
             </div>
 
-            <div className="p-2.5 rounded bg-slate-900/60 border border-emerald-500/20 space-y-1">
-              <span className="font-bold text-emerald-400 text-xs">Balanced Feeder Destinations</span>
-              <div className="text-slate-300 text-[11px]">
+            <div className="p-2.5 rounded bg-white/60 border border-violet-400/20 space-y-1">
+              <span className="font-bold text-violet-700 text-xs">Balanced Feeder Destinations</span>
+              <div className="text-stone-700 text-[11px]">
                 • <strong>Pulau Pinang</strong> (HHI: 1,480 — Diversified North/Central)<br />
                 • <strong>Sabah</strong> (HHI: 1,620 — Multi-state feeder pool)
               </div>
@@ -436,21 +436,21 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
       {/* Bilateral Comparative Inspector Modal (Recommendation 2) */}
       {selectedCorridor && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+          <div className="bg-white border border-violet-200 rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
             {/* Header */}
-            <div className="p-4 px-6 border-b border-slate-800 flex items-center justify-between bg-slate-950/70">
+            <div className="p-4 px-6 border-b border-violet-100 flex items-center justify-between bg-stone-50/70">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+                <div className="p-2 rounded-xl bg-indigo-400/10 border border-indigo-300/30 text-indigo-600">
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-bold text-white">
+                    <h3 className="text-lg font-bold text-stone-900">
                       Bilateral Corridor Inspector: {selectedCorridor.origin} → {selectedCorridor.destination}
                     </h3>
-                    <span 
+                    <span
                       className="text-[10px] font-bold px-2.5 py-0.5 rounded-full"
-                      style={{ 
+                      style={{
                         backgroundColor: `${tierColorMap[selectedCorridor.corridor_category]}20`,
                         color: tierColorMap[selectedCorridor.corridor_category],
                         border: `1px solid ${tierColorMap[selectedCorridor.corridor_category]}50`
@@ -459,7 +459,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                       {selectedCorridor.corridor_category}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-stone-600">
                     Cross-State Gravity & Bilateral Value Conversion Diagnostic • Year {selectedYear}
                   </p>
                 </div>
@@ -473,7 +473,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                       setSelectedCorridor(null);
                       onSelectCorridorForScenario(dest);
                     }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition-all cursor-pointer shadow-sm"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-violet-700 hover:bg-violet-600 text-stone-900 text-xs font-semibold transition-all cursor-pointer shadow-sm"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     Simulate Destination
@@ -481,7 +481,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                 )}
                 <button
                   onClick={() => setSelectedCorridor(null)}
-                  className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all cursor-pointer ml-1"
+                  className="p-1.5 rounded-lg bg-violet-50 hover:bg-violet-100 text-stone-600 hover:text-stone-900 transition-all cursor-pointer ml-1"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -489,28 +489,28 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 overflow-y-auto space-y-6 text-xs text-slate-300">
+            <div className="p-6 overflow-y-auto space-y-6 text-xs text-stone-700">
               {/* Top Bilateral Quick Facts Strip */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-                <div className="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800">
-                  <span className="text-[10px] uppercase text-slate-400 block font-semibold">Tourist Volume</span>
-                  <strong className="text-white text-base font-mono">{selectedCorridor.tourist_flow_thousands.toFixed(1)}k</strong>
-                  <span className="text-[10px] text-slate-400 block">tourists / year</span>
+                <div className="p-2.5 rounded-lg bg-stone-50/70 border border-violet-100">
+                  <span className="text-[10px] uppercase text-stone-600 block font-semibold">Tourist Volume</span>
+                  <strong className="text-stone-900 text-base font-mono">{selectedCorridor.tourist_flow_thousands.toFixed(1)}k</strong>
+                  <span className="text-[10px] text-stone-600 block">tourists / year</span>
                 </div>
-                <div className="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800">
-                  <span className="text-[10px] uppercase text-slate-400 block font-semibold">Spatial Distance</span>
-                  <strong className="text-cyan-300 text-base font-mono">{selectedCorridor.distance_km?.toFixed(0) || '250'} km</strong>
-                  <span className="text-[10px] text-slate-400 block">{selectedCorridor.is_cross_region ? '✈️ Cross-Region Air' : '🚗 Overland Highway'}</span>
+                <div className="p-2.5 rounded-lg bg-stone-50/70 border border-violet-100">
+                  <span className="text-[10px] uppercase text-stone-600 block font-semibold">Spatial Distance</span>
+                  <strong className="text-indigo-600 text-base font-mono">{selectedCorridor.distance_km?.toFixed(0) || '250'} km</strong>
+                  <span className="text-[10px] text-stone-600 block">{selectedCorridor.is_cross_region ? '✈️ Cross-Region Air' : '🚗 Overland Highway'}</span>
                 </div>
-                <div className="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800">
-                  <span className="text-[10px] uppercase text-slate-400 block font-semibold">Dest Stay Duration</span>
-                  <strong className="text-emerald-300 text-base font-mono">{selectedCorridor.dest_alos?.toFixed(2) || 'N/A'} days</strong>
-                  <span className="text-[10px] text-slate-400 block">Average Length of Stay</span>
+                <div className="p-2.5 rounded-lg bg-stone-50/70 border border-violet-100">
+                  <span className="text-[10px] uppercase text-stone-600 block font-semibold">Dest Stay Duration</span>
+                  <strong className="text-violet-700 text-base font-mono">{selectedCorridor.dest_alos?.toFixed(2) || 'N/A'} days</strong>
+                  <span className="text-[10px] text-stone-600 block">Average Length of Stay</span>
                 </div>
-                <div className="p-2.5 rounded-lg bg-slate-950/70 border border-slate-800">
-                  <span className="text-[10px] uppercase text-slate-400 block font-semibold">Nightly Spend Yield</span>
-                  <strong className="text-amber-300 text-base font-mono">RM {selectedCorridor.dest_spend_per_night?.toFixed(0) || 'N/A'}</strong>
-                  <span className="text-[10px] text-slate-400 block">per tourist / night</span>
+                <div className="p-2.5 rounded-lg bg-stone-50/70 border border-violet-100">
+                  <span className="text-[10px] uppercase text-stone-600 block font-semibold">Nightly Spend Yield</span>
+                  <strong className="text-amber-800 text-base font-mono">RM {selectedCorridor.dest_spend_per_night?.toFixed(0) || 'N/A'}</strong>
+                  <span className="text-[10px] text-stone-600 block">per tourist / night</span>
                 </div>
               </div>
 
@@ -521,125 +521,125 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                 return (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Origin Demographics & Spending Engine */}
-                    <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
-                      <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
+                    <div className="p-4 rounded-xl bg-stone-50/80 border border-violet-100 space-y-3">
+                      <div className="flex items-center justify-between border-b border-violet-100/80 pb-2">
                         <div className="flex items-center gap-2">
-                          <Users className="w-4 h-4 text-cyan-400" />
-                          <h4 className="font-bold text-white text-sm">
+                          <Users className="w-4 h-4 text-indigo-600" />
+                          <h4 className="font-bold text-stone-900 text-sm">
                             Origin Feeder: {selectedCorridor.origin}
                           </h4>
                         </div>
-                        <span className="text-[10px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-mono">
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-indigo-400/20 text-indigo-600 font-mono">
                           Outbound Engine
                         </span>
                       </div>
 
                       <div className="grid grid-cols-2 gap-2 text-[11px]">
-                        <div className="p-2 rounded bg-slate-900/80 border border-slate-800">
-                          <span className="text-slate-400 block text-[10px]">Total Population</span>
-                          <strong className="text-white font-mono text-xs">
+                        <div className="p-2 rounded bg-white/80 border border-violet-100">
+                          <span className="text-stone-600 block text-[10px]">Total Population</span>
+                          <strong className="text-stone-900 font-mono text-xs">
                             {orig?.demographics?.total_population_millions?.toFixed(2) || 'N/A'} Million
                           </strong>
                         </div>
-                        <div className="p-2 rounded bg-slate-900/80 border border-slate-800">
-                          <span className="text-slate-400 block text-[10px]">Adults (15+ years)</span>
-                          <strong className="text-white font-mono text-xs">
+                        <div className="p-2 rounded bg-white/80 border border-violet-100">
+                          <span className="text-stone-600 block text-[10px]">Adults (15+ years)</span>
+                          <strong className="text-stone-900 font-mono text-xs">
                             {orig?.demographics?.adult_15plus_thousands ? (orig.demographics.adult_15plus_thousands / 1000).toFixed(2) : 'N/A'} M
                           </strong>
                         </div>
                       </div>
 
                       {/* DTS Non-overlapping Adult Cohorts */}
-                      <div className="space-y-1.5 bg-slate-900/50 p-2.5 rounded-lg border border-slate-800/60">
-                        <span className="text-[10px] font-semibold text-slate-300 block uppercase tracking-wide">
+                      <div className="space-y-1.5 bg-white/50 p-2.5 rounded-lg border border-violet-100/60">
+                        <span className="text-[10px] font-semibold text-stone-700 block uppercase tracking-wide">
                           DTS Visitor Adult Cohort Distribution
                         </span>
                         <div className="grid grid-cols-4 gap-1 text-center text-[10px]">
-                          <div className="p-1 rounded bg-slate-950/80">
-                            <span className="text-cyan-400 block font-medium">15–24</span>
-                            <strong className="text-white font-mono">{orig?.demographics?.dts_age_classes?.age_15_24_pct || 22}%</strong>
+                          <div className="p-1 rounded bg-stone-50/80">
+                            <span className="text-indigo-600 block font-medium">15–24</span>
+                            <strong className="text-stone-900 font-mono">{orig?.demographics?.dts_age_classes?.age_15_24_pct || 22}%</strong>
                           </div>
-                          <div className="p-1 rounded bg-emerald-950/30 border border-emerald-500/30">
-                            <span className="text-emerald-400 block font-medium">25–39 (Prime)</span>
-                            <strong className="text-emerald-300 font-mono">{orig?.demographics?.dts_age_classes?.age_25_39_pct || 35}%</strong>
+                          <div className="p-1 rounded bg-violet-50/30 border border-violet-400/30">
+                            <span className="text-violet-700 block font-medium">25–39 (Prime)</span>
+                            <strong className="text-violet-700 font-mono">{orig?.demographics?.dts_age_classes?.age_25_39_pct || 35}%</strong>
                           </div>
-                          <div className="p-1 rounded bg-slate-950/80">
-                            <span className="text-amber-400 block font-medium">40–54</span>
-                            <strong className="text-white font-mono">{orig?.demographics?.dts_age_classes?.age_40_54_pct || 24}%</strong>
+                          <div className="p-1 rounded bg-stone-50/80">
+                            <span className="text-amber-700 block font-medium">40–54</span>
+                            <strong className="text-stone-900 font-mono">{orig?.demographics?.dts_age_classes?.age_40_54_pct || 24}%</strong>
                           </div>
-                          <div className="p-1 rounded bg-slate-950/80">
-                            <span className="text-purple-400 block font-medium">≥ 55</span>
-                            <strong className="text-white font-mono">{orig?.demographics?.dts_age_classes?.age_55plus_pct || 19}%</strong>
+                          <div className="p-1 rounded bg-stone-50/80">
+                            <span className="text-violet-700 block font-medium">≥ 55</span>
+                            <strong className="text-stone-900 font-mono">{orig?.demographics?.dts_age_classes?.age_55plus_pct || 19}%</strong>
                           </div>
                         </div>
                       </div>
 
-                      <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 flex items-center justify-between text-[11px]">
-                        <span className="text-slate-400 flex items-center gap-1.5">
-                          <Wallet className="w-3.5 h-3.5 text-emerald-400" />
+                      <div className="p-2.5 rounded-lg bg-white/80 border border-violet-100 flex items-center justify-between text-[11px]">
+                        <span className="text-stone-600 flex items-center gap-1.5">
+                          <Wallet className="w-3.5 h-3.5 text-violet-700" />
                           Resident Median Income:
                         </span>
-                        <strong className="text-emerald-400 font-mono text-xs">
+                        <strong className="text-violet-700 font-mono text-xs">
                           RM {orig?.baseline_2025?.resident_median_income_rm?.toLocaleString() || 'N/A'}
                         </strong>
                       </div>
                     </div>
 
                     {/* Destination Absorption & Lodging Capacity */}
-                    <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-3">
-                      <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
+                    <div className="p-4 rounded-xl bg-stone-50/80 border border-violet-100 space-y-3">
+                      <div className="flex items-center justify-between border-b border-violet-100/80 pb-2">
                         <div className="flex items-center gap-2">
-                          <Hotel className="w-4 h-4 text-emerald-400" />
-                          <h4 className="font-bold text-white text-sm">
+                          <Hotel className="w-4 h-4 text-violet-700" />
+                          <h4 className="font-bold text-stone-900 text-sm">
                             Destination Host: {selectedCorridor.destination}
                           </h4>
                         </div>
-                        <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-violet-600/20 text-violet-700 font-mono">
                           Absorption Capacity
                         </span>
                       </div>
 
                       <div className="grid grid-cols-2 gap-2 text-[11px]">
-                        <div className="p-2 rounded bg-slate-900/80 border border-slate-800">
-                          <span className="text-slate-400 block text-[10px]">Hotel Capacity</span>
-                          <strong className="text-white font-mono text-xs">
+                        <div className="p-2 rounded bg-white/80 border border-violet-100">
+                          <span className="text-stone-600 block text-[10px]">Hotel Capacity</span>
+                          <strong className="text-stone-900 font-mono text-xs">
                             {dest?.hotel_stars?.total_rooms?.toLocaleString() || dest?.baseline_2025?.hotel_rooms?.toLocaleString() || 'N/A'} rooms
                           </strong>
                         </div>
-                        <div className="p-2 rounded bg-slate-900/80 border border-slate-800">
-                          <span className="text-slate-400 block text-[10px]">4/5-Star Luxury Share</span>
-                          <strong className="text-amber-400 font-mono text-xs">
+                        <div className="p-2 rounded bg-white/80 border border-violet-100">
+                          <span className="text-stone-600 block text-[10px]">4/5-Star Luxury Share</span>
+                          <strong className="text-amber-700 font-mono text-xs">
                             {dest?.hotel_stars?.luxury_room_share_pct?.toFixed(1) || '25.0'}%
                           </strong>
                         </div>
                       </div>
 
-                      <div className="space-y-1.5 bg-slate-900/50 p-2.5 rounded-lg border border-slate-800/60">
-                        <div className="flex justify-between text-[10px] text-slate-300">
+                      <div className="space-y-1.5 bg-white/50 p-2.5 rounded-lg border border-violet-100/60">
+                        <div className="flex justify-between text-[10px] text-stone-700">
                           <span>Lodging Mix (Commercial vs Unpaid VFR)</span>
-                          <span className="font-mono text-amber-400 font-semibold">{dest?.lodging_shares?.unpaid_vfr_pct ?? 50}% VFR</span>
+                          <span className="font-mono text-amber-700 font-semibold">{dest?.lodging_shares?.unpaid_vfr_pct ?? 50}% VFR</span>
                         </div>
-                        <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden flex">
-                          <div 
-                            className="bg-emerald-500 h-full" 
+                        <div className="w-full h-2 rounded-full bg-violet-50 overflow-hidden flex">
+                          <div
+                            className="bg-violet-600 h-full"
                             style={{ width: `${dest?.lodging_shares?.paid_commercial_pct ?? 50}%` }}
                             title={`Paid Commercial: ${dest?.lodging_shares?.paid_commercial_pct ?? 50}%`}
                           ></div>
-                          <div 
-                            className="bg-amber-500 h-full" 
+                          <div
+                            className="bg-amber-500 h-full"
                             style={{ width: `${dest?.lodging_shares?.unpaid_vfr_pct ?? 50}%` }}
                             title={`Unpaid VFR: ${dest?.lodging_shares?.unpaid_vfr_pct ?? 50}%`}
                           ></div>
                         </div>
-                        <div className="flex justify-between text-[9px] text-slate-400 pt-0.5">
-                          <span>Paid Hotel / Commercial: <strong className="text-emerald-400 font-mono">{dest?.lodging_shares?.paid_commercial_pct ?? 50}%</strong></span>
-                          <span>Unpaid VFR / Relatives: <strong className="text-amber-400 font-mono">{dest?.lodging_shares?.unpaid_vfr_pct ?? 50}%</strong></span>
+                        <div className="flex justify-between text-[9px] text-stone-600 pt-0.5">
+                          <span>Paid Hotel / Commercial: <strong className="text-violet-700 font-mono">{dest?.lodging_shares?.paid_commercial_pct ?? 50}%</strong></span>
+                          <span>Unpaid VFR / Relatives: <strong className="text-amber-700 font-mono">{dest?.lodging_shares?.unpaid_vfr_pct ?? 50}%</strong></span>
                         </div>
                       </div>
 
-                      <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800 flex items-center justify-between text-[11px]">
-                        <span className="text-slate-400">Average Room Occupancy (AOR):</span>
-                        <strong className="text-cyan-300 font-mono text-xs">
+                      <div className="p-2.5 rounded-lg bg-white/80 border border-violet-100 flex items-center justify-between text-[11px]">
+                        <span className="text-stone-600">Average Room Occupancy (AOR):</span>
+                        <strong className="text-indigo-600 font-mono text-xs">
                           {dest?.baseline_2025?.aor_pct?.toFixed(1) || '55.0'}%
                         </strong>
                       </div>
@@ -649,22 +649,22 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
               })()}
 
               {/* Gravity Diagnostic & Tailored Strategic Playbook */}
-              <div className="p-4 rounded-xl bg-slate-950/90 border border-slate-800 space-y-3">
+              <div className="p-4 rounded-xl bg-stone-50/90 border border-violet-100 space-y-3">
                 <div className="flex items-center gap-2">
-                  <Activity className="w-4 h-4 text-cyan-400" />
-                  <h4 className="font-bold text-white text-sm">
+                  <Activity className="w-4 h-4 text-indigo-600" />
+                  <h4 className="font-bold text-stone-900 text-sm">
                     Structural Gravity Diagnostic & Conversion Action Playbook
                   </h4>
                 </div>
 
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-xs text-stone-700 leading-relaxed">
                   Under the Tinbergen Gravity Model (R² = 0.7092), outbound flow from <strong>{selectedCorridor.origin}</strong> is heavily propelled by its working-age demographic mass (β = +0.890) and median household income (β = +0.725).
                 </p>
 
                 {/* Specific Policy Playbook Box */}
-                <div 
+                <div
                   className="p-3 rounded-lg border text-xs space-y-1.5"
-                  style={{ 
+                  style={{
                     backgroundColor: `${tierColorMap[selectedCorridor.corridor_category]}15`,
                     borderColor: `${tierColorMap[selectedCorridor.corridor_category]}40`
                   }}
@@ -674,34 +674,34 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                     Recommended Policy Playbook ({selectedCorridor.corridor_category}):
                   </div>
                   {selectedCorridor.corridor_category === 'Priority Conversion Corridor' && (
-                    <ul className="text-slate-200 text-[11px] space-y-1 list-disc list-inside">
+                    <ul className="text-stone-800 text-[11px] space-y-1 list-disc list-inside">
                       <li><strong>Stay Extension Levers:</strong> Introduce corporate mid-week retreats and weekend staycation incentive vouchers to turn quick transit into overnight stays (+0.5 nights target).</li>
                       <li><strong>Night-Time Economy:</strong> Curate evening cultural experiences, heritage food trails, and waterfront light festivals to discourage same-day return travel.</li>
                       <li><strong>Homestay Integration (SDG 8.9):</strong> Transition unpaid VFR stays into licensed community homestays and heritage boutique inns to capture local accommodation GVA.</li>
                     </ul>
                   )}
                   {selectedCorridor.corridor_category === 'Protect & Deepen' && (
-                    <ul className="text-slate-200 text-[11px] space-y-1 list-disc list-inside">
+                    <ul className="text-stone-800 text-[11px] space-y-1 list-disc list-inside">
                       <li><strong>Premium Loyalty Partnerships:</strong> Partner with high-income employers and flight/rail operators to offer VIP repeat-visitor privileges.</li>
                       <li><strong>High-Yield Add-Ons:</strong> Expand luxury nature retreats, wellness packages, and certified eco-tourism experiential activities.</li>
                       <li><strong>Service Quality Assurance:</strong> Maintain strict hotel standards and green certification (SDG 12.b) to sustain top-quartile spend per night.</li>
                     </ul>
                   )}
                   {selectedCorridor.corridor_category === 'Growth Opportunity' && (
-                    <ul className="text-slate-200 text-[11px] space-y-1 list-disc list-inside">
+                    <ul className="text-stone-800 text-[11px] space-y-1 list-disc list-inside">
                       <li><strong>Transport Friction Relief:</strong> Subsidize direct inter-state flight or express coach frequencies to overcome distance friction (β = -0.603).</li>
                       <li><strong>Targeted Feeder Marketing:</strong> Launch focused digital marketing campaigns targeting the 25–39 prime mobile demographic in {selectedCorridor.origin}.</li>
                       <li><strong>Bundled Thematic Circuits:</strong> Partner with neighboring states to offer multi-destination regional passes.</li>
                     </ul>
                   )}
                   {selectedCorridor.corridor_category === 'Lower Strategic Priority' && (
-                    <p className="text-slate-200 text-[11px]">
+                    <p className="text-stone-800 text-[11px]">
                       Maintain baseline organic presence in regional tourism campaigns. Focus state investment on higher-yield conversion corridors.
                     </p>
                   )}
                 </div>
 
-                <div className="text-[10px] text-slate-400 italic">
+                <div className="text-[10px] text-stone-600 italic">
                   * Structural gravity equation: ln(Flow) = β₀ + 0.890 ln(Origin WA Pop) + 0.725 ln(Origin Income) - 0.603 ln(Distance) - 1.332 CrossRegionBarrier.
                 </div>
               </div>

@@ -1,10 +1,8 @@
 export interface TSAMacroYear {
   year: number;
-  itc: number;
+  total_itc: number;
   tdgva: number;
-  tdgva_share_gdp: number;
-  tdgva_to_itc: number;
-  employment: number;
+  data_status: string;
 }
 
 export interface TourismProductYear {

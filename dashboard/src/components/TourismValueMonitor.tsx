@@ -17,15 +17,22 @@ interface TourismValueMonitorProps {
 export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }) => {
   const macroSeries = data.macro_series || [];
   const productSummary = data.product_summary || [];
+  const latest = macroSeries.find((year) => year.year === 2025);
+  const baseline = macroSeries.find((year) => year.year === 2015);
+  const accommodation = productSummary.find((product) => product.product_id === 'accommodation');
+  const transport = productSummary.find((product) => product.product_id === 'passenger_transport');
+  const food = productSummary.find((product) => product.product_id === 'food_beverage');
+  const formatBillion = (million: number) => (million / 1000).toFixed(1);
 
   // Macro Timeline ECharts Option
   const macroTimelineOption = {
     backgroundColor: 'transparent',
     tooltip: {
       trigger: 'axis',
-      backgroundColor: '#0e1526',
-      borderColor: 'rgba(255, 255, 255, 0.15)',
-      textStyle: { color: '#f8fafc', fontSize: 12 },
+      axisPointer: { type: 'line', lineStyle: { color: '#b5a5d7', width: 1 } },
+      backgroundColor: '#ffffff',
+      borderColor: 'rgba(70, 50, 100, 0.16)',
+      textStyle: { color: '#241d32', fontSize: 12 },
       formatter: (params: any) => {
         let res = `<div style="font-weight: bold; margin-bottom: 4px;">Year ${params[0].name}</div>`;
         params.forEach((item: any) => {
@@ -39,7 +46,7 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
     },
     legend: {
       data: ['Internal Tourism Consumption (ITC)', 'Tourism Direct GVA (TDGVA)'],
-      textStyle: { color: '#94a3b8' },
+      textStyle: { color: '#746d80' },
       top: 0,
       right: 10,
     },
@@ -47,31 +54,31 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
     xAxis: {
       type: 'category',
       data: macroSeries.map((d) => d.year),
-      axisLine: { lineStyle: { color: '#334155' } },
-      axisLabel: { color: '#94a3b8' },
+      axisLine: { lineStyle: { color: '#d6d0df' } },
+      axisLabel: { color: '#746d80' },
     },
     yAxis: {
       type: 'value',
       name: 'RM Billion',
-      nameTextStyle: { color: '#94a3b8', padding: [0, 0, 0, 20] },
-      splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.05)' } },
-      axisLabel: { color: '#94a3b8' },
+      nameTextStyle: { color: '#746d80', padding: [0, 0, 0, 20] },
+      splitLine: { lineStyle: { color: 'rgba(70, 50, 100, 0.09)' } },
+      axisLabel: { color: '#746d80' },
     },
     series: [
       {
         name: 'Internal Tourism Consumption (ITC)',
         type: 'line',
         smooth: true,
-        data: macroSeries.map((d) => d.itc),
-        itemStyle: { color: '#06b6d4' },
+        data: macroSeries.map((d) => d.total_itc / 1000),
+        itemStyle: { color: '#8b8798' },
         lineStyle: { width: 3 },
         areaStyle: {
           color: {
             type: 'linear',
             x: 0, y: 0, x2: 0, y2: 1,
             colorStops: [
-              { offset: 0, color: 'rgba(6, 182, 212, 0.3)' },
-              { offset: 1, color: 'rgba(6, 182, 212, 0.0)' },
+              { offset: 0, color: 'rgba(139, 135, 152, 0.10)' },
+              { offset: 1, color: 'rgba(139, 135, 152, 0)' },
             ],
           },
         },
@@ -80,16 +87,16 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
         name: 'Tourism Direct GVA (TDGVA)',
         type: 'line',
         smooth: true,
-        data: macroSeries.map((d) => d.tdgva),
-        itemStyle: { color: '#10b981' },
+        data: macroSeries.map((d) => d.tdgva / 1000),
+        itemStyle: { color: '#6d4bc1' },
         lineStyle: { width: 3 },
         areaStyle: {
           color: {
             type: 'linear',
             x: 0, y: 0, x2: 0, y2: 1,
             colorStops: [
-              { offset: 0, color: 'rgba(16, 185, 129, 0.3)' },
-              { offset: 1, color: 'rgba(16, 185, 129, 0.0)' },
+              { offset: 0, color: 'rgba(109, 75, 193, 0.10)' },
+              { offset: 1, color: 'rgba(109, 75, 193, 0)' },
             ],
           },
         },
@@ -104,33 +111,34 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
-      backgroundColor: '#0e1526',
-      borderColor: 'rgba(255, 255, 255, 0.15)',
-      textStyle: { color: '#f8fafc', fontSize: 12 },
+      backgroundColor: '#ffffff',
+      borderColor: 'rgba(70, 50, 100, 0.16)',
+      textStyle: { color: '#241d32', fontSize: 12 },
       formatter: (params: any) => {
         const item = params[0];
         const pObj = productSummary.find((p) => p.product === item.name);
         return `<div style="font-weight: bold; margin-bottom: 4px;">${item.name}</div>
-          <div>VAI (2025): <strong style="color: #34d399;">${(item.value * 100).toFixed(1)}%</strong></div>
-          <div>ITC Scale: <strong style="color: #38bdf8;">RM ${(pObj?.itc_2025 || 0).toFixed(1)} B</strong></div>
-          <div>Quadrant: <span style="color: #f59e0b;">${pObj?.strategic_quadrant || 'N/A'}</span></div>`;
+          <div>VAI (2025): <strong style="color: #6544b5;">${(item.value * 100).toFixed(1)}%</strong></div>
+          <div>ITC Scale: <strong>RM ${formatBillion(pObj?.itc_2025 || 0)} B</strong></div>
+          <div>Quadrant: <span style="color: #b9782f;">${pObj?.strategic_quadrant || 'N/A'}</span></div>`;
       },
     },
     grid: { left: '3%', right: '8%', bottom: '5%', top: '5%', containLabel: true },
     xAxis: {
       type: 'value',
-      name: 'Value-Added Intensity (VAI)',
+      min: 0,
+      max: 1,
       axisLabel: { 
-        color: '#94a3b8',
+        color: '#746d80',
         formatter: (val: number) => `${(val * 100).toFixed(0)}%` 
       },
-      splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.05)' } },
+      splitLine: { lineStyle: { color: 'rgba(70, 50, 100, 0.09)' } },
     },
     yAxis: {
       type: 'category',
       data: sortedByVAI.map((p) => p.product),
-      axisLabel: { color: '#f8fafc', fontSize: 11 },
-      axisLine: { lineStyle: { color: '#334155' } },
+      axisLabel: { color: '#241d32', fontSize: 11 },
+      axisLine: { lineStyle: { color: '#d6d0df' } },
     },
     series: [
       {
@@ -140,18 +148,14 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
           value: p.vai_2025,
           itemStyle: {
             color: p.product.includes('Accommodation')
-              ? '#10b981'
-              : p.vai_2025 > 0.6
-              ? '#06b6d4'
-              : p.vai_2025 > 0.4
-              ? '#f59e0b'
-              : '#64748b',
+              ? '#6d4bc1'
+              : '#b8b1c0',
           },
         })),
         label: {
           show: true,
           position: 'right',
-          color: '#f8fafc',
+          color: '#241d32',
           formatter: (params: any) => `${(params.value * 100).toFixed(1)}%`,
           fontSize: 11,
           fontWeight: 'bold',
@@ -164,15 +168,15 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
   const quadrantScatterOption = {
     backgroundColor: 'transparent',
     tooltip: {
-      backgroundColor: '#0e1526',
-      borderColor: 'rgba(255, 255, 255, 0.15)',
-      textStyle: { color: '#f8fafc', fontSize: 12 },
+      backgroundColor: '#ffffff',
+      borderColor: 'rgba(70, 50, 100, 0.16)',
+      textStyle: { color: '#241d32', fontSize: 12 },
       formatter: (params: any) => {
         const d = params.data;
         return `<div style="font-weight: bold; margin-bottom: 4px;">${d[2]}</div>
           <div>VAI (Efficiency): <strong>${(d[1] * 100).toFixed(1)}%</strong></div>
           <div>ITC (Scale): <strong>RM ${d[0].toFixed(1)} Billion</strong></div>
-          <div>Quadrant: <strong style="color: #10b981;">${d[3]}</strong></div>`;
+          <div>Quadrant: <strong style="color: #6d4bc1;">${d[3]}</strong></div>`;
       },
     },
     grid: { left: '8%', right: '8%', bottom: '10%', top: '10%' },
@@ -181,28 +185,28 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
       name: 'Internal Consumption Scale (RM Billion)',
       nameLocation: 'middle',
       nameGap: 30,
-      nameTextStyle: { color: '#94a3b8' },
-      axisLabel: { color: '#94a3b8' },
-      splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.05)' } },
+      nameTextStyle: { color: '#746d80' },
+      axisLabel: { color: '#746d80' },
+      splitLine: { lineStyle: { color: 'rgba(70, 50, 100, 0.09)' } },
     },
     yAxis: {
       type: 'value',
       name: 'Value-Added Intensity (VAI)',
-      nameTextStyle: { color: '#94a3b8' },
+      nameTextStyle: { color: '#746d80' },
       axisLabel: { 
-        color: '#94a3b8',
+        color: '#746d80',
         formatter: (val: number) => `${(val * 100).toFixed(0)}%` 
       },
-      splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.05)' } },
+      splitLine: { lineStyle: { color: 'rgba(70, 50, 100, 0.09)' } },
       min: 0.2,
       max: 0.95,
     },
     series: [
       {
         type: 'scatter',
-        symbolSize: (data: any) => Math.max(14, Math.sqrt(data[0]) * 7),
+        symbolSize: (data: any) => Math.max(13, Math.sqrt(data[0]) * 4),
         data: productSummary.map((p) => [
-          p.itc_2025,
+          p.itc_2025 / 1000,
           p.vai_2025,
           p.product,
           p.strategic_quadrant,
@@ -210,19 +214,18 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
         itemStyle: {
           color: (param: any) => {
             const name = param.data[2];
-            if (name.includes('Accommodation')) return '#10b981';
-            if (param.data[1] >= 0.5 && param.data[0] >= 10) return '#06b6d4';
-            if (param.data[1] < 0.5 && param.data[0] >= 10) return '#f59e0b';
-            return '#8b5cf6';
+            if (name.includes('Accommodation')) return '#6d4bc1';
+            if (param.data[1] >= 0.5 && param.data[0] >= 10) return '#8b8798';
+            if (param.data[1] < 0.5 && param.data[0] >= 10) return '#b9782f';
+            return '#9673c8';
           },
-          shadowBlur: 10,
-          shadowColor: 'rgba(0, 0, 0, 0.5)',
+          shadowBlur: 0,
         },
         label: {
           show: true,
           formatter: (param: any) => param.data[2].split(' ')[0],
           position: 'top',
-          color: '#f8fafc',
+          color: '#241d32',
           fontSize: 10,
         },
       },
@@ -232,33 +235,33 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
   return (
     <div className="space-y-6">
       {/* Top Value Headline */}
-      <div className="glass-panel p-6 border-l-4 border-l-emerald-500">
+      <div className="glass-panel p-6 border-l-4 border-l-violet-400">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
+              <span className="text-xs uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-violet-600/20 text-violet-700">
                 Core Empirical Finding
               </span>
-              <span className="text-xs text-slate-400">Research Question 1 & 2</span>
+              <span className="text-xs text-stone-600">Research Question 1 & 2</span>
             </div>
-            <h2 className="text-2xl font-bold text-white tracking-tight">
+            <h2 className="text-2xl font-bold text-stone-900 tracking-tight">
               Accommodation is Malaysia's Most Value-Efficient Tourism Product
             </h2>
-            <p className="text-sm text-slate-300 mt-1 max-w-3xl">
-              From 2015 to 2025, <strong>Accommodation Services</strong> consistently achieved the highest Value-Added Intensity in Malaysia's Tourism Satellite Account at <strong>85.8%</strong>. Every RM 1,000 spent on accommodation generates approximately <strong>RM 858 in Gross Value Added (GVA)</strong>, far exceeding transport (28.5%) and food services (43.2%).
+            <p className="text-sm text-stone-700 mt-1 max-w-3xl">
+              In the 2025 Tourism Satellite Account, accommodation has the highest value-added intensity at <strong>{((accommodation?.vai_2025 || 0) * 100).toFixed(1)}%</strong>. This is the share of its domestic supply represented by GVA, compared with <strong>{((food?.vai_2025 || 0) * 100).toFixed(1)}%</strong> for food services and <strong>{((transport?.vai_2025 || 0) * 100).toFixed(1)}%</strong> for passenger transport.
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="p-4 rounded-xl bg-slate-900/90 border border-emerald-500/30 text-center min-w-[140px]">
-              <span className="text-xs text-slate-400 uppercase font-semibold">Accom VAI</span>
-              <div className="text-3xl font-extrabold text-emerald-400 font-mono">85.8%</div>
-              <span className="text-[10px] text-emerald-300">Rank #1 across all 8 sectors</span>
+            <div className="p-4 rounded-xl bg-white/90 border border-violet-400/30 text-center min-w-[140px]">
+              <span className="text-xs text-stone-600 uppercase font-semibold">Accom VAI</span>
+              <div className="text-3xl font-extrabold text-violet-700 font-mono">{((accommodation?.vai_2025 || 0) * 100).toFixed(1)}%</div>
+              <span className="text-[10px] text-violet-700">Rank #1 across all 8 sectors</span>
             </div>
-            <div className="p-4 rounded-xl bg-slate-900/90 border border-cyan-500/30 text-center min-w-[140px]">
-              <span className="text-xs text-slate-400 uppercase font-semibold">2025 TDGVA</span>
-              <div className="text-3xl font-extrabold text-cyan-400 font-mono">RM 59.4B</div>
-              <span className="text-[10px] text-cyan-300">52.8% of Total ITC</span>
+            <div className="p-4 rounded-xl bg-white/90 border border-indigo-300/30 text-center min-w-[140px]">
+              <span className="text-xs text-stone-600 uppercase font-semibold">2025 TDGVA</span>
+              <div className="text-3xl font-extrabold text-indigo-600 font-mono">RM {formatBillion(latest?.tdgva || 0)}B</div>
+              <span className="text-[10px] text-indigo-600">{latest ? ((latest.tdgva / latest.total_itc) * 100).toFixed(1) : '—'}% of total ITC</span>
             </div>
           </div>
         </div>
@@ -270,13 +273,13 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
         <div className="glass-panel p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-emerald-400" />
+              <h3 className="text-base font-bold text-stone-900 flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-violet-700" />
                 TSA Macro Trajectory (2015–2025)
               </h3>
-              <p className="text-xs text-slate-400">Internal Consumption vs. Direct Economic Value Added</p>
+              <p className="text-xs text-stone-600">Internal Consumption vs. Direct Economic Value Added</p>
             </div>
-            <span className="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+            <span className="text-[11px] px-2 py-0.5 rounded bg-violet-50 text-stone-700 font-mono">
               Pre-COVID → Recovery → Equilibrium
             </span>
           </div>
@@ -285,9 +288,9 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
             <ReactECharts option={macroTimelineOption} style={{ height: '100%', width: '100%' }} />
           </div>
 
-          <div className="mt-3 pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-400">
-            <span>2015 Baseline: RM 67.2B ITC / RM 35.8B TDGVA</span>
-            <span className="text-emerald-400 font-medium">2025 Recovery: +67.4% ITC Expansion</span>
+          <div className="mt-3 pt-3 border-t border-violet-100/60 flex items-center justify-between text-xs text-stone-600">
+            <span>2015 baseline: RM {formatBillion(baseline?.total_itc || 0)}B ITC / RM {formatBillion(baseline?.tdgva || 0)}B TDGVA</span>
+            <span className="text-violet-700 font-medium">2025 ITC: RM {formatBillion(latest?.total_itc || 0)}B</span>
           </div>
         </div>
 
@@ -295,13 +298,13 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
         <div className="glass-panel p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <BarChart3 className="w-4 h-4 text-cyan-400" />
+              <h3 className="text-base font-bold text-stone-900 flex items-center gap-2">
+                <BarChart3 className="w-4 h-4 text-indigo-600" />
                 Value-Added Intensity (VAI) by Product (2025)
               </h3>
-              <p className="text-xs text-slate-400">Proportion of industry gross output represented by GVA</p>
+              <p className="text-xs text-stone-600">Proportion of industry gross output represented by GVA</p>
             </div>
-            <span className="text-[11px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-medium">
+            <span className="text-[11px] px-2 py-0.5 rounded bg-violet-600/20 text-violet-700 font-medium">
               VAI = GVA / Supply
             </span>
           </div>
@@ -310,8 +313,8 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
             <ReactECharts option={vaiRankingOption} style={{ height: '100%', width: '100%' }} />
           </div>
 
-          <div className="mt-3 pt-3 border-t border-slate-800/60 text-xs text-slate-400 flex items-center gap-1.5">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+          <div className="mt-3 pt-3 border-t border-violet-100/60 text-xs text-stone-600 flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5 text-violet-700 shrink-0" />
             <span>Accommodation retains the highest local economic value; transport and fuel suffer high leakage.</span>
           </div>
         </div>
@@ -323,16 +326,16 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
         <div className="glass-panel p-5 lg:col-span-2">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <PieChart className="w-4 h-4 text-amber-400" />
+              <h3 className="text-base font-bold text-stone-900 flex items-center gap-2">
+                <PieChart className="w-4 h-4 text-amber-700" />
                 Strategic Product Portfolio Matrix (VAI vs. ITC Scale)
               </h3>
-              <p className="text-xs text-slate-400">Classifies tourism products into strategic intervention priority quadrants</p>
+              <p className="text-xs text-stone-600">Classifies tourism products into strategic intervention priority quadrants</p>
             </div>
             <div className="flex items-center gap-2 text-[11px]">
-              <span className="flex items-center gap-1 text-emerald-400"><span className="w-2 h-2 rounded-full bg-emerald-500"></span> Core Activity</span>
-              <span className="flex items-center gap-1 text-cyan-400"><span className="w-2 h-2 rounded-full bg-cyan-500"></span> Growth Opp</span>
-              <span className="flex items-center gap-1 text-amber-400"><span className="w-2 h-2 rounded-full bg-amber-500"></span> Efficiency Priority</span>
+              <span className="flex items-center gap-1 text-violet-700"><span className="w-2 h-2 rounded-full bg-violet-600"></span> Core Activity</span>
+              <span className="flex items-center gap-1 text-indigo-600"><span className="w-2 h-2 rounded-full bg-indigo-400"></span> Growth Opp</span>
+              <span className="flex items-center gap-1 text-amber-700"><span className="w-2 h-2 rounded-full bg-amber-500"></span> Efficiency Priority</span>
             </div>
           </div>
 
@@ -340,22 +343,22 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
             <ReactECharts option={quadrantScatterOption} style={{ height: '100%', width: '100%' }} />
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4 pt-3 border-t border-slate-800/60 text-xs">
-            <div className="p-2 rounded bg-slate-900/60 border border-emerald-500/20">
-              <div className="font-bold text-emerald-400">Core High-Value</div>
-              <div className="text-[11px] text-slate-400">High VAI + High Scale (Accommodation, Food & Beverage)</div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4 pt-3 border-t border-violet-100/60 text-xs">
+            <div className="p-2 rounded bg-white/60 border border-violet-400/20">
+              <div className="font-bold text-violet-700">Core High-Value</div>
+              <div className="text-[11px] text-stone-600">High VAI + High Scale (Accommodation, Food & Beverage)</div>
             </div>
-            <div className="p-2 rounded bg-slate-900/60 border border-cyan-500/20">
-              <div className="font-bold text-cyan-400">Growth Opportunity</div>
-              <div className="text-[11px] text-slate-400">High VAI + Emerging Scale (Cultural & Eco-Tourism)</div>
+            <div className="p-2 rounded bg-white/60 border border-indigo-300/20">
+              <div className="font-bold text-indigo-600">Growth Opportunity</div>
+              <div className="text-[11px] text-stone-600">High VAI + Emerging Scale (Cultural & Eco-Tourism)</div>
             </div>
-            <div className="p-2 rounded bg-slate-900/60 border border-amber-500/20">
-              <div className="font-bold text-amber-400">Efficiency Priority</div>
-              <div className="text-[11px] text-slate-400">High Scale + Lower VAI (Transport, Retail Shopping)</div>
+            <div className="p-2 rounded bg-white/60 border border-amber-500/20">
+              <div className="font-bold text-amber-700">Efficiency Priority</div>
+              <div className="text-[11px] text-stone-600">High Scale + Lower VAI (Transport, Retail Shopping)</div>
             </div>
-            <div className="p-2 rounded bg-slate-900/60 border border-purple-500/20">
-              <div className="font-bold text-purple-400">Niche / Specialized</div>
-              <div className="text-[11px] text-slate-400">Lower immediate macro priority</div>
+            <div className="p-2 rounded bg-white/60 border border-purple-500/20">
+              <div className="font-bold text-violet-700">Niche / Specialized</div>
+              <div className="text-[11px] text-stone-600">Lower immediate macro priority</div>
             </div>
           </div>
         </div>
@@ -363,37 +366,37 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
         {/* Travel Agency & Statistical Guardrails (1 col) */}
         <div className="glass-panel p-5 flex flex-col justify-between space-y-4">
           <div>
-            <h3 className="text-base font-bold text-white flex items-center gap-2 mb-1">
-              <Info className="w-4 h-4 text-cyan-400" />
+            <h3 className="text-base font-bold text-stone-900 flex items-center gap-2 mb-1">
+              <Info className="w-4 h-4 text-indigo-600" />
               Accounting Guardrail Note
             </h3>
-            <span className="text-[11px] text-slate-400 uppercase font-semibold">AGENTS.md Section 10 Guidance</span>
+            <span className="text-[11px] text-stone-600 uppercase font-semibold">AGENTS.md Section 10 Guidance</span>
 
-            <div className="mt-3 p-3 rounded-lg bg-slate-900/80 border border-slate-800 space-y-2 text-xs text-slate-300">
-              <div className="font-semibold text-white flex items-center gap-1.5">
-                <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+            <div className="mt-3 p-3 rounded-lg bg-white/80 border border-violet-100 space-y-2 text-xs text-stone-700">
+              <div className="font-semibold text-stone-900 flex items-center gap-1.5">
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-700" />
                 Travel Agencies & Reservation Services:
               </div>
               <p>
                 In 2025, Travel Agency VAI moderated not because industry output contracted, but because <strong>gross supply increased significantly faster (+24%) than value added (+8%)</strong>.
               </p>
-              <p className="text-slate-400 text-[11px]">
+              <p className="text-stone-600 text-[11px]">
                 Underlying factors: Aggressive digital platform bookings, foreign travel intermediary fees, and OTA transaction margins.
               </p>
             </div>
 
-            <div className="mt-3 p-3 rounded-lg bg-slate-900/80 border border-slate-800 space-y-1.5 text-xs text-slate-300">
-              <div className="font-semibold text-white">Definition of Value-Added Intensity:</div>
-              <p className="font-mono text-emerald-400 text-[11px]">
+            <div className="mt-3 p-3 rounded-lg bg-white/80 border border-violet-100 space-y-1.5 text-xs text-stone-700">
+              <div className="font-semibold text-stone-900">Definition of Value-Added Intensity:</div>
+              <p className="font-mono text-violet-700 text-[11px]">
                 VAI[i,t] = GVA[i,t] / DomesticSupply[i,t]
               </p>
-              <p className="text-slate-400 text-[11px]">
+              <p className="text-stone-600 text-[11px]">
                 Measures the proportion of industry output retained as direct domestic economic value.
               </p>
             </div>
           </div>
 
-          <div className="p-2.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-[11px] text-emerald-300">
+          <div className="p-2.5 rounded bg-violet-600/10 border border-violet-400/30 text-[11px] text-violet-700">
             <strong>Strategic Takeaway:</strong> Prioritizing accommodation expenditure produces the greatest economic ripple per ringgit of visitor spend in Malaysia.
           </div>
         </div>

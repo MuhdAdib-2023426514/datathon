@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
 import * as echarts from 'echarts';
 import type { StateProfile, DriversData } from '../types';
-import { 
-  Users, 
-  Hotel, 
-  Wallet, 
-  Compass, 
-  Sparkles, 
+import {
+  Users,
+  Hotel,
+  Wallet,
+  Compass,
+  Sparkles,
   AlertCircle,
   FileText,
   Download,
@@ -25,8 +25,8 @@ interface AccommodationMapProps {
   selectedYear?: number;
 }
 
-export const AccommodationMap: React.FC<AccommodationMapProps> = ({ 
-  stateProfiles, 
+export const AccommodationMap: React.FC<AccommodationMapProps> = ({
+  stateProfiles,
   geoJson,
   driversData,
   selectedYear = 2025
@@ -165,7 +165,7 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
       getValue: (s: StateProfile) => s.baseline_2025.accommodation_share_pct,
       min: 5,
       max: 18,
-      colorRange: ['#1e293b', '#06b6d4', '#10b981'],
+      colorRange: ['#eee9f6', '#b7a3df', '#6041b0'],
     },
     spend_per_night: {
       label: 'Spend per Night (RM)',
@@ -173,7 +173,7 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
       getValue: (s: StateProfile) => s.baseline_2025.spend_per_night_rm,
       min: 25,
       max: 110,
-      colorRange: ['#1e293b', '#06b6d4', '#10b981'],
+      colorRange: ['#eee9f6', '#b7a3df', '#6041b0'],
     },
     alos: {
       label: 'Average Length of Stay (ALOS days)',
@@ -181,7 +181,7 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
       getValue: (s: StateProfile) => s.baseline_2025.alos_days,
       min: 2.0,
       max: 3.2,
-      colorRange: ['#1e293b', '#3b82f6', '#8b5cf6'],
+      colorRange: ['#eee9f6', '#b7a3df', '#6041b0'],
     },
     tir: {
       label: 'Tourism Intensity Ratio (Visitors / Resident)',
@@ -189,7 +189,7 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
       getValue: (s: StateProfile) => s.sdg_metrics.tir_visitors_per_resident,
       min: 3.0,
       max: 22.0,
-      colorRange: ['#0f172a', '#f59e0b', '#ef4444'],
+      colorRange: ['#eee9f4', '#b9782f', '#ef4444'],
     },
     archetype: {
       label: 'Strategic Typology Archetype',
@@ -197,7 +197,7 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
       getValue: (s: StateProfile) => s.cluster_id,
       min: 1,
       max: 4,
-      colorRange: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b'],
+      colorRange: ['#3b82f6', '#9673c8', '#6d4bc1', '#b9782f'],
     },
   };
 
@@ -208,19 +208,19 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
     backgroundColor: 'transparent',
     tooltip: {
       trigger: 'item',
-      backgroundColor: '#0e1526',
-      borderColor: 'rgba(255, 255, 255, 0.15)',
-      textStyle: { color: '#f8fafc', fontSize: 12 },
+      backgroundColor: '#ffffff',
+      borderColor: 'rgba(70, 50, 100, 0.16)',
+      textStyle: { color: '#241d32', fontSize: 12 },
       formatter: (params: any) => {
         const s = stateProfiles[params.name];
         if (!s) return params.name;
         return `<div style="font-weight: bold; margin-bottom: 4px; font-size: 13px;">${s.state}</div>
-          <div>${currentConfig.label}: <strong style="color: #34d399;">${currentConfig.getValue(s)} ${currentConfig.unit}</strong></div>
+          <div>${currentConfig.label}: <strong style="color: #6d4bc1;">${currentConfig.getValue(s)} ${currentConfig.unit}</strong></div>
           <div>Archetype: <span style="color: ${s.archetype_color}; font-weight: 600;">${s.archetype_name}</span></div>
           <div>ALOS: <strong>${s.baseline_2025.alos_days.toFixed(2)} days</strong></div>
           <div>Spend / Night: <strong>RM ${s.baseline_2025.spend_per_night_rm.toFixed(1)}</strong></div>
           <div>Population: <strong>${s.demographics?.total_population_millions?.toFixed(2) || 'N/A'} M</strong></div>
-          <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">Click to view full diagnostic profile</div>`;
+          <div style="font-size: 10px; color: #746d80; margin-top: 4px;">Click to view full diagnostic profile</div>`;
       },
     },
     visualMap: selectedMetric === 'archetype' ? {
@@ -228,12 +228,12 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
       type: 'piecewise',
       bottom: 20,
       left: 20,
-      textStyle: { color: '#94a3b8', fontSize: 11 },
+      textStyle: { color: '#746d80', fontSize: 11 },
       pieces: [
         { value: 1, label: 'High-Volume Urban Gateway', color: '#3b82f6' },
-        { value: 2, label: 'Administrative & Luxury', color: '#8b5cf6' },
-        { value: 3, label: 'Prime Leisure Hotspot', color: '#10b981' },
-        { value: 4, label: 'Emerging Extended-Stay', color: '#f59e0b' },
+        { value: 2, label: 'Administrative & Luxury', color: '#9673c8' },
+        { value: 3, label: 'Prime Leisure Hotspot', color: '#6d4bc1' },
+        { value: 4, label: 'Emerging Extended-Stay', color: '#b9782f' },
       ],
     } : {
       show: true,
@@ -242,7 +242,7 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
       left: 20,
       bottom: 20,
       text: ['High', 'Low'],
-      textStyle: { color: '#94a3b8', fontSize: 11 },
+      textStyle: { color: '#746d80', fontSize: 11 },
       inRange: { color: currentConfig.colorRange },
       calculable: true,
     },
@@ -258,20 +258,20 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
         emphasis: {
           label: { show: true, color: '#ffffff', fontWeight: 'bold', fontSize: 11 },
           itemStyle: {
-            areaColor: '#34d399',
+            areaColor: '#6d4bc1',
             borderColor: '#ffffff',
             borderWidth: 1.5,
             shadowBlur: 15,
-            shadowColor: 'rgba(16, 185, 129, 0.5)',
+            shadowColor: 'rgba(109, 75, 193, 0.18)',
           },
         },
         select: {
           label: { show: true, color: '#ffffff', fontWeight: 'bold' },
-          itemStyle: { areaColor: '#10b981', borderColor: '#ffffff', borderWidth: 2 },
+          itemStyle: { areaColor: '#6d4bc1', borderColor: '#ffffff', borderWidth: 2 },
         },
         itemStyle: {
-          areaColor: '#152038',
-          borderColor: 'rgba(255, 255, 255, 0.25)',
+          areaColor: '#eee9f4',
+          borderColor: '#ffffff',
           borderWidth: 0.8,
         },
         data: stateList.map((s) => {
@@ -291,9 +291,9 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
   const radarOption = {
     backgroundColor: 'transparent',
     tooltip: {
-      backgroundColor: '#0e1526',
-      borderColor: 'rgba(255, 255, 255, 0.15)',
-      textStyle: { color: '#f8fafc', fontSize: 11 },
+      backgroundColor: '#ffffff',
+      borderColor: 'rgba(70, 50, 100, 0.16)',
+      textStyle: { color: '#241d32', fontSize: 11 },
     },
     radar: {
       indicator: [
@@ -306,10 +306,10 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
       ],
       shape: 'polygon',
       splitNumber: 4,
-      axisName: { color: '#94a3b8', fontSize: 10 },
-      splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.08)' } },
+      axisName: { color: '#746d80', fontSize: 10 },
+      splitLine: { lineStyle: { color: 'rgba(70, 50, 100, 0.10)' } },
       splitArea: { show: false },
-      axisLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.12)' } },
+      axisLine: { lineStyle: { color: 'rgba(70, 50, 100, 0.14)' } },
     },
     series: [
       {
@@ -332,8 +332,8 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
             itemStyle: { color: activeState.archetype_color },
             areaStyle: {
               color: new echarts.graphic.RadialGradient(0.5, 0.5, 1, [
-                { offset: 0, color: 'rgba(16, 185, 129, 0.4)' },
-                { offset: 1, color: 'rgba(16, 185, 129, 0.05)' },
+                { offset: 0, color: 'rgba(109, 75, 193, 0.14)' },
+                { offset: 1, color: 'rgba(109, 75, 193, 0.02)' },
               ]),
             },
           },
@@ -354,11 +354,11 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
       {/* Metric Selector Bar */}
       <div className="glass-panel p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
-            <Compass className="w-5 h-5 text-emerald-400" />
+          <h2 className="text-xl font-bold text-stone-900 tracking-tight flex items-center gap-2">
+            <Compass className="w-5 h-5 text-violet-700" />
             Accommodation Opportunity & State Archetype Explorer
           </h2>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-stone-600">
             Select a metric to explore state-level economic value conversion across Malaysia
           </p>
         </div>
@@ -378,8 +378,8 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
               onClick={() => setSelectedMetric(key)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 selectedMetric === key
-                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/20'
-                  : 'bg-slate-900/60 text-slate-400 border border-slate-800 hover:text-white hover:bg-slate-800'
+                  ? 'bg-violet-600/20 text-violet-700 border border-violet-400/40 shadow-sm shadow-violet-300/20'
+                  : 'bg-white/60 text-stone-600 border border-violet-100 hover:text-stone-900 hover:bg-violet-50'
               }`}
             >
               {label}
@@ -389,9 +389,9 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
       </div>
 
       {/* SDG Carrying Capacity & Volume Pressure Filter Pill Strip (Recommendation 5) */}
-      <div className="glass-panel p-3 flex flex-wrap items-center justify-between gap-3 bg-slate-900/80 border border-slate-800">
-        <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-          <Filter className="w-3.5 h-3.5 text-emerald-400" />
+      <div className="glass-panel p-3 flex flex-wrap items-center justify-between gap-3 bg-white/80 border border-violet-100">
+        <div className="flex items-center gap-2 text-xs font-semibold text-stone-700">
+          <Filter className="w-3.5 h-3.5 text-violet-700" />
           <span>SDG Strategic Focus Filter:</span>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -407,8 +407,8 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
               onClick={() => setSdgFilter(pill.id as any)}
               className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
                 sdgFilter === pill.id
-                  ? 'bg-emerald-500 text-slate-950 font-bold shadow-sm shadow-emerald-500/30'
-                  : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700/60'
+                  ? 'bg-violet-600 text-slate-950 font-bold shadow-sm shadow-violet-300/30'
+                  : 'bg-violet-50/80 text-stone-700 hover:bg-violet-100 hover:text-stone-900 border border-violet-200/60'
               }`}
               title={pill.desc}
             >
@@ -423,48 +423,48 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
         {/* Malaysia Choropleth Map (7 cols) */}
         <div className="glass-panel p-5 lg:col-span-7 flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
+            <span className="text-xs font-bold text-stone-700 uppercase tracking-wider">
               {currentConfig.label} Map
             </span>
-            <span className="text-[11px] text-slate-400 flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span className="text-[11px] text-stone-600 flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-violet-500"></span>
               Click any state polygon to inspect
             </span>
           </div>
 
           <div className="h-[480px] w-full">
-            <ReactECharts 
-              option={mapOption} 
+            <ReactECharts
+              option={mapOption}
               style={{ height: '100%', width: '100%' }}
               onEvents={{ click: onChartClick }}
             />
           </div>
 
-          <div className="pt-3 border-t border-slate-800/60 flex items-center justify-between text-xs text-slate-400">
+          <div className="pt-3 border-t border-violet-100/60 flex items-center justify-between text-xs text-stone-600">
             <span>Projection: WGS84 GeoJSON MultiPolygon (16 States & FTs)</span>
-            <span className="text-emerald-400 font-medium">Currently Inspected: {activeState.state}</span>
+            <span className="text-violet-700 font-medium">Currently Inspected: {activeState.state}</span>
           </div>
         </div>
 
         {/* Selected State Diagnostic Drawer (5 cols) */}
         <div className="glass-panel p-5 lg:col-span-5 flex flex-col space-y-4">
           {/* Header with Archetype badge & Executive Brief button */}
-          <div className="flex items-start justify-between gap-3 border-b border-slate-800/60 pb-3">
+          <div className="flex items-start justify-between gap-3 border-b border-violet-100/60 pb-3">
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-2xl font-extrabold text-white">{activeState.state}</h3>
-                <span className="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                <h3 className="text-2xl font-extrabold text-stone-900">{activeState.state}</h3>
+                <span className="text-xs px-2 py-0.5 rounded bg-violet-50 text-stone-700 font-mono">
                   {activeState.state_code}
                 </span>
               </div>
-              <span className="text-xs text-slate-400">{activeState.region} Malaysia</span>
+              <span className="text-xs text-stone-600">{activeState.region} Malaysia</span>
             </div>
 
             <div className="flex flex-col items-end gap-1.5">
-              <div 
+              <div
                 className="px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm"
-                style={{ 
-                  backgroundColor: `${activeState.archetype_color}20`, 
+                style={{
+                  backgroundColor: `${activeState.archetype_color}20`,
                   borderColor: `${activeState.archetype_color}60`,
                   color: activeState.archetype_color,
                   borderWidth: '1px'
@@ -475,7 +475,7 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
               </div>
               <button
                 onClick={() => setShowBriefModal(true)}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold transition-all shadow-sm shadow-emerald-500/10 cursor-pointer"
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-violet-600/20 hover:bg-violet-600/30 text-violet-700 border border-violet-400/40 text-[11px] font-bold transition-all shadow-sm shadow-violet-300/10 cursor-pointer"
                 title="Generate printable Executive Policy Brief"
               >
                 <FileText className="w-3.5 h-3.5" />
@@ -485,15 +485,15 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
           </div>
 
           {/* Archetype Description */}
-          <p className="text-xs text-slate-300 bg-slate-900/50 p-2.5 rounded-lg border border-slate-800/80 leading-relaxed">
+          <p className="text-xs text-stone-700 bg-white/50 p-2.5 rounded-lg border border-violet-100/80 leading-relaxed">
             {activeState.archetype_desc}
           </p>
 
           {/* Radar Chart (Value Efficiency Dimensions) */}
           <div>
-            <div className="flex items-center justify-between text-xs font-bold text-slate-300 mb-1">
+            <div className="flex items-center justify-between text-xs font-bold text-stone-700 mb-1">
               <span>Value Capability Radar</span>
-              <span className="text-[11px] text-slate-400 font-normal">0–100 Normalized Scale</span>
+              <span className="text-[11px] text-stone-600 font-normal">0–100 Normalized Scale</span>
             </div>
             <div className="h-[210px] w-full">
               <ReactECharts option={radarOption} style={{ height: '100%', width: '100%' }} />
@@ -502,144 +502,144 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
 
           {/* Key Metric Cards */}
           <div className="grid grid-cols-3 gap-2 text-center text-xs">
-            <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800">
-              <span className="text-slate-400 text-[10px] uppercase font-semibold">ALOS (Days)</span>
-              <div className="text-lg font-bold text-white font-mono mt-0.5">
+            <div className="p-2.5 rounded-lg bg-white/80 border border-violet-100">
+              <span className="text-stone-600 text-[10px] uppercase font-semibold">ALOS (Days)</span>
+              <div className="text-lg font-bold text-stone-900 font-mono mt-0.5">
                 {activeState.baseline_2025.alos_days.toFixed(2)}d
               </div>
             </div>
 
-            <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800">
-              <span className="text-slate-400 text-[10px] uppercase font-semibold">Spend/Night</span>
-              <div className="text-lg font-bold text-emerald-400 font-mono mt-0.5">
+            <div className="p-2.5 rounded-lg bg-white/80 border border-violet-100">
+              <span className="text-stone-600 text-[10px] uppercase font-semibold">Spend/Night</span>
+              <div className="text-lg font-bold text-violet-700 font-mono mt-0.5">
                 RM {activeState.baseline_2025.spend_per_night_rm.toFixed(0)}
               </div>
             </div>
 
-            <div className="p-2.5 rounded-lg bg-slate-900/80 border border-slate-800">
-              <span className="text-slate-400 text-[10px] uppercase font-semibold">Accom Share</span>
-              <div className="text-lg font-bold text-cyan-400 font-mono mt-0.5">
+            <div className="p-2.5 rounded-lg bg-white/80 border border-violet-100">
+              <span className="text-stone-600 text-[10px] uppercase font-semibold">Accom Share</span>
+              <div className="text-lg font-bold text-indigo-600 font-mono mt-0.5">
                 {activeState.baseline_2025.accommodation_share_pct.toFixed(1)}%
               </div>
             </div>
           </div>
 
           {/* Demographics Age Profile: Official DOSM DTS Visitor Age Classes */}
-          <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800/80 space-y-2">
+          <div className="p-3 rounded-lg bg-white/60 border border-violet-100/80 space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-slate-300 flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="font-semibold text-stone-700 flex items-center gap-1.5">
+                <Users className="w-3.5 h-3.5 text-indigo-600" />
                 DTS Visitor Demographic Classes (2025)
               </span>
-              <span className="font-mono text-slate-400 text-[11px]">
+              <span className="font-mono text-stone-600 text-[11px]">
                 {activeState.demographics?.total_population_millions?.toFixed(2) || 'N/A'} M Total ({activeState.demographics?.adult_15plus_thousands ? (activeState.demographics.adult_15plus_thousands / 1000).toFixed(2) : 'N/A'} M Adults 15+)
               </span>
             </div>
 
             {/* 4 DTS Mutually Exclusive Adult Cohorts (Sum to 100% of adults) */}
             <div className="grid grid-cols-4 gap-1 text-center text-[11px]">
-              <div className="p-1.5 rounded bg-slate-950/60 border border-slate-800/50">
-                <span className="text-[10px] text-cyan-400 block font-medium">15–24 (Belia)</span>
-                <strong className="text-white font-mono text-xs">
+              <div className="p-1.5 rounded bg-stone-50/60 border border-violet-100/50">
+                <span className="text-[10px] text-indigo-600 block font-medium">15–24 (Belia)</span>
+                <strong className="text-stone-900 font-mono text-xs">
                   {activeState.demographics?.dts_age_classes?.age_15_24_pct || 22}%
                 </strong>
-                <span className="text-[9px] text-slate-400 block mt-0.5">
+                <span className="text-[9px] text-stone-600 block mt-0.5">
                   {activeState.demographics?.dts_age_classes?.age_15_24_k?.toFixed(0) || '0'}k pax
                 </span>
               </div>
-              <div className="p-1.5 rounded bg-slate-950/60 border border-emerald-500/30 bg-emerald-950/10">
-                <span className="text-[10px] text-emerald-400 block font-medium">25–39 (Prime)</span>
-                <strong className="text-emerald-300 font-mono text-xs">
+              <div className="p-1.5 rounded bg-stone-50/60 border border-violet-400/30 bg-violet-50/10">
+                <span className="text-[10px] text-violet-700 block font-medium">25–39 (Prime)</span>
+                <strong className="text-violet-700 font-mono text-xs">
                   {activeState.demographics?.dts_age_classes?.age_25_39_pct || 35}%
                 </strong>
-                <span className="text-[9px] text-emerald-400/80 block mt-0.5">
+                <span className="text-[9px] text-violet-700/80 block mt-0.5">
                   {activeState.demographics?.dts_age_classes?.age_25_39_k?.toFixed(0) || '0'}k pax
                 </span>
               </div>
-              <div className="p-1.5 rounded bg-slate-950/60 border border-slate-800/50">
-                <span className="text-[10px] text-amber-400 block font-medium">40–54 (Family)</span>
-                <strong className="text-white font-mono text-xs">
+              <div className="p-1.5 rounded bg-stone-50/60 border border-violet-100/50">
+                <span className="text-[10px] text-amber-700 block font-medium">40–54 (Family)</span>
+                <strong className="text-stone-900 font-mono text-xs">
                   {activeState.demographics?.dts_age_classes?.age_40_54_pct || 24}%
                 </strong>
-                <span className="text-[9px] text-slate-400 block mt-0.5">
+                <span className="text-[9px] text-stone-600 block mt-0.5">
                   {activeState.demographics?.dts_age_classes?.age_40_54_k?.toFixed(0) || '0'}k pax
                 </span>
               </div>
-              <div className="p-1.5 rounded bg-slate-950/60 border border-slate-800/50">
-                <span className="text-[10px] text-purple-400 block font-medium">≥ 55 (Senior)</span>
-                <strong className="text-white font-mono text-xs">
+              <div className="p-1.5 rounded bg-stone-50/60 border border-violet-100/50">
+                <span className="text-[10px] text-violet-700 block font-medium">≥ 55 (Senior)</span>
+                <strong className="text-stone-900 font-mono text-xs">
                   {activeState.demographics?.dts_age_classes?.age_55plus_pct || 19}%
                 </strong>
-                <span className="text-[9px] text-slate-400 block mt-0.5">
+                <span className="text-[9px] text-stone-600 block mt-0.5">
                   {activeState.demographics?.dts_age_classes?.age_55plus_k?.toFixed(0) || '0'}k pax
                 </span>
               </div>
             </div>
 
             {/* 100% MECE Cohort Stack Bar */}
-            <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden flex">
-              <div 
-                className="bg-cyan-500 h-full" 
+            <div className="w-full h-1.5 rounded-full bg-violet-50 overflow-hidden flex">
+              <div
+                className="bg-indigo-400 h-full"
                 style={{ width: `${activeState.demographics?.dts_age_classes?.age_15_24_pct || 22}%` }}
                 title={`15-24: ${activeState.demographics?.dts_age_classes?.age_15_24_pct}%`}
               ></div>
-              <div 
-                className="bg-emerald-400 h-full" 
+              <div
+                className="bg-violet-500 h-full"
                 style={{ width: `${activeState.demographics?.dts_age_classes?.age_25_39_pct || 35}%` }}
                 title={`25-39: ${activeState.demographics?.dts_age_classes?.age_25_39_pct}%`}
               ></div>
-              <div 
-                className="bg-amber-400 h-full" 
+              <div
+                className="bg-amber-400 h-full"
                 style={{ width: `${activeState.demographics?.dts_age_classes?.age_40_54_pct || 24}%` }}
                 title={`40-54: ${activeState.demographics?.dts_age_classes?.age_40_54_pct}%`}
               ></div>
-              <div 
-                className="bg-purple-400 h-full" 
+              <div
+                className="bg-purple-400 h-full"
                 style={{ width: `${activeState.demographics?.dts_age_classes?.age_55plus_pct || 19}%` }}
                 title={`≥ 55: ${activeState.demographics?.dts_age_classes?.age_55plus_pct}%`}
               ></div>
             </div>
 
-            <div className="flex items-center justify-between text-[11px] text-slate-400 pt-0.5">
-              <span>Children 0–14: <strong className="text-slate-300 font-mono">{activeState.demographics?.children_pct || 21}% ({activeState.demographics?.children_0_14_thousands?.toFixed(0) || '0'}k)</strong></span>
-              <span>Dependency Ratio: <strong className="text-slate-300 font-mono">{activeState.demographics?.dependency_ratio || 40}</strong></span>
-              <span>Resident Median: <strong className="text-emerald-400 font-mono">RM {activeState.baseline_2025.resident_median_income_rm.toLocaleString()}</strong></span>
+            <div className="flex items-center justify-between text-[11px] text-stone-600 pt-0.5">
+              <span>Children 0–14: <strong className="text-stone-700 font-mono">{activeState.demographics?.children_pct || 21}% ({activeState.demographics?.children_0_14_thousands?.toFixed(0) || '0'}k)</strong></span>
+              <span>Dependency Ratio: <strong className="text-stone-700 font-mono">{activeState.demographics?.dependency_ratio || 40}</strong></span>
+              <span>Resident Median: <strong className="text-violet-700 font-mono">RM {activeState.baseline_2025.resident_median_income_rm.toLocaleString()}</strong></span>
             </div>
           </div>
 
           {/* Hotel Inventory & Tourist Income Strip */}
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800/80 space-y-1">
-              <span className="font-semibold text-slate-300 flex items-center gap-1.5 text-[11px]">
-                <Hotel className="w-3.5 h-3.5 text-amber-400" />
+            <div className="p-2.5 rounded-lg bg-white/60 border border-violet-100/80 space-y-1">
+              <span className="font-semibold text-stone-700 flex items-center gap-1.5 text-[11px]">
+                <Hotel className="w-3.5 h-3.5 text-amber-700" />
                 Hotel Capacity
               </span>
-              <div className="text-[11px] text-slate-400">
-                Total Rooms: <strong className="text-white font-mono">{activeState.hotel_stars?.total_rooms?.toLocaleString() || 'N/A'}</strong>
+              <div className="text-[11px] text-stone-600">
+                Total Rooms: <strong className="text-stone-900 font-mono">{activeState.hotel_stars?.total_rooms?.toLocaleString() || 'N/A'}</strong>
               </div>
-              <div className="text-[11px] text-slate-400">
-                4/5-Star Share: <strong className="text-amber-400 font-mono">{activeState.hotel_stars?.luxury_room_share_pct?.toFixed(1) || 'N/A'}%</strong>
+              <div className="text-[11px] text-stone-600">
+                4/5-Star Share: <strong className="text-amber-700 font-mono">{activeState.hotel_stars?.luxury_room_share_pct?.toFixed(1) || 'N/A'}%</strong>
               </div>
             </div>
 
-            <div className="p-2.5 rounded-lg bg-slate-900/60 border border-slate-800/80 space-y-1">
-              <span className="font-semibold text-slate-300 flex items-center gap-1.5 text-[11px]">
-                <Wallet className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="p-2.5 rounded-lg bg-white/60 border border-violet-100/80 space-y-1">
+              <span className="font-semibold text-stone-700 flex items-center gap-1.5 text-[11px]">
+                <Wallet className="w-3.5 h-3.5 text-violet-700" />
                 Inbound Affluence
               </span>
-              <div className="text-[11px] text-slate-400">
-                Tourist T20 Share: <strong className="text-emerald-400 font-mono">{activeState.tourist_income?.t20_pct?.toFixed(1) || '20'}%</strong>
+              <div className="text-[11px] text-stone-600">
+                Tourist T20 Share: <strong className="text-violet-700 font-mono">{activeState.tourist_income?.t20_pct?.toFixed(1) || '20'}%</strong>
               </div>
-              <div className="text-[11px] text-slate-400">
-                Affluence Index: <strong className="text-white font-mono">{activeState.tourist_income?.affluence_index?.toFixed(0) || '100'}</strong>
+              <div className="text-[11px] text-stone-600">
+                Affluence Index: <strong className="text-stone-900 font-mono">{activeState.tourist_income?.affluence_index?.toFixed(0) || '100'}</strong>
               </div>
             </div>
           </div>
 
           {/* SDG Policy Action Box */}
-          <div 
+          <div
             className="p-3 rounded-lg border text-xs space-y-1"
-            style={{ 
+            style={{
               backgroundColor: `${activeState.sdg_metrics.sdg_status_color}10`,
               borderColor: `${activeState.sdg_metrics.sdg_status_color}40`,
             }}
@@ -648,7 +648,7 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
               <AlertCircle className="w-3.5 h-3.5" />
               SDG 8.9 Diagnosis: {activeState.sdg_metrics.sdg_diagnosis}
             </div>
-            <p className="text-slate-300 text-[11px] leading-relaxed">
+            <p className="text-stone-700 text-[11px] leading-relaxed">
               {activeState.sdg_metrics.sdg_policy_action}
             </p>
           </div>
@@ -659,31 +659,31 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
       <div className="glass-panel p-5">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4">
           <div>
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-emerald-400" />
+            <h3 className="text-base font-bold text-stone-900 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-violet-700" />
               Research Question 3: Accommodation Expenditure Driver Attribution
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-stone-600">
               Econometric attribution model explaining cross-state variation in accommodation yield (R² = {driversData.model_metadata?.r_squared || 0.609}, HC3 Robust Standard Errors)
             </p>
           </div>
-          <span className="text-xs px-2.5 py-1 rounded bg-slate-800 text-slate-300 font-mono">
+          <span className="text-xs px-2.5 py-1 rounded bg-violet-50 text-stone-700 font-mono">
             N = 126 State-Year Panel Observations
           </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {driversData.feature_attributions.map((driver, idx) => (
-            <div 
-              key={idx} 
-              className="p-3 rounded-lg bg-slate-900/80 border border-slate-800 hover:border-emerald-500/30 transition-all space-y-2"
+            <div
+              key={idx}
+              className="p-3 rounded-lg bg-white/80 border border-violet-100 hover:border-violet-400/30 transition-all space-y-2"
             >
               <div className="flex items-start justify-between gap-2">
-                <span className="font-semibold text-white text-xs leading-snug">
+                <span className="font-semibold text-stone-900 text-xs leading-snug">
                   {driver.feature_label}
                 </span>
                 <span className={`px-2 py-0.5 rounded text-[10px] font-bold font-mono ${
-                  driver.std_beta > 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'
+                  driver.std_beta > 0 ? 'bg-violet-600/20 text-violet-700' : 'bg-rose-500/20 text-rose-700'
                 }`}>
                   β = {driver.std_beta > 0 ? `+${driver.std_beta.toFixed(3)}` : driver.std_beta.toFixed(3)}
                 </span>
@@ -691,19 +691,19 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
 
               {/* Progress bar of relative importance */}
               <div className="space-y-1">
-                <div className="flex justify-between text-[10px] text-slate-400">
+                <div className="flex justify-between text-[10px] text-stone-600">
                   <span>Relative Importance</span>
-                  <span className="font-bold text-slate-200">{driver.importance_share_pct}%</span>
+                  <span className="font-bold text-stone-800">{driver.importance_share_pct}%</span>
                 </div>
-                <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                  <div 
-                    className="h-full rounded-full bg-gradient-to-r from-teal-500 to-emerald-400"
+                <div className="w-full h-1.5 rounded-full bg-violet-50 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-violet-400 to-violet-400"
                     style={{ width: `${Math.min(100, driver.importance_share_pct * 3)}%` }}
                   ></div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-800/40 font-mono">
+              <div className="flex items-center justify-between text-[10px] text-stone-600 pt-1 border-t border-violet-100/40 font-mono">
                 <span>p-value: {driver.p_value < 0.001 ? '< 0.001' : driver.p_value.toFixed(3)}</span>
                 <span>VIF: {driver.vif.toFixed(2)} (collinearity OK)</span>
               </div>
@@ -715,16 +715,16 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
       {/* Executive Policy Brief Modal (Recommendation 1) */}
       {showBriefModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+          <div className="bg-white border border-violet-200/80 rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
             {/* Modal Header */}
-            <div className="p-4 px-6 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+            <div className="p-4 px-6 border-b border-violet-100 flex items-center justify-between bg-stone-50/60">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                <ShieldCheck className="w-5 h-5 text-violet-700" />
                 <div>
-                  <h3 className="text-base font-bold text-white">
+                  <h3 className="text-base font-bold text-stone-900">
                     Executive Policy Brief: {activeState.state}
                   </h3>
-                  <p className="text-xs text-slate-400">
+                  <p className="text-xs text-stone-600">
                     Decision-Support Dossier • DOSM TSA & DTS Official Baseline ({selectedYear})
                   </p>
                 </div>
@@ -732,7 +732,7 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => window.print()}
-                  className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs flex items-center gap-1 transition-all cursor-pointer"
+                  className="p-1.5 rounded-lg bg-violet-50 hover:bg-violet-100 text-stone-700 hover:text-stone-900 text-xs flex items-center gap-1 transition-all cursor-pointer"
                   title="Print / Save as PDF"
                 >
                   <Printer className="w-4 h-4" />
@@ -740,7 +740,7 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
                 </button>
                 <button
                   onClick={handleDownloadBrief}
-                  className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs flex items-center gap-1 transition-all cursor-pointer"
+                  className="p-1.5 rounded-lg bg-violet-50 hover:bg-violet-100 text-stone-700 hover:text-stone-900 text-xs flex items-center gap-1 transition-all cursor-pointer"
                   title="Download Markdown (.md)"
                 >
                   <Download className="w-4 h-4" />
@@ -748,7 +748,7 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
                 </button>
                 <button
                   onClick={handleCopyBrief}
-                  className="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer"
+                  className="px-2.5 py-1.5 rounded-lg bg-violet-700 hover:bg-violet-600 text-stone-900 text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer"
                   title="Copy formatted markdown to clipboard"
                 >
                   {copiedBrief ? <Check className="w-4 h-4" /> : <FileText className="w-4 h-4" />}
@@ -756,7 +756,7 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
                 </button>
                 <button
                   onClick={() => setShowBriefModal(false)}
-                  className="p-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white transition-all ml-1 cursor-pointer"
+                  className="p-1.5 rounded-lg bg-violet-50/80 hover:bg-violet-100 text-stone-600 hover:text-stone-900 transition-all ml-1 cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -764,41 +764,41 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 overflow-y-auto space-y-5 text-sm text-slate-200 print:p-0 print:text-black">
+            <div className="p-6 overflow-y-auto space-y-5 text-sm text-stone-800 print:p-0 print:text-black">
               <div className="space-y-4">
-                <div className="border-b border-slate-800 pb-3">
-                  <span className="text-xs uppercase tracking-wider text-emerald-400 font-bold">Official Policy Briefing</span>
-                  <h1 className="text-2xl font-black text-white mt-1">{activeState.state} Tourism Economic Profile</h1>
-                  <p className="text-xs text-slate-400 mt-0.5">
+                <div className="border-b border-violet-100 pb-3">
+                  <span className="text-xs uppercase tracking-wider text-violet-700 font-bold">Official Policy Briefing</span>
+                  <h1 className="text-2xl font-black text-stone-900 mt-1">{activeState.state} Tourism Economic Profile</h1>
+                  <p className="text-xs text-stone-600 mt-0.5">
                     Strategic Mandate: Converting Visitor Volume to Domestic Economic Yield • UN SDG 8.9 & 12.b
                   </p>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800">
-                    <span className="text-[10px] uppercase text-slate-400 block font-semibold">Classification</span>
-                    <strong className="text-emerald-400 text-xs">{activeState.archetype_name}</strong>
+                  <div className="p-3 rounded-lg bg-stone-50/60 border border-violet-100">
+                    <span className="text-[10px] uppercase text-stone-600 block font-semibold">Classification</span>
+                    <strong className="text-violet-700 text-xs">{activeState.archetype_name}</strong>
                   </div>
-                  <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800">
-                    <span className="text-[10px] uppercase text-slate-400 block font-semibold">ALOS Duration</span>
-                    <strong className="text-white text-sm font-mono">{activeState.baseline_2025.alos_days.toFixed(2)} days</strong>
+                  <div className="p-3 rounded-lg bg-stone-50/60 border border-violet-100">
+                    <span className="text-[10px] uppercase text-stone-600 block font-semibold">ALOS Duration</span>
+                    <strong className="text-stone-900 text-sm font-mono">{activeState.baseline_2025.alos_days.toFixed(2)} days</strong>
                   </div>
-                  <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800">
-                    <span className="text-[10px] uppercase text-slate-400 block font-semibold">Nightly Spend</span>
-                    <strong className="text-white text-sm font-mono">RM {activeState.baseline_2025.spend_per_night_rm.toFixed(2)}</strong>
+                  <div className="p-3 rounded-lg bg-stone-50/60 border border-violet-100">
+                    <span className="text-[10px] uppercase text-stone-600 block font-semibold">Nightly Spend</span>
+                    <strong className="text-stone-900 text-sm font-mono">RM {activeState.baseline_2025.spend_per_night_rm.toFixed(2)}</strong>
                   </div>
-                  <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800">
-                    <span className="text-[10px] uppercase text-slate-400 block font-semibold">Accom Share</span>
-                    <strong className="text-cyan-400 text-sm font-mono">{activeState.baseline_2025.accommodation_share_pct.toFixed(1)}%</strong>
+                  <div className="p-3 rounded-lg bg-stone-50/60 border border-violet-100">
+                    <span className="text-[10px] uppercase text-stone-600 block font-semibold">Accom Share</span>
+                    <strong className="text-indigo-600 text-sm font-mono">{activeState.baseline_2025.accommodation_share_pct.toFixed(1)}%</strong>
                   </div>
                 </div>
 
                 {/* Markdown text preview container */}
-                <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 font-mono text-xs leading-relaxed text-slate-300 max-h-[380px] overflow-y-auto whitespace-pre-wrap select-all">
+                <div className="p-4 rounded-xl bg-stone-50/80 border border-violet-100/80 font-mono text-xs leading-relaxed text-stone-700 max-h-[380px] overflow-y-auto whitespace-pre-wrap select-all">
                   {generateMarkdownBrief(activeState)}
                 </div>
 
-                <div className="text-[11px] text-slate-400 italic bg-amber-950/20 border border-amber-500/30 p-2.5 rounded-lg">
+                <div className="text-[11px] text-stone-600 italic bg-amber-950/20 border border-amber-500/30 p-2.5 rounded-lg">
                   ⚠️ <strong>Mandatory Methodological Notice</strong>: Scenario estimate, not a causal forecast. Derived from official DOSM Tourism Satellite Account (TSA) 2015–2025, Domestic Tourism Survey (DTS) 2018–2025, and Household Income Survey Table 6.
                 </div>
               </div>
