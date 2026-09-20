@@ -58,19 +58,30 @@ def compute_destination_concentration_panel(df_od_panel: pd.DataFrame) -> pd.Dat
         if total_inter > 0:
             shares_inter = (grp_inter["tourist_flow_thousands"] / total_inter) * 100.0
             hhi_inter = round(float((shares_inter ** 2).sum()), 2)
-            top_inter_row = grp_inter.sort_values("tourist_flow_thousands", ascending=False).iloc[0]
+            grp_inter_sorted = grp_inter.sort_values("tourist_flow_thousands", ascending=False)
+            top_inter_row = grp_inter_sorted.iloc[0]
             top_inter_state = top_inter_row["origin"]
             top_inter_share = round(float(shares_inter.loc[top_inter_row.name]), 2)
+            
+            # Top 3 origins combined share
+            top_3_inter = grp_inter_sorted.head(3)
+            top_3_share = round(float(shares_inter.loc[top_3_inter.index].sum()), 2)
+            
+            # Meaningful origin count (feeder states with >= 5% share)
+            meaningful_count = int((shares_inter >= 5.0).sum())
+
             if hhi_inter < 1500:
-                inter_tier = "Diversified (< 1,500)"
+                inter_tier = "Diversified Feeder Base (< 1,500)"
             elif hhi_inter <= 2500:
-                inter_tier = "Moderate (1,500 - 2,500)"
+                inter_tier = "Moderately Concentrated (1,500 - 2,500)"
             else:
                 inter_tier = "Highly Concentrated (> 2,500)"
         else:
             hhi_inter = np.nan
             top_inter_state = "None"
             top_inter_share = 0.0
+            top_3_share = 0.0
+            meaningful_count = 0
             inter_tier = "No Inter-state Inbound"
 
         records.append({
@@ -82,6 +93,10 @@ def compute_destination_concentration_panel(df_od_panel: pd.DataFrame) -> pd.Dat
             "intrastate_share_pct": intrastate_share_pct,
             "top_feeder_origin": top_inter_state,
             "top_feeder_share_pct": top_inter_share,
+            "top_origin_share": top_inter_share,
+            "top_3_origin_share_pct": top_3_share,
+            "top_3_origin_share": top_3_share,
+            "meaningful_origin_count": meaningful_count,
             "interstate_origin_hhi": hhi_inter,
             "all_origin_hhi": hhi_all,
             "hhi": hhi_inter,  # Default for downstream views

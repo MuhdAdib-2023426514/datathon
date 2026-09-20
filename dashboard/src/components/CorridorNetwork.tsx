@@ -15,7 +15,12 @@ import {
   Hotel,
   Users,
   Wallet,
-  ExternalLink
+  ExternalLink,
+  Play,
+  Pause,
+  RotateCcw,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
 interface CorridorNetworkProps {
@@ -24,7 +29,7 @@ interface CorridorNetworkProps {
   stateProfiles?: Record<string, StateProfile>;
   selectedYear?: number;
   modelMetrics?: ModelMetricsData | null;
-  onSelectCorridorForScenario?: (destination: string) => void;
+  onSelectCorridorForScenario?: (destination: string, origin?: string) => void;
 }
 
 export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
@@ -47,14 +52,51 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
     }
   }, [geoJson]);
 
-  // Support Longitudinal Year filter (Recommendation 4)
-  const allCorridors = (selectedYear && corridorData.corridors_by_year && corridorData.corridors_by_year[selectedYear])
-    ? corridorData.corridors_by_year[selectedYear]
+  const [animYear, setAnimYear] = useState<number>(selectedYear || 2025);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (selectedYear) setAnimYear(selectedYear);
+  }, [selectedYear]);
+
+  // Longitudinal animation playback timer
+  useEffect(() => {
+    let interval: any;
+    if (isPlaying) {
+      interval = setInterval(() => {
+        setAnimYear((prev) => {
+          if (prev >= 2025) return 2018;
+          return prev + 1;
+        });
+      }, 1500);
+    }
+    return () => clearInterval(interval);
+  }, [isPlaying]);
+
+  const availableYears = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+
+  const getPeriodContext = (yr: number) => {
+    if (yr <= 2019) return { label: 'Pre-COVID Baseline', color: 'bg-emerald-100 text-emerald-800 border-emerald-300' };
+    if (yr <= 2021) return { label: 'MCO Lockdown Contraction', color: 'bg-rose-100 text-rose-800 border-rose-300' };
+    if (yr <= 2023) return { label: 'Domestic Travel Rebound', color: 'bg-amber-100 text-amber-800 border-amber-300' };
+    return { label: 'Post-Recovery Maturation', color: 'bg-indigo-100 text-indigo-800 border-indigo-300' };
+  };
+
+  // Support Longitudinal Year filter (Recommendation 4 & Sprint 8 Phase 37)
+  const allCorridors = (animYear && corridorData.corridors_by_year && corridorData.corridors_by_year[animYear])
+    ? corridorData.corridors_by_year[animYear]
     : (corridorData.corridors_2025 || []);
+
+  const totalFlowM = (allCorridors.reduce((acc, c) => acc + (c.tourist_flow_thousands || 0), 0) / 1000.0).toFixed(2);
+  const period = getPeriodContext(animYear);
 
   // Filter corridors
   const filteredCorridors = allCorridors.filter((c) => {
-    if (selectedTier !== 'All' && c.corridor_category !== selectedTier) return false;
+    if (selectedTier === 'Pareto Frontier') {
+      if (!c.is_pareto_optimal) return false;
+    } else if (selectedTier !== 'All' && c.corridor_category !== selectedTier) {
+      return false;
+    }
     if (selectedOrigin !== 'All' && c.origin !== selectedOrigin) return false;
     if (selectedDestination !== 'All' && c.destination !== selectedDestination) return false;
     if (searchQuery) {
@@ -173,14 +215,14 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                 Spatial Econometrics & RQ6
               </span>
               <span className="text-xs text-stone-600 font-mono">
-                Structural PPML Gravity (OOS R² = {modelMetrics?.gravity?.r2_oos?.toFixed(4) || '0.5890'})
+                Structural PPML Gravity (OOS R² = {modelMetrics?.gravity?.r2_oos != null ? modelMetrics.gravity.r2_oos.toFixed(4) : '—'})
               </span>
             </div>
             <h2 className="text-2xl font-bold text-stone-900 tracking-tight">
               Domestic Tourism Value Corridors & Mobility Gravity
             </h2>
             <p className="text-sm text-stone-700 mt-1 max-w-3xl">
-              Targeting high-flow corridors with weak accommodation capture enables Malaysia to generate additional overnight tourism value without needing new visitor headcount. Structural PPML gravity modeling with Origin, Destination, and Year Fixed Effects eliminates target leakage while estimating distance decay (β = {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'}) and Borneo flight barrier friction.
+              Targeting high-flow corridors with weak accommodation capture enables Malaysia to generate additional overnight tourism value without needing new visitor headcount. Structural PPML gravity modeling with Origin, Destination, and Year Fixed Effects eliminates target leakage while estimating distance decay (β = {modelMetrics?.gravity?.distance_decay_friction != null ? modelMetrics.gravity.distance_decay_friction.toFixed(3) : '—'}) and Borneo flight barrier friction.
             </p>
           </div>
 
@@ -188,16 +230,16 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
             <div className="p-3.5 rounded-xl bg-white/90 border border-indigo-300/30 text-center min-w-[130px]">
               <span className="text-xs text-stone-600 uppercase font-semibold">Distance Friction</span>
               <div className="text-2xl font-extrabold text-indigo-600 font-mono">
-                {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'}
+                {modelMetrics?.gravity?.distance_decay_friction != null ? modelMetrics.gravity.distance_decay_friction.toFixed(3) : '—'}
               </div>
               <span className="text-[10px] text-indigo-600">Elasticity (p &lt; 0.001)</span>
             </div>
             <div className="p-3.5 rounded-xl bg-white/90 border border-rose-500/30 text-center min-w-[130px]">
               <span className="text-xs text-stone-600 uppercase font-semibold">Borneo Barrier</span>
               <div className="text-2xl font-extrabold text-rose-700 font-mono">
-                {modelMetrics?.gravity?.cross_region_barrier
+                {modelMetrics?.gravity?.cross_region_barrier != null
                   ? `${(-((1 - Math.exp(modelMetrics.gravity.cross_region_barrier)) * 100)).toFixed(1)}%`
-                  : '-55.2%'}
+                  : '—'}
               </div>
               <span className="text-[10px] text-rose-700">Flight Volume Penalty</span>
             </div>
@@ -212,7 +254,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
           <span className="text-stone-600 font-semibold mr-1 flex items-center gap-1">
             <Filter className="w-3.5 h-3.5 text-indigo-600" /> Tier:
           </span>
-          {['All', 'Priority Conversion Corridor', 'Protect & Deepen', 'Growth Opportunity'].map((tier) => (
+          {['All', 'Pareto Frontier', 'Priority Conversion Corridor', 'Protect & Deepen', 'Growth Opportunity'].map((tier) => (
             <button
               key={tier}
               onClick={() => setSelectedTier(tier)}
@@ -222,7 +264,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                   : 'bg-white/60 text-stone-600 border border-violet-100 hover:text-stone-900'
               }`}
             >
-              {tier === 'All' ? 'All Corridors' : tier}
+              {tier === 'All' ? 'All Corridors' : tier === 'Pareto Frontier' ? '✨ Pareto Frontier' : tier}
             </button>
           ))}
         </div>
@@ -264,6 +306,90 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
         </div>
       </div>
 
+      {/* Sprint 8 Phase 37: Longitudinal Time Animation Control Bar (2018-2025) */}
+      <div className="bg-gradient-to-r from-stone-900 via-purple-950 to-indigo-950 text-white rounded-xl p-4 shadow-md border border-purple-800/40">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => setIsPlaying(!isPlaying)}
+                className={`p-2 rounded-lg text-white transition-all flex items-center gap-1.5 text-xs font-semibold shadow ${
+                  isPlaying ? 'bg-amber-600 hover:bg-amber-500' : 'bg-purple-600 hover:bg-purple-500'
+                }`}
+                title={isPlaying ? 'Pause Animation' : 'Play Timeline Animation (2018-2025)'}
+              >
+                {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                <span>{isPlaying ? 'Pause' : 'Play Timeline'}</span>
+              </button>
+              <button
+                onClick={() => { setIsPlaying(false); setAnimYear(2018); }}
+                className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-all text-xs"
+                title="Reset to 2018"
+              >
+                <RotateCcw className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setAnimYear(prev => Math.max(2018, prev - 1))}
+                disabled={animYear <= 2018}
+                className="p-1.5 rounded bg-white/5 hover:bg-white/15 disabled:opacity-30 text-white transition-all"
+                title="Previous Year"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+              </button>
+              <span className="font-mono text-lg font-bold text-amber-400 px-2 min-w-[50px] text-center">
+                {animYear}
+              </span>
+              <button
+                onClick={() => setAnimYear(prev => Math.min(2025, prev + 1))}
+                disabled={animYear >= 2025}
+                className="p-1.5 rounded bg-white/5 hover:bg-white/15 disabled:opacity-30 text-white transition-all"
+                title="Next Year"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border ${period.color}`}>
+              {period.label}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-4 text-xs">
+            <div className="flex items-center gap-1.5 text-purple-200">
+              <span className="text-purple-300/70">Total Interstate Flow:</span>
+              <span className="font-bold text-white font-mono">{totalFlowM}M tourists</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-purple-200">
+              <span className="text-purple-300/70">Active Corridors:</span>
+              <span className="font-bold text-amber-300 font-mono">{allCorridors.length}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Year Pills Bar */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pt-1 border-t border-white/10">
+          {availableYears.map(yr => {
+            const isSelected = animYear === yr;
+            return (
+              <button
+                key={yr}
+                onClick={() => { setIsPlaying(false); setAnimYear(yr); }}
+                className={`px-3 py-1 rounded-md text-xs font-mono transition-all shrink-0 ${
+                  isSelected
+                    ? 'bg-amber-400 text-slate-950 font-bold shadow-sm ring-2 ring-amber-300/50'
+                    : 'bg-white/5 hover:bg-white/15 text-purple-200'
+                }`}
+              >
+                {yr}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Main Grid: Flow Map & Priority Corridor Table */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Animated Geodesic Arcs Map (7 cols) */}
@@ -291,7 +417,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
           <div className="pt-3 border-t border-violet-100/60 flex items-center justify-between text-xs text-stone-600">
             <span>Click any arc to inspect bilateral corridor profile</span>
             <span className="text-indigo-600 font-mono font-medium">
-              Showing {filteredCorridors.length} of {allCorridors.length} inter-state corridors ({selectedYear})
+              Showing {filteredCorridors.length} of {allCorridors.length} inter-state corridors ({animYear})
             </span>
           </div>
         </div>
@@ -322,39 +448,70 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                     <span className="text-violet-700">{c.destination}</span>
                   </div>
 
-                  <span
-                    className="text-[10px] font-bold px-2 py-0.5 rounded-full"
-                    style={{
-                      backgroundColor: `${tierColorMap[c.corridor_category]}20`,
-                      color: tierColorMap[c.corridor_category],
-                      border: `1px solid ${tierColorMap[c.corridor_category]}40`
-                    }}
-                  >
-                    {c.corridor_category}
-                  </span>
+                  <div className="flex items-center gap-1">
+                    {c.is_pareto_optimal && (
+                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-0.5 shadow-sm">
+                        <Sparkles className="w-2.5 h-2.5" /> Pareto
+                      </span>
+                    )}
+                    <span
+                      className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                      style={{
+                        backgroundColor: `${tierColorMap[c.corridor_category]}20`,
+                        color: tierColorMap[c.corridor_category],
+                        border: `1px solid ${tierColorMap[c.corridor_category]}40`
+                      }}
+                    >
+                      {c.corridor_category}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-3 gap-2 text-center text-[11px] pt-1">
+                <div className="grid grid-cols-4 gap-1.5 text-center text-[11px] pt-1">
                   <div className="p-1 rounded bg-stone-50/60">
-                    <span className="text-[9px] text-stone-600 block uppercase">Tourist Flow</span>
+                    <span className="text-[9px] text-stone-600 block uppercase">Flow</span>
                     <strong className="text-stone-900 font-mono">{c.tourist_flow_thousands.toFixed(0)}k</strong>
                   </div>
                   <div className="p-1 rounded bg-stone-50/60">
-                    <span className="text-[9px] text-stone-600 block uppercase">Dest ALOS</span>
-                    <strong className="text-indigo-600 font-mono">{c.dest_alos?.toFixed(2) || 'N/A'}d</strong>
+                    <span className="text-[9px] text-stone-600 block uppercase">ALOS</span>
+                    <strong className="text-indigo-600 font-mono">{c.dest_alos?.toFixed(1) || 'N/A'}d</strong>
                   </div>
                   <div className="p-1 rounded bg-stone-50/60">
-                    <span className="text-[9px] text-stone-600 block uppercase">Spend/Night</span>
+                    <span className="text-[9px] text-stone-600 block uppercase">Spend/Nt</span>
                     <strong className="text-violet-700 font-mono">RM {c.dest_spend_per_night?.toFixed(0) || 'N/A'}</strong>
+                  </div>
+                  <div className="p-1 rounded bg-stone-50/60">
+                    <span className="text-[9px] text-stone-600 block uppercase">Headroom</span>
+                    <strong className="text-emerald-700 font-mono">
+                      {c.capacity_headroom_pct != null ? `${c.capacity_headroom_pct.toFixed(0)}%` : 'N/A'}
+                    </strong>
                   </div>
                 </div>
 
-                {c.corridor_category === 'Priority Conversion Corridor' && (
-                  <div className="text-[10px] text-amber-800/90 flex items-center gap-1 bg-amber-500/10 px-2 py-1 rounded">
-                    <AlertTriangle className="w-3 h-3 text-amber-700 shrink-0" />
-                    <span>High volume, short stay: Prime target to convert day-trips into hotel stays.</span>
-                  </div>
-                )}
+                {/* Sprint 5: Opportunity Diagnostics Badges */}
+                <div className="flex flex-wrap items-center gap-1 text-[9px]">
+                  {c.gravity_performance_category && (
+                    <span className={`px-1.5 py-0.5 rounded border ${
+                      c.gravity_performance_category === 'Below Model Expected'
+                        ? 'bg-amber-50 text-amber-800 border-amber-200'
+                        : c.gravity_performance_category === 'Above Model Expected'
+                        ? 'bg-blue-50 text-blue-800 border-blue-200'
+                        : 'bg-stone-50 text-stone-700 border-stone-200'
+                    }`}>
+                      {c.gravity_performance_category}
+                    </span>
+                  )}
+                  {c.diversification_benefit && (
+                    <span className="px-1.5 py-0.5 rounded bg-violet-50 text-violet-800 border border-violet-200 truncate max-w-[130px]">
+                      {c.diversification_benefit.split('(')[0].trim()}
+                    </span>
+                  )}
+                  {c.composite_opportunity_score != null && (
+                    <span className="ml-auto font-mono text-[10px] font-bold text-indigo-700">
+                      Score: {c.composite_opportunity_score.toFixed(1)}
+                    </span>
+                  )}
+                </div>
 
                 <button
                   onClick={() => setSelectedCorridor(c)}
@@ -384,30 +541,30 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
           </div>
 
           <p className="text-xs text-stone-700 leading-relaxed font-mono bg-white/80 p-2.5 rounded border border-violet-100">
-            E[Flow_ijt] = exp(α_origin + γ_dest + δ_year + {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'} · ln(Dist) {modelMetrics?.gravity?.cross_region_barrier?.toFixed(3) || '-0.802'} · Borneo)
+            E[Flow_ijt] = exp(α_origin + γ_dest + δ_year + {modelMetrics?.gravity?.distance_decay_friction != null ? modelMetrics.gravity.distance_decay_friction.toFixed(3) : 'β_dist'} · ln(Dist) {modelMetrics?.gravity?.cross_region_barrier != null ? (modelMetrics.gravity.cross_region_barrier > 0 ? `+ ${modelMetrics.gravity.cross_region_barrier.toFixed(3)}` : `${modelMetrics.gravity.cross_region_barrier.toFixed(3)}`) : 'β_borneo'} · Borneo)
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
             <div className="p-2 rounded bg-white/60 border border-violet-100">
               <span className="text-[10px] text-stone-600 block">Distance Friction</span>
               <strong className="text-rose-700 font-mono text-sm">
-                {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'}
+                {modelMetrics?.gravity?.distance_decay_friction != null ? modelMetrics.gravity.distance_decay_friction.toFixed(3) : '—'}
               </strong>
               <span className="text-[9px] text-stone-600 block">p &lt; 0.001</span>
             </div>
             <div className="p-2 rounded bg-white/60 border border-violet-100">
               <span className="text-[10px] text-stone-600 block">Borneo Barrier</span>
               <strong className="text-rose-700 font-mono text-sm">
-                {modelMetrics?.gravity?.cross_region_barrier
+                {modelMetrics?.gravity?.cross_region_barrier != null
                   ? `${(-((1 - Math.exp(modelMetrics.gravity.cross_region_barrier)) * 100)).toFixed(1)}%`
-                  : '-55.2%'}
+                  : '—'}
               </strong>
               <span className="text-[9px] text-stone-600 block">p &lt; 0.001</span>
             </div>
             <div className="p-2 rounded bg-white/60 border border-violet-100">
               <span className="text-[10px] text-stone-600 block">Out-of-Sample R²</span>
               <strong className="text-indigo-600 font-mono text-sm">
-                {modelMetrics?.gravity?.r2_oos?.toFixed(4) || '0.5890'}
+                {modelMetrics?.gravity?.r2_oos != null ? modelMetrics.gravity.r2_oos.toFixed(4) : '—'}
               </strong>
               <span className="text-[9px] text-stone-600 block">2025 Holdout</span>
             </div>
@@ -459,23 +616,40 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
             Market concentration distinguishes <strong>Interstate Origin HHI</strong> (evaluating vulnerability to external feeder shocks) from <strong>All-Origin HHI</strong> (which reflects local resident travel).
           </p>
 
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="p-2.5 rounded bg-white/60 border border-amber-500/20 space-y-1">
-              <span className="font-bold text-amber-700 text-xs">Interstate Concentrated Feeders</span>
-              <div className="text-stone-700 text-[11px] space-y-1">
-                <div>• <strong>Pulau Pinang</strong> (HHI: 2,462 — 44.5% from Selangor)</div>
-                <div>• <strong>Melaka</strong> (HHI: 2,156 — 38.8% from Selangor)</div>
-              </div>
-            </div>
+          {(() => {
+            const concs = corridorData.destination_concentration_2025 || [];
+            const sortedByHhi = [...concs]
+              .filter((c) => c.interstate_origin_hhi != null)
+              .sort((a, b) => (b.interstate_origin_hhi || 0) - (a.interstate_origin_hhi || 0));
+            const topConcentrated = sortedByHhi.slice(0, 2);
+            const topDiversified = [...sortedByHhi].reverse().slice(0, 2);
 
-            <div className="p-2.5 rounded bg-white/60 border border-violet-400/20 space-y-1">
-              <span className="font-bold text-violet-700 text-xs">Borneo & Diversified Feeders</span>
-              <div className="text-stone-700 text-[11px] space-y-1">
-                <div>• <strong>Sabah</strong>: Interstate HHI = 1,450 (Diversified); All-Origin HHI = 5,747 (75.2% Intrastate travel)</div>
-                <div>• <strong>Negeri Sembilan</strong>: Interstate HHI = 2,127 (32.5% from Selangor)</div>
+            return (
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="p-2.5 rounded bg-white/60 border border-amber-500/20 space-y-1">
+                  <span className="font-bold text-amber-700 text-xs">Interstate Concentrated Feeders</span>
+                  <div className="text-stone-700 text-[11px] space-y-1">
+                    {topConcentrated.map((c) => (
+                      <div key={c.destination}>
+                        • <strong>{c.destination}</strong> (HHI: {c.interstate_origin_hhi?.toFixed(0)} — {c.top_feeder_share_pct?.toFixed(1)}% from {c.top_feeder_origin})
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="p-2.5 rounded bg-white/60 border border-violet-400/20 space-y-1">
+                  <span className="font-bold text-violet-700 text-xs">Diversified Feeder Bases</span>
+                  <div className="text-stone-700 text-[11px] space-y-1">
+                    {topDiversified.map((c) => (
+                      <div key={c.destination}>
+                        • <strong>{c.destination}</strong> (HHI: {c.interstate_origin_hhi?.toFixed(0)} — {c.meaningful_origin_count || 5} active feeders)
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            );
+          })()}
         </div>
       </div>
 
@@ -516,13 +690,14 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                   <button
                     onClick={() => {
                       const dest = selectedCorridor.destination;
+                      const orig = selectedCorridor.origin;
                       setSelectedCorridor(null);
-                      onSelectCorridorForScenario(dest);
+                      onSelectCorridorForScenario(dest, orig);
                     }}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-violet-700 hover:bg-violet-600 text-stone-900 text-xs font-semibold transition-all cursor-pointer shadow-sm"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
-                    Simulate Destination
+                    Simulate Corridor
                   </button>
                 )}
                 <button
@@ -718,8 +893,57 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                 </div>
 
                 <p className="text-xs text-stone-700 leading-relaxed">
-                  Under the Structural PPML Gravity Model (OOS R² = {modelMetrics?.gravity?.r2_oos?.toFixed(4) || '0.5890'}), bilateral travel between <strong>{selectedCorridor.origin}</strong> and <strong>{selectedCorridor.destination}</strong> is shaped by origin push mass, destination pull attractiveness, distance impedance (β = {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'}), and Borneo flight barrier friction ({modelMetrics?.gravity?.cross_region_barrier ? `${(-((1 - Math.exp(modelMetrics.gravity.cross_region_barrier)) * 100)).toFixed(1)}%` : '-55.2%'}).
+                  Under the Structural PPML Gravity Model (OOS R² = {modelMetrics?.gravity?.r2_oos != null ? modelMetrics.gravity.r2_oos.toFixed(4) : '—'}), bilateral travel between <strong>{selectedCorridor.origin}</strong> and <strong>{selectedCorridor.destination}</strong> is shaped by origin push mass, destination pull attractiveness, distance impedance (β = {modelMetrics?.gravity?.distance_decay_friction != null ? modelMetrics.gravity.distance_decay_friction.toFixed(3) : '—'}), and Borneo flight barrier friction ({modelMetrics?.gravity?.cross_region_barrier != null ? `${(-((1 - Math.exp(modelMetrics.gravity.cross_region_barrier)) * 100)).toFixed(1)}%` : '—'}).
                 </p>
+
+                {/* Multi-Dimensional Opportunity Matrix Grid (Phase 19 & 20) */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                  <div className="p-2 rounded bg-white border border-violet-100">
+                    <span className="text-[10px] text-stone-500 block">Pareto Frontier</span>
+                    <strong className={`font-mono text-xs ${selectedCorridor.is_pareto_optimal ? 'text-emerald-700' : 'text-stone-700'}`}>
+                      {selectedCorridor.is_pareto_optimal ? '✨ Optimal (Rank 1)' : `Rank ${selectedCorridor.pareto_rank || 'N/A'}`}
+                    </strong>
+                    <span className="text-[9px] text-stone-500 block">
+                      Score: {selectedCorridor.composite_opportunity_score?.toFixed(1) || 'N/A'}
+                    </span>
+                  </div>
+
+                  <div className="p-2 rounded bg-white border border-violet-100">
+                    <span className="text-[10px] text-stone-500 block">Model Expectation</span>
+                    <strong className={`font-mono text-xs ${
+                      selectedCorridor.gravity_performance_category === 'Below Model Expected'
+                        ? 'text-amber-700'
+                        : selectedCorridor.gravity_performance_category === 'Above Model Expected'
+                        ? 'text-blue-700'
+                        : 'text-stone-700'
+                    }`}>
+                      {selectedCorridor.gravity_performance_category || 'Conforming'}
+                    </strong>
+                    <span className="text-[9px] text-stone-500 block font-mono">
+                      Gap: {selectedCorridor.gravity_flow_gap_thousands != null ? `${selectedCorridor.gravity_flow_gap_thousands > 0 ? '+' : ''}${selectedCorridor.gravity_flow_gap_thousands.toFixed(0)}k` : '0k'}
+                    </span>
+                  </div>
+
+                  <div className="p-2 rounded bg-white border border-violet-100">
+                    <span className="text-[10px] text-stone-500 block">Capacity Headroom</span>
+                    <strong className="text-emerald-700 font-mono text-xs">
+                      {selectedCorridor.capacity_headroom_pct != null ? `${selectedCorridor.capacity_headroom_pct.toFixed(0)}% Room Space` : 'N/A'}
+                    </strong>
+                    <span className="text-[9px] text-stone-500 block truncate" title={selectedCorridor.capacity_tier}>
+                      {selectedCorridor.capacity_tier?.split('(')[0].trim() || 'Feasible'}
+                    </span>
+                  </div>
+
+                  <div className="p-2 rounded bg-white border border-violet-100">
+                    <span className="text-[10px] text-stone-500 block">Diversification</span>
+                    <strong className="text-violet-700 font-mono text-xs">
+                      {selectedCorridor.is_dominant_feeder ? 'Dominant Feeder' : 'Diversifying Origin'}
+                    </strong>
+                    <span className="text-[9px] text-stone-500 block truncate" title={selectedCorridor.diversification_benefit}>
+                      {selectedCorridor.diversification_benefit?.split('(')[0].trim() || 'Standard'}
+                    </span>
+                  </div>
+                </div>
 
                 {/* Specific Policy Playbook Box */}
                 <div
@@ -749,7 +973,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                   )}
                   {selectedCorridor.corridor_category === 'Growth Opportunity' && (
                     <ul className="text-stone-800 text-[11px] space-y-1 list-disc list-inside">
-                      <li><strong>Transport Friction Relief:</strong> Subsidize direct inter-state flight or express coach frequencies to overcome distance friction (β = {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'}).</li>
+                      <li><strong>Transport Friction Relief:</strong> Subsidize direct inter-state flight or express coach frequencies to overcome distance friction (β = {modelMetrics?.gravity?.distance_decay_friction != null ? modelMetrics.gravity.distance_decay_friction.toFixed(3) : '—'}).</li>
                       <li><strong>Targeted Feeder Marketing:</strong> Launch focused digital marketing campaigns targeting the 25–39 prime mobile demographic in {selectedCorridor.origin}.</li>
                       <li><strong>Bundled Thematic Circuits:</strong> Partner with neighboring states to offer multi-destination regional passes.</li>
                     </ul>
@@ -762,7 +986,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                 </div>
 
                 <div className="text-[10px] text-stone-600 italic">
-                  * Structural PPML Gravity Specification: E[Flow_ijt] = exp(α_i + γ_j + δ_t + {modelMetrics?.gravity?.distance_decay_friction?.toFixed(3) || '-0.410'} ln(Dist_ij) + {modelMetrics?.gravity?.cross_region_barrier?.toFixed(3) || '-0.802'} Borneo_ij). Zero target leakage (absorbed via Destination FE); validated on 2025 holdout.
+                  * Structural PPML Gravity Specification: E[Flow_ijt] = exp(α_i + γ_j + δ_t + {modelMetrics?.gravity?.distance_decay_friction != null ? modelMetrics.gravity.distance_decay_friction.toFixed(3) : 'β_dist'} ln(Dist_ij) + {modelMetrics?.gravity?.cross_region_barrier != null ? (modelMetrics.gravity.cross_region_barrier > 0 ? `+ ${modelMetrics.gravity.cross_region_barrier.toFixed(3)}` : `${modelMetrics.gravity.cross_region_barrier.toFixed(3)}`) : 'β_borneo'} Borneo_ij). Zero target leakage (absorbed via Destination FE); validated on 2025 holdout.
                 </div>
               </div>
             </div>

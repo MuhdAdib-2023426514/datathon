@@ -1,0 +1,143 @@
+{
+  "target_users": [
+    {
+      "role": "MOTAC",
+      "full_name": "Ministry of Tourism, Arts and Culture Malaysia",
+      "primary_decisions": [
+        "National tourism investment resource allocation across states",
+        "Balancing interstate economic yields with heritage preservation",
+        "Monitoring National Tourism Policy (DPN 2020-2030) yield metrics"
+      ],
+      "recommended_views": [
+        "Tourism Value Monitor",
+        "Portfolio Optimizer"
+      ]
+    },
+    {
+      "role": "Tourism Malaysia",
+      "full_name": "Malaysia Tourism Promotion Board",
+      "primary_decisions": [
+        "Targeted domestic feeder-market digital campaign design",
+        "Converting day-trippers into overnight guests through corridor bundling",
+        "Stimulating midweek and shoulder-season domestic travel"
+      ],
+      "recommended_views": [
+        "Corridor Network",
+        "Scenario Simulator"
+      ]
+    },
+    {
+      "role": "State Tourism Boards",
+      "full_name": "State Tourism Action Councils (e.g. Tourism Selangor, Melaka Heritage)",
+      "primary_decisions": [
+        "State-specific stay-extension packages and evening heritage economy",
+        "Attracting high-yield overnight visitors rather than volume-only excursionists",
+        "Targeting top out-of-state feeder origins with dedicated marketing"
+      ],
+      "recommended_views": [
+        "Accommodation Opportunity Map",
+        "State Decision Brief"
+      ]
+    },
+    {
+      "role": "Local Authorities",
+      "full_name": "Pihak Berkuasa Tempatan (PBTs) & Municipal Councils",
+      "primary_decisions": [
+        "Destination carrying-capacity management and congestion relief",
+        "Local accommodation licensing and zoning (hotels vs homestays)",
+        "Municipal tourist tax reinvestment in public infrastructure"
+      ],
+      "recommended_views": [
+        "Accommodation Map",
+        "Portfolio Optimizer"
+      ]
+    },
+    {
+      "role": "Hotel Associations",
+      "full_name": "Malaysian Association of Hotels (MAH) & MAHO",
+      "primary_decisions": [
+        "Forecasting room-night demand uplift from interstate campaigns",
+        "Optimizing Average Room Rates (ARR) and RevPAR yield",
+        "Mitigating extreme weekend peak vs weekday occupancy imbalances"
+      ],
+      "recommended_views": [
+        "Scenario Simulator",
+        "Monte Carlo Uncertainty"
+      ]
+    }
+  ],
+  "operating_model": [
+    {
+      "step": 1,
+      "name": "Official Data Ingestion",
+      "description": "Automated ingestion of published DOSM TSA, DTS, and Hotel Occupancy statistics."
+    },
+    {
+      "step": 2,
+      "name": "Economic Yield Diagnosis",
+      "description": "Computation of constant-price TVAY, TEY, and Value-Added Intensity efficiency."
+    },
+    {
+      "step": 3,
+      "name": "Opportunity Detection",
+      "description": "Gravity model residual separation and multi-dimensional corridor classification."
+    },
+    {
+      "step": 4,
+      "name": "Scenario Simulation",
+      "description": "Capacity-constrained what-if simulation of campaign reach and length-of-stay extensions."
+    },
+    {
+      "step": 5,
+      "name": "Portfolio Optimization",
+      "description": "MILP resource allocation maximizing GVA within fiscal and room inventory limits."
+    },
+    {
+      "step": 6,
+      "name": "Intervention Execution",
+      "description": "Pilot deployment of digital campaign bundles across selected feeder corridors."
+    },
+    {
+      "step": 7,
+      "name": "Impact Verification",
+      "description": "Post-campaign empirical tracking against counterfactual control corridors."
+    },
+    {
+      "step": 8,
+      "name": "Model Recalibration",
+      "description": "Continuous tuning of gravity friction coefficients and spend elasticity."
+    }
+  ],
+  "refresh_cadence": [
+    {
+      "stream": "TSA National Accounts",
+      "frequency": "Annual (September)",
+      "source": "DOSM Tourism Satellite Account"
+    },
+    {
+      "stream": "Domestic Tourism Survey",
+      "frequency": "Annual (June/September)",
+      "source": "DOSM DTS Annual Report"
+    },
+    {
+      "stream": "State Tourism Survey",
+      "frequency": "Annual (September)",
+      "source": "DOSM State Domestic Tourism Survey"
+    },
+    {
+      "stream": "Hotel Occupancy & Rates",
+      "frequency": "Monthly / Quarterly",
+      "source": "Tourism Malaysia Strategic Planning Division"
+    },
+    {
+      "stream": "Corridor Gravity Model",
+      "frequency": "Annual Recalibration",
+      "source": "PPML Fixed-Effects Econometric Engine"
+    },
+    {
+      "stream": "Scenario Simulation Engine",
+      "frequency": "Continuous / Real-Time",
+      "source": "Deterministic Policy Simulator Engine"
+    }
+  ]
+}

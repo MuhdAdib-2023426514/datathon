@@ -4,6 +4,8 @@ import { TourismValueMonitor } from './components/TourismValueMonitor';
 import { AccommodationMap } from './components/AccommodationMap';
 import { CorridorNetwork } from './components/CorridorNetwork';
 import { ScenarioSimulator } from './components/ScenarioSimulator';
+import { ProvenanceDrawer } from './components/ProvenanceDrawer';
+import { ImplementationRoadmap } from './components/ImplementationRoadmap';
 import type { 
   TSAMacroData, 
   StateProfile, 
@@ -18,10 +20,13 @@ import {
 } from 'lucide-react';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<'monitor' | 'map' | 'corridors' | 'simulator'>('monitor');
+  const [activeTab, setActiveTab] = useState<'monitor' | 'map' | 'corridors' | 'simulator' | 'implementation'>('monitor');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState<number>(2025);
+  const [selectedDestination, setSelectedDestination] = useState<string | null>(null);
+  const [selectedOrigin, setSelectedOrigin] = useState<string | null>(null);
+  const [showProvenanceDrawer, setShowProvenanceDrawer] = useState<boolean>(false);
 
   // Data states
   const [tsaData, setTsaData] = useState<TSAMacroData | null>(null);
@@ -31,6 +36,78 @@ export function App() {
   const [scenarioConfig, setScenarioConfig] = useState<ScenarioEngineConfig | null>(null);
   const [driversData, setDriversData] = useState<DriversData | null>(null);
   const [modelMetrics, setModelMetrics] = useState<ModelMetricsData | null>(null);
+  const [sourceMetadata, setSourceMetadata] = useState<any | null>(null);
+  const [implementationMetadata, setImplementationMetadata] = useState<any | null>(null);
+
+  // URL query parameter synchronization (Phase 28 shareable / bookmarkable)
+  const updateUrlParams = (tab: string, dest?: string | null, origin?: string | null, year?: number) => {
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', tab);
+      if (dest) {
+        url.searchParams.set('dest', dest);
+      } else {
+        url.searchParams.delete('dest');
+        url.searchParams.delete('destination');
+      }
+      if (origin) {
+        url.searchParams.set('origin', origin);
+      } else {
+        url.searchParams.delete('origin');
+      }
+      if (year && year !== 2025) {
+        url.searchParams.set('year', year.toString());
+      } else {
+        url.searchParams.delete('year');
+      }
+      window.history.pushState(null, '', url.toString());
+    } catch (e) {
+      console.warn('Could not update URL parameters', e);
+    }
+  };
+
+  const handleTabChange = (tab: 'monitor' | 'map' | 'corridors' | 'simulator' | 'implementation') => {
+    setActiveTab(tab);
+    updateUrlParams(tab, selectedDestination, selectedOrigin, selectedYear);
+  };
+
+  const handleYearChange = (year: number) => {
+    setSelectedYear(year);
+    updateUrlParams(activeTab, selectedDestination, selectedOrigin, year);
+  };
+
+  const handleSelectCorridorForScenario = (dest: string, origin?: string) => {
+    setSelectedDestination(dest);
+    setSelectedOrigin(origin || null);
+    setActiveTab('simulator');
+    updateUrlParams('simulator', dest, origin || null, selectedYear);
+  };
+
+  // Parse URL query parameters on initial page load
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab') as 'monitor' | 'map' | 'corridors' | 'simulator' | null;
+      const destParam = params.get('dest') || params.get('destination');
+      const originParam = params.get('origin');
+      const yearParam = params.get('year');
+
+      if (tabParam && ['monitor', 'map', 'corridors', 'simulator', 'implementation'].includes(tabParam)) {
+        setActiveTab(tabParam as any);
+      }
+      if (destParam) {
+        setSelectedDestination(destParam);
+      }
+      if (originParam) {
+        setSelectedOrigin(originParam);
+      }
+      if (yearParam && !isNaN(Number(yearParam))) {
+        setSelectedYear(Number(yearParam));
+      }
+    } catch (e) {
+      console.warn('Could not parse URL query parameters', e);
+    }
+  }, []);
 
   useEffect(() => {
     async function loadAllDatasets() {
@@ -48,7 +125,9 @@ export function App() {
           corridorsRes, 
           scenarioRes, 
           driversRes,
-          metricsRes
+          metricsRes,
+          sourceMetaRes,
+          implMetaRes
         ] = await Promise.all([
           fetch(`${cleanBase}data/tsa_macro.json`),
           fetch(`${cleanBase}data/state_profiles.json`),
@@ -57,6 +136,8 @@ export function App() {
           fetch(`${cleanBase}data/scenario_engine.json`),
           fetch(`${cleanBase}data/drivers_rq3.json`),
           fetch(`${cleanBase}data/model_metrics.json`),
+          fetch(`${cleanBase}data/source_metadata.json`),
+          fetch(`${cleanBase}data/implementation_metadata.json`).catch(() => ({ ok: false })),
         ]);
 
         if (!tsaRes.ok || !statesRes.ok || !geoRes.ok || !corridorsRes.ok || !scenarioRes.ok || !driversRes.ok) {
@@ -70,7 +151,9 @@ export function App() {
           corridorsJson,
           scenarioJson,
           driversJson,
-          metricsJson
+          metricsJson,
+          sourceMetaJson,
+          implMetaJson
         ] = await Promise.all([
           tsaRes.json(),
           statesRes.json(),
@@ -79,6 +162,8 @@ export function App() {
           scenarioRes.json(),
           driversRes.json(),
           metricsRes.ok ? metricsRes.json() : null,
+          sourceMetaRes.ok ? sourceMetaRes.json() : null,
+          ('ok' in implMetaRes && implMetaRes.ok) ? (implMetaRes as any).json() : null,
         ]);
 
         setTsaData(tsaJson);
@@ -88,6 +173,8 @@ export function App() {
         setScenarioConfig(scenarioJson);
         setDriversData(driversJson);
         setModelMetrics(metricsJson);
+        setSourceMetadata(sourceMetaJson);
+        setImplementationMetadata(implMetaJson || scenarioJson?.implementation_roadmap || null);
       } catch (err: any) {
         console.error('Failed to load dataset:', err);
         setError(err.message || 'Error loading dashboard datasets.');
@@ -104,9 +191,10 @@ export function App() {
       {/* Executive Application Header */}
       <Header 
         activeTab={activeTab} 
-        onSelectTab={setActiveTab} 
+        onSelectTab={handleTabChange} 
         selectedYear={selectedYear}
-        onSelectYear={setSelectedYear}
+        onSelectYear={handleYearChange}
+        onOpenProvenance={() => setShowProvenanceDrawer(true)}
       />
 
       {/* Main Content Body */}
@@ -169,9 +257,7 @@ export function App() {
                 stateProfiles={stateProfiles || undefined}
                 selectedYear={selectedYear}
                 modelMetrics={modelMetrics}
-                onSelectCorridorForScenario={(_dest) => {
-                  setActiveTab('simulator');
-                }}
+                onSelectCorridorForScenario={handleSelectCorridorForScenario}
               />
             )}
 
@@ -180,11 +266,28 @@ export function App() {
               <ScenarioSimulator 
                 scenarioConfig={scenarioConfig} 
                 stateProfiles={stateProfiles} 
+                initialDestination={selectedDestination || undefined}
+                initialOrigin={selectedOrigin || undefined}
+              />
+            )}
+
+            {/* View 5: Strategic Implementation Roadmap & Grounded AI Assistant */}
+            {activeTab === 'implementation' && (
+              <ImplementationRoadmap
+                metadata={implementationMetadata || scenarioConfig?.implementation_roadmap}
+                onNavigateTab={(tab) => handleTabChange(tab as any)}
               />
             )}
           </>
         )}
       </main>
+
+      {/* Global Data Provenance Drawer (Phase 29) */}
+      <ProvenanceDrawer 
+        isOpen={showProvenanceDrawer} 
+        onClose={() => setShowProvenanceDrawer(false)} 
+        metadata={sourceMetadata} 
+      />
 
       <footer className="site-footer">
         <div><strong>PurpleX</strong> · Malaysia Tourism Value Optimizer</div>

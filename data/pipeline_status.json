@@ -2,38 +2,38 @@
   "stages": {
     "validate": {
       "success": true,
-      "completed_at": "2026-09-20 23:35:31",
+      "completed_at": "2026-09-21 01:16:37",
       "steps": [
         {
           "step": "accounting_fixtures",
           "path": "tests/test_accounting_fixtures.py",
           "success": true,
-          "duration_sec": 0.26,
-          "timestamp": "2026-09-20 23:35:27",
+          "duration_sec": 0.25,
+          "timestamp": "2026-09-21 01:16:32",
           "log_snippet": ""
         },
         {
           "step": "scenario_fixtures",
           "path": "tests/test_scenario_fixtures.py",
           "success": true,
-          "duration_sec": 0.08,
-          "timestamp": "2026-09-20 23:35:27",
+          "duration_sec": 0.09,
+          "timestamp": "2026-09-21 01:16:32",
           "log_snippet": ""
         },
         {
           "step": "gravity_fixtures",
           "path": "tests/test_gravity_fixtures.py",
           "success": true,
-          "duration_sec": 0.08,
-          "timestamp": "2026-09-20 23:35:27",
+          "duration_sec": 0.09,
+          "timestamp": "2026-09-21 01:16:32",
           "log_snippet": ""
         },
         {
           "step": "missing_values",
           "path": "tests/test_missing_values.py",
           "success": true,
-          "duration_sec": 0.31,
-          "timestamp": "2026-09-20 23:35:28",
+          "duration_sec": 0.28,
+          "timestamp": "2026-09-21 01:16:32",
           "log_snippet": ""
         },
         {
@@ -41,23 +41,23 @@
           "path": "tests/test_paths_and_metadata.py",
           "success": true,
           "duration_sec": 0.04,
-          "timestamp": "2026-09-20 23:35:28",
+          "timestamp": "2026-09-21 01:16:32",
           "log_snippet": ""
         },
         {
           "step": "economic_metrics",
           "path": "tests/test_economic_metrics.py",
           "success": true,
-          "duration_sec": 0.26,
-          "timestamp": "2026-09-20 23:35:28",
+          "duration_sec": 0.28,
+          "timestamp": "2026-09-21 01:16:33",
           "log_snippet": ""
         },
         {
           "step": "panel_econometrics_tests",
           "path": "tests/test_panel_econometrics.py",
           "success": true,
-          "duration_sec": 0.88,
-          "timestamp": "2026-09-20 23:35:29",
+          "duration_sec": 0.86,
+          "timestamp": "2026-09-21 01:16:33",
           "log_snippet": ""
         },
         {
@@ -65,67 +65,99 @@
           "path": "tests/test_gravity_model.py",
           "success": true,
           "duration_sec": 0.88,
-          "timestamp": "2026-09-20 23:35:30",
+          "timestamp": "2026-09-21 01:16:34",
+          "log_snippet": ""
+        },
+        {
+          "step": "corridor_opportunity_tests",
+          "path": "tests/test_corridor_opportunity.py",
+          "success": true,
+          "duration_sec": 0.46,
+          "timestamp": "2026-09-21 01:16:35",
+          "log_snippet": "============================= test session starts ==============================\nplatform linux -- Python 3.14.0, pytest-9.1.1, pluggy-1.6.0\nrootdir: /home/muhammad_adib/dosm\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 7 items\n\ntests/test_corridor_opportunity.py .......                               [100%]\n\n============================== 7 passed in 0.04s ===============================\n"
+        },
+        {
+          "step": "scenario_engine_tests",
+          "path": "tests/test_scenario_engine.py",
+          "success": true,
+          "duration_sec": 0.45,
+          "timestamp": "2026-09-21 01:16:35",
+          "log_snippet": "============================= test session starts ==============================\nplatform linux -- Python 3.14.0, pytest-9.1.1, pluggy-1.6.0\nrootdir: /home/muhammad_adib/dosm\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 8 items\n\ntests/test_scenario_engine.py ........                                   [100%]\n\n============================== 8 passed in 0.04s ===============================\n"
+        },
+        {
+          "step": "dashboard_integrity_tests",
+          "path": "tests/test_dashboard_integrity.py",
+          "success": true,
+          "duration_sec": 0.16,
+          "timestamp": "2026-09-21 01:16:35",
+          "log_snippet": "============================= test session starts ==============================\nplatform linux -- Python 3.14.0, pytest-9.1.1, pluggy-1.6.0\nrootdir: /home/muhammad_adib/dosm\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 7 items\n\ntests/test_dashboard_integrity.py .......                                [100%]\n\n============================== 7 passed in 0.03s ===============================\n"
+        },
+        {
+          "step": "commercial_and_monte_carlo",
+          "path": "tests/test_commercial_and_monte_carlo.py",
+          "success": true,
+          "duration_sec": 0.3,
+          "timestamp": "2026-09-21 01:16:36",
           "log_snippet": ""
         },
         {
           "step": "tsa_accounting",
           "path": "src/validation/test_tsa_accounting.py",
           "success": true,
-          "duration_sec": 0.31,
-          "timestamp": "2026-09-20 23:35:30",
+          "duration_sec": 0.3,
+          "timestamp": "2026-09-21 01:16:36",
           "log_snippet": "ormula assertions PASSED.\n\n[TEST 2] Validating tsa_macro_year...\n  \u2713 tsa_macro_year values and benchmarks PASSED.\n\n[TEST 3] Validating Accommodation Hypothesis & Strategic Quadrants...\n  \u2713 Accommodation empirical hypothesis CONFIRMED (#1 VAI = 0.8579).\n  \u2713 Travel Agency 2025 structural margin dynamics CONFIRMED.\n\n======================================================================\nALL VALIDATION TESTS PASSED (100% SUCCESS)\n======================================================================\n"
         },
         {
           "step": "state_and_corridors",
           "path": "src/validation/test_state_and_corridors.py",
           "success": true,
-          "duration_sec": 0.36,
-          "timestamp": "2026-09-20 23:35:30",
+          "duration_sec": 0.4,
+          "timestamp": "2026-09-21 01:16:36",
           "log_snippet": "ons & Corridor Opportunity Gap...\n  \u2713 Granular DTS profiles (16 states), OLS driver regressions, and 240-corridor opportunity gap PASSED.\n\n[TEST 6] Validating MyTourism KPI Hotel & Homestay Operations...\n  \u2713 MyTourism KPI operations (160 hotel, 28 homestay), capacity table, and full 2018\u20132025 panel PASSED.\n\n======================================================================\nALL VALIDATION TEST SUITES PASSED (100% SUCCESS)\n======================================================================\n"
         },
         {
           "step": "data_quality_report",
           "path": "src/validation/data_quality_report.py",
           "success": true,
-          "duration_sec": 0.35,
-          "timestamp": "2026-09-20 23:35:31",
+          "duration_sec": 0.38,
+          "timestamp": "2026-09-21 01:16:37",
           "log_snippet": "Data quality report saved to:\n  - /home/muhammad_adib/dosm/artifacts/data_quality_report.json\n  - /home/muhammad_adib/dosm/artifacts/data_quality_report.md\n\nOverall Quality Status: PASS\n"
         }
       ]
     },
     "export": {
       "success": true,
-      "completed_at": "2026-09-20 23:35:35",
+      "completed_at": "2026-09-21 01:11:40",
       "steps": [
         {
           "step": "dashboard_json",
           "path": "src/analytics/export_dashboard_json.py",
           "success": true,
-          "duration_sec": 0.5,
-          "timestamp": "2026-09-20 23:35:35",
-          "log_snippet": "4/6] Exported OD Corridors: od_corridors.json (240 2025 corridors, 1920 total panel rows)\n  [5/6] Exported Scenario Engine Config: scenario_engine.json\n  [6/6] Exported RQ3 Drivers & Panel Models: drivers_rq3.json (6 drivers, 11 panel models)\n  [7/7] Compiled Source Provenance: source_metadata.json (8 sources)\n======================================================================\nDashboard JSON Export Completed Successfully.\n======================================================================\n"
+          "duration_sec": 1.2,
+          "timestamp": "2026-09-21 01:11:40",
+          "log_snippet": " rows)\n  [5/6] Exported Scenario Engine Config & Portfolio Optimization: scenario_engine.json (16 state benchmarks, 6 MC benchmarks, 5 portfolio tiers)\n  [6/6] Exported RQ3 Drivers & Panel Models: drivers_rq3.json (6 drivers, 11 panel models)\n  [7/7] Compiled Source Provenance: source_metadata.json (8 sources)\n======================================================================\nDashboard JSON Export Completed Successfully.\n======================================================================\n"
         }
       ]
     },
     "analytics": {
       "success": true,
-      "completed_at": "2026-09-20 23:35:24",
+      "completed_at": "2026-09-21 01:02:05",
       "steps": [
         {
           "step": "product_value",
           "path": "src/analytics/product_value.py",
           "success": true,
-          "duration_sec": 1.78,
-          "timestamp": "2026-09-20 23:35:18",
+          "duration_sec": 1.8,
+          "timestamp": "2026-09-21 01:01:59",
           "log_snippet": "              Food and beverage serving services                    0.4318            0.1480   38121.5   53006.3 Efficiency-Improvement Priority (High Leakage)\n        7                     Passenger transport services                    0.1627            0.0591   31940.8    9160.3 Efficiency-Improvement Priority (High Leakage)\n        8                   Retail sale of automotive fuel                    0.1172            0.1107   17615.7    5510.9                       Lower Strategic Priority\n"
         },
         {
           "step": "corridor_network",
           "path": "src/network/corridor_network.py",
           "success": true,
-          "duration_sec": 0.53,
-          "timestamp": "2026-09-20 23:35:19",
+          "duration_sec": 0.54,
+          "timestamp": "2026-09-21 01:01:59",
           "log_snippet": "dor\n         Selangor W.P. Kuala Lumpur                1819.350       2.33                  193.02 Priority Conversion Corridor\n            Perak W.P. Kuala Lumpur                1771.244       2.33                  193.02 Priority Conversion Corridor\n            Perak          Selangor                1716.467       2.31                  140.39 Priority Conversion Corridor\n         Selangor             Kedah                1676.138       2.82                   82.52 Priority Conversion Corridor\n"
         },
         {
@@ -133,59 +165,59 @@
           "path": "src/analytics/panel_econometrics.py",
           "success": true,
           "duration_sec": 1.16,
-          "timestamp": "2026-09-20 23:35:20",
+          "timestamp": "2026-09-21 01:02:00",
           "log_snippet": " Perlis               79.92            -0.30 Volume Expansion, Stay Contraction (High Risk)\n   W.P. Putrajaya               61.45            -0.54 Volume Expansion, Stay Contraction (High Risk)\nW.P. Kuala Lumpur               54.90            -0.06       Lagging Recovery (Volume & Stay Deficit)\n           Melaka               49.03            -0.18       Lagging Recovery (Volume & Stay Deficit)\n  Negeri Sembilan               45.50            -0.17       Lagging Recovery (Volume & Stay Deficit)\n"
         },
         {
           "step": "gravity_corridor",
           "path": "src/analytics/gravity_corridor_model.py",
           "success": true,
-          "duration_sec": 1.2,
-          "timestamp": "2026-09-20 23:35:21",
+          "duration_sec": 1.18,
+          "timestamp": "2026-09-21 01:02:02",
           "log_snippet": "               model_specification  predictive_r2  correlation    mae   rmse  smape\n                     PPML Structural Gravity (Primary)         0.5890       0.8759 175.50 329.04  75.43\n                Log-OLS Classical Gravity (Comparison)         0.2936       0.7139 233.35 431.40 105.68\n      Naive Baseline 1: Lagged Persistence (2024 Flow)         0.7637       0.8816 134.92 249.51  70.54\nNaive Baseline 2: Historical Corridor Mean (2018\u20132024)         0.6732       0.9343 163.35 293.39  80.13\n"
         },
         {
           "step": "sdg_metrics",
           "path": "src/analytics/sdg_sustainable_metrics.py",
           "success": true,
-          "duration_sec": 0.35,
-          "timestamp": "2026-09-20 23:35:21",
+          "duration_sec": 0.34,
+          "timestamp": "2026-09-21 01:02:02",
           "log_snippet": "        Kedah  ...  Sustainable High-Yield Benchmark\n23         Kelantan  ...  Sustainable High-Yield Benchmark\n31           Melaka  ...  Sustainable High-Yield Benchmark\n38  Negeri Sembilan  ...  Sustainable High-Yield Benchmark\n46           Pahang  ...  Sustainable High-Yield Benchmark\n54            Perak  ...  Sustainable High-Yield Benchmark\n62           Perlis  ...  Sustainable High-Yield Benchmark\n\n[8 rows x 7 columns]\n======================================================================\n"
         },
         {
           "step": "state_diagnostics",
           "path": "src/analytics/state_diagnostics.py",
           "success": true,
-          "duration_sec": 0.96,
-          "timestamp": "2026-09-20 23:35:22",
+          "duration_sec": 1.06,
+          "timestamp": "2026-09-21 01:02:03",
           "log_snippet": ".97                              37.72 Priority Conversion Corridor\n                9          Selangor             Johor                1995.977       2.68                 42.98                                    42.89                              36.80 Priority Conversion Corridor\n               10             Johor            Melaka                1344.569       2.11                 63.00                                    42.35                              36.33 Priority Conversion Corridor\n"
         },
         {
           "step": "state_clustering",
           "path": "src/analytics/state_clustering.py",
           "success": true,
-          "duration_sec": 0.57,
-          "timestamp": "2026-09-20 23:35:23",
+          "duration_sec": 0.52,
+          "timestamp": "2026-09-21 01:02:04",
           "log_snippet": "6832)\n  - W.P. Kuala Lumpur   : High-Volume Urban Gateway      (ALOS: 2.28d, Spend/Night: RM 102.9, Med Income: RM 10950)\n  - W.P. Labuan         : Prime Leisure & High-Yield Hotspot (ALOS: 2.67d, Spend/Night: RM 68.7, Med Income: RM 7509)\n  - W.P. Putrajaya      : Administrative & Luxury Institutional (ALOS: 2.32d, Spend/Night: RM 38.9, Med Income: RM 10957)\n\nState Clusters materialized in DuckDB `state_clusters` (16 rows).\n======================================================================\n"
         },
         {
           "step": "drivers_ml",
           "path": "src/analytics/accommodation_drivers_ml.py",
           "success": true,
-          "duration_sec": 0.93,
-          "timestamp": "2026-09-20 23:35:24",
+          "duration_sec": 0.91,
+          "timestamp": "2026-09-21 01:02:04",
           "log_snippet": "   feature_label  ...   vif\n0    Resident Median Household Income (RM)  ...  2.74\n1       Average Length of Stay (ALOS days)  ...  1.23\n2         Hotel Average Occupancy Rate (%)  ...  1.21\n3       Holiday Purpose Share (% tourists)  ...  1.22\n4  Inbound Tourist T20 Affluence Share (%)  ...  1.85\n5           4/5-Star Luxury Room Share (%)  ...  2.26\n\n[6 rows x 5 columns]\n\nModel Fit: R\u00b2 = 0.6092, Adjusted R\u00b2 = 0.5895, N = 126\n======================================================================\n"
         },
         {
           "step": "simulator",
           "path": "src/scenarios/simulator.py",
           "success": true,
-          "duration_sec": 0.3,
-          "timestamp": "2026-09-20 23:35:24",
-          "log_snippet": "egation (+0.5 Nights)\n================================================================================\nDestination: Pahang across 15 feeders\nTotal Portfolio Add Nights: +4,223,092\nTotal Portfolio Add Spend:  +RM 227.12 Million\nBaseline AOR: 76.3% -> Implied Portfolio AOR: 94.99%\nSaturation Tier: Severe Saturation\nStatus: Severe Capacity Saturation (95.0% AOR > 80% Threshold) \u2014 Requires room supply expansion or off-peak weekday redistribution\nDisclaimer: Scenario estimate, not a causal forecast.\n"
+          "duration_sec": 0.35,
+          "timestamp": "2026-09-21 01:02:05",
+          "log_snippet": "Simulation\n================================================================================\nDestination: Melaka\nAdditional Guest Nights: +4,233,438\nAdditional Spend:        +RM 390.95 Million\nPotential GVA:           +RM 335.39 Million\nCapacity Status:         Planning Watch (77.3% AOR in 70-80% range) \u2014 Tightening headroom during peak periods\nCaveat:                  Annual occupancy may hide seasonal/weekend capacity pressure.\nDisclaimer:              Scenario estimate, not a causal forecast.\n"
         }
       ]
     }
   },
-  "last_run": "2026-09-20 23:35:35"
+  "last_run": "2026-09-21 01:16:37"
 }

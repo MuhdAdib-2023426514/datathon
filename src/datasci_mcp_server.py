@@ -71,13 +71,19 @@ warnings.filterwarnings('ignore')
 
 def sql(query):
     \"\"\"Execute a SQL query against the tourism database and return a DataFrame.\"\"\"
-    with duckdb.connect(f'{DB_PATH}', read_only=True) as con:
+    con = duckdb.connect(f'{DB_PATH}', read_only=True)
+    try:
         return con.execute(query).df()
+    finally:
+        con.close()
 
 def tables():
     \"\"\"List all tables in the tourism database.\"\"\"
-    with duckdb.connect(f'{DB_PATH}', read_only=True) as con:
+    con = duckdb.connect(f'{DB_PATH}', read_only=True)
+    try:
         return [t[0] for t in con.execute("SHOW TABLES").fetchall()]
+    finally:
+        con.close()
 
 # Pre-load core analytical tables
 _available_tables = tables()

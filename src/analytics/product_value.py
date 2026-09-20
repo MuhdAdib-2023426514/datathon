@@ -96,7 +96,7 @@ def compute_period_metrics(df: pd.DataFrame) -> pd.DataFrame:
         elif high_vai and not high_itc:
             return "Growth Opportunity (High Yield)"
         elif not high_vai and high_itc:
-            return "Efficiency-Improvement Priority (High Leakage)"
+            return "Efficiency-Improvement Priority (Low Value Retention)"
         else:
             return "Lower Strategic Priority"
 

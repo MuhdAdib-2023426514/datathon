@@ -164,7 +164,7 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
     ],
   };
 
-  // Strategic Quadrant Scatter Option (VAI vs ITC Scale)
+  // Strategic Quadrant Scatter Option (VAI vs ITC Scale vs Estimated GVA)
   const quadrantScatterOption = {
     backgroundColor: 'transparent',
     tooltip: {
@@ -173,13 +173,17 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
       textStyle: { color: '#241d32', fontSize: 12 },
       formatter: (params: any) => {
         const d = params.data;
-        return `<div style="font-weight: bold; margin-bottom: 4px;">${d[2]}</div>
-          <div>VAI (Efficiency): <strong>${(d[1] * 100).toFixed(1)}%</strong></div>
-          <div>ITC (Scale): <strong>RM ${d[0].toFixed(1)} Billion</strong></div>
-          <div>Quadrant: <strong style="color: #6d4bc1;">${d[3]}</strong></div>`;
+        return `<div style="font-weight: bold; margin-bottom: 4px; font-size: 13px;">${d[2]}</div>
+          <div style="font-size: 11px; margin-bottom: 4px; color: #746d80;">Strategic Quadrant: <strong style="color: #6d4bc1;">${d[3]}</strong></div>
+          <div style="border-top: 1px solid rgba(70,50,100,0.1); padding-top: 4px; margin-top: 4px; font-size: 11px; line-height: 1.6;">
+            <div>• <strong>Efficiency (VAI):</strong> <span style="font-family: monospace; font-weight: bold; color: #6d4bc1;">${(d[1] * 100).toFixed(1)}%</span></div>
+            <div>• <strong>Scale (ITC):</strong> <span style="font-family: monospace; font-weight: bold;">RM ${d[0].toFixed(1)} Billion</span></div>
+            <div>• <strong>Contribution (Est. GVA Proxy):</strong> <span style="font-family: monospace; font-weight: bold; color: #059669;">RM ${d[4].toFixed(1)} Billion</span></div>
+            <div style="font-size: 9px; color: #746d80; margin-top: 4px;">Status: [PRELIMINARY TSA 2025] / [DERIVED PROXY]</div>
+          </div>`;
       },
     },
-    grid: { left: '8%', right: '8%', bottom: '10%', top: '10%' },
+    grid: { left: '8%', right: '8%', bottom: '12%', top: '10%' },
     xAxis: {
       type: 'value',
       name: 'Internal Consumption Scale (RM Billion)',
@@ -204,19 +208,29 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
     series: [
       {
         type: 'scatter',
-        symbolSize: (data: any) => Math.max(13, Math.sqrt(data[0]) * 4),
+        symbolSize: (data: any) => Math.max(16, Math.sqrt(data[4]) * 6.5),
         data: productSummary.map((p) => [
           p.itc_2025 / 1000,
           p.vai_2025,
           p.product,
           p.strategic_quadrant,
+          p.estimated_tourism_gva_2025 ? p.estimated_tourism_gva_2025 / 1000 : (p.itc_2025 * p.vai_2025) / 1000,
         ]),
+        markLine: {
+          silent: true,
+          symbol: 'none',
+          lineStyle: { color: 'rgba(109, 75, 193, 0.35)', type: 'dashed', width: 1.2 },
+          data: [
+            { yAxis: 0.50, label: { formatter: 'VAI Efficiency Threshold (50%)', position: 'insideEndTop', color: '#746d80', fontSize: 10 } },
+            { xAxis: 15.0, label: { formatter: 'Median Scale (~RM 15B)', position: 'insideStartTop', color: '#746d80', fontSize: 10 } },
+          ],
+        },
         itemStyle: {
           color: (param: any) => {
             const name = param.data[2];
             if (name.includes('Accommodation')) return '#6d4bc1';
-            if (param.data[1] >= 0.5 && param.data[0] >= 10) return '#8b8798';
-            if (param.data[1] < 0.5 && param.data[0] >= 10) return '#b9782f';
+            if (param.data[1] >= 0.5 && param.data[0] >= 15) return '#8b8798';
+            if (param.data[1] < 0.5 && param.data[0] >= 15) return '#b9782f';
             return '#9673c8';
           },
           shadowBlur: 0,
@@ -315,7 +329,7 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
 
           <div className="mt-3 pt-3 border-t border-violet-100/60 text-xs text-stone-600 flex items-center gap-1.5">
             <CheckCircle2 className="w-3.5 h-3.5 text-violet-700 shrink-0" />
-            <span>Accommodation retains the highest local economic value; transport and fuel suffer high leakage.</span>
+            <span>Accommodation retains the highest local economic value; transport and fuel have lower domestic value retention.</span>
           </div>
         </div>
       </div>
@@ -324,13 +338,23 @@ export const TourismValueMonitor: React.FC<TourismValueMonitorProps> = ({ data }
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Strategic Quadrant Matrix (2 cols) */}
         <div className="glass-panel p-5 lg:col-span-2">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
             <div>
-              <h3 className="text-base font-bold text-stone-900 flex items-center gap-2">
-                <PieChart className="w-4 h-4 text-amber-700" />
-                Strategic Product Portfolio Matrix (VAI vs. ITC Scale)
-              </h3>
-              <p className="text-xs text-stone-600">Classifies tourism products into strategic intervention priority quadrants</p>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="text-base font-bold text-stone-900 flex items-center gap-2">
+                  <PieChart className="w-4 h-4 text-amber-700" />
+                  Product Value Frontier & Strategic Quadrants
+                </h3>
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                  [PRELIMINARY 2025p]
+                </span>
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-purple-50 text-purple-800 border border-purple-200">
+                  [DERIVED PROXY]
+                </span>
+              </div>
+              <p className="text-xs text-stone-600">
+                Bubble size = Estimated Tourism GVA Proxy • Quadrant lines: VAI = 50% & Scale = RM 15B
+              </p>
             </div>
             <div className="flex items-center gap-2 text-[11px]">
               <span className="flex items-center gap-1 text-violet-700"><span className="w-2 h-2 rounded-full bg-violet-600"></span> Core Activity</span>

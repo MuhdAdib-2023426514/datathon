@@ -15,10 +15,10 @@
 | **Sprint 2** | **Economic Metrics** | **COMPLETED (P0/P1)** | 38/38 tests passing, Real RM deflator, visitor-days, TEY, TVAY, no-fallback GVA, 4-quadrant typology |
 | **Sprint 3** | **Econometrics** | **COMPLETED (P0/P1)** | 44/44 tests passing, Two-Way FE, state-clustered SEs, yield model, leave-one-out, influence diagnostics |
 | **Sprint 4** | **Gravity** | **COMPLETED (P0/P1)** | 50/50 tests passing, PPML (Origin+Dest+Year FE), target leakage eliminated, R²_OOS=0.5890, naive baselines, structural stability |
-| **Sprint 5** | Opportunity Engine | Planned | Flow gap, capacity limits, yield, accessibility, Pareto framework |
-| **Sprint 6** | Scenario Engine | Planned | Decoupled ALOS vs day-trips, room capacity constraints, sensitivity |
-| **Sprint 7** | Dashboard Integrity | Planned | Dynamic model metrics, provenance drawer, state decision summaries |
-| **Sprint 8** | Commercial / Wow | Planned | Implementation roadmap, Monte Carlo risk engine, portfolio optimizer |
+| **Sprint 5** | **Opportunity Engine** | **COMPLETED (P0/P1)** | 57/57 tests passing, model gap separation, multi-dimensional criteria, Pareto frontier (77 optimal), neutral HHI diversification |
+| **Sprint 6** | **Scenario Engine** | **COMPLETED (P0/P1)** | 65/65 tests passing, unified single source of truth, campaign affected share, room-night capacity conversion, VFR lodging demand, metadata provenance, planning sensitivity |
+| **Sprint 7** | **Dashboard Integrity** | **COMPLETED (P0/P1)** | 72/72 tests passing, dynamic model metrics (no fallbacks), corridor URL workflow, provenance drawer, data status badges, decision summary cards, upgraded frontier |
+| **Sprint 8** | **Commercial / Wow** | **COMPLETED (P1/P2)** | 79/79 tests passing, Monte Carlo uncertainty (P10-P90), MILP portfolio optimizer, longitudinal OD animation (2018-2025), implementation roadmap, grounded AI assistant |
 
 ---
 
@@ -259,7 +259,276 @@
 
 ---
 
-## 6. Test Suite Matrix
+## 6. Sprint 5 Deliverables & Verification Detail
+
+### A. Separation of Model Gap from Opportunity (Phase 19.1) — COMPLETED
+- **File**: `src/analytics/state_diagnostics.py`
+- **Methodological Decoupling**:
+  - Eliminated the naive conflation where under-performing gravity flow residuals were automatically treated as "high policy opportunity".
+  - Defined explicit structural performance ratio: $\text{PerformanceRatio} = \text{ActualFlow} / \text{ExpectedFlow}$.
+  - Classified 2025 holdout corridors into three mutually exclusive model expectation tiers:
+    1. **Below Model Expected** ($\text{Ratio} < 0.85$): 106 corridors.
+    2. **Near Model Expected** ($0.85 \le \text{Ratio} \le 1.15$): 41 corridors.
+    3. **Above Model Expected** ($\text{Ratio} > 1.15$): 93 corridors.
+  - Guardrail verified: Corridors with negative gravity residuals are NOT automatically assigned high opportunity unless they satisfy destination capacity headroom, economic yield, and accessibility criteria.
+
+### B. Multi-Dimensional Opportunity Criteria (Phase 19.2) — COMPLETED
+- **File**: `src/analytics/state_diagnostics.py`
+- **Criteria Engineered**:
+  1. **Capacity Headroom**: $\text{Headroom} = 100\% - \text{AOR}_{\text{dest}}$. Classified into `"High Headroom (>30%)"`, `"Moderate Headroom (15-30%)"`, and `"Constrained (<15%)"`. Prevents recommending aggressive corridor expansion into lodging-constrained destinations.
+  2. **Economic Yield**: Destination spend per tourist-night (`dest_spend_per_night`) and Tourism Value-Added Yield per visitor-day (`dest_tvay_rm_per_day`).
+  3. **Travel Accessibility**: Classified by spatial friction into `"Direct Overland"`, `"Inter-Island / Maritime"`, and `"Borneo Cross-Region (Air Only)"`.
+  4. **Market Diversification Benefit**: Categorized into `"High Diversification (Non-Primary Feeder)"`, `"Moderate Diversification"`, and `"Core Dependency (Top Feeder)"`.
+  5. **Model Confidence Tier**: Calibrated to empirical volume and prediction intervals.
+
+### C. Pareto Opportunity Framework & Non-Dominated Sorting (Phase 19.3) — COMPLETED
+- **File**: `src/analytics/state_diagnostics.py`
+- **Multi-Objective Non-Dominated Sorting**:
+  - Implemented non-dominated Pareto sorting across 5 simultaneous objectives:
+    - $O_1$: Demand Potential / Model Gap (minimized performance ratio / room to grow)
+    - $O_2$: Economic Yield (spend per night RM)
+    - $O_3$: Room Capacity Headroom (%)
+    - $O_4$: Accessibility (overland connectivity score)
+    - $O_5$: Diversification Benefit (non-feeder dispersion)
+  - Computed `is_pareto_optimal`, `pareto_rank`, and `composite_opportunity_score` ($[0, 100]$).
+  - **Pareto Frontier Findings**: Exactly **77 corridors** out of 240 bilateral inter-state corridors reside on Pareto Front 1 (`pareto_rank = 1`).
+  - Corridors on the Pareto frontier represent optimal strategic trade-offs where no single dimension can be improved without sacrificing another.
+
+### D. HHI Feeder Concentration & Neutral Terminology (Phase 20) — COMPLETED
+- **File**: `src/network/corridor_network.py`
+- **Market Diversification Metrics**:
+  - Ingested 2018–2025 bilateral tourist flows to compute annual Herfindahl-Hirschman Index ($\text{HHI} = \sum s_{i,j}^2 \times 10,000$).
+  - Added `top_3_origin_share_pct` (cumulative market share of top 3 feeder origins).
+  - Added `meaningful_origin_count` (number of origin states providing $\ge 5\%$ of destination arrivals).
+- **Neutral Policy Terminology**:
+  - Strictly eliminated deficit/fear-based language ("vulnerable", "fragile", "over-reliant").
+  - Formulated neutral, standard economic classifications:
+    1. **Diversified Feeder Base** ($\text{HHI} < 1,500$): e.g. W.P. Kuala Lumpur (1,119, 10 meaningful feeders), Selangor (1,142, 9 meaningful feeders).
+    2. **Moderately Concentrated** ($1,500 \le \text{HHI} \le 2,500$): e.g. Melaka (2,156, top-3 share $77.8\%$), Pulau Pinang (2,462, top-3 share $70.8\%$).
+    3. **Highly Concentrated** ($\text{HHI} > 2,500$): destinations anchored predominantly by a single primary source market.
+- **Tables Materialized**:
+  - DuckDB `destination_concentration_panel` (128 state-year records 2018–2025).
+  - DuckDB `destination_concentration` (16 state records for 2025).
+
+### E. Dashboard Dynamic Wiring (Phase 19 & 20) — COMPLETED
+- **Files**: `dashboard/src/types.ts`, `dashboard/src/components/CorridorNetwork.tsx`, `dashboard/public/data/od_corridors.json`
+- **Frontend Upgrades**:
+  - Added interactive **Pareto Frontier** toggle button and filtering logic.
+  - Displayed Pareto badges, Flow, ALOS, Spend/Night, Capacity Headroom %, Model Expectation badges, and Composite Scores.
+  - Dynamically populated HHI Feeder Concentration cards and modal inspector from `corridorData.destination_concentration_2025` with zero hardcoded numbers.
+  - Validated production build (`npm run build`: 0 errors in 385ms).
+
+### F. Analytical Deltas vs Baseline
+1. **Model Gap vs Opportunity**: Baseline conflated gravity residual directly with opportunity. Sprint 5 decouples model residuals from policy opportunity by introducing capacity constraints and economic yields.
+2. **From Arbitrary Tiers to Multi-Objective Optimization**: Baseline used arbitrary volume thresholds. Sprint 5 introduces mathematical Pareto non-domination sorting across 5 strategic objectives, identifying 77 non-dominated corridors.
+3. **Transparent Headroom & Diversification**: Replaces blanket promotion recommendations with capacity-aware and diversification-conscious targeting.
+
+---
+
+## 7. Sprint 6 Deliverables & Verification Detail
+
+### A. One Source of Truth for Scenario Engine (Phase 21) — COMPLETED
+- **Files**: `src/scenarios/simulator.py`, `src/analytics/export_dashboard_json.py`, `dashboard/src/components/ScenarioSimulator.tsx`, `dashboard/public/data/scenario_engine.json`
+- **Unified Engine**:
+  - Established `ScenarioSimulator` in `src/scenarios/simulator.py` as the single authoritative analytical source of truth.
+  - Pre-computed deterministic benchmark scenarios across all 16 states for Conservative, Moderate, and Ambitious presets.
+  - Enforced exact mathematical formula parity between Python backend and React frontend simulators:
+    - Real-time client slider updates execute the identical accounting identity as backend functions.
+    - Verified by `tests/test_scenario_engine.py`.
+
+### B. Scenario Affected Share (Phase 22) — COMPLETED
+- **Files**: `src/scenarios/simulator.py`, `dashboard/src/components/ScenarioSimulator.tsx`
+- **Methodological Correction**:
+  - Replaced the naive assumption that 100% of all tourists suddenly extend their stay with realistic intervention campaign reach:
+    $$\text{AdditionalNights} = \text{Tourists} \times \text{AffectedShare} \times \Delta\text{ALOS}$$
+  - Standardized `DEFAULT_AFFECTED_SHARE = 0.15` (15% target campaign reach).
+  - Added interactive Campaign Affected Share slider in the UI ($5\% - 100\%$, step $5\%$) with quick policy benchmarks ($5\%$ Niche pilot, $15\%$ Targeted campaign, $50\%$ Broad initiative, $100\%$ Unconstrained).
+
+### C. Correct Room-Night Capacity Conversion (Phase 23) — COMPLETED
+- **Files**: `src/scenarios/simulator.py`, `dashboard/src/components/ScenarioSimulator.tsx`
+- **Accounting Identity**:
+  - Corrected the previous frontend error where guest nights were erroneously divided directly by available room nights without adjusting for guest density.
+  - Enforced the national standard conversion:
+    $$\text{AdditionalRoomNights} = \frac{\text{AdditionalGuestNights}}{\text{GuestsPerOccupiedRoom}}$$
+    $$\text{ProjectedOccupiedRoomNights} = \text{BaselineOccupiedRoomNights} + \text{AdditionalRoomNights}$$
+    $$\text{ProjectedAOR} = \text{BaselineAOR} + \frac{\text{AdditionalRoomNights}}{\text{AvailableRoomNights}} \times 100\%$$
+  - Standardized `DEFAULT_GUESTS_PER_ROOM = 1.8` as an explicit, documented scenario assumption.
+
+### D. Correct VFR Scenario Capacity Impact (Phase 24) — COMPLETED
+- **Files**: `src/scenarios/simulator.py`, `dashboard/src/components/ScenarioSimulator.tsx`
+- **Capacity Inclusion**:
+  - Eliminated the inconsistency where converted unpaid VFR stays generated lodging revenue without affecting room capacity.
+  - Converted VFR guest nights now generate commercial room demand:
+    $$\text{VFRRoomNights} = \frac{\text{ConvertedVFRGuestNights}}{\text{GuestsPerOccupiedRoom}}$$
+  - VFR room nights are fully aggregated into total room demand, ensuring both economic yield AND room capacity constraints update synchronously.
+
+### E. Scenario Assumption Metadata Classification (Phase 25) — COMPLETED
+- **Files**: `src/scenarios/simulator.py`, `src/analytics/export_dashboard_json.py`, `dashboard/src/components/ScenarioSimulator.tsx`
+- **Provenance Taxonomy**:
+  - Classified all scenario inputs and outputs into standard accounting categories:
+    1. `official`: `baseline_tourists`, `baseline_alos`, `baseline_aor`, `available_rooms`, `unpaid_vfr_pct`.
+    2. `derived`: `spend_per_night`, `available_room_nights_year`.
+    3. `scenario_assumption`: `affected_share`, `guests_per_room`, `delta_alos`, `conversion_pct`, `yield_uplift_pct`, `vfr_conversion_pct`, `planning_threshold`.
+  - Added an interactive **Audit Provenance Drawer** in the dashboard header displaying the transparent audit trail and source tables for every parameter.
+
+### F. Capacity Sensitivity Analysis & Seasonal Caveat (Phase 27) — COMPLETED
+- **Files**: `src/scenarios/simulator.py`, `dashboard/src/components/ScenarioSimulator.tsx`
+- **Configurable Planning Ceilings**:
+  - Replaced the arbitrary 80% ceiling with configurable planning thresholds:
+    - **75% (Strict)**: Precautionary threshold for ecotourism and heritage zones.
+    - **80% (Standard)**: Macroeconomic benchmark for sustainable annual hotel operations.
+    - **85% (Peak Pressure)**: Peak urban tolerance threshold.
+  - Embedded prominent seasonal caveat in backend outputs and UI:
+    > *"Sensitivity Notice: Annual occupancy may hide seasonal/weekend capacity pressure."*
+
+### G. Analytical Deltas vs Baseline
+1. **Realistic Campaign Scaling**: Baseline assumed 100% tourist stay extension, resulting in ungrounded projections (e.g. 2.87M nights in Melaka). Introducing a 15% campaign reach scales projections to an achievable +430k nights (RM 27.1M spend).
+2. **True Capacity Consistency**: Correcting the 1.8 guest density and incorporating VFR room nights ensures destination hotel feasibility checks accurately reflect physical room saturation.
+3. **Transparent Parameter Taxonomy**: Eliminates confusion between official DOSM survey facts and policy assumptions.
+
+---
+
+## 8. Sprint 7 Deliverables & Verification Detail
+
+### A. Dynamic Model Metrics & Zero Fallback Hardcoding — COMPLETED
+- **Component**: `dashboard/src/components/CorridorNetwork.tsx`
+- **Elimination of Arbitrary Constants**:
+  - Removed all hardcoded fallback literals (`|| '0.5890'`, `|| '-0.410'`, `|| '-0.802'`).
+  - Directly binds to `model_metrics.json` via `modelMetrics?.gravity_diagnostics` for out-of-sample $R^2$, distance friction $\beta$, and Borneo sea barrier penalty.
+  - Defaults cleanly to `'—'` (null-safe display) if metrics are unobserved, ensuring empirical transparency.
+
+### B. Corridor → Simulator Workflow & URL State (Phase 28) — COMPLETED
+- **Files**: `dashboard/src/components/CorridorNetwork.tsx`, `dashboard/src/components/ScenarioSimulator.tsx`, `dashboard/src/App.tsx`
+- **State Preservation & Deep Linking**:
+  - Updated "Simulate Corridor" callback to pass both destination and origin `(dest, orig)`.
+  - Added URL query parameter synchronization (`?tab=simulator&dest=...&origin=...`) using `window.history.pushState`.
+  - Added `initialDestination` and `initialOrigin` props to `ScenarioSimulatorProps`.
+  - Pre-populates destination and origin dropdowns and renders a prominent **Active Corridor Focus Banner** with a one-click "Clear Corridor Focus" action.
+  - Dynamically calculates accommodation value-added yield using official product VAI (`accomVAI`) rather than static constants.
+  - Fixed nullable handling for `residentHouseholds`.
+
+### C. Global Provenance Drawer (Phase 29) — COMPLETED
+- **Files**: `dashboard/src/components/ProvenanceDrawer.tsx`, `dashboard/src/components/Header.tsx`, `dashboard/src/App.tsx`
+- **Comprehensive KPI & Source Registry**:
+  - Created interactive slide-over drawer accessible via header button ("Data Provenance").
+  - Catalogs 11 core KPIs: Value-Added Intensity (VAI), Tourism Value-Added Yield (TVAY), Tourism Expenditure Yield (TEY), Length of Stay (ALOS), Spend per Night, Accommodation Share, Corridor Tourist Flow, Capacity Headroom, Origin HHI Concentration, Gravity Potential Flow, and Scenario Projected Expenditure.
+  - Each KPI displays: Plain-language Definition, LaTeX / Code Formula, Primary Official Source, Reference Period, Data Status Badge, Unit, Transformation Method, and Accounting Limitations.
+  - Integrates the complete Official Data Source Registry loaded directly from `source_metadata.json` (TSA 2015–2025, DTS 2025, State DTS, Hotel Occupancy Survey, GIS, Econometric Models).
+
+### D. Visible Data Status Taxonomy (Phase 30) — COMPLETED
+- **Components**: `dashboard/src/components/TourismValueMonitor.tsx`, `dashboard/src/components/AccommodationMap.tsx`, `dashboard/src/components/ProvenanceDrawer.tsx`
+- **Standardized Badge Taxonomy**:
+  - `[OFFICIAL]`: Verified official observations from published DOSM releases.
+  - `[PRELIMINARY]`: Preliminary official releases (e.g. 2025p DOSM TSA & DTS).
+  - `[DERIVED]`: Strict ratio identities and accounting derivations (e.g. TVAY, TEY, spend per visitor-day).
+  - `[MODEL]`: Econometric estimates (Two-Way FE panel coefficients, PPML gravity flows).
+  - `[SCENARIO]`: Non-causal policy projections and sensitivity analyses.
+- Displayed prominently on KPI metric cards, chart headers, and frontier legends.
+
+### E. Language Sanitization & Official Independence (Phase 31) — COMPLETED
+- **Files**: `dashboard/src/components/AccommodationMap.tsx`
+- **Humility & Non-Endorsement Guardrails**:
+  - Eliminated misleading "Official Brief" and "Official Policy Briefing" terminology.
+  - Standardized title to: *"MYTourism Value Intelligence — State Decision-Support Brief"*.
+  - Added explicit disclaimer subtitle: *"Prototype based on official Malaysian tourism data — Decision-support model, not official government policy"*.
+  - Grounded claims in alignment with AGENTS.md Section 9 and 11.
+
+### F. State Decision Summary & Evidence-Based Recommendation Engine (Phases 32 & 33) — COMPLETED
+- **Component**: `dashboard/src/components/AccommodationMap.tsx`
+- **Empirically Calibrated Decision Rules**:
+  - Implemented `computeStateDecisionSummary(state)` benchmarking state metrics against national medians (ALOS: 2.50 days, TVAY: RM 58.0/day, Spend/Night: RM 60.0, AOR planning ceiling: 80%).
+  - Classifies states into 4 strategic policy archetypes:
+    1. **High Yield / Low ALOS** (e.g. Melaka): Primary constraint is stay duration. Interventions target stay-extension packages, evening heritage economies, and multi-day passes.
+    2. **Low Yield / High ALOS** (e.g. Kelantan): Primary constraint is spend efficiency. Interventions target experiential upsells, culinary trail monetization, and premium accommodation.
+    3. **High Occupancy Pressure (>80%)** (e.g. Kuala Lumpur): Primary constraint is physical hotel saturation. Interventions target off-peak dispersion and high-yield niche tourism.
+    4. **Sustainable Capacity Expansion**: Balanced headroom and yield; interventions target feeder corridor deepening.
+  - Renders an Executive Summary Card in the state inspector sidebar and an Evidence-Based Brief in the modal drawer with confidence ratings and empirical benchmarks.
+
+### G. Product Value Frontier Upgrade (Phase 34) — COMPLETED
+- **Component**: `dashboard/src/components/TourismValueMonitor.tsx`
+- **Multi-Dimensional ECharts Frontier**:
+  - Upgraded scatter chart: X-axis = Tourism Consumption (ITC Scale, RM Billion), Y-axis = Value-Added Intensity (VAI, %).
+  - Bubble Size = Estimated Tourism GVA proxy ($ITC \times VAI$), visually encoding true economic contribution.
+  - Quadrant divider dashed lines benchmarked to national median VAI ($50\%$) and scale threshold (RM 15B).
+  - Multi-dimensional tooltip rendering product name, category, ITC scale, VAI efficiency, estimated GVA proxy, and preliminary status.
+
+### H. Automated Regression Testing (Sprint 7) — COMPLETED
+- **Test File**: `tests/test_dashboard_integrity.py` (7 tests passing)
+  - `TestModelMetricsIntegrity`: Asserts `model_metrics.json` structure, non-null diagnostics, and strict numeric types.
+  - `TestSourceMetadataIntegrity`: Validates metadata schemas and required provenance fields across all cataloged sources.
+  - `TestOfficialBriefLanguageSanitization`: Scans dashboard source code to verify zero occurrences of `"official brief"` or `"official policy briefing"`.
+  - `TestStateDecisionSummaryContract`: Asserts required decision summary fields and logic against state data.
+  - `TestProductValueFrontierContract`: Validates presence of `itc_2025`, `vai_2025`, and `estimated_tourism_gva_2025` for bubble chart rendering.
+  - `TestCorridorSelectionContract`: Verifies corridor opportunity classification contracts.
+  - `TestNoHardcodedModelFallbacks`: Checks frontend components for absence of hardcoded fallback constants.
+- Registered in `src/pipeline.py` under the `validate` stage.
+
+---
+
+## 9. Sprint 8 Deliverables & Verification Detail
+
+### A. Monte Carlo Stochastic Uncertainty Engine (Phase 26) — COMPLETED
+- **Files**: `src/scenarios/monte_carlo.py`, `src/scenarios/simulator.py`, `dashboard/src/components/ScenarioSimulator.tsx`
+- **Stochastic Policy Levers**:
+  - Replaced static single-point estimates with a 1,000-draw Monte Carlo simulation sampling across:
+    - Campaign reach: Truncated normal ($\mu = 15\%$, bounds $[5\%, 40\%]$).
+    - Stay duration extension: Truncated normal ($\mu = \Delta\text{ALOS}$, $\min = 0.05\text{d}$).
+    - Daily spend velocity: Lognormal distribution ($CV = 15\%$).
+    - Guest density: Truncated normal ($\mu = 1.8$, bounds $[1.3, 2.4]$).
+    - Supply-side accommodation VAI: Truncated normal ($\mu = 85.8\%$, bounds $[70\%, 95\%]$).
+  - Reports:
+    - Percentiles: P10, P50 (median), P90, Mean, and Standard Deviation for Additional Nights, Spend, and GVA.
+    - Capacity Saturation Breach Risk: Exact probability that projected destination AOR breaches the planning threshold (e.g. 80%).
+    - Binned frequency density histogram for interactive ECharts visualization.
+  - 100% reproducible with fixed seed (`seed=42`).
+
+### B. Tourism Investment Portfolio Optimizer (Phase 36) — COMPLETED
+- **Files**: `src/scenarios/portfolio_optimizer.py`, `src/scenarios/simulator.py`, `dashboard/src/components/ScenarioSimulator.tsx`
+- **Mixed-Integer Linear Programming (MILP)**:
+  - Formulated public resource allocation across 240 inter-state tourism corridors:
+    $$\max_{x} \sum_{i} \text{ExpectedGVA}_i \cdot x_i$$
+    $$\text{subject to } \sum_{i} \text{Cost}_i \cdot x_i \le \text{Budget}, \quad \sum_{o} \text{DailyRooms}_{od} \cdot x_{od} \le \text{RoomHeadroom}_d, \quad x_i \in \{0, 1\}$$
+  - Solved with exact branch-and-cut via `scipy.optimize.milp`.
+  - Solved across policy budget tiers (RM 1.0M, RM 2.5M, RM 5.0M, RM 10.0M, RM 20.0M) and planning ceilings (75%, 80%, 85%).
+  - At RM 5.0M budget: Allocates RM 4.98M to 18 optimal corridors, yielding RM 140.3M in expected incremental GVA (an ROI multiplier of 28.1x) with zero destination capacity breaches.
+
+### C. Longitudinal OD Time Animation (2018–2025) (Phase 37) — COMPLETED
+- **Component**: `dashboard/src/components/CorridorNetwork.tsx`
+- **Interactive Temporal Playback**:
+  - Integrated timeline player bar with Play, Pause, Step Next/Prev, Reset, and Year Slider.
+  - Automatically cycles through all 8 years (2018 to 2025) from `origin_destination_panel`.
+  - Contextual period badges:
+    - 2018–2019: `[Pre-COVID Baseline]` (stable domestic flows)
+    - 2020–2021: `[MCO Lockdown Contraction]` (severe volume drop >40%)
+    - 2022–2023: `[Domestic Travel Rebound]` (rapid recovery)
+    - 2024–2025: `[Post-Recovery Maturation]` (structural corridor re-centering)
+  - Live statistics bar updating total national interstate flow and active corridor counts.
+
+### D. Commercial Implementation Roadmap (Phase 35) — COMPLETED
+- **Files**: `dashboard/src/components/ImplementationRoadmap.tsx`, `dashboard/src/App.tsx`, `dashboard/src/components/Header.tsx`
+- **Institutional Governance**:
+  - Registered dedicated `'implementation'` tab in header navigation and URL routing (`?tab=implementation`).
+  - Target Stakeholder Personas Grid: MOTAC, Tourism Malaysia, State Tourism Boards, Local Authorities (PBTs), and Malaysian Association of Hotels (MAH) with exact policy decisions.
+  - 8-Step Closed-Loop Operating Architecture: Data Ingestion $\rightarrow$ Yield Diagnosis $\rightarrow$ Opportunity Detection $\rightarrow$ Scenario Testing $\rightarrow$ Portfolio Optimization $\rightarrow$ Intervention Execution $\rightarrow$ Impact Verification $\rightarrow$ Model Recalibration.
+  - Official Data Refresh & Governance Schedule table.
+
+### E. Grounded Policy Decision Intelligence Assistant (Phase 38) — COMPLETED
+- **Component**: `dashboard/src/components/ImplementationRoadmap.tsx`
+- **Zero-Hallucination Evidence Synthesis**:
+  - Grounded AI query interface allowing users to query strategic policy questions (Melaka capacity bottlenecks, high-VAI product rankings, priority feeder corridors, optimal budget allocation).
+  - Generates answers strictly citing quantitative metrics from official DuckDB tables, confidence ratings, and official source citations.
+
+### F. Automated Regression Testing (Sprint 8) — COMPLETED
+- **Test File**: `tests/test_commercial_and_monte_carlo.py` (7 tests passing)
+  - `TestMonteCarloUncertainty`: Monotonicity ($P10 \le P50 \le P90$), non-zero variance, breach probability $\in [0, 1]$, and deterministic reproducibility.
+  - `TestPortfolioOptimizer`: Budget constraint satisfaction, destination room capacity compliance, positive ROI, and budget monotonicity.
+  - `TestLongitudinalODAnimation`: Coverage of all 8 years (2018–2025) and COVID contraction verification.
+  - `TestCommercialImplementationContract`: User personas, operating steps, and grounded assistant query logic.
+- Registered in `src/pipeline.py` under the `validate` stage.
+
+---
+
+## 10. Test Suite Matrix
 
 | Module | Test Count | Result |
 | :--- | :---: | :---: |
@@ -267,10 +536,14 @@
 | `tests/test_economic_metrics.py` | 14 | PASS |
 | `tests/test_panel_econometrics.py` | 6 | PASS |
 | `tests/test_gravity_model.py` | 6 | PASS |
+| `tests/test_corridor_opportunity.py` | 7 | PASS |
+| `tests/test_scenario_engine.py` | 8 | PASS |
+| `tests/test_dashboard_integrity.py` | 7 | PASS |
+| `tests/test_commercial_and_monte_carlo.py` | 7 | PASS |
 | `tests/test_scenario_fixtures.py` | 2 | PASS |
 | `tests/test_gravity_fixtures.py` | 2 | PASS |
 | `tests/test_missing_values.py` | 5 | PASS |
 | `tests/test_paths_and_metadata.py` | 3 | PASS |
 | `src/validation/test_tsa_accounting.py` | 3 | PASS |
 | `src/validation/test_state_and_corridors.py` | 6 | PASS |
-| **Total Automated Tests** | **50** | **100% PASS** |
+| **Total Automated Tests** | **79** | **100% PASS** |

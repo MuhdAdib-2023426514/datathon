@@ -3,19 +3,13 @@ Tourism Policy Scenario Simulator Engine (Stage F & Capacity-Constrained Feasibi
 Simulates the economic potential of converting visitor demand into longer stays
 and overnight accommodation value under transparent, deterministic equations.
 
-Includes:
-  1. Decoupled Corridor ALOS Extension:
-     Operates at origin-destination level using verified corridor flows.
-  2. Decoupled Destination Day-Trip Conversion:
-     Operates at destination level on verified excursionist pools without double counting.
-  3. Multi-Corridor Portfolio Aggregation:
-     Sums incremental daily room demand across all feeder corridors to evaluate true
-     aggregate destination hotel occupancy and physical capacity saturation.
-  4. Saturation Tiers:
-     - Normal (< 70% AOR)
-     - Planning Watch (70% - 80% AOR)
-     - Severe Saturation (> 80% AOR)
-     - Physical Capacity Breach (> 100% AOR)
+Sprint 6 Upgrades:
+  1. Phase 21: One Source of Truth (deterministic Python engine providing single source)
+  2. Phase 22: Scenario Affected Share (campaign reach scaling: AdditionalNights = Flow * AffectedShare * DeltaALOS)
+  3. Phase 23: Correct Room-Night Capacity Conversion (AdditionalRoomNights = GuestNights / GuestsPerOccupiedRoom)
+  4. Phase 24: Correct VFR Scenario Capacity (converted VFR stays generate commercial room demand & impact AOR)
+  5. Phase 25: Scenario Assumption Metadata (official, derived, scenario_assumption classification)
+  6. Phase 27: Capacity Sensitivity Analysis (75%, 80%, 85% planning thresholds with seasonal caveat)
 
 Mandatory Policy Guardrail (AGENTS.md Section 7, 9, 12):
 Every scenario card, report, and visualization output must display:
@@ -24,7 +18,7 @@ Every scenario card, report, and visualization output must display:
 
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Tuple, Union, Any
 import duckdb
 import numpy as np
 import pandas as pd
@@ -37,8 +31,12 @@ PROCESSED_DIR = ROOT_DIR / "data/processed"
 DUCKDB_PATH = PROCESSED_DIR / "tourism_data.duckdb"
 
 MANDATORY_DISCLAIMER = "Scenario estimate, not a causal forecast."
+SEASONAL_CAPACITY_CAVEAT = "Annual occupancy may hide seasonal/weekend capacity pressure."
 DEFAULT_ACCOMMODATION_VAI = 0.8579
-AVERAGE_GUESTS_PER_ROOM = 1.8
+DEFAULT_GUESTS_PER_ROOM = 1.8
+DEFAULT_AFFECTED_SHARE = 0.15
+DEFAULT_HOMESTAY_DISCOUNT_FACTOR = 0.85
+DEFAULT_PLANNING_THRESHOLD = 80.0
 
 
 class ScenarioSimulator:
@@ -94,28 +92,49 @@ class ScenarioSimulator:
 
         return base_aor, avail_rooms
 
-    def _evaluate_capacity_status(self, implied_aor: Optional[float]) -> Tuple[bool, str, str]:
-        """Classifies saturation status into 4 transparent planning tiers."""
+    def _evaluate_capacity_status(
+        self, implied_aor: Optional[float], planning_threshold: float = DEFAULT_PLANNING_THRESHOLD
+    ) -> Tuple[bool, str, str]:
+        """Classifies saturation status into transparent planning tiers based on configurable planning threshold."""
         if implied_aor is None or np.isnan(implied_aor):
             return False, "Unknown", "Unknown (Hotel Capacity Data Unavailable)"
         if implied_aor > 100.0:
-            return True, "Physical Breach", f"Physical Capacity Breach ({implied_aor:.1f}% AOR > 100% Ceiling) — Exceeds total available hotel room inventory"
-        elif implied_aor > 80.0:
-            return True, "Severe Saturation", f"Severe Capacity Saturation ({implied_aor:.1f}% AOR > 80% Threshold) — Requires room supply expansion or off-peak weekday redistribution"
-        elif implied_aor >= 70.0:
-            return False, "Planning Watch", f"Planning Watch ({implied_aor:.1f}% AOR in 70-80% range) — Tightening headroom during peak periods"
+            return (
+                True,
+                "Physical Breach",
+                f"Physical Capacity Breach ({implied_aor:.1f}% AOR > 100% Ceiling) — Exceeds total available hotel room inventory",
+            )
+        elif implied_aor > planning_threshold:
+            return (
+                True,
+                "Severe Saturation",
+                f"Severe Capacity Saturation ({implied_aor:.1f}% AOR > {planning_threshold:.0f}% Threshold) — Requires room supply expansion or off-peak weekday redistribution",
+            )
+        elif implied_aor >= (planning_threshold - 10.0):
+            return (
+                False,
+                "Planning Watch",
+                f"Planning Watch ({implied_aor:.1f}% AOR in {planning_threshold - 10.0:.0f}-{planning_threshold:.0f}% range) — Tightening headroom during peak periods",
+            )
         else:
-            return False, "Normal", f"Feasible ({implied_aor:.1f}% AOR within sustainable hotel capacity)"
+            return (
+                False,
+                "Normal",
+                f"Feasible ({implied_aor:.1f}% AOR within sustainable hotel capacity)",
+            )
 
     def simulate_corridor(
         self,
         origin: str,
         destination: str,
         delta_alos: float = 0.5,
-    ) -> Dict[str, Union[str, float, Dict]]:
+        affected_share: float = 1.0,
+        guests_per_room: float = DEFAULT_GUESTS_PER_ROOM,
+        planning_threshold: float = DEFAULT_PLANNING_THRESHOLD,
+    ) -> Dict[str, Any]:
         """
         Simulates the economic opportunity and capacity feasibility for a specific origin-destination corridor.
-        Strictly decoupled from destination day-trip pools to prevent double counting.
+        Includes campaign affected share and room-night capacity conversion.
         """
         if origin not in self.valid_states:
             raise ValueError(f"Invalid origin state: '{origin}'. Must be one of 16 Malaysian states.")
@@ -123,12 +142,18 @@ class ScenarioSimulator:
             raise ValueError(f"Invalid destination state: '{destination}'. Must be one of 16 Malaysian states.")
         if delta_alos < 0 or delta_alos > 3.0:
             raise ValueError("delta_alos must be between 0.0 and 3.0 nights.")
+        if affected_share < 0.0 or affected_share > 1.0:
+            raise ValueError("affected_share must be between 0.0 and 1.0 (0% to 100%).")
+        if guests_per_room <= 0:
+            raise ValueError("guests_per_room must be positive.")
 
         # Destination baseline
-        dest_rows = self.df_state[self.df_state["state"] == destination]
+        dest_rows = self.df_state[(self.df_state["state"] == destination) & (self.df_state["year"] == 2025)]
+        if dest_rows.empty:
+            dest_rows = self.df_state[self.df_state["state"] == destination]
         if dest_rows.empty:
             raise ValueError(f"Destination state '{destination}' not found in state baseline.")
-        dest_data = dest_rows.iloc[0]
+        dest_data = dest_rows.iloc[-1]
 
         # Corridor flow baseline
         flow_rows = self.df_od[(self.df_od["origin"] == origin) & (self.df_od["destination"] == destination)]
@@ -138,9 +163,9 @@ class ScenarioSimulator:
         baseline_alos = float(dest_data["alos_days"])
         spend_per_night = float(dest_data["spend_per_night_rm"])
 
-        # 1. ALOS Extension Simulation
-        # Additional Tourist Nights = TouristFlow * DeltaALOS
-        total_additional_nights = baseline_tourists * delta_alos
+        # 1. ALOS Extension Simulation with Affected Share
+        # Additional Tourist Nights = TouristFlow * AffectedShare * DeltaALOS
+        total_additional_nights = baseline_tourists * affected_share * delta_alos
         total_additional_spend_rm = total_additional_nights * spend_per_night
         total_additional_spend_m = total_additional_spend_rm / 1e6
         potential_value_added_rm = total_additional_spend_rm * self.national_accom_vai
@@ -149,7 +174,7 @@ class ScenarioSimulator:
         # 2. Hotel Room Capacity Check
         base_aor, avail_rooms = self._get_capacity_metrics(destination)
         if avail_rooms and avail_rooms > 0 and base_aor is not None:
-            daily_room_demand = total_additional_nights / (365.0 * AVERAGE_GUESTS_PER_ROOM)
+            daily_room_demand = total_additional_nights / (365.0 * guests_per_room)
             delta_aor_pct = (daily_room_demand / avail_rooms) * 100.0
             implied_aor = round(base_aor + delta_aor_pct, 2)
         else:
@@ -157,13 +182,29 @@ class ScenarioSimulator:
             delta_aor_pct = None
             implied_aor = None
 
-        is_constrained, tier, status_msg = self._evaluate_capacity_status(implied_aor)
+        is_constrained, tier, status_msg = self._evaluate_capacity_status(implied_aor, planning_threshold)
+
+        metadata = {
+            "affected_share": {"value": affected_share, "status": "scenario_assumption"},
+            "guests_per_room": {"value": guests_per_room, "status": "scenario_assumption"},
+            "delta_alos": {"value": delta_alos, "status": "scenario_assumption"},
+            "planning_threshold": {"value": planning_threshold, "status": "scenario_assumption"},
+            "baseline_tourists": {"value": round(baseline_tourists, 0), "status": "official"},
+            "baseline_alos": {"value": round(baseline_alos, 2), "status": "official"},
+            "baseline_aor": {"value": round(base_aor, 1) if base_aor else None, "status": "official"},
+            "available_rooms": {"value": int(avail_rooms) if avail_rooms else None, "status": "official"},
+            "spend_per_night": {"value": round(spend_per_night, 2), "status": "derived"},
+            "accommodation_vai": {"value": round(self.national_accom_vai, 4), "status": "official"},
+        }
 
         return {
             "origin": origin,
             "destination": destination,
             "inputs": {
                 "delta_alos_nights": delta_alos,
+                "affected_share": affected_share,
+                "guests_per_room": guests_per_room,
+                "planning_threshold": planning_threshold,
                 "accommodation_vai_used": self.national_accom_vai,
             },
             "baseline": {
@@ -186,7 +227,164 @@ class ScenarioSimulator:
                 "saturation_tier": tier,
                 "is_capacity_constrained": is_constrained,
                 "status": status_msg,
+                "seasonal_caveat": SEASONAL_CAPACITY_CAVEAT,
             },
+            "metadata": metadata,
+            "disclaimer": MANDATORY_DISCLAIMER,
+        }
+
+    def simulate_destination_comprehensive(
+        self,
+        destination: str,
+        delta_alos: float = 0.4,
+        affected_share: float = DEFAULT_AFFECTED_SHARE,
+        conversion_pct: float = 10.0,
+        yield_uplift_pct: float = 10.0,
+        vfr_conversion_pct: float = 5.0,
+        guests_per_room: float = DEFAULT_GUESTS_PER_ROOM,
+        planning_threshold: float = DEFAULT_PLANNING_THRESHOLD,
+    ) -> Dict[str, Any]:
+        """
+        Comprehensive multi-lever scenario simulator at destination state level:
+          1. Stay extension of existing tourists (with campaign affected share)
+          2. Converted excursionists to overnight tourists
+          3. Converted unpaid VFR stays into commercial paid/homestay lodging (with room night capacity impact)
+          4. Room-night capacity constraint and sensitivity analysis
+        """
+        if destination not in self.valid_states:
+            raise ValueError(f"Invalid destination state: '{destination}'.")
+        if delta_alos < 0 or delta_alos > 3.0:
+            raise ValueError("delta_alos must be between 0.0 and 3.0 nights.")
+        if affected_share < 0.0 or affected_share > 1.0:
+            raise ValueError("affected_share must be between 0.0 and 1.0.")
+        if conversion_pct < 0 or conversion_pct > 100.0:
+            raise ValueError("conversion_pct must be between 0.0% and 100.0%.")
+        if vfr_conversion_pct < 0 or vfr_conversion_pct > 100.0:
+            raise ValueError("vfr_conversion_pct must be between 0.0% and 100.0%.")
+        if guests_per_room <= 0:
+            raise ValueError("guests_per_room must be positive.")
+
+        dest_rows = self.df_state[(self.df_state["state"] == destination) & (self.df_state["year"] == 2025)]
+        if dest_rows.empty:
+            dest_rows = self.df_state[self.df_state["state"] == destination]
+        if dest_rows.empty:
+            raise ValueError(f"Destination state '{destination}' not found.")
+        dest_data = dest_rows.iloc[-1]
+
+        baseline_tourists = float(dest_data["tourists_thousands"]) * 1000.0
+        baseline_excursionists = (float(dest_data["visitors_thousands"]) - float(dest_data["tourists_thousands"])) * 1000.0
+        baseline_alos = float(dest_data["alos_days"])
+        spend_per_night = float(dest_data["spend_per_night_rm"])
+        base_aor, avail_rooms = self._get_capacity_metrics(destination)
+
+        # 1. Stay extension of existing tourists (Phase 22)
+        add_nights_alos = baseline_tourists * affected_share * delta_alos
+
+        # 2. Converted excursionists into overnight tourists
+        converted_tourists = baseline_excursionists * (conversion_pct / 100.0)
+        add_nights_daytrip = converted_tourists * (baseline_alos + delta_alos)
+
+        # 3. Converted unpaid VFR stays into commercial/homestay accommodation (Phase 24)
+        has_vfr_data = "unpaid_vfr_share_pct" in dest_data and pd.notnull(dest_data["unpaid_vfr_share_pct"])
+        unpaid_vfr_pct = float(dest_data["unpaid_vfr_share_pct"]) if has_vfr_data else None
+
+        if has_vfr_data and unpaid_vfr_pct is not None:
+            vfr_tourists = baseline_tourists * (unpaid_vfr_pct / 100.0)
+            converted_vfr_tourists = vfr_tourists * (vfr_conversion_pct / 100.0)
+            vfr_guest_nights = converted_vfr_tourists * (baseline_alos + delta_alos)
+            homestay_nightly_rate = max(75.0, spend_per_night * DEFAULT_HOMESTAY_DISCOUNT_FACTOR)
+            vfr_accom_spend_rm = vfr_guest_nights * homestay_nightly_rate
+        else:
+            vfr_tourists = 0.0
+            converted_vfr_tourists = 0.0
+            vfr_guest_nights = 0.0
+            vfr_accom_spend_rm = 0.0
+
+        # Total additional guest nights across all levers (Phase 24: includes VFR guest nights!)
+        total_additional_guest_nights = add_nights_alos + add_nights_daytrip + vfr_guest_nights
+
+        # Pricing yield uplift
+        new_spend_per_night = spend_per_night * (1.0 + yield_uplift_pct / 100.0)
+
+        # Additional accommodation expenditure
+        existing_nights = baseline_tourists * baseline_alos
+        existing_nights_uplift_rm = existing_nights * (new_spend_per_night - spend_per_night)
+        new_nights_spend_rm = (add_nights_alos + add_nights_daytrip) * new_spend_per_night
+        total_additional_spend_rm = new_nights_spend_rm + existing_nights_uplift_rm + vfr_accom_spend_rm
+        total_additional_spend_m = total_additional_spend_rm / 1e6
+        potential_gva_m = (total_additional_spend_rm * self.national_accom_vai) / 1e6
+
+        # Capacity feasibility (Phase 23 & 24)
+        if avail_rooms and avail_rooms > 0 and base_aor is not None:
+            daily_rooms_demanded = total_additional_guest_nights / (365.0 * guests_per_room)
+            delta_aor_pct = (daily_rooms_demanded / avail_rooms) * 100.0
+            implied_aor = round(base_aor + delta_aor_pct, 2)
+        else:
+            daily_rooms_demanded = None
+            delta_aor_pct = None
+            implied_aor = None
+
+        is_constrained, tier, status_msg = self._evaluate_capacity_status(implied_aor, planning_threshold)
+
+        metadata = {
+            "affected_share": {"value": affected_share, "status": "scenario_assumption"},
+            "guests_per_room": {"value": guests_per_room, "status": "scenario_assumption"},
+            "delta_alos": {"value": delta_alos, "status": "scenario_assumption"},
+            "conversion_pct": {"value": conversion_pct, "status": "scenario_assumption"},
+            "yield_uplift_pct": {"value": yield_uplift_pct, "status": "scenario_assumption"},
+            "vfr_conversion_pct": {"value": vfr_conversion_pct, "status": "scenario_assumption"},
+            "planning_threshold": {"value": planning_threshold, "status": "scenario_assumption"},
+            "baseline_tourists": {"value": round(baseline_tourists, 0), "status": "official"},
+            "baseline_excursionists": {"value": round(baseline_excursionists, 0), "status": "official"},
+            "baseline_alos": {"value": round(baseline_alos, 2), "status": "official"},
+            "baseline_aor": {"value": round(base_aor, 1) if base_aor else None, "status": "official"},
+            "available_rooms": {"value": int(avail_rooms) if avail_rooms else None, "status": "official"},
+            "unpaid_vfr_pct": {"value": round(unpaid_vfr_pct, 1) if unpaid_vfr_pct is not None else None, "status": "official"},
+            "spend_per_night": {"value": round(spend_per_night, 2), "status": "derived"},
+            "accommodation_vai": {"value": round(self.national_accom_vai, 4), "status": "official"},
+        }
+
+        return {
+            "destination": destination,
+            "inputs": {
+                "delta_alos_nights": delta_alos,
+                "affected_share": affected_share,
+                "conversion_pct": conversion_pct,
+                "yield_uplift_pct": yield_uplift_pct,
+                "vfr_conversion_pct": vfr_conversion_pct,
+                "guests_per_room": guests_per_room,
+                "planning_threshold": planning_threshold,
+                "accommodation_vai_used": self.national_accom_vai,
+            },
+            "baseline": {
+                "total_tourists": round(baseline_tourists, 0),
+                "total_excursionists": round(baseline_excursionists, 0),
+                "alos_days": round(baseline_alos, 2),
+                "spend_per_night_rm": round(spend_per_night, 2),
+                "destination_baseline_aor_pct": round(base_aor, 1) if base_aor else None,
+                "destination_available_rooms": int(avail_rooms) if avail_rooms else None,
+                "unpaid_vfr_pct": round(unpaid_vfr_pct, 1) if unpaid_vfr_pct is not None else None,
+            },
+            "simulated_impact": {
+                "stay_extension_nights": round(add_nights_alos, 0),
+                "daytrip_converted_tourists": round(converted_tourists, 0),
+                "daytrip_converted_nights": round(add_nights_daytrip, 0),
+                "vfr_converted_tourists": round(converted_vfr_tourists, 0),
+                "vfr_converted_nights": round(vfr_guest_nights, 0),
+                "total_additional_guest_nights": round(total_additional_guest_nights, 0),
+                "additional_accommodation_spend_rm_million": round(total_additional_spend_m, 2),
+                "potential_additional_value_added_rm_million": round(potential_gva_m, 2),
+            },
+            "capacity_feasibility": {
+                "daily_rooms_demanded": round(daily_rooms_demanded, 1) if daily_rooms_demanded else None,
+                "delta_aor_pct": round(delta_aor_pct, 2) if delta_aor_pct else None,
+                "implied_destination_aor_pct": implied_aor,
+                "saturation_tier": tier,
+                "is_capacity_constrained": is_constrained,
+                "status": status_msg,
+                "seasonal_caveat": SEASONAL_CAPACITY_CAVEAT,
+            },
+            "metadata": metadata,
             "disclaimer": MANDATORY_DISCLAIMER,
         }
 
@@ -195,7 +393,9 @@ class ScenarioSimulator:
         destination: str,
         conversion_pct: float = 1.0,
         converted_alos: Optional[float] = None,
-    ) -> Dict[str, Union[str, float, Dict]]:
+        guests_per_room: float = DEFAULT_GUESTS_PER_ROOM,
+        planning_threshold: float = DEFAULT_PLANNING_THRESHOLD,
+    ) -> Dict[str, Any]:
         """
         Simulates converting a percentage of destination-level excursionists into overnight tourists.
         Operates on the destination excursionist pool once (strictly conserving volume).
@@ -205,10 +405,12 @@ class ScenarioSimulator:
         if conversion_pct < 0 or conversion_pct > 100.0:
             raise ValueError("conversion_pct must be between 0.0% and 100.0%.")
 
-        dest_rows = self.df_state[self.df_state["state"] == destination]
+        dest_rows = self.df_state[(self.df_state["state"] == destination) & (self.df_state["year"] == 2025)]
+        if dest_rows.empty:
+            dest_rows = self.df_state[self.df_state["state"] == destination]
         if dest_rows.empty:
             raise ValueError(f"Destination state '{destination}' not found.")
-        dest_data = dest_rows.iloc[0]
+        dest_data = dest_rows.iloc[-1]
 
         dest_excursionists = float(dest_data["excursionists_thousands"]) * 1000.0
         spend_per_night = float(dest_data["spend_per_night_rm"])
@@ -222,7 +424,7 @@ class ScenarioSimulator:
 
         base_aor, avail_rooms = self._get_capacity_metrics(destination)
         if avail_rooms and avail_rooms > 0 and base_aor is not None:
-            daily_room_demand = new_nights / (365.0 * AVERAGE_GUESTS_PER_ROOM)
+            daily_room_demand = new_nights / (365.0 * guests_per_room)
             delta_aor_pct = (daily_room_demand / avail_rooms) * 100.0
             implied_aor = round(base_aor + delta_aor_pct, 2)
         else:
@@ -230,13 +432,26 @@ class ScenarioSimulator:
             delta_aor_pct = None
             implied_aor = None
 
-        is_constrained, tier, status_msg = self._evaluate_capacity_status(implied_aor)
+        is_constrained, tier, status_msg = self._evaluate_capacity_status(implied_aor, planning_threshold)
+
+        metadata = {
+            "conversion_pct": {"value": conversion_pct, "status": "scenario_assumption"},
+            "target_stay_duration_nights": {"value": target_alos, "status": "scenario_assumption"},
+            "guests_per_room": {"value": guests_per_room, "status": "scenario_assumption"},
+            "planning_threshold": {"value": planning_threshold, "status": "scenario_assumption"},
+            "total_excursionists": {"value": round(dest_excursionists, 0), "status": "official"},
+            "spend_per_night": {"value": round(spend_per_night, 2), "status": "derived"},
+            "baseline_aor": {"value": round(base_aor, 1) if base_aor else None, "status": "official"},
+            "available_rooms": {"value": int(avail_rooms) if avail_rooms else None, "status": "official"},
+        }
 
         return {
             "destination": destination,
             "inputs": {
                 "conversion_pct": conversion_pct,
                 "target_stay_duration_nights": target_alos,
+                "guests_per_room": guests_per_room,
+                "planning_threshold": planning_threshold,
             },
             "baseline": {
                 "total_excursionists": round(dest_excursionists, 0),
@@ -257,13 +472,20 @@ class ScenarioSimulator:
                 "saturation_tier": tier,
                 "is_capacity_constrained": is_constrained,
                 "status": status_msg,
+                "seasonal_caveat": SEASONAL_CAPACITY_CAVEAT,
             },
+            "metadata": metadata,
             "disclaimer": MANDATORY_DISCLAIMER,
         }
 
     def simulate_state_priority_portfolio(
-        self, destination: str, delta_alos: float = 0.5
-    ) -> Dict[str, Union[pd.DataFrame, Dict]]:
+        self,
+        destination: str,
+        delta_alos: float = 0.5,
+        affected_share: float = DEFAULT_AFFECTED_SHARE,
+        guests_per_room: float = DEFAULT_GUESTS_PER_ROOM,
+        planning_threshold: float = DEFAULT_PLANNING_THRESHOLD,
+    ) -> Dict[str, Any]:
         """
         Simulates impact across all inter-state feeder corridors to a destination,
         aggregating incremental room demand across all corridors to assess destination portfolio capacity.
@@ -279,6 +501,9 @@ class ScenarioSimulator:
                 origin=row["origin"],
                 destination=destination,
                 delta_alos=delta_alos,
+                affected_share=affected_share,
+                guests_per_room=guests_per_room,
+                planning_threshold=planning_threshold,
             )
             add_nights = sim["simulated_impact"]["additional_tourist_nights"]
             add_spend_m = sim["simulated_impact"]["additional_accommodation_spend_rm_million"]
@@ -293,6 +518,7 @@ class ScenarioSimulator:
                 "destination": destination,
                 "tourist_flow_thousands": row["tourist_flow_thousands"],
                 "delta_alos": delta_alos,
+                "affected_share": affected_share,
                 "additional_nights": add_nights,
                 "additional_spend_rm_m": add_spend_m,
                 "potential_value_added_rm_m": pot_gva_m,
@@ -303,7 +529,7 @@ class ScenarioSimulator:
         # Portfolio aggregate capacity assessment
         base_aor, avail_rooms = self._get_capacity_metrics(destination)
         if avail_rooms and avail_rooms > 0 and base_aor is not None:
-            portfolio_daily_room_demand = total_portfolio_nights / (365.0 * AVERAGE_GUESTS_PER_ROOM)
+            portfolio_daily_room_demand = total_portfolio_nights / (365.0 * guests_per_room)
             portfolio_delta_aor = (portfolio_daily_room_demand / avail_rooms) * 100.0
             portfolio_implied_aor = round(base_aor + portfolio_delta_aor, 2)
         else:
@@ -311,11 +537,12 @@ class ScenarioSimulator:
             portfolio_delta_aor = None
             portfolio_implied_aor = None
 
-        is_constrained, tier, status_msg = self._evaluate_capacity_status(portfolio_implied_aor)
+        is_constrained, tier, status_msg = self._evaluate_capacity_status(portfolio_implied_aor, planning_threshold)
 
         portfolio_summary = {
             "destination": destination,
             "total_active_feeders": len(dest_od),
+            "affected_share": affected_share,
             "total_additional_nights": round(total_portfolio_nights, 0),
             "total_additional_spend_rm_million": round(total_portfolio_spend_m, 2),
             "total_potential_value_added_rm_million": round(total_portfolio_gva_m, 2),
@@ -327,6 +554,7 @@ class ScenarioSimulator:
             "saturation_tier": tier,
             "is_capacity_constrained": is_constrained,
             "status": status_msg,
+            "seasonal_caveat": SEASONAL_CAPACITY_CAVEAT,
             "disclaimer": MANDATORY_DISCLAIMER,
         }
 
@@ -335,14 +563,56 @@ class ScenarioSimulator:
             "portfolio_summary": portfolio_summary,
         }
 
+    def simulate_corridor_monte_carlo(
+        self,
+        origin: str,
+        destination: str,
+        delta_alos: float = 0.5,
+        affected_share: float = DEFAULT_AFFECTED_SHARE,
+        guests_per_room: float = DEFAULT_GUESTS_PER_ROOM,
+        planning_threshold: float = DEFAULT_PLANNING_THRESHOLD,
+        n_simulations: int = 2000,
+        seed: Optional[int] = 42,
+    ) -> Dict[str, Any]:
+        """Runs stochastic Monte Carlo simulation across policy intervention parameters (Phase 26)."""
+        from src.scenarios.monte_carlo import MonteCarloSimulator
+        mc = MonteCarloSimulator(duckdb_path=self.duckdb_path)
+        return mc.simulate_corridor_uncertainty(
+            origin=origin,
+            destination=destination,
+            delta_alos=delta_alos,
+            affected_share=affected_share,
+            guests_per_room=guests_per_room,
+            planning_threshold=planning_threshold,
+            n_simulations=n_simulations,
+            seed=seed,
+        )
+
+    def optimize_investment_portfolio(
+        self,
+        budget_rm_million: float = 5.0,
+        planning_threshold: float = DEFAULT_PLANNING_THRESHOLD,
+        max_corridors_per_dest: int = 4,
+        preferred_tier: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """Solves optimal corridor investment allocation via Mixed-Integer Linear Programming (Phase 36)."""
+        from src.scenarios.portfolio_optimizer import PortfolioOptimizer
+        opt = PortfolioOptimizer(duckdb_path=self.duckdb_path)
+        return opt.optimize_portfolio(
+            budget_rm_million=budget_rm_million,
+            planning_threshold=planning_threshold,
+            max_corridors_per_dest=max_corridors_per_dest,
+            preferred_tier=preferred_tier,
+        )
+
 
 if __name__ == "__main__":
     sim = ScenarioSimulator()
 
-    # Test Scenario 1: Corridor ALOS (Selangor -> Melaka, +0.5 nights)
-    s1 = sim.simulate_corridor("Selangor", "Melaka", delta_alos=0.5)
+    # Test Scenario 1: Corridor ALOS (Selangor -> Melaka, +0.5 nights, 15% affected share)
+    s1 = sim.simulate_corridor("Selangor", "Melaka", delta_alos=0.5, affected_share=0.15)
     print("\n" + "=" * 80)
-    print("SCENARIO SIMULATION 1: Corridor ALOS Extension (Selangor -> Melaka +0.5 Nights)")
+    print("SCENARIO SIMULATION 1: Corridor ALOS Extension (Selangor -> Melaka +0.5 Nights, 15% Reach)")
     print("=" * 80)
     print(f"Origin: {s1['origin']} -> Destination: {s1['destination']}")
     print(f"Additional Nights: +{s1['simulated_impact']['additional_tourist_nights']:,.0f}")
@@ -350,26 +620,15 @@ if __name__ == "__main__":
     print(f"Potential GVA:     +RM {s1['simulated_impact']['potential_additional_value_added_rm_million']:.2f} Million")
     print(f"Capacity Status:   {s1['capacity_feasibility']['status']}")
 
-    # Test Scenario 2: Destination Day-Trip Conversion (Melaka 1% Conversion)
-    s2 = sim.simulate_destination_daytrip("Melaka", conversion_pct=1.0)
+    # Test Scenario 2: Comprehensive Destination (Melaka)
+    s2 = sim.simulate_destination_comprehensive("Melaka", delta_alos=0.4, affected_share=0.15, conversion_pct=10.0, vfr_conversion_pct=5.0)
     print("\n" + "=" * 80)
-    print("SCENARIO SIMULATION 2: Destination Day-Trip Conversion (Melaka 1% Conversion)")
+    print("SCENARIO SIMULATION 2: Melaka Comprehensive Multi-Lever Simulation")
     print("=" * 80)
-    print(f"Destination: {s2['destination']} | Excursionists: {s2['baseline']['total_excursionists']:,.0f}")
-    print(f"Converted Tourists: +{s2['simulated_impact']['newly_converted_tourists']:,.0f}")
-    print(f"Additional Spend:   +RM {s2['simulated_impact']['additional_accommodation_spend_rm_million']:.2f} Million")
-    print(f"Capacity Status:    {s2['capacity_feasibility']['status']}")
-
-    # Test Scenario 3: Destination Portfolio Assessment (Pahang all feeders +0.5 nights)
-    port = sim.simulate_state_priority_portfolio("Pahang", delta_alos=0.5)
-    print("\n" + "=" * 80)
-    print("SCENARIO SIMULATION 3: Pahang Multi-Feeder Portfolio Aggregation (+0.5 Nights)")
-    print("=" * 80)
-    psum = port["portfolio_summary"]
-    print(f"Destination: {psum['destination']} across {psum['total_active_feeders']} feeders")
-    print(f"Total Portfolio Add Nights: +{psum['total_additional_nights']:,.0f}")
-    print(f"Total Portfolio Add Spend:  +RM {psum['total_additional_spend_rm_million']:.2f} Million")
-    print(f"Baseline AOR: {psum['destination_baseline_aor_pct']}% -> Implied Portfolio AOR: {psum['destination_implied_portfolio_aor_pct']}%")
-    print(f"Saturation Tier: {psum['saturation_tier']}")
-    print(f"Status: {psum['status']}")
-    print(f"Disclaimer: {psum['disclaimer']}")
+    print(f"Destination: {s2['destination']}")
+    print(f"Additional Guest Nights: +{s2['simulated_impact']['total_additional_guest_nights']:,.0f}")
+    print(f"Additional Spend:        +RM {s2['simulated_impact']['additional_accommodation_spend_rm_million']:.2f} Million")
+    print(f"Potential GVA:           +RM {s2['simulated_impact']['potential_additional_value_added_rm_million']:.2f} Million")
+    print(f"Capacity Status:         {s2['capacity_feasibility']['status']}")
+    print(f"Caveat:                  {s2['capacity_feasibility']['seasonal_caveat']}")
+    print(f"Disclaimer:              {s2['disclaimer']}")

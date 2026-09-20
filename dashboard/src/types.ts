@@ -221,6 +221,20 @@ export interface Corridor {
   distance_km?: number;
   is_cross_region?: boolean;
   corridor_gravity_category?: string;
+  is_pareto_optimal?: boolean;
+  pareto_rank?: number;
+  composite_opportunity_score?: number;
+  capacity_headroom_pct?: number;
+  capacity_tier?: string;
+  gravity_flow_gap_thousands?: number;
+  gravity_performance_category?: string;
+  accessibility_tier?: string;
+  diversification_benefit?: string;
+  is_dominant_feeder?: boolean;
+  model_confidence_tier?: string;
+  additional_accom_expenditure_rm_million?: number;
+  potential_retained_gva_rm_million?: number;
+  opportunity_rank?: number;
 }
 
 export interface DestinationConcentration {
@@ -234,6 +248,10 @@ export interface DestinationConcentration {
   top_feeder_origin?: string;
   top_feeder_state?: string;
   top_feeder_share_pct?: number;
+  top_origin_share?: number;
+  top_3_origin_share_pct?: number;
+  top_3_origin_share?: number;
+  meaningful_origin_count?: number;
   interstate_origin_hhi?: number | null;
   all_origin_hhi?: number | null;
   hhi?: number | null;
@@ -248,6 +266,7 @@ export interface ODCorridorsData {
   destination_concentration_by_year?: Record<string | number, DestinationConcentration[]>;
   category_summary?: Record<string, number>;
   category_summary_2025?: Record<string, number>;
+  pareto_frontier_2025?: Corridor[];
 }
 
 export interface ScenarioEngineConfig {
@@ -256,12 +275,21 @@ export interface ScenarioEngineConfig {
     fnb_vai?: number;
     overall_tourism_vai?: number;
     disclaimer: string;
+    seasonal_caveat?: string;
     average_guests_per_room?: number;
+    default_affected_share?: number;
+    homestay_discount_factor?: number;
+    default_planning_threshold?: number;
+    planning_thresholds?: number[];
     saturation_thresholds?: {
       watch: number;
       severe: number;
       physical: number;
     };
+    metadata_provenance?: Record<string, {
+      status: 'official' | 'derived' | 'scenario_assumption';
+      description: string;
+    }>;
   };
   state_baselines: Record<string, {
     alos: number;
@@ -270,9 +298,100 @@ export interface ScenarioEngineConfig {
     excursionists_k?: number;
     hotel_rooms: number | null;
     aor: number | null;
+    unpaid_vfr_pct?: number | null;
   }>;
+  benchmarks?: Record<string, Record<string, any>>;
+  monte_carlo_benchmarks?: Record<string, MonteCarloBenchmark>;
+  portfolio_optimization?: {
+    default_budget_rm_million: number;
+    default_planning_threshold: number;
+    solved_tiers: Record<string, Record<string, PortfolioSolution>>;
+  };
+  implementation_roadmap?: ImplementationMetadata;
   gravity_elasticities?: Record<string, number>;
   gravity_models?: any;
+}
+
+export interface MonteCarloBenchmark {
+  origin: string;
+  destination: string;
+  n_simulations: number;
+  percentiles: {
+    additional_nights: { p10: number; p50: number; p90: number };
+    additional_spend_rm_m: { p10: number; p25: number; p50: number; p75: number; p90: number };
+    potential_gva_rm_m: { p10: number; p25: number; p50: number; p75: number; p90: number };
+    projected_aor_pct?: { p10: number; p25: number; p50: number; p75: number; p90: number } | null;
+  };
+  mean: {
+    additional_nights: number;
+    additional_spend_rm_m: number;
+    potential_gva_rm_m: number;
+    projected_aor_pct?: number | null;
+  };
+  std: {
+    additional_spend_rm_m: number;
+    potential_gva_rm_m: number;
+    projected_aor_pct?: number | null;
+  };
+  prob_capacity_breach: number;
+  distribution?: {
+    gva_density: Array<{ bin_mid: number; frequency: number }>;
+  };
+  disclaimer: string;
+  seasonal_caveat: string;
+}
+
+export interface PortfolioCorridor {
+  corridor_id: string;
+  origin: string;
+  destination: string;
+  tourist_flow_thousands: number;
+  category: string;
+  cost_rm_million: number;
+  expected_gva_rm_million: number;
+  additional_nights: number;
+  additional_spend_rm_million: number;
+  daily_rooms_demanded: number;
+}
+
+export interface PortfolioSolution {
+  status: string;
+  summary: {
+    budget_allocated_rm_million: number;
+    total_cost_rm_million: number;
+    budget_utilization_pct: number;
+    total_expected_gva_rm_million: number;
+    total_additional_spend_rm_million: number;
+    total_additional_nights: number;
+    portfolio_roi_multiplier: number;
+    total_corridors_funded: number;
+    planning_threshold_pct: number;
+  };
+  selected_corridors: PortfolioCorridor[];
+  destination_impacts: Record<string, {
+    funded_corridors_count: number;
+    additional_daily_rooms: number;
+    baseline_aor_pct: number | null;
+    delta_aor_pct: number | null;
+    implied_aor_pct: number | null;
+    headroom_ceiling_pct: number;
+    capacity_compliant: boolean;
+  }>;
+  disclaimer: string;
+  seasonal_caveat: string;
+}
+
+export interface ImplementationUser {
+  role: string;
+  full_name: string;
+  primary_decisions: string[];
+  recommended_views: string[];
+}
+
+export interface ImplementationMetadata {
+  target_users: ImplementationUser[];
+  operating_model: Array<{ step: number; name: string; description: string }>;
+  refresh_cadence: Array<{ stream: string; frequency: string; source: string }>;
 }
 
 export interface DriverAttribution {

@@ -1,12 +1,13 @@
-import { BarChart3, MapPin, Route, SlidersHorizontal } from 'lucide-react';
+import { BarChart3, MapPin, Route, SlidersHorizontal, BookOpen, Layers } from 'lucide-react';
 
-type Tab = 'monitor' | 'map' | 'corridors' | 'simulator';
+export type Tab = 'monitor' | 'map' | 'corridors' | 'simulator' | 'implementation';
 
 interface HeaderProps {
   activeTab: Tab;
   onSelectTab: (tab: Tab) => void;
   selectedYear: number;
   onSelectYear: (year: number) => void;
+  onOpenProvenance?: () => void;
 }
 
 const tabs: { id: Tab; label: string; icon: typeof BarChart3 }[] = [
@@ -14,9 +15,10 @@ const tabs: { id: Tab; label: string; icon: typeof BarChart3 }[] = [
   { id: 'map', label: 'States & stays', icon: MapPin },
   { id: 'corridors', label: 'Value corridors', icon: Route },
   { id: 'simulator', label: 'Scenario lab', icon: SlidersHorizontal },
+  { id: 'implementation', label: 'Roadmap & Ops', icon: Layers },
 ];
 
-export function Header({ activeTab, onSelectTab, selectedYear, onSelectYear }: HeaderProps) {
+export function Header({ activeTab, onSelectTab, selectedYear, onSelectYear, onOpenProvenance }: HeaderProps) {
   return (
     <header className="app-header">
       <div className="app-header-inner">
@@ -28,7 +30,20 @@ export function Header({ activeTab, onSelectTab, selectedYear, onSelectYear }: H
               <p className="brand-caption">Malaysia Tourism Value Optimizer</p>
             </div>
           </div>
-          <div className="header-meta"><span className="header-meta-dot" />DOSM data · 2015–2025</div>
+          <div className="flex items-center gap-2">
+            <div className="header-meta"><span className="header-meta-dot" />DOSM data · 2015–2025</div>
+            {onOpenProvenance && (
+              <button
+                type="button"
+                onClick={onOpenProvenance}
+                className="header-meta hover:bg-violet-100/70 hover:text-violet-900 transition-all cursor-pointer flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-violet-200/60"
+                title="Open Data Provenance & Methodology Audit Registry"
+              >
+                <BookOpen size={13} strokeWidth={2} />
+                <span>Provenance Registry</span>
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="page-intro">

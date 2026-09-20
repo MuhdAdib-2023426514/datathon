@@ -15,7 +15,8 @@ import {
   X,
   ShieldCheck,
   Check,
-  Filter
+  Filter,
+  Target
 } from 'lucide-react';
 
 interface AccommodationMapProps {
@@ -23,6 +24,91 @@ interface AccommodationMapProps {
   geoJson: any;
   driversData: DriversData;
   selectedYear?: number;
+}
+
+interface StateDecisionSummaryData {
+  primaryConstraint: string;
+  primaryOpportunity: string;
+  prescription: string;
+  evidence: string[];
+  confidence: string;
+  limitations: string;
+  tvay: number | null;
+  tey: number;
+  alos: number;
+  spendPerNight: number;
+  aor: number | null;
+  headroom: number | null;
+}
+
+function computeStateDecisionSummary(state: StateProfile): StateDecisionSummaryData {
+  const b = state.baseline_2025;
+  const sdg = state.sdg_metrics;
+  const alos = b.alos_days;
+  const tvay: number | null = sdg.tvay_rm_per_day != null ? sdg.tvay_rm_per_day : null;
+  const tey = sdg.tey_rm_per_day;
+  const spendPerNight = b.spend_per_night_rm;
+  const aor = b.aor_pct;
+  const headroom = aor != null ? Math.max(0, 80.0 - aor) : null;
+  const vfrShare = state.lodging_shares?.unpaid_vfr_pct;
+
+  // Effective yield indicator: prefer TVAY, fall back to spend/night for classification
+  const hasYield = tvay != null;
+  const yieldHigh = hasYield ? tvay >= 58.0 : (spendPerNight != null && spendPerNight >= 60.0);
+  const yieldLabel = hasYield
+    ? `TVAY (RM ${tvay!.toFixed(1)}/day)`
+    : (spendPerNight != null ? `Spend/Night (RM ${spendPerNight.toFixed(1)})` : 'Yield data unavailable');
+  const yieldBenchmark = hasYield ? 'national median (RM 58.0)' : 'national median (RM 60.0)';
+
+  let primaryConstraint = '';
+  let primaryOpportunity = '';
+  let prescription = '';
+  const evidence: string[] = [];
+
+  // National benchmark medians: ALOS: 2.50d, TVAY: 58.0 RM/day, Spend/Night: 60.0 RM
+  if (alos < 2.50 && yieldHigh) {
+    primaryConstraint = 'Short stay duration and day-trip transit pass-through';
+    primaryOpportunity = 'Stay-extension incentive campaigns (+0.3d to +0.5d) and evening leisure economy capture';
+    prescription = 'Deploy weekend & corporate staycation incentive vouchers, curate night-time cultural trails, and bundle hotel+attraction passes to convert transit day-trippers into overnight guests.';
+    evidence.push(`ALOS (${alos.toFixed(2)}d) below national median (2.50d)`);
+    evidence.push(`${yieldLabel} above ${yieldBenchmark}`);
+    if (headroom != null) evidence.push(`Hotel capacity headroom (${headroom.toFixed(0)}%) available below 80% threshold`);
+  } else if (alos < 2.50 && !yieldHigh) {
+    primaryConstraint = 'Low nightly accommodation spend density and transit-dominated routing';
+    primaryOpportunity = 'Experiential tourism product upgrades, boutique heritage stays, and in-destination spend capture';
+    prescription = 'Upgrade local hospitality product standards, develop premium experiential eco/heritage circuits, and partner with regional transport operators to raise spend per visitor-day.';
+    evidence.push(`ALOS (${alos.toFixed(2)}d) below national median (2.50d)`);
+    evidence.push(`${yieldLabel} below ${yieldBenchmark}`);
+  } else if (alos >= 2.50 && !yieldHigh) {
+    primaryConstraint = 'High proportion of unpaid informal VFR lodging with low commercial accommodation capture';
+    primaryOpportunity = 'Community homestay formalization (SDG 8.9), artisan retail spend trails, and packaged leisure extensions';
+    prescription = 'Expand MOTAC certified Kampungstay/Homestay licensing, develop localized culinary & handicraft retail trails, and incentivize diaspora families to spend on paid recreational experiences.';
+    evidence.push(`ALOS (${alos.toFixed(2)}d) above national median (2.50d)`);
+    evidence.push(`${yieldLabel} below ${yieldBenchmark}`);
+    if (vfrShare != null) evidence.push(`Unpaid VFR lodging share (${vfrShare.toFixed(1)}%) of overnight stays`);
+  } else {
+    primaryConstraint = 'Peak seasonal capacity constraints and destination environmental/heritage carrying capacity (SDG 12.b)';
+    primaryOpportunity = 'Preserve high-yield premium value capture, expand off-peak seasonal demand, and deepen sustainable green eco-certification';
+    prescription = 'Target affluent repeat visitors, protect core heritage/ecotourism zones from overcrowding, and implement dynamic seasonal pricing to maintain top-quartile economic yield.';
+    evidence.push(`ALOS (${alos.toFixed(2)}d) above national median (2.50d)`);
+    evidence.push(`${yieldLabel} above ${yieldBenchmark}`);
+    if (aor != null && aor > 65.0) evidence.push(`Annual occupancy (${aor.toFixed(1)}%) indicates periodic weekend capacity pressure`);
+  }
+
+  return {
+    primaryConstraint,
+    primaryOpportunity,
+    prescription,
+    evidence,
+    confidence: 'High (Official DOSM TSA 2025 & DTS Census Sample)',
+    limitations: 'National TSA product VAI applied to state expenditure composition. Annual occupancy rate masks localized weekend capacity surges.',
+    tvay,
+    tey,
+    alos,
+    spendPerNight,
+    aor,
+    headroom
+  };
 }
 
 export const AccommodationMap: React.FC<AccommodationMapProps> = ({
@@ -48,6 +134,7 @@ export const AccommodationMap: React.FC<AccommodationMapProps> = ({
 
   const stateList = Object.values(stateProfiles);
   const activeState = stateProfiles[selectedStateName] || stateList[0];
+  const decisionSummary = computeStateDecisionSummary(activeState);
 
   // Helper to test if a state matches the SDG strategic filter
   const isStateHighlighted = (stateName: string) => {
@@ -75,18 +162,24 @@ export const AccommodationMap: React.FC<AccommodationMapProps> = ({
     const d = state.demographics;
     const sdg = state.sdg_metrics;
     const dts = d?.dts_age_classes;
+    const summary = computeStateDecisionSummary(state);
 
     return `# STATE TOURISM ECONOMIC INTELLIGENCE BRIEF: ${state.state.toUpperCase()}
-**Malaysia Tourism Value Optimizer (MYTourism Value Intelligence)**
-**Date**: ${new Date().toLocaleDateString('en-MY')} | **Status**: Official Decision-Support Brief | **Year**: ${selectedYear}
+**MYTourism Value Intelligence — State Decision-Support Brief**
+*Prototype based on official Malaysian tourism data*
+**Date**: ${new Date().toLocaleDateString('en-MY')} | **Status**: Research Prototype Decision Support | **Year**: ${selectedYear}
 
 ---
 
-## 1. Executive Summary & Strategic Classification
-- **State Archetype**: ${state.archetype_name}
-- **Region**: ${state.region} | **State Code**: ${state.state_code}
-- **Strategic Mandate**: Shift from visitor volume expansion to domestic economic value capture from existing visitors.
-- **Diagnostic Note**: ${state.archetype_desc}
+## 1. Executive Decision Summary & Strategic Prescription
+- **State Archetype**: ${state.archetype_name} (${state.region})
+- **Primary Constraint**: ${summary.primaryConstraint}
+- **Primary Opportunity**: ${summary.primaryOpportunity}
+- **Confidence Rating**: ${summary.confidence}
+- **Hotel Capacity Headroom**: ${summary.headroom != null ? `${summary.headroom.toFixed(0)}% room space below 80% ceiling` : 'N/A'}
+- **Rule-Based Policy Action**: ${summary.prescription}
+- **Supporting Empirical Evidence**:
+${summary.evidence.map(e => `  - ${e}`).join('\n')}
 
 ---
 
@@ -519,6 +612,69 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
             {activeState.archetype_desc}
           </p>
 
+          {/* Executive State Decision Summary (Sprint 7 Phase 32 & 33) */}
+          <div className="p-3.5 rounded-xl bg-gradient-to-br from-violet-50/90 via-white to-purple-50/60 border border-violet-200/80 shadow-sm space-y-2.5">
+            <div className="flex items-center justify-between border-b border-violet-100 pb-2">
+              <div className="flex items-center gap-1.5 text-xs font-extrabold text-stone-900 uppercase tracking-wider">
+                <Target className="w-3.5 h-3.5 text-violet-700" />
+                <span>Executive Decision Summary</span>
+              </div>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
+                Confidence: High (DOSM DTS)
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div className="p-2 rounded-lg bg-amber-50/70 border border-amber-200/60">
+                <span className="text-[10px] font-bold text-amber-900 uppercase block">Primary Constraint</span>
+                <strong className="text-stone-900 text-xs block mt-0.5 leading-snug">{decisionSummary.primaryConstraint}</strong>
+              </div>
+              <div className="p-2 rounded-lg bg-emerald-50/70 border border-emerald-200/60">
+                <span className="text-[10px] font-bold text-emerald-900 uppercase block">Primary Opportunity</span>
+                <strong className="text-stone-900 text-xs block mt-0.5 leading-snug">{decisionSummary.primaryOpportunity}</strong>
+              </div>
+            </div>
+
+            {/* Core Metrics Grid */}
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5 text-center text-[11px] pt-1">
+              <div className="p-1.5 rounded bg-white border border-violet-100">
+                <span className="text-[9px] text-stone-500 block">TVAY</span>
+                <strong className="font-mono text-xs text-violet-700">{decisionSummary.tvay != null ? `RM ${decisionSummary.tvay.toFixed(1)}` : 'N/A'}</strong>
+              </div>
+              <div className="p-1.5 rounded bg-white border border-violet-100">
+                <span className="text-[9px] text-stone-500 block">TEY</span>
+                <strong className="font-mono text-xs text-stone-800">RM {decisionSummary.tey.toFixed(1)}</strong>
+              </div>
+              <div className="p-1.5 rounded bg-white border border-violet-100">
+                <span className="text-[9px] text-stone-500 block">ALOS</span>
+                <strong className="font-mono text-xs text-stone-800">{decisionSummary.alos.toFixed(2)}d</strong>
+              </div>
+              <div className="p-1.5 rounded bg-white border border-violet-100">
+                <span className="text-[9px] text-stone-500 block">Spend/Night</span>
+                <strong className="font-mono text-xs text-indigo-700">RM {decisionSummary.spendPerNight.toFixed(0)}</strong>
+              </div>
+              <div className="p-1.5 rounded bg-white border border-violet-100">
+                <span className="text-[9px] text-stone-500 block">AOR</span>
+                <strong className="font-mono text-xs text-stone-800">{decisionSummary.aor != null ? `${decisionSummary.aor.toFixed(1)}%` : 'N/A'}</strong>
+              </div>
+              <div className="p-1.5 rounded bg-white border border-violet-100">
+                <span className="text-[9px] text-stone-500 block">Headroom</span>
+                <strong className={`font-mono text-xs ${decisionSummary.headroom != null && decisionSummary.headroom < 10 ? 'text-amber-700' : 'text-emerald-700'}`}>
+                  {decisionSummary.headroom != null ? `${decisionSummary.headroom.toFixed(0)}%` : 'N/A'}
+                </strong>
+              </div>
+            </div>
+
+            {/* Strategic Prescription */}
+            <div className="p-2.5 rounded-lg bg-violet-600/10 border border-violet-300/60 text-[11px] text-stone-800 space-y-1">
+              <span className="font-bold text-violet-900 block flex items-center gap-1">
+                <Compass className="w-3 h-3 text-violet-700" />
+                Rule-Based Strategic Recommendation:
+              </span>
+              <p className="text-stone-700 leading-relaxed">{decisionSummary.prescription}</p>
+            </div>
+          </div>
+
           {/* Radar Chart (Value Efficiency Dimensions) */}
           <div>
             <div className="flex items-center justify-between text-xs font-bold text-stone-700 mb-1">
@@ -546,31 +702,43 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
             </div>
           </div>
 
-          {/* Key Metric Cards */}
+          {/* Key Metric Cards with Visible Data Status Badges (Phase 30) */}
           <div className="grid grid-cols-4 gap-2 text-center text-xs">
             <div className="p-2 rounded-lg bg-white/80 border border-violet-100">
-              <span className="text-stone-600 text-[10px] uppercase font-semibold">ALOS</span>
+              <div className="flex items-center justify-between text-[10px] text-stone-600 font-semibold">
+                <span>ALOS</span>
+                <span className="px-1 py-0.2 rounded text-[8px] font-bold bg-blue-50 text-blue-700 border border-blue-200">OFFICIAL</span>
+              </div>
               <div className="text-base font-bold text-stone-900 font-mono mt-0.5">
                 {activeState.baseline_2025.alos_days.toFixed(2)}d
               </div>
             </div>
 
             <div className="p-2 rounded-lg bg-white/80 border border-violet-100">
-              <span className="text-stone-600 text-[10px] uppercase font-semibold">Spend/Night</span>
+              <div className="flex items-center justify-between text-[10px] text-stone-600 font-semibold">
+                <span>Spend/Night</span>
+                <span className="px-1 py-0.2 rounded text-[8px] font-bold bg-purple-50 text-purple-700 border border-purple-200">DERIVED</span>
+              </div>
               <div className="text-base font-bold text-violet-700 font-mono mt-0.5">
                 RM {activeState.baseline_2025.spend_per_night_rm.toFixed(0)}
               </div>
             </div>
 
             <div className="p-2 rounded-lg bg-white/80 border border-violet-100">
-              <span className="text-stone-600 text-[10px] uppercase font-semibold">TEY (Yield/Day)</span>
+              <div className="flex items-center justify-between text-[10px] text-stone-600 font-semibold">
+                <span>TEY (Yield)</span>
+                <span className="px-1 py-0.2 rounded text-[8px] font-bold bg-purple-50 text-purple-700 border border-purple-200">DERIVED</span>
+              </div>
               <div className="text-base font-bold text-indigo-600 font-mono mt-0.5">
                 RM {(activeState.sdg_metrics?.tey_rm_per_day ?? 0).toFixed(0)}
               </div>
             </div>
 
             <div className="p-2 rounded-lg bg-white/80 border border-violet-100">
-              <span className="text-stone-600 text-[10px] uppercase font-semibold">TVAY (GVA/Day)</span>
+              <div className="flex items-center justify-between text-[10px] text-stone-600 font-semibold">
+                <span>TVAY (GVA)</span>
+                <span className="px-1 py-0.2 rounded text-[8px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">PROXY</span>
+              </div>
               <div className="text-base font-bold text-emerald-700 font-mono mt-0.5">
                 RM {(activeState.sdg_metrics?.tvay_rm_per_day ?? 0).toFixed(0)}
               </div>
@@ -820,7 +988,12 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
             <div className="p-6 overflow-y-auto space-y-5 text-sm text-stone-800 print:p-0 print:text-black">
               <div className="space-y-4">
                 <div className="border-b border-violet-100 pb-3">
-                  <span className="text-xs uppercase tracking-wider text-violet-700 font-bold">Official Policy Briefing</span>
+                  <span className="text-xs uppercase tracking-wider text-violet-700 font-bold">
+                    MYTourism Value Intelligence State Decision-Support Brief
+                  </span>
+                  <span className="text-[10px] text-stone-500 block">
+                    Prototype based on official Malaysian tourism data
+                  </span>
                   <h1 className="text-2xl font-black text-stone-900 mt-1">{activeState.state} Tourism Economic Profile</h1>
                   <p className="text-xs text-stone-600 mt-0.5">
                     Strategic Mandate: Converting Visitor Volume to Domestic Economic Yield • UN SDG 8.9 & 12.b

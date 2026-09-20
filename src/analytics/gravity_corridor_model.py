@@ -403,7 +403,7 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
         if ratio < 0.75 and spend_night >= 50.0:
             return "High-Potential Untapped Corridor (High Yield, Below Gravity Expectation)"
         elif ratio >= 1.4 and alos < 2.2:
-            return "Hyper-Connected Day-Trip Corridor (High Flow, Leakage Risk)"
+            return "Hyper-Connected Day-Trip Corridor (High Flow, Low Overnight Capture)"
         elif ratio >= 1.2 and alos >= 2.4:
             return "Prime Sustainable Corridor (High Flow & Strong Stay)"
         elif ratio < 0.5:

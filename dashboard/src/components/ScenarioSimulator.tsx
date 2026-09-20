@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
+import * as echarts from 'echarts';
 import type { ScenarioEngineConfig, StateProfile } from '../types';
 import { 
   Sliders, 
@@ -11,7 +12,13 @@ import {
   Shield,
   Zap,
   Rocket,
-  ArrowUpRight
+  ArrowUpRight,
+  Info,
+  ChevronDown,
+  ChevronUp,
+  SlidersHorizontal,
+  Route,
+  BarChart3
 } from 'lucide-react';
 
 // Custom smooth interpolation hook using requestAnimationFrame & cubic ease-out (~400ms)
@@ -78,6 +85,7 @@ interface PolicyPreset {
   sublabel: string;
   badge: string;
   deltaAlos: number;
+  affectedShare: number;
   conversionRate: number;
   yieldUplift: number;
   vfrConversionRate: number;
@@ -88,9 +96,10 @@ const PRESETS: PolicyPreset[] = [
   {
     key: 'conservative',
     label: 'Conservative',
-    sublabel: '+0.2d / 5% conv',
+    sublabel: '+0.2d / 10% reach / 5% conv',
     badge: 'Baseline',
     deltaAlos: 0.2,
+    affectedShare: 10,
     conversionRate: 5,
     yieldUplift: 5,
     vfrConversionRate: 3,
@@ -99,9 +108,10 @@ const PRESETS: PolicyPreset[] = [
   {
     key: 'moderate',
     label: 'Moderate',
-    sublabel: '+0.4d / 10% conv',
+    sublabel: '+0.4d / 15% reach / 10% conv',
     badge: 'Targeted',
     deltaAlos: 0.4,
+    affectedShare: 15,
     conversionRate: 10,
     yieldUplift: 10,
     vfrConversionRate: 5,
@@ -110,9 +120,10 @@ const PRESETS: PolicyPreset[] = [
   {
     key: 'ambitious',
     label: 'Ambitious',
-    sublabel: '+0.6d / 20% conv',
+    sublabel: '+0.6d / 25% reach / 20% conv',
     badge: 'Transform',
     deltaAlos: 0.6,
+    affectedShare: 25,
     conversionRate: 20,
     yieldUplift: 15,
     vfrConversionRate: 10,
@@ -123,22 +134,45 @@ const PRESETS: PolicyPreset[] = [
 interface ScenarioSimulatorProps {
   scenarioConfig: ScenarioEngineConfig;
   stateProfiles: Record<string, StateProfile>;
+  initialDestination?: string;
+  initialOrigin?: string;
 }
 
 export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({ 
   scenarioConfig, 
-  stateProfiles 
+  stateProfiles,
+  initialDestination,
+  initialOrigin
 }) => {
-  const [selectedState, setSelectedState] = useState<string>('Melaka');
+  const [selectedState, setSelectedState] = useState<string>(
+    initialDestination && stateProfiles[initialDestination] ? initialDestination : 'Melaka'
+  );
+  const [activeCorridorOrigin, setActiveCorridorOrigin] = useState<string | null>(initialOrigin || null);
   const [activePreset, setActivePreset] = useState<PresetKey>('moderate');
   const [deltaAlos, setDeltaAlos] = useState<number>(0.4); // Moderate default
+  const [affectedShare, setAffectedShare] = useState<number>(15); // 15% campaign reach default (Phase 22)
   const [conversionRate, setConversionRate] = useState<number>(10); // 10% day-trippers converted
   const [yieldUplift, setYieldUplift] = useState<number>(10); // +10% spend/night uplift
   const [vfrConversionRate, setVfrConversionRate] = useState<number>(5); // 5% VFR to paid lodging
+  const [planningThreshold, setPlanningThreshold] = useState<number>(80); // 80% planning ceiling (Phase 27)
+  const [showProvenanceDrawer, setShowProvenanceDrawer] = useState<boolean>(false); // Phase 25
+  const [simulationMode, setSimulationMode] = useState<'policy' | 'monte_carlo' | 'portfolio'>('policy'); // Sprint 8
+  const [selectedBudget, setSelectedBudget] = useState<number>(5.0);
+  const [selectedOptimizerThreshold, setSelectedOptimizerThreshold] = useState<number>(80);
+
+  useEffect(() => {
+    if (initialDestination && stateProfiles[initialDestination]) {
+      setSelectedState(initialDestination);
+    }
+    if (initialOrigin) {
+      setActiveCorridorOrigin(initialOrigin);
+    }
+  }, [initialDestination, initialOrigin, stateProfiles]);
 
   const handleSelectPreset = (preset: PolicyPreset) => {
     setActivePreset(preset.key);
     setDeltaAlos(preset.deltaAlos);
+    setAffectedShare(preset.affectedShare);
     setConversionRate(preset.conversionRate);
     setYieldUplift(preset.yieldUplift);
     setVfrConversionRate(preset.vfrConversionRate);
@@ -146,6 +180,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
 
   const handleReset = () => {
     handleSelectPreset(PRESETS[1]); // Reset to moderate preset
+    setPlanningThreshold(80);
   };
 
   const stateList = Object.values(stateProfiles);
@@ -156,21 +191,23 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
   const baselineExcursionistsK = activeProfile.baseline_2025.visitors_thousands - b.tourists_thousands;
   const baselineAlos = b.alos_days;
   const baselineSpendPerNight = b.spend_per_night_rm;
-  const accomVAI = scenarioConfig.constants?.accommodation_vai || 0.858;
-  const residentHouseholds = activeProfile.demographics?.households_thousands || 250.0;
+  const accomVAI = scenarioConfig.constants?.accommodation_vai || 0.8579;
+  const guestsPerRoom = scenarioConfig.constants?.average_guests_per_room || 1.8;
+  const seasonalCaveat = scenarioConfig.constants?.seasonal_caveat || "Annual occupancy may hide seasonal/weekend capacity pressure.";
+  const residentHouseholds = activeProfile.demographics?.households_thousands || null;
   const hasCapacityData = b.hotel_rooms != null && b.aor_pct != null;
   const totalRooms = b.hotel_rooms;
   const baselineAor = b.aor_pct;
 
-  // Real-Time Scenario Calculations (AGENTS.md Stage F Formulas)
-  // 1. Additional nights from extending stay of existing tourists
-  const addNightsFromAlosK = baselineTouristsK * deltaAlos;
+  // Real-Time Scenario Calculations (AGENTS.md Stage F & Sprint 6 Formulas)
+  // 1. Stay extension with campaign affected share (Phase 22)
+  const addNightsFromAlosK = baselineTouristsK * (affectedShare / 100.0) * deltaAlos;
 
   // 2. Converted excursionists into overnight tourists
   const convertedTouristsK = baselineExcursionistsK * (conversionRate / 100.0);
   const addNightsFromConvertedK = convertedTouristsK * (baselineAlos + deltaAlos);
 
-  // 3. Converted unpaid VFR stays into registered paid lodging/homestays (Recommendation 3)
+  // 3. Converted unpaid VFR stays into commercial/registered paid lodging (Phase 24)
   const hasVfrData = activeProfile.lodging_shares?.unpaid_vfr_pct != null;
   const unpaidVfrPct = hasVfrData ? activeProfile.lodging_shares!.unpaid_vfr_pct : 0.0;
   const vfrTouristsK = baselineTouristsK * (unpaidVfrPct / 100.0);
@@ -179,33 +216,76 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
   const homestayNightlyRate = Math.max(75, baselineSpendPerNight * 0.85);
   const vfrAccomSpendRM = hasVfrData ? (vfrNightsK * 1e3 * homestayNightlyRate) / 1e6 : 0.0;
 
-  // Total additional tourist nights (thousands)
-  const totalAdditionalNightsK = addNightsFromAlosK + addNightsFromConvertedK;
+  // Total additional guest nights (thousands) — Phase 24 includes VFR nights
+  const totalAdditionalGuestNightsK = addNightsFromAlosK + addNightsFromConvertedK + vfrNightsK;
 
   // New spend per night (RM)
   const newSpendPerNight = baselineSpendPerNight * (1 + yieldUplift / 100.0);
 
   // Additional accommodation expenditure (RM Million)
-  // New nights spend + uplift on existing nights + VFR converted lodging spend
   const existingNightsK = baselineTouristsK * baselineAlos;
-  const newNightsSpendRM = (totalAdditionalNightsK * 1e3 * newSpendPerNight) / 1e6;
+  const newNightsSpendRM = ((addNightsFromAlosK + addNightsFromConvertedK) * 1e3 * newSpendPerNight) / 1e6;
   const existingNightsUpliftRM = (existingNightsK * 1e3 * (newSpendPerNight - baselineSpendPerNight)) / 1e6;
   const totalAdditionalAccomSpendMil = newNightsSpendRM + existingNightsUpliftRM + vfrAccomSpendRM;
 
-  // Potential Additional Tourism Value Added Proxy (RM Million at 85.8% VAI)
+  // Potential Additional Tourism Value Added Proxy (RM Million at official VAI)
   const potentialAdditionalTdgvaMil = totalAdditionalAccomSpendMil * accomVAI;
 
   // Incremental Yield per Resident Household (RM / Household)
-  const yieldPerHouseholdRM = (totalAdditionalAccomSpendMil * 1e6) / (residentHouseholds * 1e3);
+  const yieldPerHouseholdRM = (residentHouseholds && residentHouseholds > 0)
+    ? (totalAdditionalAccomSpendMil * 1e6) / (residentHouseholds * 1e3)
+    : 0;
 
-  // Capacity Feasibility (AOR impact) - Strict non-arbitrary computation
+  // Capacity Feasibility: Convert Guest Nights to Room Nights (Phase 23 & 24)
   const availableRoomNightsYearK = (hasCapacityData && totalRooms && totalRooms > 0) ? (totalRooms * 365) / 1e3 : null;
+  const additionalRoomNightsYearK = totalAdditionalGuestNightsK / guestsPerRoom;
   const additionalAorPct = (hasCapacityData && availableRoomNightsYearK && availableRoomNightsYearK > 0)
-    ? (totalAdditionalNightsK / availableRoomNightsYearK) * 100
+    ? (additionalRoomNightsYearK / availableRoomNightsYearK) * 100
     : null;
   const simulatedAor = (hasCapacityData && baselineAor != null && additionalAorPct != null)
     ? baselineAor + additionalAorPct
     : null;
+
+  // Saturation Tier based on Configurable Planning Threshold (Phase 27)
+  const getCapacityStatus = (aor: number | null) => {
+    if (aor == null) return { tier: 'Unknown', color: 'text-stone-500', bg: 'bg-stone-500', isConstrained: false, msg: 'Capacity Unobserved' };
+    if (aor > 100.0) {
+      return {
+        tier: 'Physical Breach',
+        color: 'text-rose-700',
+        bg: 'bg-rose-600',
+        isConstrained: true,
+        msg: `Physical Capacity Breach (${aor.toFixed(1)}% AOR > 100% Ceiling) — Exceeds total available hotel room inventory`,
+      };
+    }
+    if (aor > planningThreshold) {
+      return {
+        tier: 'Severe Saturation',
+        color: 'text-amber-700',
+        bg: 'bg-amber-500',
+        isConstrained: true,
+        msg: `Severe Capacity Saturation (${aor.toFixed(1)}% AOR > ${planningThreshold}% Threshold) — Requires room supply expansion or off-peak redistribution`,
+      };
+    }
+    if (aor >= (planningThreshold - 10)) {
+      return {
+        tier: 'Planning Watch',
+        color: 'text-indigo-600',
+        bg: 'bg-indigo-500',
+        isConstrained: false,
+        msg: `Planning Watch (${aor.toFixed(1)}% AOR in ${planningThreshold - 10}-${planningThreshold}% range) — Tightening headroom during peak periods`,
+      };
+    }
+    return {
+      tier: 'Normal',
+      color: 'text-violet-700',
+      bg: 'bg-violet-600',
+      isConstrained: false,
+      msg: `Feasible (${aor.toFixed(1)}% AOR within sustainable hotel capacity)`,
+    };
+  };
+
+  const capacityStatus = getCapacityStatus(simulatedAor);
 
   // ECharts Comparison Waterfall / Bar
   const impactChartOption = {
@@ -269,30 +349,138 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
               Tourism Economic Value Scenario Simulator
             </h2>
             <p className="text-sm text-stone-700 mt-1 max-w-3xl">
-              Simulate the macroeconomic impact of targeted interventions: extending length of stay, converting excursionist day-trippers into overnight guests, and optimizing accommodation yield per night.
+              Simulate the macroeconomic impact of targeted interventions: extending length of stay, converting excursionist day-trippers into overnight guests, and optimizing accommodation yield per night under room capacity constraints.
             </p>
           </div>
 
-          <button
-            onClick={handleReset}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border border-violet-200 text-stone-700 hover:text-stone-900 text-xs font-semibold self-start md:self-center transition-all"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            Reset to Defaults
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowProvenanceDrawer(!showProvenanceDrawer)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-violet-50 border border-violet-200 text-violet-800 hover:bg-violet-100 text-xs font-semibold transition-all"
+            >
+              <Info className="w-3.5 h-3.5" />
+              <span>Audit Provenance</span>
+              {showProvenanceDrawer ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
+            <button
+              onClick={handleReset}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-violet-200 text-stone-700 hover:text-stone-900 text-xs font-semibold transition-all"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              Reset
+            </button>
+          </div>
         </div>
 
         {/* Mandatory Causal Disclaimer Badge (AGENTS.md Section 7 & 9) */}
         <div className="mt-4 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center gap-2.5 text-xs text-amber-800">
           <ShieldAlert className="w-4 h-4 text-amber-700 shrink-0" />
           <span>
-            <strong>Mandatory Methodological Guardrail:</strong> <em>"Scenario estimate, not a causal forecast."</em> Calculations rely on TSA 2025 accommodation value-added intensity (85.8%) and Domestic Tourism Survey parameters under transparent proportional assumptions.
+            <strong>Mandatory Methodological Guardrail:</strong> <em>"Scenario estimate, not a causal forecast."</em> Calculations rely on official TSA 2015–2025 accommodation value-added intensity ({((accomVAI * 100)).toFixed(1)}%) and Domestic Tourism Survey parameters under transparent proportional assumptions.
           </span>
         </div>
+
+        {/* Collapsible Assumption & Provenance Drawer (Phase 25) */}
+        {showProvenanceDrawer && (
+          <div className="mt-4 p-4 rounded-xl bg-violet-50/50 border border-violet-200 text-xs space-y-3 animate-in fade-in duration-200">
+            <div className="flex items-center justify-between border-b border-violet-200/60 pb-2">
+              <span className="font-bold text-stone-900 flex items-center gap-1.5">
+                <SlidersHorizontal className="w-3.5 h-3.5 text-violet-700" />
+                Scenario Parameter Provenance & Status Classification
+              </span>
+              <div className="flex items-center gap-2 text-[10px]">
+                <span className="px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 font-semibold">[Official]</span>
+                <span className="px-1.5 py-0.5 rounded bg-purple-100 text-purple-800 font-semibold">[Derived]</span>
+                <span className="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold">[Scenario Assumption]</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 text-[11px]">
+              <div className="p-2 rounded bg-white border border-violet-100 space-y-0.5">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-stone-800">Baseline Tourists</span>
+                  <span className="px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 text-[9px] font-bold">Official</span>
+                </div>
+                <p className="text-stone-500 text-[10px]">DTS 2025 table of overnight tourist volume</p>
+              </div>
+              <div className="p-2 rounded bg-white border border-violet-100 space-y-0.5">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-stone-800">Baseline ALOS</span>
+                  <span className="px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 text-[9px] font-bold">Official</span>
+                </div>
+                <p className="text-stone-500 text-[10px]">DTS 2025 Average Length of Stay by destination</p>
+              </div>
+              <div className="p-2 rounded bg-white border border-violet-100 space-y-0.5">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-stone-800">Spend per Night</span>
+                  <span className="px-1.5 py-0.2 rounded bg-purple-100 text-purple-800 text-[9px] font-bold">Derived</span>
+                </div>
+                <p className="text-stone-500 text-[10px]">Accommodation spend / (Tourists × ALOS)</p>
+              </div>
+              <div className="p-2 rounded bg-white border border-violet-100 space-y-0.5">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-stone-800">Campaign Affected Share</span>
+                  <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">Scenario Assumption</span>
+                </div>
+                <p className="text-stone-500 text-[10px]">Target reach of promotion campaign (default 15%)</p>
+              </div>
+              <div className="p-2 rounded bg-white border border-violet-100 space-y-0.5">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-stone-800">Guests per Occupied Room</span>
+                  <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">Scenario Assumption</span>
+                </div>
+                <p className="text-stone-500 text-[10px]">Standard domestic tourist density (1.8 guests/room)</p>
+              </div>
+              <div className="p-2 rounded bg-white border border-violet-100 space-y-0.5">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-stone-800">Planning Threshold</span>
+                  <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">Scenario Assumption</span>
+                </div>
+                <p className="text-stone-500 text-[10px]">Sustainable annual AOR ceiling ({planningThreshold}%)</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Main Simulator Grid: Controls (5 cols) & Outputs (7 cols) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      {/* Sprint 8 Mode Selector: Deterministic Policy | Monte Carlo Uncertainty | Portfolio Optimizer */}
+      <div className="flex flex-wrap items-center gap-2 p-1.5 bg-violet-100/60 rounded-xl border border-violet-200/80 w-fit">
+        <button
+          onClick={() => setSimulationMode('policy')}
+          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            simulationMode === 'policy'
+              ? 'bg-white text-violet-950 shadow-sm'
+              : 'text-stone-600 hover:text-stone-900'
+          }`}
+        >
+          Deterministic Policy Levers
+        </button>
+        <button
+          onClick={() => setSimulationMode('monte_carlo')}
+          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+            simulationMode === 'monte_carlo'
+              ? 'bg-white text-violet-950 shadow-sm'
+              : 'text-stone-600 hover:text-stone-900'
+          }`}
+        >
+          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+          <span>Monte Carlo Uncertainty (Phase 26)</span>
+        </button>
+        <button
+          onClick={() => setSimulationMode('portfolio')}
+          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
+            simulationMode === 'portfolio'
+              ? 'bg-white text-violet-950 shadow-sm'
+              : 'text-stone-600 hover:text-stone-900'
+          }`}
+        >
+          <SlidersHorizontal className="w-3.5 h-3.5 text-indigo-600" />
+          <span>Portfolio Optimizer (Phase 36)</span>
+        </button>
+      </div>
+
+      {/* MODE 1: Deterministic Policy Levers */}
+      {simulationMode === 'policy' && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Policy Lever Controls (5 cols) */}
         <div className="glass-panel p-5 lg:col-span-5 space-y-5">
           <div className="flex items-center justify-between border-b border-violet-100/60 pb-3">
@@ -349,6 +537,34 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
               })}
             </div>
           </div>
+
+          {/* Active Corridor Focus Banner (Phase 28) */}
+          {activeCorridorOrigin && (
+            <div className="p-3 bg-violet-600/10 border border-violet-400/40 rounded-xl flex items-center justify-between gap-3 animate-fadeIn">
+              <div className="flex items-center gap-2">
+                <Route className="w-4 h-4 text-violet-700 shrink-0" />
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-violet-600/20 text-violet-700">
+                      Active Corridor Focus
+                    </span>
+                    <span className="text-xs font-mono font-bold text-stone-900">
+                      {activeCorridorOrigin} ➔ {selectedState}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-stone-600 mt-0.5">
+                    Pre-populated from OD Value Network. Simulating stay extension and accommodation capture for arrivals into {selectedState}.
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setActiveCorridorOrigin(null)}
+                className="text-[11px] text-stone-600 hover:text-stone-900 px-2 py-1 rounded bg-white border border-violet-100 transition-all cursor-pointer whitespace-nowrap"
+              >
+                Clear
+              </button>
+            </div>
+          )}
 
           {/* Destination Selector */}
           <div>
@@ -414,11 +630,41 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
             </span>
           </div>
 
-          {/* Slider 2: Excursionist Conversion (%) */}
-          <div className="space-y-2 pt-2">
+          {/* Slider 2: Campaign Affected Share (%) — Phase 22 */}
+          <div className="space-y-2 pt-2 border-t border-violet-100/60">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-semibold text-stone-800 flex items-center gap-1.5">
+                <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">Assumption</span>
+                2. Campaign Affected Share (% of tourists)
+              </span>
+              <span className="font-mono font-bold text-violet-700 text-sm">
+                {affectedShare}% (→ +{addNightsFromAlosK.toFixed(0)}k nights)
+              </span>
+            </div>
+            <input
+              type="range"
+              min="5"
+              max="100"
+              step="5"
+              value={affectedShare}
+              onChange={(e) => {
+                setAffectedShare(parseInt(e.target.value));
+                setActivePreset('custom');
+              }}
+            />
+            <div className="flex justify-between text-[9px] text-stone-500">
+              <span>5% (Niche pilot)</span>
+              <span>15% (Targeted campaign)</span>
+              <span>50% (Broad initiative)</span>
+              <span>100% (Unconstrained)</span>
+            </div>
+          </div>
+
+          {/* Slider 3: Excursionist Conversion (%) */}
+          <div className="space-y-2 pt-2 border-t border-violet-100/60">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-stone-800">
-                2. Excursionist Day-Trip Conversion
+                3. Excursionist Day-Trip Conversion
               </span>
               <span className="font-mono font-bold text-indigo-600 text-sm">
                 {conversionRate}% (→ +{convertedTouristsK.toFixed(0)}k tourists)
@@ -440,11 +686,11 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
             </span>
           </div>
 
-          {/* Slider 3: Spend-per-Night Yield Uplift (%) */}
-          <div className="space-y-2 pt-2">
+          {/* Slider 4: Spend-per-Night Yield Uplift (%) */}
+          <div className="space-y-2 pt-2 border-t border-violet-100/60">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-stone-800">
-                3. Nightly Spend Yield Optimization
+                4. Nightly Spend Yield Optimization
               </span>
               <span className="font-mono font-bold text-amber-700 text-sm">
                 +{yieldUplift}% (→ RM {newSpendPerNight.toFixed(0)}/night)
@@ -466,12 +712,12 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
             </span>
           </div>
 
-          {/* Slider 4: VFR Unpaid to Paid Homestay / Commercial Lodging Conversion (Recommendation 3) */}
+          {/* Slider 5: VFR Unpaid to Paid Homestay / Commercial Lodging Conversion (Phase 24) */}
           <div className="space-y-2 pt-2 border-t border-violet-100/60">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-stone-800 flex items-center gap-1.5">
                 <Home className="w-3.5 h-3.5 text-violet-700" />
-                4. VFR to Paid Lodging / Homestay Conversion
+                5. VFR to Paid Lodging / Homestay Conversion
               </span>
               <span className="font-mono font-bold text-violet-700 text-sm">
                 {vfrConversionRate}% (→ +{convertedVfrTouristsK.toFixed(0)}k stays)
@@ -501,6 +747,35 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
               UN SDG 8.9 Policy lever: Transition visiting-friends-and-relatives (VFR) into licensed village Kampungstay, certified community homestays, and boutique heritage inns.
             </span>
           </div>
+
+          {/* Capacity Planning Sensitivity Selector (Phase 27) */}
+          <div className="space-y-2 pt-2 border-t border-violet-100/60">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-semibold text-stone-800 flex items-center gap-1.5">
+                <Hotel className="w-3.5 h-3.5 text-amber-700" />
+                Capacity Planning Ceiling Threshold
+              </span>
+              <span className="font-mono font-bold text-violet-800 text-sm">
+                {planningThreshold}% AOR
+              </span>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {[75, 80, 85].map((thresh) => (
+                <button
+                  key={thresh}
+                  type="button"
+                  onClick={() => setPlanningThreshold(thresh)}
+                  className={`py-1.5 px-2 rounded-lg text-xs font-semibold border transition-all ${
+                    planningThreshold === thresh
+                      ? 'bg-violet-600 text-white border-violet-600'
+                      : 'bg-white text-stone-700 border-violet-200 hover:bg-violet-50'
+                  }`}
+                >
+                  {thresh}% {thresh === 75 ? '(Strict)' : thresh === 80 ? '(Standard)' : '(Peak Pressure)'}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Real-Time Impact Dashboard (7 cols) */}
@@ -511,10 +786,10 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                 <Sparkles className="w-4 h-4 text-violet-700" />
                 Simulated Economic Outcomes ({selectedState})
               </h3>
-              <p className="text-xs text-stone-600">Projected incremental domestic economic capture</p>
+              <p className="text-xs text-stone-600">Projected incremental domestic economic capture under {planningThreshold}% capacity ceiling</p>
             </div>
             <span className="text-xs px-2.5 py-0.5 rounded bg-violet-600/20 text-violet-700 font-mono">
-              VAI = 85.8%
+              VAI = {((accomVAI * 100)).toFixed(1)}%
             </span>
           </div>
 
@@ -522,17 +797,17 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {/* Additional Tourist Nights */}
             <div className="metric-card p-3 border-l-2 border-l-violet-400">
-              <span className="metric-label">Extra Nights</span>
+              <span className="metric-label">Extra Guest Nights</span>
               <div className="metric-value text-stone-900 text-xl">
-                +<AnimatedCounter value={totalAdditionalNightsK / 1e3} decimals={2} />M
+                +<AnimatedCounter value={totalAdditionalGuestNightsK / 1e3} decimals={2} />M
               </div>
               <div className="mt-1 flex flex-col gap-0.5">
                 <span className="text-[10px] text-violet-700 font-medium">
-                  +<AnimatedCounter value={totalAdditionalNightsK} decimals={0} />k nights
+                  +<AnimatedCounter value={totalAdditionalGuestNightsK} decimals={0} />k nights
                 </span>
                 <div className="inline-flex items-center gap-0.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200/60 w-fit">
                   <ArrowUpRight className="w-3 h-3" />
-                  <span>+<AnimatedCounter value={totalAdditionalNightsK} decimals={0} />k</span>
+                  <span>+<AnimatedCounter value={totalAdditionalGuestNightsK} decimals={0} />k</span>
                 </div>
               </div>
             </div>
@@ -562,7 +837,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
               </div>
               <div className="mt-1 flex flex-col gap-0.5">
                 <span className="text-[10px] text-violet-700 font-medium">
-                  85.8% retained value
+                  {((accomVAI * 100)).toFixed(1)}% retained value
                 </span>
                 <div className="inline-flex items-center gap-0.5 text-[10px] font-bold text-violet-700 bg-violet-50 px-1.5 py-0.5 rounded-full border border-violet-200/60 w-fit">
                   <ArrowUpRight className="w-3 h-3" />
@@ -616,20 +891,17 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
             </div>
           </div>
 
-          {/* Hotel Capacity Feasibility Bar with 4 Saturation Tiers */}
-          <div className="p-3 rounded-lg bg-white/80 border border-violet-100 space-y-1.5">
+          {/* Hotel Capacity Feasibility Bar with Configurable Threshold (Phase 23, 24, 27) */}
+          <div className="p-3 rounded-lg bg-white/80 border border-violet-100 space-y-2">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-stone-700 flex items-center gap-1.5">
                 <Hotel className="w-3.5 h-3.5 text-amber-700" />
-                Hotel Capacity Feasibility Check
+                Hotel Capacity Feasibility Check ({guestsPerRoom} guests/occupied room)
               </span>
               {hasCapacityData && simulatedAor != null && baselineAor != null ? (
                 <span className="font-mono text-stone-700 text-xs">
-                  Simulated AOR: <strong className={
-                    simulatedAor > 100 ? 'text-rose-700' :
-                    simulatedAor > 80 ? 'text-amber-700' :
-                    simulatedAor > 70 ? 'text-indigo-600' : 'text-violet-700'
-                  }>{simulatedAor.toFixed(1)}%</strong> (Baseline: {baselineAor.toFixed(1)}%)
+                  Simulated AOR: <strong className={capacityStatus.color}>{simulatedAor.toFixed(1)}%</strong>{' '}
+                  (Baseline: {baselineAor.toFixed(1)}%, Headroom: {(100 - simulatedAor).toFixed(1)}%)
                 </span>
               ) : (
                 <span className="text-[10px] px-2 py-0.5 rounded bg-stone-100 text-stone-600 font-mono">
@@ -640,28 +912,32 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
 
             {hasCapacityData && simulatedAor != null ? (
               <>
-                <div className="w-full h-2 rounded-full bg-violet-50 overflow-hidden">
+                <div className="w-full h-2.5 rounded-full bg-stone-100 overflow-hidden relative">
+                  {/* Planning Threshold indicator bar */}
                   <div 
-                    className={`h-full rounded-full transition-all duration-300 ${
-                      simulatedAor > 100 ? 'bg-rose-600' :
-                      simulatedAor > 80 ? 'bg-amber-500' :
-                      simulatedAor > 70 ? 'bg-indigo-500' : 'bg-violet-600'
-                    }`}
+                    className="absolute top-0 bottom-0 w-0.5 bg-stone-400 z-10" 
+                    style={{ left: `${Math.min(100, planningThreshold)}%` }}
+                    title={`Planning Threshold: ${planningThreshold}%`}
+                  ></div>
+                  <div 
+                    className={`h-full rounded-full transition-all duration-300 ${capacityStatus.bg}`}
                     style={{ width: `${Math.min(100, simulatedAor)}%` }}
                   ></div>
                 </div>
 
                 <div className="flex items-center justify-between text-[10px] text-stone-600">
-                  <span>Existing Rooms: {totalRooms ? totalRooms.toLocaleString() : 'N/A'}</span>
-                  {simulatedAor > 100 ? (
-                    <span className="text-rose-700 font-bold">Severe Deficit (&gt;100%): Room inventory physically exceeded.</span>
-                  ) : simulatedAor > 80 ? (
-                    <span className="text-amber-700 font-semibold">High Saturation (&gt;80%): Severe peak season bottleneck.</span>
-                  ) : simulatedAor > 70 ? (
-                    <span className="text-indigo-600 font-semibold">Moderate Saturation (70-80%): Capacity tight during surges.</span>
-                  ) : (
-                    <span className="text-violet-700 font-semibold">Optimal (&lt;70%): Ample room inventory to absorb simulated stays.</span>
-                  )}
+                  <span>Available Rooms: {totalRooms ? totalRooms.toLocaleString() : 'N/A'}</span>
+                  <span className={`font-semibold ${capacityStatus.color}`}>
+                    {capacityStatus.msg}
+                  </span>
+                </div>
+
+                {/* Seasonal pressure caveat (Phase 27) */}
+                <div className="p-2 rounded bg-amber-500/10 border border-amber-500/20 text-[10px] text-amber-900 flex items-center gap-1.5">
+                  <Info className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+                  <span>
+                    <strong>Sensitivity Notice:</strong> {seasonalCaveat} Selected planning threshold: {planningThreshold}% AOR.
+                  </span>
                 </div>
               </>
             ) : (
@@ -672,6 +948,297 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
           </div>
         </div>
       </div>
+      )}
+
+      {/* MODE 2: Monte Carlo Stochastic Uncertainty Engine (Phase 26) */}
+      {simulationMode === 'monte_carlo' && (() => {
+        const activeMcKey = activeCorridorOrigin 
+          ? `${activeCorridorOrigin} -> ${selectedState}`
+          : (scenarioConfig.monte_carlo_benchmarks && scenarioConfig.monte_carlo_benchmarks[`Selangor -> ${selectedState}`]
+              ? `Selangor -> ${selectedState}`
+              : Object.keys(scenarioConfig.monte_carlo_benchmarks || {})[0] || 'Selangor -> Melaka');
+        
+        const mc = scenarioConfig.monte_carlo_benchmarks?.[activeMcKey] || scenarioConfig.monte_carlo_benchmarks?.['Selangor -> Melaka'];
+        const histData = mc?.distribution?.gva_density || [];
+
+        const mcChartOption = {
+          backgroundColor: 'transparent',
+          tooltip: {
+            trigger: 'axis',
+            formatter: (params: any) => {
+              const p = params[0];
+              return `<strong>${p.name}</strong><br/>Simulation Frequency: <strong>${p.value} draws</strong>`;
+            }
+          },
+          grid: { left: '8%', right: '5%', bottom: '15%', top: '15%' },
+          xAxis: {
+            type: 'category',
+            name: 'Incremental GVA (RM M)',
+            nameLocation: 'middle',
+            nameGap: 24,
+            data: histData.map((d: any) => `RM ${d.bin_mid}M`),
+            axisLabel: { fontSize: 10, color: '#4b5563' }
+          },
+          yAxis: {
+            type: 'value',
+            name: 'Draw Frequency',
+            axisLabel: { fontSize: 10, color: '#4b5563' }
+          },
+          series: [
+            {
+              type: 'bar',
+              data: histData.map((d: any) => d.frequency),
+              itemStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: '#7c3aed' },
+                  { offset: 1, color: '#a78bfa' }
+                ]),
+                borderRadius: [4, 4, 0, 0]
+              }
+            }
+          ]
+        };
+
+        return (
+          <div className="space-y-6 animate-fadeIn">
+            <div className="glass-panel p-5 border border-purple-200">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="px-2 py-0.5 rounded bg-purple-100 text-purple-800 text-[10px] font-bold uppercase tracking-wider">
+                      Phase 26 Stochastic Simulation
+                    </span>
+                    <span className="text-xs text-stone-500">1,000 Iterations across Policy Levers</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-stone-900">
+                    Corridor Uncertainty: {mc ? `${mc.origin} ➔ ${mc.destination}` : `${selectedState} Feeder Corridor`}
+                  </h3>
+                  <p className="text-xs text-stone-600 mt-0.5">
+                    Stochastic variation in campaign reach (5–40%), stay duration (+0.05d to +2.0d), spending velocity (CV 15%), and guest density.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 rounded-lg bg-stone-100 text-stone-700 text-xs font-mono font-medium">
+                    Seed: 42 (100% Reproducible)
+                  </span>
+                </div>
+              </div>
+
+              {/* 3 Metric Cards with P10 - P50 - P90 */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
+                <div className="p-4 rounded-xl bg-white border border-purple-100 shadow-sm">
+                  <div className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider">Additional Tourist Nights</div>
+                  <div className="text-2xl font-bold text-purple-900 mt-1 font-mono">
+                    +{mc ? (mc.percentiles.additional_nights.p50).toLocaleString() : '—'}
+                  </div>
+                  <div className="text-xs text-stone-500 mt-1 flex justify-between font-mono">
+                    <span>P10: +{mc ? (mc.percentiles.additional_nights.p10).toLocaleString() : '—'}</span>
+                    <span>P90: +{mc ? (mc.percentiles.additional_nights.p90).toLocaleString() : '—'}</span>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-xl bg-white border border-purple-100 shadow-sm">
+                  <div className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider">Additional Spend (RM M)</div>
+                  <div className="text-2xl font-bold text-emerald-700 mt-1 font-mono">
+                    +RM {mc ? mc.percentiles.additional_spend_rm_m.p50.toFixed(2) : '—'}M
+                  </div>
+                  <div className="text-xs text-stone-500 mt-1 flex justify-between font-mono">
+                    <span>P10: RM {mc ? mc.percentiles.additional_spend_rm_m.p10.toFixed(2) : '—'}M</span>
+                    <span>P90: RM {mc ? mc.percentiles.additional_spend_rm_m.p90.toFixed(2) : '—'}M</span>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-xl bg-white border border-purple-100 shadow-sm">
+                  <div className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider">Potential Tourism GVA (RM M)</div>
+                  <div className="text-2xl font-bold text-indigo-700 mt-1 font-mono">
+                    +RM {mc ? mc.percentiles.potential_gva_rm_m.p50.toFixed(2) : '—'}M
+                  </div>
+                  <div className="text-xs text-stone-500 mt-1 flex justify-between font-mono">
+                    <span>P10: RM {mc ? mc.percentiles.potential_gva_rm_m.p10.toFixed(2) : '—'}M</span>
+                    <span>P90: RM {mc ? mc.percentiles.potential_gva_rm_m.p90.toFixed(2) : '—'}M</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Capacity Risk Gauge */}
+              <div className="mt-5 p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <ShieldAlert className="w-5 h-5 text-amber-700 shrink-0" />
+                  <div>
+                    <div className="text-xs font-bold text-amber-900">Capacity Saturation Breach Risk</div>
+                    <div className="text-xs text-amber-800 mt-0.5">
+                      Probability that destination hotel occupancy exceeds {planningThreshold}% planning threshold under stochastic arrivals.
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0">
+                  <span className="text-xl font-bold text-amber-900 font-mono">
+                    {mc ? (mc.prob_capacity_breach * 100).toFixed(1) : 0}%
+                  </span>
+                  <span className="block text-[10px] text-amber-700 font-semibold">Risk of Saturation</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Chart: Probability Density Distribution */}
+            <div className="glass-panel p-5 border border-purple-100">
+              <h4 className="text-sm font-bold text-stone-800 mb-2 flex items-center gap-2">
+                <BarChart3 className="w-4 h-4 text-purple-600" />
+                Stochastic Incremental GVA Frequency Distribution (20 Bins)
+              </h4>
+              <div className="h-64 w-full">
+                <ReactECharts option={mcChartOption} style={{ height: '100%', width: '100%' }} />
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* MODE 3: Tourism Investment Portfolio Optimizer (Phase 36) */}
+      {simulationMode === 'portfolio' && (() => {
+        const tiers = scenarioConfig.portfolio_optimization?.solved_tiers || {};
+        const currentTier = tiers[String(selectedBudget)]?.[String(selectedOptimizerThreshold)] || tiers['5.0']?.['80'];
+        const summary = currentTier?.summary;
+        const corridors = currentTier?.selected_corridors || [];
+
+        return (
+          <div className="space-y-6 animate-fadeIn">
+            {/* Portfolio Optimizer Header & Controls */}
+            <div className="glass-panel p-5 border border-indigo-200">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-bold uppercase tracking-wider">
+                      Phase 36 Mixed-Integer Linear Programming (MILP)
+                    </span>
+                    <span className="text-xs text-stone-500">Global Optimal Resource Allocation</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-stone-900">Tourism Investment Portfolio Optimizer</h3>
+                  <p className="text-xs text-stone-600 mt-0.5">
+                    Maximizes national Gross Value Added (GVA) given a public campaign budget while strictly respecting destination hotel capacity ceilings.
+                  </p>
+                </div>
+
+                {/* Planning Threshold Selector */}
+                <div className="flex items-center gap-1.5 bg-stone-100 p-1 rounded-lg border border-stone-200">
+                  <span className="text-[11px] text-stone-600 px-1 font-medium">Ceiling:</span>
+                  {[75, 80, 85].map(t => (
+                    <button
+                      key={t}
+                      onClick={() => setSelectedOptimizerThreshold(t)}
+                      className={`px-2 py-1 rounded text-xs font-semibold transition-all ${
+                        selectedOptimizerThreshold === t
+                          ? 'bg-indigo-600 text-white shadow-sm'
+                          : 'text-stone-600 hover:text-stone-900'
+                      }`}
+                    >
+                      {t}%
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Budget Selector Pills */}
+              <div className="space-y-1.5 border-t border-indigo-100/80 pt-3">
+                <label className="text-xs font-bold text-stone-700 uppercase tracking-wider block">
+                  Select Campaign Budget Allocation:
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {[1.0, 2.5, 5.0, 10.0, 20.0].map(b => (
+                    <button
+                      key={b}
+                      onClick={() => setSelectedBudget(b)}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                        selectedBudget === b
+                          ? 'bg-indigo-600 text-white shadow-sm ring-2 ring-indigo-300'
+                          : 'bg-white border border-stone-200 text-stone-700 hover:bg-stone-50'
+                      }`}
+                    >
+                      RM {b.toFixed(1)} Million
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Top 4 KPI Cards */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5">
+                <div className="p-3.5 rounded-xl bg-white border border-indigo-100">
+                  <span className="text-[10px] font-semibold text-stone-500 uppercase">Budget Utilized</span>
+                  <div className="text-lg font-bold text-stone-900 mt-0.5 font-mono">
+                    RM {summary ? summary.total_cost_rm_million.toFixed(2) : '—'}M
+                  </div>
+                  <span className="text-[10px] text-stone-500 font-mono">
+                    {summary ? summary.budget_utilization_pct.toFixed(1) : '—'}% of RM {selectedBudget}M
+                  </span>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-white border border-indigo-100">
+                  <span className="text-[10px] font-semibold text-stone-500 uppercase">Expected Incremental GVA</span>
+                  <div className="text-lg font-bold text-indigo-700 mt-0.5 font-mono">
+                    +RM {summary ? summary.total_expected_gva_rm_million.toFixed(1) : '—'}M
+                  </div>
+                  <span className="text-[10px] text-indigo-600 font-mono">Macroeconomic yield</span>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-white border border-indigo-100">
+                  <span className="text-[10px] font-semibold text-stone-500 uppercase">Portfolio ROI Multiplier</span>
+                  <div className="text-lg font-bold text-emerald-700 mt-0.5 font-mono">
+                    {summary ? summary.portfolio_roi_multiplier.toFixed(1) : '—'}x
+                  </div>
+                  <span className="text-[10px] text-emerald-600 font-mono">GVA per RM invested</span>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-white border border-indigo-100">
+                  <span className="text-[10px] font-semibold text-stone-500 uppercase">Corridors Funded</span>
+                  <div className="text-lg font-bold text-purple-700 mt-0.5 font-mono">
+                    {summary ? summary.total_corridors_funded : '—'}
+                  </div>
+                  <span className="text-[10px] text-purple-600 font-mono">Inter-state routes</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Selected Corridors Table */}
+            <div className="glass-panel p-5 border border-indigo-100">
+              <h4 className="text-sm font-bold text-stone-900 mb-3 flex items-center justify-between">
+                <span>Optimal Corridor Allocations ({corridors.length} Funded)</span>
+                <span className="text-xs text-stone-500 font-normal">Ranked by Expected GVA</span>
+              </h4>
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs text-left">
+                  <thead className="bg-stone-100 text-stone-600 uppercase font-semibold">
+                    <tr>
+                      <th className="py-2 px-3 rounded-l-lg">Corridor</th>
+                      <th className="py-2 px-3">Category</th>
+                      <th className="py-2 px-3">Feeder Flow</th>
+                      <th className="py-2 px-3">Campaign Cost</th>
+                      <th className="py-2 px-3">Expected GVA</th>
+                      <th className="py-2 px-3 rounded-r-lg">Additional Nights</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-stone-100">
+                    {corridors.map((c: any, idx: number) => (
+                      <tr key={idx} className="hover:bg-indigo-50/40 transition-colors">
+                        <td className="py-2 px-3 font-semibold text-stone-900">{c.origin} ➔ {c.destination}</td>
+                        <td className="py-2 px-3">
+                          <span className="px-1.5 py-0.5 rounded text-[10px] bg-purple-100 text-purple-800 font-medium">
+                            {c.category}
+                          </span>
+                        </td>
+                        <td className="py-2 px-3 font-mono">{c.tourist_flow_thousands.toFixed(1)}k</td>
+                        <td className="py-2 px-3 font-mono">RM {(c.cost_rm_million * 1000).toFixed(0)}k</td>
+                        <td className="py-2 px-3 font-mono font-bold text-indigo-700">+RM {c.expected_gva_rm_million.toFixed(2)}M</td>
+                        <td className="py-2 px-3 font-mono">+{Math.round(c.additional_nights).toLocaleString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 };

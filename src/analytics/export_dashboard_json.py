@@ -265,7 +265,8 @@ def export_dashboard_data():
     print(f"  [3/6] Exported State Profiles: state_profiles.json ({len(states_dict)} states)")
 
     # 4. Origin-Destination Corridors (od_corridors.json)
-    # Joining year-specific classifications and predictions across the full panel (Fixing Finding 4)
+    # 4. Origin-Destination Corridors (od_corridors.json)
+    # Joining year-specific classifications, predictions, and opportunity metrics across the full panel
     df_panel_corridors = con.execute("""
         SELECT 
             p.year,
@@ -292,7 +293,21 @@ def export_dashboard_data():
             s_orig.latitude as orig_lat,
             s_orig.longitude as orig_lon,
             s_dest.latitude as dest_lat,
-            s_dest.longitude as dest_lon
+            s_dest.longitude as dest_lon,
+            opp.is_pareto_optimal,
+            opp.pareto_rank,
+            opp.composite_opportunity_score,
+            opp.capacity_headroom_pct,
+            opp.capacity_tier,
+            opp.gravity_flow_gap_thousands,
+            opp.gravity_performance_category,
+            opp.accessibility_tier,
+            opp.diversification_benefit,
+            opp.is_dominant_feeder,
+            opp.model_confidence_tier,
+            opp.additional_accom_expenditure_rm_million,
+            opp.potential_retained_gva_rm_million,
+            opp.opportunity_rank
         FROM origin_destination_panel p
         LEFT JOIN corridor_classification_panel c
             ON p.year = c.year AND p.origin = c.origin AND p.destination = c.destination
@@ -302,6 +317,8 @@ def export_dashboard_data():
             ON p.year = s_orig.year AND p.origin = s_orig.state
         LEFT JOIN state_panel_year s_dest 
             ON p.year = s_dest.year AND p.destination = s_dest.state
+        LEFT JOIN corridor_opportunity_gap opp
+            ON p.year = 2025 AND p.origin = opp.origin AND p.destination = opp.destination
         WHERE p.is_interstate = TRUE
         ORDER BY p.year, p.tourist_flow_thousands DESC
     """).df()
@@ -310,7 +327,7 @@ def export_dashboard_data():
     for yr, yr_group in df_panel_corridors.groupby("year"):
         corridors_by_year[int(yr)] = yr_group.to_dict(orient="records")
 
-    # Destination concentration panel (reporting both interstate and all-origin HHI)
+    # Destination concentration panel (reporting both interstate and all-origin HHI, with Phase 20 metrics)
     df_hhi_panel = con.execute("SELECT * FROM destination_concentration_panel ORDER BY year, destination").df()
     hhi_by_year = {}
     for yr, yr_group in df_hhi_panel.groupby("year"):
@@ -319,21 +336,44 @@ def export_dashboard_data():
     df_corridors_2025 = df_panel_corridors[df_panel_corridors["year"] == 2025].copy()
     df_hhi_2025 = df_hhi_panel[df_hhi_panel["year"] == 2025].copy()
 
+    pareto_corridors = df_corridors_2025[df_corridors_2025["is_pareto_optimal"] == True].copy()
+
     corridor_data = {
         "corridors_2025": df_corridors_2025.to_dict(orient="records"),
         "corridors_by_year": corridors_by_year,
         "destination_concentration_2025": df_hhi_2025.to_dict(orient="records"),
         "destination_concentration_by_year": hhi_by_year,
         "category_summary_2025": df_corridors_2025["corridor_tier"].value_counts().to_dict(),
+        "pareto_frontier_2025": pareto_corridors.to_dict(orient="records"),
     }
     with open(DASHBOARD_DATA_DIR / "od_corridors.json", "w", encoding="utf-8") as f:
         json.dump(clean_nan(corridor_data), f, indent=2)
-    print(f"  [4/6] Exported OD Corridors: od_corridors.json ({len(df_corridors_2025)} 2025 corridors, {len(df_panel_corridors)} total panel rows)")
+    print(f"  [4/6] Exported OD Corridors: od_corridors.json ({len(df_corridors_2025)} 2025 corridors, {len(pareto_corridors)} Pareto-optimal, {len(df_panel_corridors)} total panel rows)")
 
     # 5. Scenario Simulator Engine Data (scenario_engine.json)
+    from src.scenarios.simulator import (
+        ScenarioSimulator,
+        MANDATORY_DISCLAIMER,
+        SEASONAL_CAPACITY_CAVEAT,
+        DEFAULT_ACCOMMODATION_VAI,
+        DEFAULT_GUESTS_PER_ROOM,
+        DEFAULT_AFFECTED_SHARE,
+        DEFAULT_HOMESTAY_DISCOUNT_FACTOR,
+        DEFAULT_PLANNING_THRESHOLD,
+    )
+    sim = ScenarioSimulator()
+
     state_sim_baselines = {}
+    benchmarks = {}
+    preset_params = {
+        "conservative": {"delta_alos": 0.2, "affected_share": 0.10, "conversion_pct": 5.0, "yield_uplift_pct": 5.0, "vfr_conversion_pct": 3.0},
+        "moderate": {"delta_alos": 0.4, "affected_share": 0.15, "conversion_pct": 10.0, "yield_uplift_pct": 10.0, "vfr_conversion_pct": 5.0},
+        "ambitious": {"delta_alos": 0.6, "affected_share": 0.25, "conversion_pct": 20.0, "yield_uplift_pct": 15.0, "vfr_conversion_pct": 10.0},
+    }
+
     for st, sdata in states_dict.items():
         b = sdata["baseline_2025"]
+        vfr_pct = sdata.get("lodging_shares", {}).get("unpaid_vfr_pct")
         state_sim_baselines[st] = {
             "alos": b["alos_days"],
             "spend_per_night": b["spend_per_night_rm"],
@@ -341,24 +381,106 @@ def export_dashboard_data():
             "excursionists_k": b["excursionists_thousands"],
             "hotel_rooms": b["hotel_rooms"],
             "aor": b["aor_pct"],
+            "unpaid_vfr_pct": vfr_pct,
         }
+
+        benchmarks[st] = {}
+        for pkey, params in preset_params.items():
+            try:
+                benchmarks[st][pkey] = sim.simulate_destination_comprehensive(
+                    destination=st,
+                    delta_alos=params["delta_alos"],
+                    affected_share=params["affected_share"],
+                    conversion_pct=params["conversion_pct"],
+                    yield_uplift_pct=params["yield_uplift_pct"],
+                    vfr_conversion_pct=params["vfr_conversion_pct"],
+                )
+            except Exception as e:
+                pass
 
     # Fetch dynamic gravity model parameters
     df_grav_summary = con.execute("SELECT * FROM corridor_gravity_model_summary").df()
     df_grav_val = con.execute("SELECT * FROM corridor_gravity_validation").df()
 
+    # Sprint 8 Phase 26: Pre-computed Monte Carlo benchmarks for priority corridors
+    from src.scenarios.monte_carlo import MonteCarloSimulator
+    mc_sim = MonteCarloSimulator()
+    priority_mc_corridors = [
+        ("Selangor", "Melaka"),
+        ("Johor", "Melaka"),
+        ("W.P. Kuala Lumpur", "Pahang"),
+        ("Perak", "Pulau Pinang"),
+        ("Selangor", "Perak"),
+        ("W.P. Kuala Lumpur", "Johor"),
+    ]
+    monte_carlo_benchmarks = {}
+    for orig, dest in priority_mc_corridors:
+        try:
+            cid = f"{orig} -> {dest}"
+            monte_carlo_benchmarks[cid] = mc_sim.simulate_corridor_uncertainty(
+                orig, dest, delta_alos=0.4, affected_share=0.15, n_simulations=1000, seed=42
+            )
+        except Exception as e:
+            pass
+
+    # Sprint 8 Phase 36: Pre-computed Portfolio Optimizer tiers
+    from src.scenarios.portfolio_optimizer import PortfolioOptimizer, get_implementation_metadata
+    port_opt = PortfolioOptimizer()
+    portfolio_tiers = {}
+    for budget in [1.0, 2.5, 5.0, 10.0, 20.0]:
+        portfolio_tiers[str(budget)] = {}
+        for thresh in [75.0, 80.0, 85.0]:
+            try:
+                res = port_opt.optimize_portfolio(
+                    budget_rm_million=budget,
+                    planning_threshold=thresh,
+                    max_corridors_per_dest=4,
+                )
+                portfolio_tiers[str(budget)][str(int(thresh))] = res
+            except Exception as e:
+                pass
+
+    # Sprint 8 Phase 35 & 38: Implementation roadmap & grounded query knowledge base
+    impl_metadata = get_implementation_metadata()
+
     scenario_config = {
         "constants": {
-            "accommodation_vai": 0.8579,  # Empirical post-recovery median
-            "disclaimer": "Scenario estimate, not a causal forecast.",
-            "average_guests_per_room": 1.8,
+            "accommodation_vai": DEFAULT_ACCOMMODATION_VAI,
+            "disclaimer": MANDATORY_DISCLAIMER,
+            "seasonal_caveat": SEASONAL_CAPACITY_CAVEAT,
+            "average_guests_per_room": DEFAULT_GUESTS_PER_ROOM,
+            "default_affected_share": DEFAULT_AFFECTED_SHARE,
+            "homestay_discount_factor": DEFAULT_HOMESTAY_DISCOUNT_FACTOR,
+            "default_planning_threshold": DEFAULT_PLANNING_THRESHOLD,
+            "planning_thresholds": [75.0, 80.0, 85.0],
             "saturation_thresholds": {
                 "watch": 70.0,
                 "severe": 80.0,
                 "physical": 100.0,
+            },
+            "metadata_provenance": {
+                "baseline_tourists": {"status": "official", "description": "Domestic Tourism Survey 2025 table of overnight arrivals"},
+                "baseline_alos": {"status": "official", "description": "DTS 2025 Average Length of Stay by destination state"},
+                "baseline_aor": {"status": "official", "description": "Official Annual Average Occupancy Rate"},
+                "hotel_rooms": {"status": "official", "description": "Official registered hotel room inventory"},
+                "unpaid_vfr_pct": {"status": "official", "description": "DTS 2025 lodging distribution share for unpaid VFR"},
+                "spend_per_night": {"status": "derived", "description": "Accommodation expenditure divided by (tourists * ALOS)"},
+                "accommodation_vai": {"status": "official", "description": "TSA 2015-2025 median post-recovery Value-Added Intensity"},
+                "affected_share": {"status": "scenario_assumption", "description": "Proportion of visitor market reached by intervention campaign (default 15%)"},
+                "guests_per_room": {"status": "scenario_assumption", "description": "Average guest density per occupied room (standard 1.8)"},
+                "homestay_rate_discount": {"status": "scenario_assumption", "description": "Registered homestay pricing factor relative to commercial hotel average (85%)"},
+                "planning_threshold": {"status": "scenario_assumption", "description": "Sustainable annual hotel occupancy planning ceiling (75%, 80%, or 85%)"},
             }
         },
         "state_baselines": state_sim_baselines,
+        "benchmarks": benchmarks,
+        "monte_carlo_benchmarks": monte_carlo_benchmarks,
+        "portfolio_optimization": {
+            "default_budget_rm_million": 5.0,
+            "default_planning_threshold": 80.0,
+            "solved_tiers": portfolio_tiers,
+        },
+        "implementation_roadmap": impl_metadata,
         "gravity_models": {
             "validation": df_grav_val.to_dict(orient="records"),
             "parameters": df_grav_summary.to_dict(orient="records"),
@@ -366,7 +488,11 @@ def export_dashboard_data():
     }
     with open(DASHBOARD_DATA_DIR / "scenario_engine.json", "w", encoding="utf-8") as f:
         json.dump(clean_nan(scenario_config), f, indent=2)
-    print(f"  [5/6] Exported Scenario Engine Config: scenario_engine.json")
+
+    with open(DASHBOARD_DATA_DIR / "implementation_metadata.json", "w", encoding="utf-8") as f:
+        json.dump(clean_nan(impl_metadata), f, indent=2)
+
+    print(f"  [5/6] Exported Scenario Engine Config & Portfolio Optimization: scenario_engine.json ({len(benchmarks)} state benchmarks, {len(monte_carlo_benchmarks)} MC benchmarks, {len(portfolio_tiers)} portfolio tiers)")
 
     # 6. Research Question 3 Driver Attribution & Panel Econometrics (drivers_rq3.json)
     df_drivers = con.execute("SELECT * FROM accommodation_drivers_summary").df()

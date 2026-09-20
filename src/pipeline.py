@@ -16,6 +16,7 @@ import time
 import subprocess
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+import duckdb
 ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
@@ -59,6 +60,10 @@ STAGES = {
         ("economic_metrics", "tests/test_economic_metrics.py"),
         ("panel_econometrics_tests", "tests/test_panel_econometrics.py"),
         ("gravity_model_tests", "tests/test_gravity_model.py"),
+        ("corridor_opportunity_tests", "tests/test_corridor_opportunity.py"),
+        ("scenario_engine_tests", "tests/test_scenario_engine.py"),
+        ("dashboard_integrity_tests", "tests/test_dashboard_integrity.py"),
+        ("commercial_and_monte_carlo", "tests/test_commercial_and_monte_carlo.py"),
         ("tsa_accounting", "src/validation/test_tsa_accounting.py"),
         ("state_and_corridors", "src/validation/test_state_and_corridors.py"),
         ("data_quality_report", "src/validation/data_quality_report.py"),
