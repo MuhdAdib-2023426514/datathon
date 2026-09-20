@@ -95,6 +95,14 @@ export interface StateHotelStars {
   total_rooms: number;
 }
 
+export interface StateLodgingShares {
+  unpaid_vfr_pct: number;
+  paid_commercial_pct: number;
+  hotel_pct: number;
+  homestay_pct: number;
+  apartment_pct?: number;
+}
+
 export interface StateProfile {
   state: string;
   state_code: string;
@@ -125,6 +133,7 @@ export interface StateProfile {
     resident_median_income_rm: number;
   };
   demographics: StateDemographics;
+  lodging_shares?: StateLodgingShares;
   sdg_metrics: StateSDGMetrics;
   hotel_stars: StateHotelStars;
   purpose_shares: {
@@ -177,6 +186,7 @@ export interface Corridor {
 
 export interface ODCorridorsData {
   corridors_2025: Corridor[];
+  corridors_by_year?: Record<string | number, Corridor[]>;
   destination_concentration: any[];
   category_summary: Record<string, number>;
 }

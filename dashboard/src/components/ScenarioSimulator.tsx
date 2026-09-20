@@ -6,7 +6,8 @@ import {
   Sparkles, 
   Hotel, 
   ShieldAlert, 
-  RotateCcw
+  RotateCcw,
+  Home
 } from 'lucide-react';
 
 interface ScenarioSimulatorProps {
@@ -22,6 +23,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
   const [deltaAlos, setDeltaAlos] = useState<number>(0.3); // +0.3 days
   const [conversionRate, setConversionRate] = useState<number>(10); // 10% day-trippers converted
   const [yieldUplift, setYieldUplift] = useState<number>(10); // +10% spend/night uplift
+  const [vfrConversionRate, setVfrConversionRate] = useState<number>(5); // 5% VFR to paid lodging
 
   const stateList = Object.values(stateProfiles);
   const activeProfile = stateProfiles[selectedState] || stateList[0];
@@ -44,6 +46,14 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
   const convertedTouristsK = baselineExcursionistsK * (conversionRate / 100.0);
   const addNightsFromConvertedK = convertedTouristsK * (baselineAlos + deltaAlos);
 
+  // 3. Converted unpaid VFR stays into registered paid lodging/homestays (Recommendation 3)
+  const unpaidVfrPct = activeProfile.lodging_shares?.unpaid_vfr_pct ?? 50.0;
+  const vfrTouristsK = baselineTouristsK * (unpaidVfrPct / 100.0);
+  const convertedVfrTouristsK = vfrTouristsK * (vfrConversionRate / 100.0);
+  const vfrNightsK = convertedVfrTouristsK * (baselineAlos + deltaAlos);
+  const homestayNightlyRate = Math.max(75, baselineSpendPerNight * 0.85);
+  const vfrAccomSpendRM = (vfrNightsK * 1e3 * homestayNightlyRate) / 1e6;
+
   // Total additional tourist nights (thousands)
   const totalAdditionalNightsK = addNightsFromAlosK + addNightsFromConvertedK;
 
@@ -51,11 +61,11 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
   const newSpendPerNight = baselineSpendPerNight * (1 + yieldUplift / 100.0);
 
   // Additional accommodation expenditure (RM Million)
-  // New nights spend + uplift on existing nights
+  // New nights spend + uplift on existing nights + VFR converted lodging spend
   const existingNightsK = baselineTouristsK * baselineAlos;
   const newNightsSpendRM = (totalAdditionalNightsK * 1e3 * newSpendPerNight) / 1e6;
   const existingNightsUpliftRM = (existingNightsK * 1e3 * (newSpendPerNight - baselineSpendPerNight)) / 1e6;
-  const totalAdditionalAccomSpendMil = newNightsSpendRM + existingNightsUpliftRM;
+  const totalAdditionalAccomSpendMil = newNightsSpendRM + existingNightsUpliftRM + vfrAccomSpendRM;
 
   // Potential Additional Tourism Value Added Proxy (RM Million at 85.8% VAI)
   const potentialAdditionalTdgvaMil = totalAdditionalAccomSpendMil * accomVAI;
@@ -73,6 +83,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
     setDeltaAlos(0.3);
     setConversionRate(10);
     setYieldUplift(10);
+    setVfrConversionRate(5);
   };
 
   // ECharts Comparison Waterfall / Bar
@@ -277,6 +288,34 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
               Policy lever: Hotel quality upgrades, premium boutique packages, eco-tourism experiential add-ons.
             </span>
           </div>
+
+          {/* Slider 4: VFR Unpaid to Paid Homestay / Commercial Lodging Conversion (Recommendation 3) */}
+          <div className="space-y-2 pt-2 border-t border-slate-800/60">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-semibold text-slate-200 flex items-center gap-1.5">
+                <Home className="w-3.5 h-3.5 text-teal-400" />
+                4. VFR to Paid Lodging / Homestay Conversion
+              </span>
+              <span className="font-mono font-bold text-teal-400 text-sm">
+                {vfrConversionRate}% (→ +{convertedVfrTouristsK.toFixed(0)}k stays)
+              </span>
+            </div>
+            <input
+              type="range"
+              min="0"
+              max="20"
+              step="1"
+              value={vfrConversionRate}
+              onChange={(e) => setVfrConversionRate(parseInt(e.target.value))}
+            />
+            <div className="flex items-center justify-between text-[10px] text-slate-400">
+              <span>Unpaid VFR Base: <strong className="text-slate-300 font-mono">{unpaidVfrPct.toFixed(1)}%</strong> ({vfrTouristsK.toFixed(0)}k tourists)</span>
+              <span>Rate: <strong className="text-teal-300 font-mono">RM {homestayNightlyRate.toFixed(0)}/night</strong></span>
+            </div>
+            <span className="text-[10px] text-teal-300/90 block bg-teal-950/30 border border-teal-500/20 p-1.5 rounded">
+              UN SDG 8.9 Policy lever: Transition visiting-friends-and-relatives (VFR) into licensed village Kampungstay, certified community homestays, and boutique heritage inns.
+            </span>
+          </div>
         </div>
 
         {/* Real-Time Impact Dashboard (7 cols) */}
@@ -340,6 +379,23 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
               </span>
             </div>
           </div>
+
+          {/* Direct Community & Homestay Value Retention Strip (SDG 8.9) */}
+          {vfrAccomSpendRM > 0 && (
+            <div className="p-3 rounded-lg bg-teal-950/20 border border-teal-500/30 flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2">
+                <Home className="w-4 h-4 text-teal-400 shrink-0" />
+                <span className="text-slate-300">
+                  <strong className="text-teal-300">UN SDG Target 8.9 Community Retained Lodging:</strong>{' '}
+                  Converting {vfrConversionRate}% of unpaid VFR stays injects{' '}
+                  <strong className="text-white font-mono">+RM {vfrAccomSpendRM.toFixed(1)}M</strong> directly into registered homestay operators and local host households.
+                </span>
+              </div>
+              <span className="px-2 py-0.5 rounded bg-teal-500/20 text-teal-300 font-mono font-bold text-[11px] shrink-0 ml-2">
+                +{vfrNightsK.toFixed(0)}k Paid Nights
+              </span>
+            </div>
+          )}
 
           {/* Comparison Bar Chart */}
           <div className="glass-panel p-3 border-slate-800">

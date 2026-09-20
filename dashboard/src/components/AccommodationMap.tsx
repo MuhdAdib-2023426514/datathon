@@ -8,24 +8,36 @@ import {
   Wallet, 
   Compass, 
   Sparkles, 
-  AlertCircle
+  AlertCircle,
+  FileText,
+  Download,
+  Printer,
+  X,
+  ShieldCheck,
+  Check,
+  Filter
 } from 'lucide-react';
 
 interface AccommodationMapProps {
   stateProfiles: Record<string, StateProfile>;
   geoJson: any;
   driversData: DriversData;
+  selectedYear?: number;
 }
 
 export const AccommodationMap: React.FC<AccommodationMapProps> = ({ 
   stateProfiles, 
   geoJson,
-  driversData 
+  driversData,
+  selectedYear = 2025
 }) => {
   const [selectedMetric, setSelectedMetric] = useState<
     'accom_share' | 'spend_per_night' | 'alos' | 'tir' | 'archetype'
   >('accom_share');
   const [selectedStateName, setSelectedStateName] = useState<string>('Pulau Pinang');
+  const [sdgFilter, setSdgFilter] = useState<'all' | 'carrying_capacity' | 'high_yield' | 'extended_stay' | 'leisure'>('all');
+  const [showBriefModal, setShowBriefModal] = useState<boolean>(false);
+  const [copiedBrief, setCopiedBrief] = useState<boolean>(false);
 
   // Register GeoJSON with echarts once
   useEffect(() => {
@@ -36,6 +48,114 @@ export const AccommodationMap: React.FC<AccommodationMapProps> = ({
 
   const stateList = Object.values(stateProfiles);
   const activeState = stateProfiles[selectedStateName] || stateList[0];
+
+  // Helper to test if a state matches the SDG strategic filter
+  const isStateHighlighted = (stateName: string) => {
+    if (sdgFilter === 'all') return true;
+    const s = stateProfiles[stateName];
+    if (!s) return true;
+    if (sdgFilter === 'carrying_capacity') {
+      return (s.sdg_metrics?.epr_ratio ?? 0) > 1.5 || (s.sdg_metrics?.tir_visitors_per_resident ?? 0) > 15;
+    }
+    if (sdgFilter === 'high_yield') {
+      return s.cluster_id === 1 || s.cluster_id === 2 || s.baseline_2025.spend_per_night_rm > 70;
+    }
+    if (sdgFilter === 'extended_stay') {
+      return s.cluster_id === 4 || ((s.lodging_shares?.unpaid_vfr_pct ?? 0) > 60);
+    }
+    if (sdgFilter === 'leisure') {
+      return s.cluster_id === 3;
+    }
+    return true;
+  };
+
+  // Generate Executive Policy Brief Markdown content
+  const generateMarkdownBrief = (state: StateProfile) => {
+    const b = state.baseline_2025;
+    const d = state.demographics;
+    const sdg = state.sdg_metrics;
+    const dts = d?.dts_age_classes;
+
+    return `# STATE TOURISM ECONOMIC INTELLIGENCE BRIEF: ${state.state.toUpperCase()}
+**Malaysia Tourism Value Optimizer (MYTourism Value Intelligence)**
+**Date**: ${new Date().toLocaleDateString('en-MY')} | **Status**: Official Decision-Support Brief | **Year**: ${selectedYear}
+
+---
+
+## 1. Executive Summary & Strategic Classification
+- **State Archetype**: ${state.archetype_name}
+- **Region**: ${state.region} | **State Code**: ${state.state_code}
+- **Strategic Mandate**: Shift from visitor volume expansion to domestic economic value capture from existing visitors.
+- **Diagnostic Note**: ${state.archetype_desc}
+
+---
+
+## 2. Baseline Economic Performance (${selectedYear})
+- **Total Visitors**: ${b.visitors_thousands.toLocaleString()} thousand visitors
+- **Overnight Tourists**: ${b.tourists_thousands.toLocaleString()} thousand tourists
+- **Average Length of Stay (ALOS)**: ${b.alos_days.toFixed(2)} days
+- **Spend per Night**: RM ${b.spend_per_night_rm.toFixed(2)} / night
+- **Accommodation Share**: ${b.accommodation_share_pct.toFixed(2)}% of total visitor spending
+- **Total Accommodation Receipts**: RM ${b.accommodation_expenditure_rm_million.toFixed(2)} Million
+- **Total Tourism Expenditure**: RM ${b.total_expenditure_rm_million.toFixed(2)} Million
+- **Hotel Capacity**: ${b.hotel_rooms.toLocaleString()} rooms | **Average Occupancy (AOR)**: ${b.aor_pct.toFixed(1)}%
+
+---
+
+## 3. Demographics & DTS Visitor Age Distribution (100% MECE Non-Overlapping)
+- **Total Population**: ${(d.total_population_thousands / 1000).toFixed(2)} Million
+- **Adult Population (15+)**: ${d.adult_15plus_thousands ? (d.adult_15plus_thousands / 1000).toFixed(2) : 'N/A'} Million
+- **Children (0–14)**: ${d.children_pct.toFixed(1)}% (${d.children_0_14_thousands?.toFixed(0) || '0'}k pax)
+- **DTS Adult Age Breakdown (Sum = 100%)**:
+  - **Ages 15–24 (Belia / Young Adults)**: ${dts?.age_15_24_pct.toFixed(1) || '0'}% (${dts?.age_15_24_k.toFixed(0) || '0'}k pax)
+  - **Ages 25–39 (Dewasa Muda / Prime Mobile Travelers)**: ${dts?.age_25_39_pct.toFixed(1) || '0'}% (${dts?.age_25_39_k.toFixed(0) || '0'}k pax)
+  - **Ages 40–54 (Pertengahan Umur / Family Travelers)**: ${dts?.age_40_54_pct.toFixed(1) || '0'}% (${dts?.age_40_54_k.toFixed(0) || '0'}k pax)
+  - **Ages ≥ 55 (Warga Emas / Seniors & Retirees)**: ${dts?.age_55plus_pct.toFixed(1) || '0'}% (${dts?.age_55plus_k.toFixed(0) || '0'}k pax)
+- **Resident Median Household Income**: RM ${b.resident_median_income_rm.toLocaleString()}
+- **Unpaid VFR Lodging Share**: ${state.lodging_shares?.unpaid_vfr_pct ?? 50.0}% of overnight stays
+
+---
+
+## 4. UN SDG 8.9 & 12.b Carrying Capacity Status
+- **Tourist Intensity Ratio (TIR)**: ${sdg.tir_visitors_per_resident.toFixed(1)} visitors / resident
+- **Excursionist Pressure Ratio (EPR)**: ${sdg.epr_ratio.toFixed(2)} day-trippers per overnight tourist
+- **Destination Value Retention (DVR)**: ${sdg.dvr_retention_rate_pct.toFixed(1)}% economic retention
+- **Sustainability Diagnosis**: ${sdg.sdg_diagnosis}
+- **Recommended Policy Action**: ${sdg.sdg_policy_action}
+
+---
+
+## 5. Simulated Economic Opportunity (+0.3 Days Stay Extension)
+Under a transparent scenario extending Average Length of Stay by +0.3 days:
+- **Additional Tourist Nights**: +${(b.tourists_thousands * 0.3).toFixed(1)} thousand nights
+- **Incremental Accommodation Expenditure**: +RM ${(b.tourists_thousands * 0.3 * b.spend_per_night_rm / 1000).toFixed(2)} Million
+- **Potential Attributable Value-Added Proxy (85.8% VAI)**: +RM ${(b.tourists_thousands * 0.3 * b.spend_per_night_rm / 1000 * 0.858).toFixed(2)} Million
+- **Incremental Return per Resident Household**: +RM ${(b.tourists_thousands * 0.3 * b.spend_per_night_rm / Math.max(1, d.households_thousands)).toFixed(0)} / household
+
+> **Mandatory Methodological Notice**: Scenario estimate, not a causal forecast.
+> **Official Sources**: Department of Statistics Malaysia (DOSM) Tourism Satellite Account 2015–2025, Domestic Tourism Survey 2018–2025, and HIES Table 6.
+`;
+  };
+
+  const handleCopyBrief = () => {
+    const md = generateMarkdownBrief(activeState);
+    navigator.clipboard.writeText(md);
+    setCopiedBrief(true);
+    setTimeout(() => setCopiedBrief(false), 2500);
+  };
+
+  const handleDownloadBrief = () => {
+    const md = generateMarkdownBrief(activeState);
+    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `state_economic_brief_${activeState.state.toLowerCase().replace(/\s+/g, '_')}.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
   // Metric configurations
   const metricConfigs = {
@@ -154,11 +274,15 @@ export const AccommodationMap: React.FC<AccommodationMapProps> = ({
           borderColor: 'rgba(255, 255, 255, 0.25)',
           borderWidth: 0.8,
         },
-        data: stateList.map((s) => ({
-          name: s.state,
-          value: currentConfig.getValue(s),
-          selected: s.state === selectedStateName,
-        })),
+        data: stateList.map((s) => {
+          const isHighlighted = isStateHighlighted(s.state);
+          return {
+            name: s.state,
+            value: currentConfig.getValue(s),
+            selected: s.state === selectedStateName,
+            itemStyle: isHighlighted ? undefined : { opacity: 0.22 },
+          };
+        }),
       },
     ],
   };
@@ -264,6 +388,36 @@ export const AccommodationMap: React.FC<AccommodationMapProps> = ({
         </div>
       </div>
 
+      {/* SDG Carrying Capacity & Volume Pressure Filter Pill Strip (Recommendation 5) */}
+      <div className="glass-panel p-3 flex flex-wrap items-center justify-between gap-3 bg-slate-900/80 border border-slate-800">
+        <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
+          <Filter className="w-3.5 h-3.5 text-emerald-400" />
+          <span>SDG Strategic Focus Filter:</span>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {[
+            { id: 'all', label: 'All 16 States', desc: 'Complete national view' },
+            { id: 'carrying_capacity', label: '⚠️ Volume Pressure (EPR > 1.5)', desc: 'Melaka, N.Sembilan high day-trip friction' },
+            { id: 'high_yield', label: '💎 High-Yield Urban / Premium', desc: 'KL, Penang, Putrajaya with yield > RM70' },
+            { id: 'extended_stay', label: '🔄 Extended-Stay / High VFR', desc: 'Kelantan, Perak, Pahang with VFR > 60%' },
+            { id: 'leisure', label: '🌿 Prime Leisure Hotspots', desc: 'Sabah, Terengganu, Pahang nature/coastal' },
+          ].map((pill) => (
+            <button
+              key={pill.id}
+              onClick={() => setSdgFilter(pill.id as any)}
+              className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                sdgFilter === pill.id
+                  ? 'bg-emerald-500 text-slate-950 font-bold shadow-sm shadow-emerald-500/30'
+                  : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700/60'
+              }`}
+              title={pill.desc}
+            >
+              {pill.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Main Map + State Profile Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Malaysia Choropleth Map (7 cols) */}
@@ -294,7 +448,7 @@ export const AccommodationMap: React.FC<AccommodationMapProps> = ({
 
         {/* Selected State Diagnostic Drawer (5 cols) */}
         <div className="glass-panel p-5 lg:col-span-5 flex flex-col space-y-4">
-          {/* Header with Archetype badge */}
+          {/* Header with Archetype badge & Executive Brief button */}
           <div className="flex items-start justify-between gap-3 border-b border-slate-800/60 pb-3">
             <div>
               <div className="flex items-center gap-2">
@@ -306,17 +460,27 @@ export const AccommodationMap: React.FC<AccommodationMapProps> = ({
               <span className="text-xs text-slate-400">{activeState.region} Malaysia</span>
             </div>
 
-            <div 
-              className="px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm"
-              style={{ 
-                backgroundColor: `${activeState.archetype_color}20`, 
-                borderColor: `${activeState.archetype_color}60`,
-                color: activeState.archetype_color,
-                borderWidth: '1px'
-              }}
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              {activeState.archetype_name}
+            <div className="flex flex-col items-end gap-1.5">
+              <div 
+                className="px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm"
+                style={{ 
+                  backgroundColor: `${activeState.archetype_color}20`, 
+                  borderColor: `${activeState.archetype_color}60`,
+                  color: activeState.archetype_color,
+                  borderWidth: '1px'
+                }}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                {activeState.archetype_name}
+              </div>
+              <button
+                onClick={() => setShowBriefModal(true)}
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold transition-all shadow-sm shadow-emerald-500/10 cursor-pointer"
+                title="Generate printable Executive Policy Brief"
+              >
+                <FileText className="w-3.5 h-3.5" />
+                Executive Brief
+              </button>
             </div>
           </div>
 
@@ -547,6 +711,101 @@ export const AccommodationMap: React.FC<AccommodationMapProps> = ({
           ))}
         </div>
       </div>
+
+      {/* Executive Policy Brief Modal (Recommendation 1) */}
+      {showBriefModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            {/* Modal Header */}
+            <div className="p-4 px-6 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                <div>
+                  <h3 className="text-base font-bold text-white">
+                    Executive Policy Brief: {activeState.state}
+                  </h3>
+                  <p className="text-xs text-slate-400">
+                    Decision-Support Dossier • DOSM TSA & DTS Official Baseline ({selectedYear})
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => window.print()}
+                  className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs flex items-center gap-1 transition-all cursor-pointer"
+                  title="Print / Save as PDF"
+                >
+                  <Printer className="w-4 h-4" />
+                  <span className="hidden sm:inline">Print</span>
+                </button>
+                <button
+                  onClick={handleDownloadBrief}
+                  className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs flex items-center gap-1 transition-all cursor-pointer"
+                  title="Download Markdown (.md)"
+                >
+                  <Download className="w-4 h-4" />
+                  <span className="hidden sm:inline">Download .md</span>
+                </button>
+                <button
+                  onClick={handleCopyBrief}
+                  className="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer"
+                  title="Copy formatted markdown to clipboard"
+                >
+                  {copiedBrief ? <Check className="w-4 h-4" /> : <FileText className="w-4 h-4" />}
+                  <span>{copiedBrief ? 'Copied!' : 'Copy Markdown'}</span>
+                </button>
+                <button
+                  onClick={() => setShowBriefModal(false)}
+                  className="p-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white transition-all ml-1 cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 overflow-y-auto space-y-5 text-sm text-slate-200 print:p-0 print:text-black">
+              <div className="space-y-4">
+                <div className="border-b border-slate-800 pb-3">
+                  <span className="text-xs uppercase tracking-wider text-emerald-400 font-bold">Official Policy Briefing</span>
+                  <h1 className="text-2xl font-black text-white mt-1">{activeState.state} Tourism Economic Profile</h1>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Strategic Mandate: Converting Visitor Volume to Domestic Economic Yield • UN SDG 8.9 & 12.b
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800">
+                    <span className="text-[10px] uppercase text-slate-400 block font-semibold">Classification</span>
+                    <strong className="text-emerald-400 text-xs">{activeState.archetype_name}</strong>
+                  </div>
+                  <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800">
+                    <span className="text-[10px] uppercase text-slate-400 block font-semibold">ALOS Duration</span>
+                    <strong className="text-white text-sm font-mono">{activeState.baseline_2025.alos_days.toFixed(2)} days</strong>
+                  </div>
+                  <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800">
+                    <span className="text-[10px] uppercase text-slate-400 block font-semibold">Nightly Spend</span>
+                    <strong className="text-white text-sm font-mono">RM {activeState.baseline_2025.spend_per_night_rm.toFixed(2)}</strong>
+                  </div>
+                  <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800">
+                    <span className="text-[10px] uppercase text-slate-400 block font-semibold">Accom Share</span>
+                    <strong className="text-cyan-400 text-sm font-mono">{activeState.baseline_2025.accommodation_share_pct.toFixed(1)}%</strong>
+                  </div>
+                </div>
+
+                {/* Markdown text preview container */}
+                <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800/80 font-mono text-xs leading-relaxed text-slate-300 max-h-[380px] overflow-y-auto whitespace-pre-wrap select-all">
+                  {generateMarkdownBrief(activeState)}
+                </div>
+
+                <div className="text-[11px] text-slate-400 italic bg-amber-950/20 border border-amber-500/30 p-2.5 rounded-lg">
+                  ⚠️ <strong>Mandatory Methodological Notice</strong>: Scenario estimate, not a causal forecast. Derived from official DOSM Tourism Satellite Account (TSA) 2015–2025, Domestic Tourism Survey (DTS) 2018–2025, and Household Income Survey Table 6.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

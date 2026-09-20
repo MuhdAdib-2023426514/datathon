@@ -53,6 +53,13 @@
       "median_household_income_rm": 8165.6,
       "avg_household_size": 3.97
     },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 61.1,
+      "paid_commercial_pct": 38.9,
+      "hotel_pct": 23.4,
+      "homestay_pct": 6.9,
+      "apartment_pct": 3.4
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 251.4,
       "epr_ratio": 0.85,
@@ -583,6 +590,13 @@
       "households_thousands": 561.327,
       "median_household_income_rm": 5161.8,
       "avg_household_size": 3.97
+    },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 61.0,
+      "paid_commercial_pct": 39.0,
+      "hotel_pct": 20.6,
+      "homestay_pct": 10.4,
+      "apartment_pct": 2.7
     },
     "sdg_metrics": {
       "tey_rm_per_day": 193.2,
@@ -1115,6 +1129,13 @@
       "median_household_income_rm": 4339.9,
       "avg_household_size": 5.14
     },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 66.3,
+      "paid_commercial_pct": 33.7,
+      "hotel_pct": 11.7,
+      "homestay_pct": 13.0,
+      "apartment_pct": 2.3
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 209.9,
       "epr_ratio": 0.85,
@@ -1645,6 +1666,13 @@
       "households_thousands": 281.314,
       "median_household_income_rm": 7259.0,
       "avg_household_size": 3.74
+    },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 41.7,
+      "paid_commercial_pct": 58.3,
+      "hotel_pct": 30.7,
+      "homestay_pct": 14.2,
+      "apartment_pct": 9.5
     },
     "sdg_metrics": {
       "tey_rm_per_day": 303.2,
@@ -2177,6 +2205,13 @@
       "median_household_income_rm": 5783.0,
       "avg_household_size": 3.77
     },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 55.4,
+      "paid_commercial_pct": 44.6,
+      "hotel_pct": 24.1,
+      "homestay_pct": 9.0,
+      "apartment_pct": 8.3
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 234.8,
       "epr_ratio": 1.96,
@@ -2652,6 +2687,13 @@
       "households_thousands": 403.6,
       "median_household_income_rm": 5089.9,
       "avg_household_size": 4.15
+    },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 46.3,
+      "paid_commercial_pct": 53.7,
+      "hotel_pct": 31.1,
+      "homestay_pct": 9.9,
+      "apartment_pct": 6.0
     },
     "sdg_metrics": {
       "tey_rm_per_day": 269.6,
@@ -3184,6 +3226,13 @@
       "median_household_income_rm": 4786.6,
       "avg_household_size": 3.86
     },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 64.0,
+      "paid_commercial_pct": 36.0,
+      "hotel_pct": 17.4,
+      "homestay_pct": 9.4,
+      "apartment_pct": 3.5
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 207.5,
       "epr_ratio": 1.27,
@@ -3714,6 +3763,13 @@
       "households_thousands": 82.348,
       "median_household_income_rm": 5072.9,
       "avg_household_size": 3.61
+    },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 66.0,
+      "paid_commercial_pct": 34.0,
+      "hotel_pct": 14.2,
+      "homestay_pct": 14.9,
+      "apartment_pct": 3.2
     },
     "sdg_metrics": {
       "tey_rm_per_day": 216.3,
@@ -4246,6 +4302,13 @@
       "median_household_income_rm": 7872.1,
       "avg_household_size": 3.62
     },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 45.4,
+      "paid_commercial_pct": 54.6,
+      "hotel_pct": 34.7,
+      "homestay_pct": 7.0,
+      "apartment_pct": 10.0
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 314.4,
       "epr_ratio": 2.15,
@@ -4777,6 +4840,13 @@
       "median_household_income_rm": 5054.4,
       "avg_household_size": 5.76
     },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 57.3,
+      "paid_commercial_pct": 42.7,
+      "hotel_pct": 19.3,
+      "homestay_pct": 13.0,
+      "apartment_pct": 1.4
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 255.4,
       "epr_ratio": 2.04,
@@ -5252,6 +5322,13 @@
       "households_thousands": 620.199,
       "median_household_income_rm": 5787.5,
       "avg_household_size": 4.08
+    },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 56.5,
+      "paid_commercial_pct": 43.5,
+      "hotel_pct": 21.3,
+      "homestay_pct": 9.6,
+      "apartment_pct": 7.1
     },
     "sdg_metrics": {
       "tey_rm_per_day": 253.7,
@@ -5784,6 +5861,13 @@
       "median_household_income_rm": 11118.0,
       "avg_household_size": 3.9
     },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 55.1,
+      "paid_commercial_pct": 44.9,
+      "hotel_pct": 20.3,
+      "homestay_pct": 11.6,
+      "apartment_pct": 8.3
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 313.6,
       "epr_ratio": 2.43,
@@ -6314,6 +6398,13 @@
       "households_thousands": 301.731,
       "median_household_income_rm": 7036.6,
       "avg_household_size": 4.13
+    },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 55.1,
+      "paid_commercial_pct": 44.9,
+      "hotel_pct": 18.5,
+      "homestay_pct": 10.9,
+      "apartment_pct": 8.2
     },
     "sdg_metrics": {
       "tey_rm_per_day": 234.8,
@@ -6846,6 +6937,13 @@
       "median_household_income_rm": 11097.7,
       "avg_household_size": 3.54
     },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 50.4,
+      "paid_commercial_pct": 49.6,
+      "hotel_pct": 25.1,
+      "homestay_pct": 7.0,
+      "apartment_pct": 11.7
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 348.8,
       "epr_ratio": 2.48,
@@ -7377,6 +7475,13 @@
       "median_household_income_rm": 7634.8,
       "avg_household_size": 4.34
     },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 40.5,
+      "paid_commercial_pct": 59.5,
+      "hotel_pct": 44.1,
+      "homestay_pct": 6.5,
+      "apartment_pct": 2.1
+    },
     "sdg_metrics": {
       "tey_rm_per_day": 376.6,
       "epr_ratio": 1.27,
@@ -7907,6 +8012,13 @@
       "households_thousands": 33.892,
       "median_household_income_rm": 11144.2,
       "avg_household_size": 3.56
+    },
+    "lodging_shares": {
+      "unpaid_vfr_pct": 40.8,
+      "paid_commercial_pct": 59.2,
+      "hotel_pct": 25.5,
+      "homestay_pct": 19.6,
+      "apartment_pct": 8.3
     },
     "sdg_metrics": {
       "tey_rm_per_day": 274.3,

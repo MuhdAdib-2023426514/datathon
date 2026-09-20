@@ -83,13 +83,14 @@ def export_dashboard_data():
     print(f"  [2/6] Exported TSA Macro: tsa_macro.json ({len(df_tsa_macro)} macro years, {len(df_product_summary)} products)")
 
     # 3. State Profiles (state_profiles.json)
-    # Comprehensive state profiles joining clusters, demographics, SDG metrics, purpose, hotel stars, and time series
+    # Comprehensive state profiles joining clusters, demographics, SDG metrics, purpose, hotel stars, lodging breakdown, and time series
     df_clusters = con.execute("SELECT * FROM state_clusters").df()
     df_sdg = con.execute("SELECT * FROM sdg_sustainable_metrics WHERE year = 2025").df()
     df_stars = con.execute("SELECT * FROM state_hotel_star_inventory WHERE year = 2025").df()
     df_purpose = con.execute("SELECT * FROM state_purpose_of_visit_panel WHERE year = 2025").df()
     df_tourist_inc = con.execute("SELECT * FROM state_tourist_income_panel WHERE year = 2025").df()
     df_demog_2025 = con.execute("SELECT * FROM state_demographics_annual WHERE year = 2025").df()
+    df_granular = con.execute("SELECT * FROM state_granular_profile").df()
     df_panel = con.execute("SELECT * FROM state_panel_year ORDER BY state, year").df()
 
     states_dict = {}
@@ -105,6 +106,8 @@ def export_dashboard_data():
         inc_info = inc_row.iloc[0].to_dict() if len(inc_row) > 0 else {}
         demog_row = df_demog_2025[df_demog_2025["state"] == st]
         demog_info = demog_row.iloc[0].to_dict() if len(demog_row) > 0 else {}
+        gran_row = df_granular[df_granular["state"] == st]
+        gran_info = gran_row.iloc[0].to_dict() if len(gran_row) > 0 else {}
 
         time_series = df_panel[df_panel["state"] == st].to_dict(orient="records")
 
@@ -162,6 +165,13 @@ def export_dashboard_data():
                 "median_household_income_rm": float(demog_info.get("median_household_income_rm", 6000.0)),
                 "avg_household_size": float(demog_info.get("avg_household_size", 3.9)),
             },
+            "lodging_shares": {
+                "unpaid_vfr_pct": float(gran_info.get("unpaid_vfr_share_pct", 50.0)),
+                "paid_commercial_pct": float(gran_info.get("paid_commercial_share_pct", 50.0)),
+                "hotel_pct": float(gran_info.get("hotel_share_pct", 25.0)),
+                "homestay_pct": float(gran_info.get("homestay_share_pct", 10.0)),
+                "apartment_pct": float(gran_info.get("apartment_share_pct", 15.0)),
+            },
             "sdg_metrics": {
                 "tey_rm_per_day": float(sdg_info.get("tey_rm_per_day", 0.0)),
                 "epr_ratio": float(sdg_info.get("epr_ratio", 1.0)),
@@ -204,6 +214,7 @@ def export_dashboard_data():
     print(f"  [3/6] Exported State Profiles: state_profiles.json ({len(states_dict)} states)")
 
     # 4. Origin-Destination Corridors (od_corridors.json)
+    # 2025 baseline corridors
     df_corridors = con.execute("""
         SELECT 
             c.*,
@@ -224,11 +235,57 @@ def export_dashboard_data():
         ORDER BY c.tourist_flow_thousands DESC
     """).df()
 
+    # Multi-year panel corridors for longitudinal time travel
+    df_panel_corridors = con.execute("""
+        SELECT 
+            p.year,
+            p.origin,
+            p.origin_code,
+            p.origin_region,
+            p.destination,
+            p.destination_code,
+            p.destination_region,
+            p.tourist_flow_thousands,
+            p.distance_km,
+            p.is_cross_region,
+            p.is_interstate,
+            COALESCE(c.corridor_tier, 'Growth Opportunity') as corridor_category,
+            COALESCE(c.corridor_tier, 'Growth Opportunity') as corridor_tier,
+            COALESCE(c.origin_share_of_dest_pct, 0.0) as origin_share_of_dest_pct,
+            g.expected_flow_thousands as gravity_flow_thousands,
+            g.performance_ratio as gravity_performance_ratio,
+            s_dest.alos_days as dest_alos,
+            s_dest.spend_per_night_rm as dest_spend_per_night,
+            s_dest.spend_per_tourist_rm as dest_spend_per_tourist,
+            s_dest.accommodation_share as dest_accom_share,
+            s_dest.accommodation_expenditure_rm_million as dest_accom_expenditure_m,
+            s_orig.latitude as orig_lat,
+            s_orig.longitude as orig_lon,
+            s_dest.latitude as dest_lat,
+            s_dest.longitude as dest_lon
+        FROM origin_destination_panel p
+        LEFT JOIN corridor_classification c
+            ON p.origin = c.origin AND p.destination = c.destination
+        LEFT JOIN corridor_gravity_predictions g
+            ON p.origin = g.origin AND p.destination = g.destination
+        LEFT JOIN state_panel_year s_orig 
+            ON p.year = s_orig.year AND p.origin = s_orig.state
+        LEFT JOIN state_panel_year s_dest 
+            ON p.year = s_dest.year AND p.destination = s_dest.state
+        WHERE p.is_interstate = TRUE
+        ORDER BY p.year, p.tourist_flow_thousands DESC
+    """).df()
+
+    corridors_by_year = {}
+    for yr, yr_group in df_panel_corridors.groupby("year"):
+        corridors_by_year[int(yr)] = yr_group.to_dict(orient="records")
+
     # Destination concentration panel
     df_hhi = con.execute("SELECT * FROM destination_concentration_panel WHERE year = 2025").df()
 
     corridor_data = {
         "corridors_2025": df_corridors.to_dict(orient="records"),
+        "corridors_by_year": corridors_by_year,
         "destination_concentration": df_hhi.to_dict(orient="records"),
         "category_summary": df_corridors["corridor_tier"].value_counts().to_dict(),
     }

@@ -25,6 +25,7 @@ export function App() {
   const [activeTab, setActiveTab] = useState<'monitor' | 'map' | 'corridors' | 'simulator'>('monitor');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedYear, setSelectedYear] = useState<number>(2025);
 
   // Data states
   const [tsaData, setTsaData] = useState<TSAMacroData | null>(null);
@@ -102,6 +103,8 @@ export function App() {
       <Header 
         activeTab={activeTab} 
         onSelectTab={setActiveTab} 
+        selectedYear={selectedYear}
+        onSelectYear={setSelectedYear}
       />
 
       {/* Main Content Body */}
@@ -152,6 +155,7 @@ export function App() {
                 stateProfiles={stateProfiles} 
                 geoJson={geoJson}
                 driversData={driversData}
+                selectedYear={selectedYear}
               />
             )}
 
@@ -160,6 +164,11 @@ export function App() {
               <CorridorNetwork 
                 corridorData={corridorData} 
                 geoJson={geoJson} 
+                stateProfiles={stateProfiles || undefined}
+                selectedYear={selectedYear}
+                onSelectCorridorForScenario={(_dest) => {
+                  setActiveTab('simulator');
+                }}
               />
             )}
 
