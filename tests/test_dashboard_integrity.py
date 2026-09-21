@@ -13,6 +13,7 @@ import json
 import re
 from pathlib import Path
 import pytest
+import yaml
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT_DIR / "dashboard/public/data"
@@ -298,7 +299,78 @@ class TestDashboardAnalyticalContracts:
             assert abs(b["tourists_thousands"] - exp["tourists"]) < 0.1, f"Tourists mismatch for {state}"
             assert abs(b["spend_per_night_rm"] - exp["spend"]) < 1e-2, f"Spend per night mismatch for {state}"
 
+    def test_zero_empirical_fallbacks_in_components(self):
+        """Sprint A: Assert absence of hardcoded empirical fallback literals in dashboard components."""
+        comp_dir = ROOT_DIR / "dashboard/src/components"
+        assert comp_dir.exists()
+
+        forbidden_patterns = [
+            (r"\|\|\s*['\"]250['\"]", "hardcoded distance fallback (250 km)"),
+            (r"\|\|\s*22", "hardcoded age class fallback (22%)"),
+            (r"\|\|\s*35", "hardcoded age class fallback (35%)"),
+            (r"\|\|\s*['\"]Short Stay / High Yield['\"]", "hardcoded typology fallback"),
+            (r"\|\|\s*0\.609", "hardcoded R-squared fallback"),
+        ]
+
+        for tsx_file in comp_dir.glob("*.tsx"):
+            content = tsx_file.read_text(encoding="utf-8")
+            for pattern, desc in forbidden_patterns:
+                match = re.search(pattern, content)
+                assert not match, (
+                    f"Found {desc} in {tsx_file.name} matching '{pattern}'"
+                )
+
+
+class TestSprintBDocumentationAndGravityTruthfulness:
+    """
+    Sprint B: Verifies documentation truthfulness, observation counts disentanglement,
+    and the dual-model distinction between structural PPML gravity and forecasting baselines.
+    """
+
+    def test_readme_zero_legacy_terms(self):
+        """Sprint B: Assert zero occurrences of deprecated legacy terms in README.md."""
+        readme = (ROOT_DIR / "README.md").read_text(encoding="utf-8")
+        legacy_terms = [
+            "DVR",
+            "Domestic Value Retention",
+            "Root Cause",
+            "VFR Trap",
+            "pricing power",
+        ]
+        for term in legacy_terms:
+            matches = list(re.finditer(r"\b" + re.escape(term) + r"\b", readme, re.IGNORECASE))
+            assert len(matches) == 0, f"Found deprecated legacy term '{term}' in README.md"
+
+        # Also assert no negative 'trap' phrasing
+        assert "trap" not in readme.lower(), "Found unsupported negative 'trap' terminology in README.md"
+
+    def test_readme_observation_counts(self):
+        """Sprint B: Assert README explicitly disentangles 2,048 total vs 1,920 interstate vs 128 intrastate."""
+        readme = (ROOT_DIR / "README.md").read_text(encoding="utf-8")
+        assert "2,048" in readme, "Missing 2,048 total panel pairs in README.md"
+        assert "1,920" in readme, "Missing 1,920 interstate corridor observations in README.md"
+        assert "128" in readme, "Missing 128 intrastate pairs in README.md"
+
+    def test_source_registry_sample_sizes(self):
+        """Sprint B: Assert source_registry.yaml derived gravity model specifies 1,920 interstate corridor-years."""
+        reg_file = ROOT_DIR / "data/metadata/source_registry.yaml"
+        with open(reg_file, "r", encoding="utf-8") as f:
+            registry = yaml.safe_load(f)
+        gravity_meta = registry["derived_models"]["spatial_gravity"]
+        assert "1,920" in gravity_meta["sample_size"]
+        assert "2,048" in gravity_meta["sample_size"]
+
+    def test_corridor_network_dual_model_callout(self):
+        """Sprint B: Assert CorridorNetwork.tsx includes the dual-model comparison callout."""
+        cn_file = ROOT_DIR / "dashboard/src/components/CorridorNetwork.tsx"
+        content = cn_file.read_text(encoding="utf-8")
+        assert "Structural Model vs. Forecasting Benchmark" in content
+        assert "Dual-Model Architecture" in content
+        assert "Structural Model (PPML)" in content
+        assert "Short-Term Benchmark" in content
+
 
 if __name__ == "__main__":
     import sys
     sys.exit(pytest.main([__file__]))
+

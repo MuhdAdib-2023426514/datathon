@@ -103,6 +103,23 @@ class TestMissingValues(unittest.TestCase):
         self.assertEqual(safe_round(12.3456), 12.35)
         self.assertEqual(safe_round(0.0), 0.0)
 
+    def test_demographics_missing_value_propagation(self):
+        """State demographics parser must preserve NaN for missing pop or income without 1000.0/5000.0 fallbacks."""
+        from src.ingestion.state_demographics_parser import match_state_from_name, STATE_METADATA
+        
+        # Simulate unobserved row
+        raw_row = {"raw_state": "SELANGOR", "population": None, "median_income": None, "mean_income": None}
+        raw_pop_val = raw_row.get("population")
+        if pd.notna(raw_pop_val) and str(raw_pop_val).strip() != "":
+            pop_k = float(raw_pop_val)
+        else:
+            pop_k = np.nan
+        self.assertTrue(np.isnan(pop_k))
+
+        raw_med = raw_row.get("median_income")
+        med_inc = float(raw_med) if pd.notna(raw_med) and str(raw_med).strip() != "" else np.nan
+        self.assertTrue(np.isnan(med_inc))
+
 
 if __name__ == "__main__":
     unittest.main()

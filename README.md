@@ -34,7 +34,7 @@
 
 $$\text{Volume Expansion } (\text{More Visitors}) \longrightarrow \text{Value Capture } (\text{More Economic Value from Existing Visitors})$$
 
-Malaysia's post-pandemic domestic tourism has fully surpassed pre-COVID volume peaks, reaching **290.1 million domestic visitors** and **106.5 million overnight tourists** in 2025 (compared to 239.1M and 84.7M in 2019). However, multiple destination states suffer from a **"Volume-Rich, Value-Poor" trap**:
+Malaysia's post-pandemic domestic tourism has fully surpassed pre-COVID volume peaks, reaching **290.1 million domestic visitors** and **106.5 million overnight tourists** in 2025 (compared to 239.1M and 84.7M in 2019). However, multiple destination states exhibit a **"Volume-Rich, Value-Constrained" structural pattern**:
 - Heavy excursionist day-tripper traffic that strains municipal transit, parking, and municipal sanitation infrastructure without generating overnight commercial expenditure.
 - Shortening average length of stay (ALOS) across prime destinations.
 - Disproportionately high shares of unpaid Visiting Friends & Relatives (VFR) lodging in extended-stay regions, limiting domestic Gross Value Added capture.
@@ -45,7 +45,7 @@ Malaysia's post-pandemic domestic tourism has fully surpassed pre-COVID volume p
 
 Under **UN Sustainable Development Goal (SDG) 8.9** (promoting sustainable tourism that creates local economic value and employment) and **SDG 12.b** (monitoring sustainable development impacts), maximizing visitor volume alone is no longer an adequate policy objective.
 
-Without understanding the value efficiency of each tourism product and the capacity constraints of destinations, untargeted promotion induces physical congestion and infrastructure depreciation without capturing local economic yield. Strategic policy must identify where existing domestic mobility can be converted into higher-yield overnight stays and domestic value retention.
+Without understanding the value efficiency of each tourism product and the capacity constraints of destinations, untargeted promotion induces physical congestion and infrastructure depreciation without capturing local economic yield. Strategic policy must identify where existing domestic mobility can be converted into higher-yield overnight stays and direct Gross Value Added capture.
 
 > **Mandatory Scope Guardrail**: This project focuses strictly on the **economic dimension of sustainable tourism**. It does not claim to measure complete environmental or social sustainability.
 
@@ -102,46 +102,67 @@ All data streams are sourced from official Malaysian government publications, ca
 
 ## 6. Analytical Architecture
 
+The end-to-end analytical decision chain follows a 10-stage sequential flow:
+
 ```text
-                      OFFICIAL DATA SOURCES
-            DOSM (TSA, DTS, HIES, CPI) | MOTAC (Hotels)
-                                 │
-                                 ▼
-                   ┌───────────────────────────┐
-                   │    INGESTION & AUDIT      │
-                   │ Schema Validation & Hashes│
-                   │ Zero-Imputation Preserved │
-                   └─────────────┬─────────────┘
-                                 │
-                                 ▼
-                   ┌───────────────────────────┐
-                   │     DUCKDB DATA LAKE      │
-                   │  9 Core Relational Tables │
-                   │ Real RM Deflated Series   │
-                   └─────────────┬─────────────┘
-                                 │
-                                 ▼
-                   ┌───────────────────────────┐
-                   │     ANALYTICS ENGINE      │
-                   │ Structural PPML Gravity   │
-                   │ Two-Way Panel Fixed Effects│
-                   │ Pareto Opportunity Engine │
-                   └─────────────┬─────────────┘
-                                 │
-                                 ▼
-                   ┌───────────────────────────┐
-                   │      DECISION ENGINE      │
-                   │ Capacity-Aware Simulator  │
-                   │ Monte Carlo Uncertainty   │
-                   │ MILP Portfolio Optimizer  │
-                   └─────────────┬─────────────┘
-                                 │
-                                 ▼
-                   ┌───────────────────────────┐
-                   │   REACT DECISION SYSTEM   │
-                   │ 8 Interactive Policy Views│
-                   │ Evidence Query Assistant  │
-                   └───────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────┐
+│                        NATIONAL TOURISM VALUE                          │
+│         TSA Macro Accounts (2015–2025) & Product VAI Frontier          │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                          STATE PRODUCTIVITY                            │
+│         Tourism Value-Added Yield (TVAY) & 4-Quadrant Typology         │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                         EXPLORATORY DRIVERS                            │
+│          Two-Way Panel Fixed Effects & Lodging Yield Model             │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                          DOMESTIC MOBILITY                             │
+│       Longitudinal OD Network (2,048 Total Pairs, 2018–2025)           │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                         STRUCTURAL FLOW GAP                            │
+│        Zero-Leakage PPML Gravity (1,920 Interstate Observations)       │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                        OPPORTUNITY SCREENING                           │
+│        Multi-Criteria Pareto Frontier (58 Optimal Corridors)           │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                          SCENARIO TESTING                              │
+│       Capacity-Aware Policy Levers & Room Saturation Headroom          │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                            UNCERTAINTY                                 │
+│        1,000-Draw Monte Carlo Simulation (P10–P90 Spread)              │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                        BUDGET OPTIMIZATION                             │
+│        Exact MILP Allocation Under Destination Capacity Limits         │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                           DECISION BRIEF                               │
+│        Actionable Evidence Query Assistant & Provenance Trace          │
+└────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -157,15 +178,20 @@ All data streams are sourced from official Malaysian government publications, ca
   $$\ln(\text{RealAccomSpend}_{st}) = \alpha_s + \lambda_t + \mathbf{0.6628} \ln(\text{ALOS}_{st}) + \mathbf{0.7327} \ln(\text{Tourists}_{st}) + \varepsilon_{st}$$
   - ALOS Elasticity: $\hat{\beta}_1 = \mathbf{+0.6628}$ ($SE = 0.3972, p = 0.0952, 95\% \text{ CI } [-0.1157, 1.4413]$).
   - Tourist Volume Elasticity: $\hat{\beta}_2 = \mathbf{+0.7327}$ ($SE = 0.1168, p < 0.0001$).
-  - Controlling for national macro recovery shocks through year fixed effects $\lambda_t$, intra-state stay elasticity is positive and marginally significant at $\alpha = 0.10$.
+  - **Empirical & Methodological Interpretation**: After controlling for state fixed effects, year effects, and inflation, ALOS retains a positive estimated association with real accommodation expenditure. The coefficient is approximately 0.66 and is statistically imprecise at the conventional 5% level ($p = 0.0952$), representing an observational relationship rather than a guaranteed causal impact.
+  - **Leave-One-State-Out Robustness**: Running 16 iterative regressions excluding one state at a time confirmed **16/16 sign stability** for both ALOS ($\beta \in [+0.52, +0.81]$) and Tourist Volume ($\beta \in [+0.68, +0.79]$), demonstrating the positive association is not driven by any single state outlier.
 - **Model 4: Lodging Yield Model ($R^2 = 0.8018$)**:
   - Occupancy intensity (AOR) elasticity: $\hat{\gamma} = +0.2068$ ($SE = 0.1868, p = 0.2683$).
+  - Captures lodging yield responsiveness under tighter destination occupancy and leisure profiles.
 
-### C. Structural Spatial Gravity Model ($N = 1,920$, 2018–2025)
+### C. Structural Spatial Gravity Model ($N = 1,920$ Interstate Corridor-Years, 2018–2025)
+- **Observation Counts Disentangled**:
+  - *Interstate Corridors*: $16 \text{ origins} \times 15 \text{ destinations} = 240 \text{ directional corridors} \times 8 \text{ years} = 1,920 \text{ panel observations}$ ($1,680$ training 2018–2024, $240$ holdout 2025).
+  - *Total Bilateral Network*: $16 \times 16 = 256 \text{ pairs} \times 8 \text{ years} = 2,048 \text{ observations}$ (including 16 intrastate pairs $\times 8 = 128 \text{ observations}$).
 - Evaluated via **Poisson Pseudo-Maximum Likelihood (PPML)** with origin, destination, and year fixed effects:
   - **Distance Decay Friction**: $\beta_1 = \mathbf{-0.4104}$ ($SE = 0.0517, p < 0.0001$). A 10% increase in corridor distance reduces tourist flow by 4.1%.
   - **Borneo Cross-Region Flight Barrier**: $\beta_2 = \mathbf{-0.8022}$ ($SE = 0.1289, p < 0.0001$). Flight-mandatory corridors crossing between Peninsular Malaysia and Borneo face a 55.2% volume penalty.
-  - **Structural Stability**: Interaction test $\ln(\text{Distance}) \times \text{PostRecovery}$ yields $\beta = +0.1023$ ($p = 0.1198$), confirming spatial friction remained structurally invariant post-COVID.
+  - **Structural Invariance**: The interaction test $\ln(\text{Distance}) \times \text{PostRecovery}$ yields $\beta = +0.1023$ ($p = 0.1198$), which is not statistically significant at conventional thresholds ($\alpha = 0.05$). The analysis does not establish that distance sensitivity changed materially after post-COVID recovery; spatial friction remained structurally invariant.
   - **Out-of-Sample Predictive $R^2_{OOS} = \mathbf{0.5890}$** on the held-out 2025 sample ($N=240$), correlation $r = 0.8759$, $\text{MAE} = 175.50\text{k}$.
 
 ### D. Multi-Dimensional Opportunity Framework & Pareto Frontier

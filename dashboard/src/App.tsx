@@ -275,6 +275,7 @@ export function App() {
             {activeTab === 'implementation' && (
               <ImplementationRoadmap
                 metadata={implementationMetadata || scenarioConfig?.implementation_roadmap}
+                stateProfiles={stateProfiles || undefined}
                 onNavigateTab={(tab) => handleTabChange(tab as any)}
               />
             )}

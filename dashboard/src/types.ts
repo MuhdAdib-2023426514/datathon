@@ -305,6 +305,7 @@ export interface ScenarioEngineConfig {
   portfolio_optimization?: {
     default_budget_rm_million: number;
     default_planning_threshold: number;
+    candidates?: PortfolioCorridor[];
     solved_tiers: Record<string, Record<string, PortfolioSolution>>;
   };
   implementation_roadmap?: ImplementationMetadata;
@@ -337,6 +338,20 @@ export interface MonteCarloBenchmark {
   distribution?: {
     gva_density: Array<{ bin_mid: number; frequency: number }>;
   };
+  uncertainty_provenance?: {
+    data_uncertainty: {
+      spend_per_night_cv: number;
+      vai_historical_sd: number;
+      destination_aor_sd?: number | null;
+      calibration_source: string;
+      status: string;
+    };
+    policy_uncertainty: {
+      affected_share: { distribution: string; mean: number; sd: number; bounds: number[]; status: string };
+      delta_alos: { distribution: string; mean: number; sd: number; bounds: number[]; status: string };
+      guests_per_room: { distribution: string; mean: number; sd: number; bounds: number[]; status: string };
+    };
+  };
   disclaimer: string;
   seasonal_caveat: string;
 }
@@ -347,11 +362,20 @@ export interface PortfolioCorridor {
   destination: string;
   tourist_flow_thousands: number;
   category: string;
+  intervention_type?: string;
   cost_rm_million: number;
+  cost_status?: string;
+  cost_type?: string;
   expected_gva_rm_million: number;
+  std_gva_rm_million?: number;
+  p10_gva_rm_million?: number;
+  risk_adjusted_gva_rm_million?: number;
+  dest_spend_cv?: number | null;
+  gva_uncertainty_cv?: number | null;
   additional_nights: number;
   additional_spend_rm_million: number;
   daily_rooms_demanded: number;
+  value_to_cost_multiple?: number;
 }
 
 export interface PortfolioSolution {
@@ -361,9 +385,16 @@ export interface PortfolioSolution {
     total_cost_rm_million: number;
     budget_utilization_pct: number;
     total_expected_gva_rm_million: number;
+    total_p10_gva_rm_million?: number;
+    total_risk_adjusted_gva_rm_million?: number;
+    objective_mode?: string;
+    risk_aversion?: number;
     total_additional_spend_rm_million: number;
     total_additional_nights: number;
+    value_to_cost_multiple?: number;
     portfolio_roi_multiplier: number;
+    cost_status?: string;
+    cost_model_note?: string;
     total_corridors_funded: number;
     planning_threshold_pct: number;
   };
@@ -392,6 +423,21 @@ export interface ImplementationMetadata {
   target_users: ImplementationUser[];
   operating_model: Array<{ step: number; name: string; description: string }>;
   refresh_cadence: Array<{ stream: string; frequency: string; source: string }>;
+  pilot_operating_model?: {
+    destination: string;
+    title: string;
+    baseline_quarter: Record<string, any>;
+    intervention_design: Record<string, any>;
+    outcome_tracking: Array<{ indicator: string; cadence: string; target: string }>;
+    evaluation_framework: Record<string, any>;
+  };
+  institutional_raci?: Array<{
+    function: string;
+    decision_owner: string;
+    data_owner: string;
+    implementation_owner: string;
+    review_cadence: string;
+  }>;
 }
 
 export interface DriverAttribution {
@@ -465,6 +511,7 @@ export interface ModelMetricsData {
       rmsle: number;
       smape: number;
     }>;
+    baseline_comparison_note?: string;
   };
   panel: {
     primary_model: string;

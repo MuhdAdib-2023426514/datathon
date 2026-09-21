@@ -33,3 +33,9 @@ dependencies = [
     "scipy>=1.18.1",
     "statsmodels>=0.15.0",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "src/validation"]
+markers = [
+    "snapshot: Empirical baseline regression snapshot checks (distinguished from scientific hypothesis tests)",
+]

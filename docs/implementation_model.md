@@ -115,3 +115,59 @@ $$\text{Volume Expansion } (\text{More Visitors}) \longrightarrow \text{Value Ca
 1. **Non-Causal Disclosures**: All scenario outputs prominently display: *"Scenario estimate, not a causal forecast."* Interventions illustrate potential yield under specified behavioral uptake, not guaranteed tax or GDP revenues.
 2. **Zero Synthetic Fabrication**: Missing capacity or pricing metrics remain unobserved. No state policy is recommended on simulated phantom values.
 3. **Multi-Corridor Physical Checks**: Interventions are never simulated in isolation without aggregating all inbound feeders against destination hotel inventory.
+4. **Transparent Cost Benchmarks**: Promotional costs in optimization models are explicitly designated as `ILLUSTRATIVE COST ASSUMPTIONS` with user-editable overrides rather than commercial accounting certainties.
+
+---
+
+## 6. Concrete Pilot Operating Model: Melaka 8–12 Week Protocol
+
+To bridge macroeconomic modeling with operational execution, the platform establishes a structured 8–12 week pilot deployment protocol using **Melaka** as the primary demonstration destination (Plan Section 26):
+
+### 6.1 Baseline Quarter Measurement
+Prior to launch, the platform records empirical baseline parameters from verified DOSM DTS and MOTAC releases:
+- **Average Length of Stay (ALOS)**: $2.11 \text{ days}$ (below national median of $2.47\text{d}$).
+- **Tourism Value-Added Yield (TVAY)**: $\text{RM } 95.80\text{/visitor-day}$.
+- **Average Occupancy Rate (AOR)**: $63.8\%$ baseline ($80.0\%$ planning ceiling $\rightarrow 16.2\%$ headroom).
+- **Available Room Inventory**: $14,782\text{ commercial hotel rooms}$.
+- **Top Feeder Origins**: Selangor ($24.2\%$, $2.73\text{M}$ tourists), Johor ($17.8\%$, $1.42\text{M}$), Negeri Sembilan ($12.1\%$, $0.88\text{M}$), W.P. Kuala Lumpur ($11.5\%$).
+
+### 6.2 Intervention Package Design
+- **Target Corridors**: *Selangor $\rightarrow$ Melaka*, *Johor $\rightarrow$ Melaka*, *Negeri Sembilan $\rightarrow$ Melaka*.
+- **Package Concept**: *"Heritage & Culinary 3D2N Midweek Experience Pass"*.
+- **Mechanism**: Co-funded digital stay-extension vouchers redeemable exclusively for Sunday–Thursday overnight bookings at licensed MAH/MyBHA hotels and registered homestays. Avoids adding weekend peak congestion while capturing evening heritage dining and cultural museum spending.
+- **Budget Sizing**: Allocated via MILP portfolio optimizer under editable cost parameters.
+
+### 6.3 Pilot Outcome Tracking (Weekly & Monthly Cadence)
+During the 8–12 week implementation window, key performance indicators are monitored continuously:
+1. **ALOS Uplift**: Tracked via DTS quarterly pulse samples (target: $+0.30$ to $+0.50$ days).
+2. **Commercial Room-Nights Demanded**: Monitored via MOTAC monthly hotel operations data (target: $+12,000$ to $+18,000$ nights/month).
+3. **Midweek Occupancy Rate**: Bi-weekly hotel association sample (target: lift Sunday–Thursday AOR from $51\%$ to $62\%$).
+4. **Economic Yield (TVAY)**: Synthesized from expenditure surveys (target: lift from RM 95.8 to $>$RM 108/day).
+
+### 6.4 Evaluation Methodology: Difference-in-Differences (DiD)
+To ensure scientific rigor, pilot outcomes are evaluated against matched non-campaign control corridors:
+- **Treatment Corridors**: *Selangor $\rightarrow$ Melaka*, *Johor $\rightarrow$ Melaka*.
+- **Matched Control Corridors**: *Selangor $\rightarrow$ Negeri Sembilan*, *Johor $\rightarrow$ Pahang*.
+- **Econometric Specification**:
+  $$\ln(\text{Spend}_{ct}) = \alpha_c + \lambda_t + \beta_1 \text{Treatment}_c + \beta_2 (\text{Treatment}_c \times \text{Post}_t) + \varepsilon_{ct}$$
+- **Identifying Assumption**: Parallel pre-treatment trends in length of stay and lodging expenditure between treatment and control corridors.
+
+---
+
+## 7. Institutional Roles & RACI Governance Matrix
+
+Clear institutional ownership is mandatory for decision adoption across Malaysia's federal, state, and private tourism stakeholders (Plan Section 27):
+
+| Tourism Function | Decision Owner | Data Owner | Implementation Owner | Review Frequency | Primary Platform View |
+| :--- | :--- | :--- | :--- | :---: | :--- |
+| **TSA Supply & VAI Accounts** | MOTAC Strategic Planning | DOSM Services Division | Automated ETL Pipeline | Annual (September) | Tourism Value Monitor |
+| **State Campaign Sizing & Budgeting** | State Tourism Action Councils | DOSM DTS & State Surveys | Tourism Malaysia Domestic | Quarterly | Portfolio Optimizer |
+| **Corridor Bundling & Booking Passes** | MAH / MyBHA State Chapters | Hotel PMS & Tour Operators | Regional DMOs & OTAs | Bi-annual (Seasonal) | Corridor Network |
+| **Capacity Ceilings & Homestays** | Local Authorities (PBTs / MBMB) | MOTAC Licensing Registry | Municipal Council Enforcement | Continuous / Monthly | Accommodation Map |
+| **Model Calibration & Audits** | MOTAC Analytics Taskforce | Integrated Lake (DuckDB) | Analytical Decision Engine | Annual | Scenario Simulator |
+
+### Role Definitions:
+- **Decision Owner**: Accountable executive body authorizing resource allocation and campaign policy.
+- **Data Owner**: Authoritative agency responsible for survey methodology, statistical releases, and data validation.
+- **Implementation Owner**: Operational organization executing marketing promotions, voucher distribution, or licensing.
+- **Review Frequency**: Mandatory governance cadence for auditing indicators and updating model parameters.

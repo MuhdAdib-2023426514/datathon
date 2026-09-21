@@ -108,6 +108,106 @@
       "description": "Continuous tuning of gravity friction coefficients and spend elasticity."
     }
   ],
+  "pilot_operating_model": {
+    "destination": "Melaka",
+    "title": "Melaka 8\u201312 Week Pilot Deployment Protocol",
+    "baseline_quarter": {
+      "destination_alos_days": 2.11,
+      "national_median_alos": 2.47,
+      "spend_per_night_rm": 63.0,
+      "baseline_aor_pct": 63.8,
+      "planning_ceiling_pct": 80.0,
+      "available_hotel_rooms": 14782,
+      "annual_domestic_tourists_millions": 10.1,
+      "top_feeder_shares": {
+        "Selangor": "24.2%",
+        "Johor": "17.8%",
+        "Negeri Sembilan": "12.1%",
+        "W.P. Kuala Lumpur": "11.5%"
+      }
+    },
+    "intervention_design": {
+      "target_corridors": [
+        "Selangor -> Melaka",
+        "Negeri Sembilan -> Melaka",
+        "Johor -> Melaka"
+      ],
+      "package_name": "Heritage & Culinary 3D2N Midweek Experience Pass",
+      "campaign_mechanics": "Co-funded digital stay-extension voucher redeemable exclusively for Sunday\u2013Thursday overnight bookings at registered MAH/MyBHA hotels and licensed homestays.",
+      "duration_weeks": "8\u201312 weeks (midweek and shoulder-season activation)"
+    },
+    "outcome_tracking": [
+      {
+        "indicator": "Average Length of Stay (ALOS)",
+        "cadence": "Quarterly survey sample",
+        "target": "+0.30 to +0.50 days"
+      },
+      {
+        "indicator": "Commercial Room Nights",
+        "cadence": "Monthly MOTAC occupancy feed",
+        "target": "+12,000 to +18,000 nights/month"
+      },
+      {
+        "indicator": "Midweek Occupancy Rate (Sun-Thu)",
+        "cadence": "Bi-weekly hotel association sample",
+        "target": "Lift from 51% to 62%"
+      },
+      {
+        "indicator": "Tourism Value-Added Yield (TVAY)",
+        "cadence": "Quarterly synthesis",
+        "target": "Lift from RM 95.8 to >RM 108/day"
+      }
+    ],
+    "evaluation_framework": {
+      "methodology": "Difference-in-Differences (DiD) & Matched Control",
+      "treatment_corridors": [
+        "Selangor -> Melaka",
+        "Johor -> Melaka"
+      ],
+      "matched_control_corridors": [
+        "Selangor -> Negeri Sembilan",
+        "Johor -> Pahang"
+      ],
+      "identifying_assumption": "Parallel trends in pre-intervention length of stay and lodging expenditure across treatment and control corridors."
+    }
+  },
+  "institutional_raci": [
+    {
+      "function": "TSA National Supply & VAI Accounts",
+      "decision_owner": "MOTAC Strategic Planning",
+      "data_owner": "DOSM Services Statistics",
+      "implementation_owner": "Automated ETL Pipeline",
+      "review_cadence": "Annual (September)"
+    },
+    {
+      "function": "State Campaign Selection & Budget Sizing",
+      "decision_owner": "State Tourism Action Councils",
+      "data_owner": "DOSM DTS & State Surveys",
+      "implementation_owner": "Tourism Malaysia Domestic Division",
+      "review_cadence": "Quarterly"
+    },
+    {
+      "function": "Corridor Packaging & Hotel Booking Bundles",
+      "decision_owner": "MAH / MyBHA State Chapters",
+      "data_owner": "Hotel PMS & Registered Homestays",
+      "implementation_owner": "Licensed DMOs & Tour Operators",
+      "review_cadence": "Bi-annual (Seasonal)"
+    },
+    {
+      "function": "Carrying Capacity & Municipal Licensing",
+      "decision_owner": "Local Authorities (PBTs / MBMB)",
+      "data_owner": "MOTAC Licensing Registry",
+      "implementation_owner": "City Council Enforcement",
+      "review_cadence": "Continuous / Monthly"
+    },
+    {
+      "function": "Econometric Recalibration & Optimization",
+      "decision_owner": "MOTAC / Datathon Intelligence Unit",
+      "data_owner": "Integrated Tourism Lake (DuckDB)",
+      "implementation_owner": "Analytical Decision Engine",
+      "review_cadence": "Annual"
+    }
+  ],
   "refresh_cadence": [
     {
       "stream": "TSA National Accounts",

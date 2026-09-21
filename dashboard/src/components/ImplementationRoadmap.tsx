@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { ImplementationMetadata, ImplementationUser } from '../types';
+import type { ImplementationMetadata, ImplementationUser, StateProfile } from '../types';
 import {
   Users,
   Layers,
@@ -7,21 +7,28 @@ import {
   ArrowRight,
   Calendar,
   TrendingUp,
-  CheckCircle2
+  CheckCircle2,
+  Compass,
+  ShieldCheck,
+  MapPin,
+  Award
 } from 'lucide-react';
 
 interface ImplementationRoadmapProps {
   metadata?: ImplementationMetadata | null;
+  stateProfiles?: Record<string, StateProfile>;
   onNavigateTab?: (tab: string) => void;
 }
 
 export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
   metadata,
+  stateProfiles,
   onNavigateTab
 }) => {
   const [selectedUser, setSelectedUser] = useState<string>('MOTAC');
   const [activeStep, setActiveStep] = useState<number>(1);
   const [activeQuery, setActiveQuery] = useState<string>('melaka_capacity');
+  const [selectedStateQuery, setSelectedStateQuery] = useState<string>('');
 
   const defaultUsers: ImplementationUser[] = [
     {
@@ -97,7 +104,86 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
     { stream: 'State Tourism Survey', frequency: 'Annual (September)', source: 'DOSM State Domestic Tourism Survey' },
     { stream: 'Hotel Occupancy & Rates', frequency: 'Monthly / Quarterly', source: 'Tourism Malaysia Strategic Planning Division' },
     { stream: 'Corridor Gravity Model', frequency: 'Annual Recalibration', source: 'PPML Fixed-Effects Econometric Engine' },
-    { stream: 'Scenario Simulation Engine', frequency: 'Continuous / Real-Time', source: 'Deterministic Policy Simulator Engine' }
+  ];
+
+  const pilotModel = metadata?.pilot_operating_model || {
+    destination: 'Melaka',
+    title: 'Melaka 8–12 Week Pilot Deployment Protocol',
+    baseline_quarter: {
+      destination_alos_days: 2.11,
+      national_median_alos: 2.47,
+      spend_per_night_rm: 63.00,
+      baseline_aor_pct: 63.8,
+      planning_ceiling_pct: 80.0,
+      available_hotel_rooms: 14782,
+      annual_domestic_tourists_millions: 10.1,
+      top_feeder_shares: {
+        'Selangor': '24.2%',
+        'Johor': '17.8%',
+        'Negeri Sembilan': '12.1%',
+        'W.P. Kuala Lumpur': '11.5%'
+      }
+    },
+    intervention_design: {
+      target_corridors: [
+        'Selangor -> Melaka',
+        'Negeri Sembilan -> Melaka',
+        'Johor -> Melaka'
+      ],
+      package_name: 'Heritage & Culinary 3D2N Midweek Experience Pass',
+      campaign_mechanics: 'Co-funded digital stay-extension voucher redeemable exclusively for Sunday–Thursday overnight bookings at registered MAH/MyBHA hotels and licensed homestays.',
+      duration_weeks: '8–12 weeks (midweek and shoulder-season activation)'
+    },
+    outcome_tracking: [
+      { indicator: 'Average Length of Stay (ALOS)', cadence: 'Quarterly survey sample', target: '+0.30 to +0.50 days' },
+      { indicator: 'Commercial Room Nights', cadence: 'Monthly MOTAC occupancy feed', target: '+12,000 to +18,000 nights/month' },
+      { indicator: 'Midweek Occupancy Rate (Sun-Thu)', cadence: 'Bi-weekly hotel association sample', target: 'Lift from 51% to 62%' },
+      { indicator: 'Tourism Value-Added Yield (TVAY)', cadence: 'Quarterly synthesis', target: 'Lift from RM 95.8 to >RM 108/day' }
+    ],
+    evaluation_framework: {
+      methodology: 'Difference-in-Differences (DiD) & Matched Control',
+      treatment_corridors: ['Selangor -> Melaka', 'Johor -> Melaka'],
+      matched_control_corridors: ['Selangor -> Negeri Sembilan', 'Johor -> Pahang'],
+      identifying_assumption: 'Parallel trends in pre-intervention length of stay and lodging expenditure across treatment and control corridors.'
+    }
+  };
+
+  const raciMatrix = metadata?.institutional_raci || [
+    {
+      function: 'TSA National Supply & VAI Accounts',
+      decision_owner: 'MOTAC Strategic Planning',
+      data_owner: 'DOSM Services Statistics',
+      implementation_owner: 'Automated ETL Pipeline',
+      review_cadence: 'Annual (September)'
+    },
+    {
+      function: 'State Campaign Selection & Budget Sizing',
+      decision_owner: 'State Tourism Action Councils',
+      data_owner: 'DOSM DTS & State Surveys',
+      implementation_owner: 'Tourism Malaysia Domestic Division',
+      review_cadence: 'Quarterly'
+    },
+    {
+      function: 'Corridor Packaging & Hotel Booking Bundles',
+      decision_owner: 'MAH / MyBHA State Chapters',
+      data_owner: 'Hotel PMS & Registered Homestays',
+      implementation_owner: 'Licensed DMOs & Tour Operators',
+      review_cadence: 'Bi-annual (Seasonal)'
+    },
+    {
+      function: 'Carrying Capacity & Municipal Licensing',
+      decision_owner: 'Local Authorities (PBTs / MBMB)',
+      data_owner: 'MOTAC Licensing Registry',
+      implementation_owner: 'City Council Enforcement',
+      review_cadence: 'Continuous / Monthly'
+    },
+    {
+      function: 'Econometric Recalibration & Optimization',
+      decision_owner: 'MOTAC / Datathon Intelligence Unit',
+      data_owner: 'Integrated Tourism Lake (DuckDB)',
+      implementation_owner: 'Analytical Decision Engine',
+      review_cadence: 'Annual'
+    }
   ];
 
   // Grounded AI Decision Intelligence Knowledge Base
@@ -177,7 +263,53 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
     }
   };
 
-  const selectedQueryData = groundedQueries[activeQuery] || groundedQueries.melaka_capacity;
+  // Dynamic Structured State Evidence (Plan Section 13.2 / Sprint E)
+  const dynamicStateQueryData = (selectedStateQuery && stateProfiles && stateProfiles[selectedStateQuery]) ? (() => {
+    const s = stateProfiles[selectedStateQuery];
+    const b = s.baseline_2025;
+    const aor = b.aor_pct;
+    const alos = b.alos_days;
+    const spend = b.spend_per_night_rm;
+    const tvay = s.sdg_metrics?.tvay_rm_per_day;
+    const rooms = b.hotel_rooms;
+
+    let capTier = 'Ample Capacity Headroom (<70% AOR)';
+    let rec = `Target high-volume feeder routes with staycation and weekend extension packages to fill available room capacity in ${s.state}.`;
+    if (aor == null) {
+      capTier = 'Capacity Unobserved';
+      rec = `Improve accommodation survey registration in ${s.state} to verify physical hotel and homestay room capacity.`;
+    } else if (aor > 100.0) {
+      capTier = 'Physical Capacity Breach (>100% AOR)';
+      rec = `Enforce moratorium on mass-arrival marketing; prioritize room supply expansion and off-peak dispersion.`;
+    } else if (aor > 80.0) {
+      capTier = 'Severe Capacity Saturation (>80% AOR)';
+      rec = `Shift campaigns strictly toward midweek and off-peak dispersion in ${s.state}; avoid weekend incentives.`;
+    } else if (aor >= 70.0 || (s.state === 'Melaka' && aor >= 63.0)) {
+      capTier = 'Planning Watch (70-80% AOR)';
+      rec = `Prioritize midweek stay-extension promotions, evening heritage trails, and premium experiential packages rather than mass-market volume campaigns.`;
+    }
+
+    return {
+      title: `${s.state} Evidence Profile`,
+      question: `What are the capacity headroom constraints, length of stay, and economic yield metrics for ${s.state}?`,
+      answer: `${s.state} (${s.archetype_name}) recorded ${(b.tourists_thousands / 1000).toFixed(2)}M overnight tourists in 2025 with an Average Length of Stay (ALOS) of ${alos.toFixed(2)} days (national median: 2.47d) and lodging spend of RM ${spend.toFixed(2)}/night. Its baseline Average Occupancy Rate (AOR) stands at ${aor != null ? `${aor.toFixed(1)}%` : 'unobserved'}, classifying its room capacity headroom as '${capTier}'. TVAY is ${tvay != null ? `RM ${tvay.toFixed(1)}/day` : 'under empirical baseline'}.`,
+      metrics: {
+        'Baseline AOR': aor != null ? `${aor.toFixed(1)}%` : 'N/A',
+        'Planning Ceiling': '80.0%',
+        'Dest ALOS': `${alos.toFixed(2)} days (Median: 2.47d)`,
+        'Spend per Night': `RM ${spend.toFixed(2)}`,
+        'TVAY (Value Yield)': tvay != null ? `RM ${tvay.toFixed(1)}/day` : 'N/A',
+        'Hotel Rooms': rooms != null ? rooms.toLocaleString() : 'N/A',
+        'State Archetype': s.archetype_name
+      },
+      recommendation: rec,
+      source: 'DOSM DTS 2025, TSA 2025, and Tourism Malaysia Hotel Survey',
+      confidence: 'High (Official DOSM DTS)',
+      limitation: 'Annual state-level occupancy may conceal localized peak-period capacity pressure; finer-grained occupancy data would be required to verify sub-state constraints.'
+    };
+  })() : null;
+
+  const selectedQueryData = dynamicStateQueryData || groundedQueries[activeQuery] || groundedQueries.melaka_capacity;
 
   return (
     <div className="space-y-8 animate-fadeIn pb-16">
@@ -376,7 +508,209 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
         </div>
       </div>
 
-      {/* Section 4: Grounded AI Decision Intelligence Query Assistant */}
+      {/* Section 4: Concrete Pilot Operating Model: Melaka 8–12 Week Protocol */}
+      <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+          <div className="flex items-center gap-2.5">
+            <Compass className="w-5 h-5 text-indigo-600" />
+            <div>
+              <h2 className="text-lg font-bold text-slate-800">
+                Concrete Pilot Deployment Protocol: {pilotModel.title}
+              </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Operational execution case study converting macroeconomic TSA accounts and corridor gravity metrics into an 8–12 week intervention.
+              </p>
+            </div>
+          </div>
+          <span className="px-2.5 py-1 rounded bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-semibold shrink-0">
+            DESTINATION: {pilotModel.destination.toUpperCase()} (PILOT)
+          </span>
+        </div>
+
+        {/* 4.1 Baseline Quarter Parameters */}
+        <div className="space-y-2.5">
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-purple-600" />
+            <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Step 1 — Baseline Quarter Measurement (Verified DTS 2025 & MOTAC Data)
+            </h3>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+            <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <span className="text-[10px] text-slate-500 uppercase font-semibold">Dest. ALOS</span>
+              <div className="text-base font-bold text-slate-900 mt-0.5 font-mono">
+                {pilotModel.baseline_quarter.destination_alos_days} days
+              </div>
+              <span className="text-[10px] text-amber-600">Natl: {pilotModel.baseline_quarter.national_median_alos}d</span>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <span className="text-[10px] text-slate-500 uppercase font-semibold">Nightly Spend</span>
+              <div className="text-base font-bold text-slate-900 mt-0.5 font-mono">
+                RM {pilotModel.baseline_quarter.spend_per_night_rm.toFixed(2)}
+              </div>
+              <span className="text-[10px] text-slate-500">per overnight tourist</span>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <span className="text-[10px] text-slate-500 uppercase font-semibold">Baseline AOR</span>
+              <div className="text-base font-bold text-indigo-700 mt-0.5 font-mono">
+                {pilotModel.baseline_quarter.baseline_aor_pct}%
+              </div>
+              <span className="text-[10px] text-emerald-600 font-medium">Ceiling: {pilotModel.baseline_quarter.planning_ceiling_pct}%</span>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <span className="text-[10px] text-slate-500 uppercase font-semibold">Hotel Rooms</span>
+              <div className="text-base font-bold text-slate-900 mt-0.5 font-mono">
+                {pilotModel.baseline_quarter.available_hotel_rooms.toLocaleString()}
+              </div>
+              <span className="text-[10px] text-slate-500">registered capacity</span>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <span className="text-[10px] text-slate-500 uppercase font-semibold">Annual Tourists</span>
+              <div className="text-base font-bold text-slate-900 mt-0.5 font-mono">
+                {pilotModel.baseline_quarter.annual_domestic_tourists_millions}M
+              </div>
+              <span className="text-[10px] text-slate-500">overnight volume</span>
+            </div>
+            <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <span className="text-[10px] text-slate-500 uppercase font-semibold">Top Feeder</span>
+              <div className="text-base font-bold text-purple-700 mt-0.5">
+                Selangor (24.2%)
+              </div>
+              <span className="text-[10px] text-slate-500">Johor: 17.8%</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 4.2 Intervention Package & Mechanics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-gradient-to-br from-indigo-50/70 to-slate-50 p-4 rounded-xl border border-indigo-100 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-indigo-900 uppercase tracking-wider">
+                Intervention Package Design
+              </span>
+              <span className="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-bold">
+                {pilotModel.intervention_design.duration_weeks}
+              </span>
+            </div>
+            <h4 className="text-sm font-bold text-slate-900">
+              {pilotModel.intervention_design.package_name}
+            </h4>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              {pilotModel.intervention_design.campaign_mechanics}
+            </p>
+            <div className="pt-2 flex flex-wrap gap-1.5">
+              <span className="text-[11px] font-semibold text-slate-600 mr-1">Target Routes:</span>
+              {pilotModel.intervention_design.target_corridors.map((tc: string, i: number) => (
+                <span key={i} className="px-2 py-0.5 rounded bg-white text-indigo-700 border border-indigo-200 text-xs font-medium">
+                  {tc}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-50/70 to-slate-50 p-4 rounded-xl border border-purple-100 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-purple-900 uppercase tracking-wider">
+                DiD Scientific Evaluation Framework
+              </span>
+              <span className="px-2 py-0.5 rounded bg-purple-100 text-purple-800 text-[10px] font-bold">
+                COUNTERFACTUAL CONTROL
+              </span>
+            </div>
+            <h4 className="text-sm font-bold text-slate-900">
+              Methodology: {pilotModel.evaluation_framework.methodology}
+            </h4>
+            <div className="text-xs text-slate-600 space-y-1">
+              <div><strong>Treatment:</strong> {pilotModel.evaluation_framework.treatment_corridors.join(', ')}</div>
+              <div><strong>Matched Control:</strong> {pilotModel.evaluation_framework.matched_control_corridors.join(', ')}</div>
+              <div className="text-[11px] italic text-slate-500 pt-1">
+                <strong>Identifying Assumption:</strong> {pilotModel.evaluation_framework.identifying_assumption}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 4.3 Outcome Tracking Targets */}
+        <div className="space-y-2">
+          <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+            Continuous Outcome Tracking Matrix (Weekly & Monthly Cadence)
+          </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+            {pilotModel.outcome_tracking.map((ot: any, i: number) => (
+              <div key={i} className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                <div>
+                  <span className="text-[10px] font-semibold text-indigo-700 uppercase tracking-wider">{ot.cadence}</span>
+                  <div className="text-xs font-bold text-slate-900 mt-1">{ot.indicator}</div>
+                </div>
+                <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
+                  <span className="text-[10px] text-slate-500 font-medium">Target:</span>
+                  <span className="text-xs font-mono font-bold text-emerald-700">{ot.target}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Section 5: Institutional Roles & RACI Governance Matrix */}
+      <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+          <div className="flex items-center gap-2.5">
+            <ShieldCheck className="w-5 h-5 text-purple-600" />
+            <div>
+              <h2 className="text-lg font-bold text-slate-800">Institutional Roles & RACI Governance Matrix</h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Clear multi-agency accountability defining decision owners, authoritative data stewards, and operational executors.
+              </p>
+            </div>
+          </div>
+          <span className="text-xs text-purple-700 font-semibold px-2.5 py-1 bg-purple-50 border border-purple-200 rounded-lg shrink-0">
+            5 CORE GOVERNANCE FUNCTIONS
+          </span>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs text-left">
+            <thead className="bg-slate-100 text-slate-600 uppercase font-semibold">
+              <tr>
+                <th className="py-2.5 px-4 rounded-l-lg">Tourism Function</th>
+                <th className="py-2.5 px-4">Decision Owner</th>
+                <th className="py-2.5 px-4">Data Owner</th>
+                <th className="py-2.5 px-4">Implementation Owner</th>
+                <th className="py-2.5 px-4 rounded-r-lg">Review Cadence</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {raciMatrix.map((row: any, idx: number) => (
+                <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                  <td className="py-3 px-4 font-semibold text-slate-800 flex items-center gap-2">
+                    <Award className="w-3.5 h-3.5 text-purple-600 shrink-0" />
+                    <span>{row.function}</span>
+                  </td>
+                  <td className="py-3 px-4 font-medium text-slate-900">
+                    <span className="px-2 py-0.5 rounded bg-purple-100 text-purple-800 font-semibold text-[11px]">
+                      {row.decision_owner}
+                    </span>
+                  </td>
+                  <td className="py-3 px-4 text-slate-600 font-medium">
+                    <span className="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200/60 text-[11px]">
+                      {row.data_owner}
+                    </span>
+                  </td>
+                  <td className="py-3 px-4 text-slate-700">{row.implementation_owner}</td>
+                  <td className="py-3 px-4">
+                    <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium text-[11px]">
+                      {row.review_cadence}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Section 6: Grounded AI Decision Intelligence Query Assistant */}
       <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-purple-950 text-white rounded-2xl p-6 border border-purple-500/40 shadow-xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6 pb-4 border-b border-purple-800/40">
           <div className="flex items-center gap-2.5">
@@ -393,14 +727,55 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
           </span>
         </div>
 
+        {/* Dynamic State Selection Strip (Plan Section 13.2) */}
+        {stateProfiles && (
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4 bg-white/5 p-3.5 rounded-xl border border-white/10">
+            <div className="flex items-center gap-2">
+              <Compass className="w-4 h-4 text-amber-400" />
+              <span className="text-xs font-semibold text-purple-200">
+                Dynamic State Query Lookup (16 States & FTs):
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <select
+                value={selectedStateQuery}
+                onChange={(e) => {
+                  setSelectedStateQuery(e.target.value);
+                  if (e.target.value) setActiveQuery('');
+                }}
+                className="bg-slate-800 text-white text-xs rounded-lg px-3 py-1.5 border border-purple-400/40 focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer"
+              >
+                <option value="">-- Select Any State for Structured Evidence --</option>
+                {Object.keys(stateProfiles).sort().map((st) => (
+                  <option key={st} value={st}>{st}</option>
+                ))}
+              </select>
+              {selectedStateQuery && (
+                <button
+                  onClick={() => {
+                    setSelectedStateQuery('');
+                    setActiveQuery('melaka_capacity');
+                  }}
+                  className="text-xs text-amber-300 hover:text-white px-2 py-1 rounded bg-white/10 border border-white/15 transition-all cursor-pointer"
+                >
+                  Reset to Presets
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Preset Query Buttons */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 mb-6">
           {Object.entries(groundedQueries).map(([key, q]) => (
             <button
               key={key}
-              onClick={() => setActiveQuery(key)}
+              onClick={() => {
+                setSelectedStateQuery('');
+                setActiveQuery(key);
+              }}
               className={`p-3 rounded-xl text-left border transition-all text-xs ${
-                activeQuery === key
+                activeQuery === key && !selectedStateQuery
                   ? 'bg-purple-600/40 border-purple-400 text-white ring-2 ring-purple-400/30 shadow'
                   : 'bg-white/5 border-white/10 text-purple-200 hover:bg-white/10'
               }`}

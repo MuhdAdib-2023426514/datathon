@@ -1,5 +1,7 @@
 # Full-Mark Implementation Plan
 
+> **Current remediation plan (2026-09-21):** See [Rubric remediation implementation plan](docs/rubric_remediation_plan.md) for the code-review fixes, dependency order, acceptance gates, and evidence requirements covering all 25 rubric criteria. These issues remain open regardless of historical completion claims below. The original plan is retained as architectural context.
+
 ## Malaysian Sustainable Tourism Economic Intelligence
 
 Repository:

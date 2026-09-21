@@ -31,7 +31,13 @@ export function Header({ activeTab, onSelectTab, selectedYear, onSelectYear, onO
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <div className="header-meta"><span className="header-meta-dot" />DOSM data · 2015–2025</div>
+            <div className="header-meta flex items-center gap-1.5">
+              <span className="header-meta-dot" />
+              <span>DOSM TSA & DTS · 2015–2025</span>
+              <span className="ml-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
+                Official (2025p)
+              </span>
+            </div>
             {onOpenProvenance && (
               <button
                 type="button"

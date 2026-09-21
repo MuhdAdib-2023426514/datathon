@@ -70,6 +70,8 @@ STAGES = {
         ("data_quality_report", "src/validation/data_quality_report.py"),
         ("pre_submission_audit", "tests/test_pre_submission_audit.py"),
         ("submission_packaging", "tests/test_submission_packaging.py"),
+        ("scenario_parity", "tests/test_scenario_parity.py"),
+        ("results_consistency", "tests/test_results_consistency.py"),
     ],
     "export": [
         ("dashboard_json", "src/analytics/export_dashboard_json.py"),

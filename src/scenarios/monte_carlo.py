@@ -52,6 +52,42 @@ class MonteCarloSimulator:
             self.df_cap = con.execute("SELECT * FROM accommodation_capacity").df().set_index("state")
         else:
             self.df_cap = pd.DataFrame()
+
+        # Sprint D / Plan Section 17.1: Calibrate data-derived empirical uncertainty from historical panels
+        if "state_panel_year" in tables:
+            df_sp = con.execute("""
+                SELECT state, year, alos_days, spend_per_night_rm, aor_pct
+                FROM state_panel_year
+                WHERE year NOT IN (2020, 2021)
+            """).df()
+            state_vars = {}
+            for st, grp in df_sp.groupby("state"):
+                sp_mean = grp["spend_per_night_rm"].mean()
+                sp_sd = grp["spend_per_night_rm"].std()
+                sp_cv = (sp_sd / sp_mean) if (sp_mean and sp_mean > 0 and pd.notnull(sp_sd)) else 0.193
+                alos_sd = grp["alos_days"].std() if pd.notnull(grp["alos_days"].std()) else 0.15
+                aor_sd = grp["aor_pct"].std() if pd.notnull(grp["aor_pct"].std()) else 5.0
+                state_vars[st] = {
+                    "spend_cv": float(np.clip(sp_cv, 0.08, 0.40)),
+                    "alos_sd": float(np.clip(alos_sd, 0.05, 0.50)),
+                    "aor_sd": float(np.clip(aor_sd, 1.0, 15.0)),
+                }
+            self.state_historical_vars = state_vars
+        else:
+            self.state_historical_vars = {}
+
+        if "tourism_product_year" in tables:
+            df_vai = con.execute("""
+                SELECT year, vai FROM tourism_product_year
+                WHERE product = 'Accommodation services' AND year != 2021
+            """).df()
+            if not df_vai.empty and len(df_vai) > 2:
+                self.national_vai_sd = float(df_vai["vai"].std())
+            else:
+                self.national_vai_sd = 0.0691
+        else:
+            self.national_vai_sd = 0.0691
+
         con.close()
 
     def _get_destination_baseline(self, destination: str) -> Dict[str, Any]:
@@ -83,11 +119,20 @@ class MonteCarloSimulator:
                     avail_rooms = float(cap_row[c])
                     break
 
+        var_info = self.state_historical_vars.get(destination, {
+            "spend_cv": 0.193,
+            "alos_sd": 0.15,
+            "aor_sd": 5.0,
+        })
+
         return {
             "alos": alos,
             "spend_per_night": spend_night,
             "base_aor": base_aor,
             "avail_rooms": avail_rooms,
+            "spend_cv": var_info["spend_cv"],
+            "alos_sd": var_info["alos_sd"],
+            "aor_sd": var_info["aor_sd"],
         }
 
     def simulate_corridor_uncertainty(
@@ -137,17 +182,19 @@ class MonteCarloSimulator:
         a_alos, b_alos = (0.05 - delta_alos) / scale_alos, (2.5 - delta_alos) / scale_alos
         draws_delta_alos = stats.truncnorm.rvs(a_alos, b_alos, loc=delta_alos, scale=scale_alos, size=n_simulations)
 
-        # 3. Spend per night: Log-normal with mean equal to base_spend and CV=0.15
-        mu_ln = np.log(base_spend) - 0.5 * (0.15 ** 2)
-        draws_spend = np.random.lognormal(mean=mu_ln, sigma=0.15, size=n_simulations)
+        # 3. Spend per night: Data-calibrated Log-normal using destination historical CV from state_panel_year (2018-2025 excl. lockdowns)
+        sigma_spend = float(dest_meta.get("spend_cv", 0.193))
+        mu_ln = np.log(base_spend) - 0.5 * (sigma_spend ** 2)
+        draws_spend = np.random.lognormal(mean=mu_ln, sigma=sigma_spend, size=n_simulations)
 
         # 4. Guests per room: Truncated normal around guests_per_room (bounds: [1.3, 2.4])
         a_g, b_g = (1.3 - guests_per_room) / 0.12, (2.4 - guests_per_room) / 0.12
         draws_guests_per_room = stats.truncnorm.rvs(a_g, b_g, loc=guests_per_room, scale=0.12, size=n_simulations)
 
-        # 5. Accommodation VAI: Truncated normal around national VAI (bounds: [0.70, 0.95])
-        a_v, b_v = (0.70 - self.national_accom_vai) / 0.025, (0.95 - self.national_accom_vai) / 0.025
-        draws_vai = stats.truncnorm.rvs(a_v, b_v, loc=self.national_accom_vai, scale=0.025, size=n_simulations)
+        # 5. Accommodation VAI: Data-calibrated Truncated normal using national TSA historical standard deviation
+        scale_vai = max(0.02, float(self.national_vai_sd))
+        a_v, b_v = (0.60 - self.national_accom_vai) / scale_vai, (0.95 - self.national_accom_vai) / scale_vai
+        draws_vai = stats.truncnorm.rvs(a_v, b_v, loc=self.national_accom_vai, scale=scale_vai, size=n_simulations)
 
         # Calculations across draws
         draws_nights = tourist_flow * draws_affected_share * draws_delta_alos
@@ -179,6 +226,39 @@ class MonteCarloSimulator:
             {"bin_mid": round(float((edges_gva[i] + edges_gva[i + 1]) / 2.0), 2), "frequency": int(hist_gva[i])}
             for i in range(len(hist_gva))
         ]
+
+        uncertainty_provenance = {
+            "data_uncertainty": {
+                "spend_per_night_cv": round(sigma_spend, 4),
+                "vai_historical_sd": round(scale_vai, 4),
+                "destination_aor_sd": round(dest_meta.get("aor_sd", 5.0), 2) if dest_meta.get("aor_sd") else None,
+                "calibration_source": "DOSM State Panel (state_panel_year 2018-2025) & National TSA (tourism_product_year 2015-2025 excl. 2021 lockdown anomaly)",
+                "status": "data_calibrated"
+            },
+            "policy_uncertainty": {
+                "affected_share": {
+                    "distribution": "truncated_normal",
+                    "mean": affected_share,
+                    "sd": 0.04,
+                    "bounds": [0.05, 0.40],
+                    "status": "policy_assumption"
+                },
+                "delta_alos": {
+                    "distribution": "truncated_normal",
+                    "mean": delta_alos,
+                    "sd": round(scale_alos, 4),
+                    "bounds": [0.05, 2.5],
+                    "status": "policy_target"
+                },
+                "guests_per_room": {
+                    "distribution": "truncated_normal",
+                    "mean": guests_per_room,
+                    "sd": 0.12,
+                    "bounds": [1.3, 2.4],
+                    "status": "scenario_assumption"
+                }
+            }
+        }
 
         return {
             "origin": origin,
@@ -216,6 +296,7 @@ class MonteCarloSimulator:
             "distribution": {
                 "gva_density": distribution_gva,
             },
+            "uncertainty_provenance": uncertainty_provenance,
             "disclaimer": MANDATORY_DISCLAIMER,
             "seasonal_caveat": SEASONAL_CAPACITY_CAVEAT,
         }

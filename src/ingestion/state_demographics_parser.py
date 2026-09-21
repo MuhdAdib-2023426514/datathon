@@ -12,6 +12,7 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Optional
 import duckdb
+import numpy as np
 import pandas as pd
 
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
@@ -125,23 +126,35 @@ def run_pipeline():
         if m_key:
             meta = STATE_METADATA[m_key]
             
-            # Pop normalization (standardize to thousands)
-            raw_pop = float(row.get("population", 1000.0))
-            pop_k = raw_pop if raw_pop < 50000 else raw_pop / 1000.0
+            # Pop normalization (standardize to thousands) - zero empirical fallbacks
+            raw_pop_val = row.get("population")
+            if pd.notna(raw_pop_val) and str(raw_pop_val).strip() != "":
+                raw_pop = float(raw_pop_val)
+                pop_k = raw_pop if raw_pop < 50000 else raw_pop / 1000.0
+                pop_k = round(pop_k, 2)
+                pop_m = round(pop_k / 1000.0, 4)
+            else:
+                pop_k = np.nan
+                pop_m = np.nan
             
-            med_inc = float(row.get("median_income", 5000.0))
-            mean_inc = float(row.get("mean_income", med_inc * 1.25))
-            yr = int(row.get("year", 2024))
+            raw_med_inc = row.get("median_income")
+            med_inc = round(float(raw_med_inc), 0) if pd.notna(raw_med_inc) and str(raw_med_inc).strip() != "" else np.nan
+
+            raw_mean_inc = row.get("mean_income")
+            mean_inc = round(float(raw_mean_inc), 0) if pd.notna(raw_mean_inc) and str(raw_mean_inc).strip() != "" else np.nan
+
+            yr_val = row.get("year")
+            yr = int(yr_val) if pd.notna(yr_val) and str(yr_val).strip() != "" else 2024
 
             records.append({
                 "year": yr,
                 "state": meta["name"],
                 "state_code": meta["code"],
                 "region": meta["region"],
-                "population_thousands": round(pop_k, 2),
-                "population_millions": round(pop_k / 1000.0, 4),
-                "median_household_income_rm": round(med_inc, 0),
-                "mean_household_income_rm": round(mean_inc, 0),
+                "population_thousands": pop_k,
+                "population_millions": pop_m,
+                "median_household_income_rm": med_inc,
+                "mean_household_income_rm": mean_inc,
             })
 
     df_final = pd.DataFrame(records).drop_duplicates(subset=["state", "year"])

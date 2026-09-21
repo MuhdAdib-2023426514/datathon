@@ -1,0 +1,64 @@
+{
+  "contract_version": "1.0.0",
+  "reference_year": 2025,
+  "panel": {
+    "primary_model": "Model_2_TwoWay_FE_Clustered",
+    "sample_period": "2018\u20132025",
+    "observations": 126,
+    "states": 16,
+    "years": 8,
+    "alos_elasticity": 0.6628,
+    "alos_p_value": 0.0952,
+    "tourist_elasticity": 0.7327,
+    "tourist_p_value": 0.0,
+    "leave_one_out_stability": "16/16",
+    "yield_model": {
+      "r_squared": 0.8018,
+      "aor_elasticity": 0.2068
+    }
+  },
+  "gravity": {
+    "primary_model": "PPML",
+    "specification": "Structural Poisson Pseudo-Maximum Likelihood (Zero-Flow Robust)",
+    "train_period": "2018\u20132024",
+    "test_period": "2025 Actuals",
+    "total_panel_observations": 1920,
+    "train_observations": 1680,
+    "test_observations": 240,
+    "ppml_oos_r2": 0.589,
+    "correlation": 0.8759,
+    "mae": 175.5,
+    "rmse": 329.04,
+    "distance_decay_friction": -0.4104,
+    "cross_region_barrier": -0.8022,
+    "structural_invariance_p_value": 0.1198,
+    "naive_baselines": {
+      "lag_2024_oos_r2": 0.7637,
+      "historical_mean_oos_r2": 0.6732,
+      "log_ols_oos_r2": 0.2936
+    }
+  },
+  "tsa": {
+    "top_product": "Accommodation services",
+    "accommodation_post_recovery_median_vai": 0.8579,
+    "accommodation_vai_rank": 1,
+    "total_product_records": 88
+  },
+  "corridors": {
+    "total_directional_corridors": 240,
+    "total_bilateral_pairs_with_intrastate": 256,
+    "pareto_optimal_corridors_count": 58,
+    "top_ranked_corridor": {
+      "origin": "Selangor",
+      "destination": "W.P. Kuala Lumpur",
+      "pareto_rank": 1,
+      "opportunity_rank": 1,
+      "composite_opportunity_score": 71.51
+    }
+  },
+  "scenarios": {
+    "policy_disclaimer": "Scenario estimate, not a causal forecast.",
+    "default_planning_threshold_pct": 80.0,
+    "default_budget_rm_million": 5.0
+  }
+}

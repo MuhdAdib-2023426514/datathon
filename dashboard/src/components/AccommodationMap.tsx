@@ -198,12 +198,12 @@ ${summary.evidence.map(e => `  - ${e}`).join('\n')}
 ## 3. Demographics & DTS Visitor Age Distribution (100% MECE Non-Overlapping)
 - **Total Population**: ${(d.total_population_thousands / 1000).toFixed(2)} Million
 - **Adult Population (15+)**: ${d.adult_15plus_thousands ? (d.adult_15plus_thousands / 1000).toFixed(2) : 'N/A'} Million
-- **Children (0–14)**: ${d.children_pct.toFixed(1)}% (${d.children_0_14_thousands?.toFixed(0) || '0'}k pax)
+- **Children (0–14)**: ${d.children_pct != null ? `${d.children_pct.toFixed(1)}%` : 'N/A'} (${d.children_0_14_thousands != null ? `${d.children_0_14_thousands.toFixed(0)}k pax` : '—'})
 - **DTS Adult Age Breakdown (Sum = 100%)**:
-  - **Ages 15–24 (Belia / Young Adults)**: ${dts?.age_15_24_pct.toFixed(1) || '0'}% (${dts?.age_15_24_k.toFixed(0) || '0'}k pax)
-  - **Ages 25–39 (Dewasa Muda / Prime Mobile Travelers)**: ${dts?.age_25_39_pct.toFixed(1) || '0'}% (${dts?.age_25_39_k.toFixed(0) || '0'}k pax)
-  - **Ages 40–54 (Pertengahan Umur / Family Travelers)**: ${dts?.age_40_54_pct.toFixed(1) || '0'}% (${dts?.age_40_54_k.toFixed(0) || '0'}k pax)
-  - **Ages ≥ 55 (Warga Emas / Seniors & Retirees)**: ${dts?.age_55plus_pct.toFixed(1) || '0'}% (${dts?.age_55plus_k.toFixed(0) || '0'}k pax)
+  - **Ages 15–24 (Belia / Young Adults)**: ${dts?.age_15_24_pct != null ? `${dts.age_15_24_pct.toFixed(1)}%` : 'N/A'} (${dts?.age_15_24_k != null ? `${dts.age_15_24_k.toFixed(0)}k pax` : '—'})
+  - **Ages 25–39 (Dewasa Muda / Prime Mobile Travelers)**: ${dts?.age_25_39_pct != null ? `${dts.age_25_39_pct.toFixed(1)}%` : 'N/A'} (${dts?.age_25_39_k != null ? `${dts.age_25_39_k.toFixed(0)}k pax` : '—'})
+  - **Ages 40–54 (Pertengahan Umur / Family Travelers)**: ${dts?.age_40_54_pct != null ? `${dts.age_40_54_pct.toFixed(1)}%` : 'N/A'} (${dts?.age_40_54_k != null ? `${dts.age_40_54_k.toFixed(0)}k pax` : '—'})
+  - **Ages ≥ 55 (Warga Emas / Seniors & Retirees)**: ${dts?.age_55plus_pct != null ? `${dts.age_55plus_pct.toFixed(1)}%` : 'N/A'} (${dts?.age_55plus_k != null ? `${dts.age_55plus_k.toFixed(0)}k pax` : '—'})
 - **Resident Median Household Income**: RM ${b.resident_median_income_rm.toLocaleString()}
 - **Unpaid VFR Lodging Share**: ${state.lodging_shares?.unpaid_vfr_pct != null ? `${state.lodging_shares.unpaid_vfr_pct}%` : 'N/A (unobserved)'} of overnight stays
 - **Strategic Typology Quadrant**: ${b.yield_typology || sdg.yield_typology || 'N/A'}
@@ -438,12 +438,12 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
         data: [
           {
             value: [
-              activeState.radar_scores?.stay_duration || 50,
-              activeState.radar_scores?.nightly_yield || 50,
-              activeState.radar_scores?.accom_intensity || 50,
-              activeState.radar_scores?.leisure_orientation || 50,
-              activeState.radar_scores?.luxury_supply || 50,
-              activeState.radar_scores?.resident_affluence || 50,
+              activeState.radar_scores?.stay_duration ?? 0,
+              activeState.radar_scores?.nightly_yield ?? 0,
+              activeState.radar_scores?.accom_intensity ?? 0,
+              activeState.radar_scores?.leisure_orientation ?? 0,
+              activeState.radar_scores?.luxury_supply ?? 0,
+              activeState.radar_scores?.resident_affluence ?? 0,
             ],
             name: activeState.state,
             symbol: 'circle',
@@ -635,33 +635,57 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
               </div>
             </div>
 
-            {/* Core Metrics Grid */}
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5 text-center text-[11px] pt-1">
-              <div className="p-1.5 rounded bg-white border border-violet-100">
-                <span className="text-[9px] text-stone-500 block">TVAY</span>
-                <strong className="font-mono text-xs text-violet-700">{decisionSummary.tvay != null ? `RM ${decisionSummary.tvay.toFixed(1)}` : 'N/A'}</strong>
+            {/* Headline KPI Hierarchy (Plan Section 28 / Sprint E) */}
+            <div className="p-3 rounded-xl bg-purple-900 text-white flex items-center justify-between shadow-sm">
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded bg-purple-500/30 text-purple-200 border border-purple-400/40">
+                    Primary North-Star KPI
+                  </span>
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-200 font-mono">
+                    Official Derived Proxy
+                  </span>
+                </div>
+                <div className="text-xs font-semibold text-purple-200 mt-1">Tourism Value-Added Yield (TVAY)</div>
+                <div className="text-[10px] text-purple-300/80">Estimated GVA per visitor-day</div>
               </div>
-              <div className="p-1.5 rounded bg-white border border-violet-100">
-                <span className="text-[9px] text-stone-500 block">TEY</span>
-                <strong className="font-mono text-xs text-stone-800">RM {decisionSummary.tey.toFixed(1)}</strong>
+              <div className="text-right">
+                <div className="text-2xl font-black font-mono text-amber-300">
+                  {decisionSummary.tvay != null ? `RM ${decisionSummary.tvay.toFixed(1)}` : 'N/A'}
+                </div>
+                <span className="text-[10px] text-purple-200 font-medium">/ visitor-day</span>
               </div>
-              <div className="p-1.5 rounded bg-white border border-violet-100">
-                <span className="text-[9px] text-stone-500 block">ALOS</span>
-                <strong className="font-mono text-xs text-stone-800">{decisionSummary.alos.toFixed(2)}d</strong>
+            </div>
+
+            {/* Secondary Drivers & Physical Constraints Breakdown */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-[10px] font-bold text-stone-500 uppercase tracking-wider px-0.5">
+                <span>Secondary Drivers</span>
+                <span>Physical Constraints</span>
               </div>
-              <div className="p-1.5 rounded bg-white border border-violet-100">
-                <span className="text-[9px] text-stone-500 block">Spend/Night</span>
-                <strong className="font-mono text-xs text-indigo-700">RM {decisionSummary.spendPerNight.toFixed(0)}</strong>
-              </div>
-              <div className="p-1.5 rounded bg-white border border-violet-100">
-                <span className="text-[9px] text-stone-500 block">AOR</span>
-                <strong className="font-mono text-xs text-stone-800">{decisionSummary.aor != null ? `${decisionSummary.aor.toFixed(1)}%` : 'N/A'}</strong>
-              </div>
-              <div className="p-1.5 rounded bg-white border border-violet-100">
-                <span className="text-[9px] text-stone-500 block">Headroom</span>
-                <strong className={`font-mono text-xs ${decisionSummary.headroom != null && decisionSummary.headroom < 10 ? 'text-amber-700' : 'text-emerald-700'}`}>
-                  {decisionSummary.headroom != null ? `${decisionSummary.headroom.toFixed(0)}%` : 'N/A'}
-                </strong>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-center text-[11px]">
+                <div className="p-1.5 rounded bg-white border border-violet-100">
+                  <span className="text-[9px] text-stone-500 block">Gross Yield (TEY)</span>
+                  <strong className="font-mono text-xs text-stone-800">RM {decisionSummary.tey.toFixed(1)}</strong>
+                  <span className="text-[9px] text-stone-400 block">per day</span>
+                </div>
+                <div className="p-1.5 rounded bg-white border border-violet-100">
+                  <span className="text-[9px] text-stone-500 block">Stay Duration (ALOS)</span>
+                  <strong className="font-mono text-xs text-stone-800">{decisionSummary.alos.toFixed(2)}d</strong>
+                  <span className="text-[9px] text-stone-400 block">Median: 2.47d</span>
+                </div>
+                <div className="p-1.5 rounded bg-white border border-violet-100">
+                  <span className="text-[9px] text-stone-500 block">Hotel AOR</span>
+                  <strong className="font-mono text-xs text-indigo-700">{decisionSummary.aor != null ? `${decisionSummary.aor.toFixed(1)}%` : 'N/A'}</strong>
+                  <span className="text-[9px] text-stone-400 block">Occupancy</span>
+                </div>
+                <div className="p-1.5 rounded bg-white border border-violet-100">
+                  <span className="text-[9px] text-stone-500 block">Room Headroom</span>
+                  <strong className={`font-mono text-xs ${decisionSummary.headroom != null && decisionSummary.headroom < 10 ? 'text-amber-700' : 'text-emerald-700'}`}>
+                    {decisionSummary.headroom != null ? `${decisionSummary.headroom.toFixed(0)}%` : 'N/A'}
+                  </strong>
+                  <span className="text-[9px] text-stone-400 block">Below 80% ceiling</span>
+                </div>
               </div>
             </div>
 
@@ -691,13 +715,13 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
             <div className="flex items-center gap-1.5">
               <span className="text-[10px] uppercase font-semibold text-stone-600">Typology Quadrant:</span>
               <span className="font-bold text-violet-800">
-                {activeState.baseline_2025.yield_typology || activeState.sdg_metrics?.yield_typology || 'Short Stay / High Yield'}
+                {activeState.baseline_2025.yield_typology || activeState.sdg_metrics?.yield_typology || 'N/A'}
               </span>
             </div>
             <div className="flex items-center gap-1.5 text-[11px] font-mono">
               <span className="text-stone-500">TSA Mapping Coverage:</span>
               <span className="px-1.5 py-0.5 rounded bg-white text-violet-700 font-semibold border border-violet-100">
-                {(activeState.sdg_metrics?.mapping_coverage_pct ?? 100).toFixed(1)}%
+                {activeState.sdg_metrics?.mapping_coverage_pct != null ? `${activeState.sdg_metrics.mapping_coverage_pct.toFixed(1)}%` : 'N/A'}
               </span>
             </div>
           </div>
@@ -762,69 +786,73 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
               <div className="p-1.5 rounded bg-stone-50/60 border border-violet-100/50">
                 <span className="text-[10px] text-indigo-600 block font-medium">15–24 (Belia)</span>
                 <strong className="text-stone-900 font-mono text-xs">
-                  {activeState.demographics?.dts_age_classes?.age_15_24_pct || 22}%
+                  {activeState.demographics?.dts_age_classes?.age_15_24_pct != null ? `${activeState.demographics.dts_age_classes.age_15_24_pct}%` : 'N/A'}
                 </strong>
                 <span className="text-[9px] text-stone-600 block mt-0.5">
-                  {activeState.demographics?.dts_age_classes?.age_15_24_k?.toFixed(0) || '0'}k pax
+                  {activeState.demographics?.dts_age_classes?.age_15_24_k != null ? `${activeState.demographics.dts_age_classes.age_15_24_k.toFixed(0)}k pax` : '—'}
                 </span>
               </div>
               <div className="p-1.5 rounded bg-stone-50/60 border border-violet-400/30 bg-violet-50/10">
                 <span className="text-[10px] text-violet-700 block font-medium">25–39 (Prime)</span>
                 <strong className="text-violet-700 font-mono text-xs">
-                  {activeState.demographics?.dts_age_classes?.age_25_39_pct || 35}%
+                  {activeState.demographics?.dts_age_classes?.age_25_39_pct != null ? `${activeState.demographics.dts_age_classes.age_25_39_pct}%` : 'N/A'}
                 </strong>
                 <span className="text-[9px] text-violet-700/80 block mt-0.5">
-                  {activeState.demographics?.dts_age_classes?.age_25_39_k?.toFixed(0) || '0'}k pax
+                  {activeState.demographics?.dts_age_classes?.age_25_39_k != null ? `${activeState.demographics.dts_age_classes.age_25_39_k.toFixed(0)}k pax` : '—'}
                 </span>
               </div>
               <div className="p-1.5 rounded bg-stone-50/60 border border-violet-100/50">
                 <span className="text-[10px] text-amber-700 block font-medium">40–54 (Family)</span>
                 <strong className="text-stone-900 font-mono text-xs">
-                  {activeState.demographics?.dts_age_classes?.age_40_54_pct || 24}%
+                  {activeState.demographics?.dts_age_classes?.age_40_54_pct != null ? `${activeState.demographics.dts_age_classes.age_40_54_pct}%` : 'N/A'}
                 </strong>
                 <span className="text-[9px] text-stone-600 block mt-0.5">
-                  {activeState.demographics?.dts_age_classes?.age_40_54_k?.toFixed(0) || '0'}k pax
+                  {activeState.demographics?.dts_age_classes?.age_40_54_k != null ? `${activeState.demographics.dts_age_classes.age_40_54_k.toFixed(0)}k pax` : '—'}
                 </span>
               </div>
               <div className="p-1.5 rounded bg-stone-50/60 border border-violet-100/50">
                 <span className="text-[10px] text-violet-700 block font-medium">≥ 55 (Senior)</span>
                 <strong className="text-stone-900 font-mono text-xs">
-                  {activeState.demographics?.dts_age_classes?.age_55plus_pct || 19}%
+                  {activeState.demographics?.dts_age_classes?.age_55plus_pct != null ? `${activeState.demographics.dts_age_classes.age_55plus_pct}%` : 'N/A'}
                 </strong>
                 <span className="text-[9px] text-stone-600 block mt-0.5">
-                  {activeState.demographics?.dts_age_classes?.age_55plus_k?.toFixed(0) || '0'}k pax
+                  {activeState.demographics?.dts_age_classes?.age_55plus_k != null ? `${activeState.demographics.dts_age_classes.age_55plus_k.toFixed(0)}k pax` : '—'}
                 </span>
               </div>
             </div>
 
             {/* 100% MECE Cohort Stack Bar */}
-            <div className="w-full h-1.5 rounded-full bg-violet-50 overflow-hidden flex">
-              <div
-                className="bg-indigo-400 h-full"
-                style={{ width: `${activeState.demographics?.dts_age_classes?.age_15_24_pct || 22}%` }}
-                title={`15-24: ${activeState.demographics?.dts_age_classes?.age_15_24_pct}%`}
-              ></div>
-              <div
-                className="bg-violet-500 h-full"
-                style={{ width: `${activeState.demographics?.dts_age_classes?.age_25_39_pct || 35}%` }}
-                title={`25-39: ${activeState.demographics?.dts_age_classes?.age_25_39_pct}%`}
-              ></div>
-              <div
-                className="bg-amber-400 h-full"
-                style={{ width: `${activeState.demographics?.dts_age_classes?.age_40_54_pct || 24}%` }}
-                title={`40-54: ${activeState.demographics?.dts_age_classes?.age_40_54_pct}%`}
-              ></div>
-              <div
-                className="bg-purple-400 h-full"
-                style={{ width: `${activeState.demographics?.dts_age_classes?.age_55plus_pct || 19}%` }}
-                title={`≥ 55: ${activeState.demographics?.dts_age_classes?.age_55plus_pct}%`}
-              ></div>
-            </div>
+            {activeState.demographics?.dts_age_classes ? (
+              <div className="w-full h-1.5 rounded-full bg-violet-50 overflow-hidden flex">
+                <div
+                  className="bg-indigo-400 h-full"
+                  style={{ width: `${activeState.demographics.dts_age_classes.age_15_24_pct || 0}%` }}
+                  title={`15-24: ${activeState.demographics.dts_age_classes.age_15_24_pct}%`}
+                ></div>
+                <div
+                  className="bg-violet-500 h-full"
+                  style={{ width: `${activeState.demographics.dts_age_classes.age_25_39_pct || 0}%` }}
+                  title={`25-39: ${activeState.demographics.dts_age_classes.age_25_39_pct}%`}
+                ></div>
+                <div
+                  className="bg-amber-400 h-full"
+                  style={{ width: `${activeState.demographics.dts_age_classes.age_40_54_pct || 0}%` }}
+                  title={`40-54: ${activeState.demographics.dts_age_classes.age_40_54_pct}%`}
+                ></div>
+                <div
+                  className="bg-purple-400 h-full"
+                  style={{ width: `${activeState.demographics.dts_age_classes.age_55plus_pct || 0}%` }}
+                  title={`≥ 55: ${activeState.demographics.dts_age_classes.age_55plus_pct}%`}
+                ></div>
+              </div>
+            ) : (
+              <div className="text-[10px] text-stone-400 italic py-0.5">Age cohort distribution unobserved</div>
+            )}
 
             <div className="flex items-center justify-between text-[11px] text-stone-600 pt-0.5">
-              <span>Children 0–14: <strong className="text-stone-700 font-mono">{activeState.demographics?.children_pct || 21}% ({activeState.demographics?.children_0_14_thousands?.toFixed(0) || '0'}k)</strong></span>
-              <span>Dependency Ratio: <strong className="text-stone-700 font-mono">{activeState.demographics?.dependency_ratio || 40}</strong></span>
-              <span>Resident Median: <strong className="text-violet-700 font-mono">RM {activeState.baseline_2025.resident_median_income_rm.toLocaleString()}</strong></span>
+              <span>Children 0–14: <strong className="text-stone-700 font-mono">{activeState.demographics?.children_pct != null ? `${activeState.demographics.children_pct}% (${activeState.demographics.children_0_14_thousands?.toFixed(0) || '0'}k)` : 'N/A'}</strong></span>
+              <span>Dependency Ratio: <strong className="text-stone-700 font-mono">{activeState.demographics?.dependency_ratio != null ? activeState.demographics.dependency_ratio : 'N/A'}</strong></span>
+              <span>Resident Median: <strong className="text-violet-700 font-mono">{activeState.baseline_2025.resident_median_income_rm != null ? `RM ${activeState.baseline_2025.resident_median_income_rm.toLocaleString()}` : 'N/A'}</strong></span>
             </div>
           </div>
 
@@ -849,10 +877,10 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
                 Inbound Affluence
               </span>
               <div className="text-[11px] text-stone-600">
-                Tourist T20 Share: <strong className="text-violet-700 font-mono">{activeState.tourist_income?.t20_pct?.toFixed(1) || '20'}%</strong>
+                Tourist T20 Share: <strong className="text-violet-700 font-mono">{activeState.tourist_income?.t20_pct != null ? `${activeState.tourist_income.t20_pct.toFixed(1)}%` : 'N/A'}</strong>
               </div>
               <div className="text-[11px] text-stone-600">
-                Affluence Index: <strong className="text-stone-900 font-mono">{activeState.tourist_income?.affluence_index?.toFixed(0) || '100'}</strong>
+                Affluence Index: <strong className="text-stone-900 font-mono">{activeState.tourist_income?.affluence_index != null ? activeState.tourist_income.affluence_index.toFixed(0) : 'N/A'}</strong>
               </div>
             </div>
           </div>
@@ -885,7 +913,7 @@ Under a transparent scenario extending Average Length of Stay by +0.3 days:
               Research Question 3: Accommodation Expenditure Driver Attribution
             </h3>
             <p className="text-xs text-stone-600">
-              Econometric attribution model explaining cross-state variation in accommodation yield (R² = {driversData.model_metadata?.r_squared || 0.609}, HC3 Robust Standard Errors)
+              Econometric attribution model explaining cross-state variation in accommodation yield (R² = {driversData.model_metadata?.r_squared != null ? driversData.model_metadata.r_squared.toFixed(3) : '—'}, HC3 Robust Standard Errors)
             </p>
           </div>
           <span className="text-xs px-2.5 py-1 rounded bg-violet-50 text-stone-700 font-mono">

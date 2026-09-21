@@ -75,7 +75,8 @@ $$\ln(\text{RealAccomSpend}_{st}) = \alpha_s + \lambda_t + \beta_1 \ln(\text{ALO
 - Within-$R^2 = 0.9725$.
 - **ALOS Elasticity $\hat{\beta}_1 = +0.6628$** ($SE = 0.3972, p = 0.0952, 95\% \text{ CI } [-0.1157, 1.4413]$).
 - **Tourists Elasticity $\hat{\beta}_2 = +0.7327$** ($SE = 0.1168, p < 0.0001$).
-- **Methodological Transparency**: One-Way FE yields $\hat{\beta}_1 = +1.5545$ ($p < 0.0001$), but absorbs cross-period recovery trends. Controlling for year fixed effects $\lambda_t$, the within-state stay elasticity is $+0.66$ (positive and marginally significant at $\alpha = 0.10$).
+- **Methodological & Non-Causal Interpretation**: Controlling for state fixed effects, year effects, and price inflation, ALOS retains a positive estimated association with real accommodation expenditure. The coefficient is approximately 0.66 and is statistically imprecise at the conventional 5% level ($p = 0.0952$). This is reported strictly as an observational relationship, not a causal guarantee.
+- **Leave-One-State-Out Robustness**: Iterative re-estimation across 16 subsets confirms 16/16 sign stability ($\beta \in [+0.52, +0.81]$), indicating the positive association is structurally stable and not driven by any single state.
 
 ### 4.2 Accommodation Yield Model (Model 4)
 $$\ln(\text{RealYieldPerNight}_{st}) = \alpha_s + \lambda_t + \gamma_1 \ln(\text{AOR}_{st}) + \gamma_2 \text{ForeignShare}_{st} + \gamma_3 \text{HolidayShare}_{st} + \varepsilon_{st}$$
@@ -88,7 +89,11 @@ $$\ln(\text{RealYieldPerNight}_{st}) = \alpha_s + \lambda_t + \gamma_1 \ln(\text
 
 ## 5. Structural Spatial Gravity Model (PPML)
 
-Across 240 bilateral interstate corridors over 8 years ($1,920$ corridor-years):
+### 5.0 Observation Counts Disentangled
+The empirical mobility network covers 16 Malaysian states across 8 years (2018–2025):
+- **Total Bilateral Network**: $16 \text{ origins} \times 16 \text{ destinations} = 256 \text{ pairs} \times 8 \text{ years} = 2,048 \text{ panel observations}$.
+- **Interstate Corridors**: $16 \text{ origins} \times 15 \text{ destinations} = 240 \text{ directed corridors} \times 8 \text{ years} = 1,920 \text{ corridor-years}$ ($1,680$ training observations across 2018–2024 and $240$ out-of-sample holdout observations for 2025).
+- **Intrastate Pairs**: $16$ intra-state domestic pairs $\times 8 \text{ years} = 128 \text{ observations}$ (retained in general totals but excluded from inter-state corridor interventions).
 
 ### 5.1 PPML Specification (Santos Silva & Tenreyro 2006)
 $$F_{od,t} = \exp\left( \alpha_o + \alpha_d + \lambda_t + \beta_1 \ln(\text{Distance}_{od}) + \beta_2 \text{CrossRegion}_{od} \right) \cdot \eta_{od,t}$$
@@ -98,7 +103,11 @@ $$F_{od,t} = \exp\left( \alpha_o + \alpha_d + \lambda_t + \beta_1 \ln(\text{Dist
 - **Distance Decay Friction**: $\beta_1 = \mathbf{-0.4104}$ ($SE = 0.0517, p < 0.0001$). A 10% increase in distance reduces flow by 4.1%.
 - **Cross-Region Flight Barrier**: $\beta_2 = \mathbf{-0.8022}$ ($SE = 0.1289, p < 0.0001$). Crossing between Peninsular Malaysia and Borneo imposes an additional 55.2% volume penalty.
 - **Out-of-Sample Validation (2025 Holdout, $N=240$)**: True predictive $R^2_{OOS} = \mathbf{0.5890}$, correlation $r = 0.8759$, $\text{MAE} = 175.50\text{k}$.
-- **Structural Invariance**: Interaction test $\ln(\text{Distance}) \times \text{PostRecovery}$ yields $\beta = +0.1023$ ($p = 0.1198$), confirming spatial friction remained stable post-COVID.
+- **Structural Invariance**: Interaction test $\ln(\text{Distance}) \times \text{PostRecovery}$ yields $\beta = +0.1023$ ($p = 0.1198$), which is not statistically significant at conventional thresholds ($\alpha = 0.05$). Distance sensitivity did not change materially post-COVID; spatial friction remains structurally invariant.
+
+### 5.2 Dual Model Roles: Structural Benchmarking vs. Short-Term Forecasting
+- **Structural Model (PPML Gravity)**: $R^2_{OOS} = 0.5890$ on 2025 holdout. Retained for structural corridor benchmarking, flow gap detection, and counterfactual policy simulation under capacity limits.
+- **Short-Term Forecast Benchmark (Lagged Persistence)**: $R^2_{OOS} = 0.7637$ on 2025 holdout. Outperforms PPML for pure 1-step point forecasting due to year-over-year corridor inertia, but cannot evaluate counterfactual policy interventions.
 
 ---
 

@@ -201,7 +201,7 @@
       "model_type": "Poisson Pseudo-Maximum Likelihood (PPML) & Log-OLS",
       "data_status": "model_estimate",
       "dependent_variable": "Interstate Tourist Flow (thousands)",
-      "sample_size": "1,650 observed corridor-years (rolling holdout validation)",
+      "sample_size": "1,920 interstate corridor-years (1,680 train 2018\u20132024, 240 holdout 2025; 2,048 total including intrastate)",
       "source_datasets": [
         "od_matrix_2018_2025",
         "dts_panel_2018_2025"

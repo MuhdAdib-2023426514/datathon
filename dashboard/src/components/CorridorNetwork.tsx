@@ -20,8 +20,10 @@ import {
   Pause,
   RotateCcw,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  HelpCircle
 } from 'lucide-react';
+import { EvidenceDrawer, type EvidenceItem } from './EvidenceDrawer';
 
 interface CorridorNetworkProps {
   corridorData: ODCorridorsData;
@@ -54,6 +56,38 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
 
   const [animYear, setAnimYear] = useState<number>(selectedYear || 2025);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [evidenceDrawerData, setEvidenceDrawerData] = useState<EvidenceItem | null>(null);
+
+  const openEvidenceDrawerForCorridor = (c: Corridor) => {
+    setEvidenceDrawerData({
+      recommendationTitle: `Target ${c.origin} → ${c.destination} (${c.corridor_category})`,
+      actionType: c.corridor_category,
+      targetCorridorOrState: `${c.origin} → ${c.destination}`,
+      observation: `${c.origin} generates ${c.tourist_flow_thousands.toFixed(1)}k domestic tourists to ${c.destination}. Destination stay duration is ${c.dest_alos != null ? `${c.dest_alos.toFixed(2)} days` : 'unobserved'} (national median: 2.47d) with average lodging expenditure of ${c.dest_spend_per_night != null ? `RM ${c.dest_spend_per_night.toFixed(1)}/night` : 'N/A'}.`,
+      supportingMetrics: [
+        { label: 'Tourist Volume', value: `${c.tourist_flow_thousands.toFixed(1)}k`, context: '2025 actual flow' },
+        { label: 'Destination ALOS', value: c.dest_alos != null ? `${c.dest_alos.toFixed(2)}d` : 'N/A', context: 'Stay duration benchmark' },
+        { label: 'Nightly Spend', value: c.dest_spend_per_night != null ? `RM ${c.dest_spend_per_night.toFixed(1)}` : 'N/A', context: 'Accommodation yield' },
+        { label: 'Capacity Headroom', value: c.capacity_headroom_pct != null ? `${c.capacity_headroom_pct.toFixed(0)}%` : 'N/A', context: 'Room space below 80% ceiling' },
+        { label: 'Gravity Gap', value: c.gravity_flow_gap_thousands != null ? `${c.gravity_flow_gap_thousands > 0 ? '+' : ''}${c.gravity_flow_gap_thousands.toFixed(0)}k` : '0k', context: c.gravity_performance_category || 'Model Expected' },
+        { label: 'Pareto Rank', value: c.is_pareto_optimal ? 'Rank 1 (Pareto Frontier)' : `Rank ${c.pareto_rank || 'N/A'}`, context: 'Non-dominated multi-criteria' },
+      ],
+      modelEvidence: {
+        modelName: 'PPML Structural Gravity & Pareto Optimization',
+        specification: 'E[Flow_ijt] = exp(α_i + γ_j + δ_t + β_dist · ln(Dist) + β_borneo · Borneo)',
+        finding: `Empirically validated with Out-of-sample R² = ${modelMetrics?.gravity?.r2_oos != null ? modelMetrics.gravity.r2_oos.toFixed(4) : '0.5890'} and distance friction β = ${modelMetrics?.gravity?.distance_decay_friction != null ? modelMetrics.gravity.distance_decay_friction.toFixed(3) : '-0.410'}.`,
+        keyCoefficients: `Borneo barrier friction: ${modelMetrics?.gravity?.cross_region_barrier != null ? `${(-((1 - Math.exp(modelMetrics.gravity.cross_region_barrier)) * 100)).toFixed(1)}%` : '-55.2%'}`,
+      },
+      source: 'DOSM DTS 2025, TSA 2025, and PPML Gravity Optimization Matrix',
+      status: 'Model Calibrated',
+      confidence: c.tourist_flow_thousands > 500 ? 'Very High' : 'High',
+      limitations: [
+        'Origin-destination flows capture primary reported destination; incidental multi-leg road trips are attributed to main stop.',
+        'Scenario expenditure uplift depends on marketing campaign reach and conversion rates.',
+        'Annual destination hotel occupancy may conceal weekend and holiday peak congestion.',
+      ],
+    });
+  };
 
   useEffect(() => {
     if (selectedYear) setAnimYear(selectedYear);
@@ -118,28 +152,31 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
     'Lower Strategic Priority': '#a29aaa',     // Slate
   };
 
-  // Build ECharts Lines (Geo Arcs) Option
-  const linesData = filteredCorridors.slice(0, 50).map((c) => {
-    const origLon = c.origin_lon ?? c.orig_lon ?? 101.5;
-    const origLat = c.origin_lat ?? c.orig_lat ?? 3.1;
-    const destLon = c.destination_lon ?? c.dest_lon ?? 101.5;
-    const destLat = c.destination_lat ?? c.dest_lat ?? 3.1;
-    const isCross = c.is_cross_region ?? (c.origin_region !== c.destination_region);
+  // Build ECharts Lines (Geo Arcs) Option - strict zero coordinate fallback
+  const linesData = filteredCorridors
+    .slice(0, 50)
+    .filter((c) => (c.origin_lon != null || c.orig_lon != null) && (c.destination_lon != null || c.dest_lon != null))
+    .map((c) => {
+      const origLon = c.origin_lon ?? c.orig_lon!;
+      const origLat = c.origin_lat ?? c.orig_lat!;
+      const destLon = c.destination_lon ?? c.dest_lon!;
+      const destLat = c.destination_lat ?? c.dest_lat!;
+      const isCross = c.is_cross_region ?? (c.origin_region !== c.destination_region);
 
-    return {
-      coords: [
-        [origLon, origLat],
-        [destLon, destLat],
-      ],
-      lineStyle: {
-        color: tierColorMap[c.corridor_category] || '#8b8798',
-        width: Math.min(6, Math.max(1.5, Math.log(c.tourist_flow_thousands + 1) * 1.2)),
-        opacity: 0.75,
-        curveness: isCross ? 0.35 : 0.2,
-      },
-      corridorMeta: c,
-    };
-  });
+      return {
+        coords: [
+          [origLon, origLat],
+          [destLon, destLat],
+        ],
+        lineStyle: {
+          color: tierColorMap[c.corridor_category] || '#8b8798',
+          width: Math.min(6, Math.max(1.5, Math.log(c.tourist_flow_thousands + 1) * 1.2)),
+          opacity: 0.75,
+          curveness: isCross ? 0.35 : 0.2,
+        },
+        corridorMeta: c,
+      };
+    });
 
   const mapArcsOption = {
     backgroundColor: 'transparent',
@@ -513,13 +550,23 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                   )}
                 </div>
 
-                <button
-                  onClick={() => setSelectedCorridor(c)}
-                  className="w-full flex items-center justify-center gap-1.5 py-1 px-2 rounded bg-violet-50/80 hover:bg-violet-100 text-indigo-600 text-[11px] font-semibold transition-all mt-1 cursor-pointer border border-violet-200"
-                >
-                  <Compass className="w-3 h-3" />
-                  <span>Inspect Bilateral Profile</span>
-                </button>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <button
+                    onClick={() => setSelectedCorridor(c)}
+                    className="flex-1 flex items-center justify-center gap-1.5 py-1 px-2 rounded bg-violet-50/80 hover:bg-violet-100 text-indigo-600 text-[11px] font-semibold transition-all cursor-pointer border border-violet-200"
+                  >
+                    <Compass className="w-3 h-3" />
+                    <span>Inspect Profile</span>
+                  </button>
+                  <button
+                    onClick={() => openEvidenceDrawerForCorridor(c)}
+                    className="flex items-center justify-center gap-1 py-1 px-2 rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-[11px] font-semibold transition-all cursor-pointer border border-indigo-200"
+                    title="Why is this corridor recommended?"
+                  >
+                    <HelpCircle className="w-3 h-3" />
+                    <span>Evidence</span>
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -598,6 +645,33 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                   </div>
                 ))}
               </div>
+
+              {/* Dual-Model Architectural Distinction Callout (Sections 9 & 24) */}
+              <div className="mt-2.5 p-2 rounded bg-indigo-50/70 border border-indigo-200/80 text-[11px] text-stone-800 space-y-1.5 text-left">
+                <div className="flex items-center justify-between text-[10px] font-semibold text-indigo-950">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-indigo-600 inline-block"></span>
+                    Structural Model vs. Forecasting Benchmark
+                  </span>
+                  <span className="text-[9px] text-indigo-800 font-mono">Dual-Model Architecture</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-[10px] bg-white/80 p-2 rounded border border-indigo-100">
+                  <div>
+                    <span className="text-stone-600 block uppercase font-bold text-[9px]">Structural Model (PPML)</span>
+                    <span className="font-mono text-indigo-700 font-bold">OOS R² = {modelMetrics?.gravity?.r2_oos != null ? modelMetrics.gravity.r2_oos.toFixed(4) : '0.5890'}</span>
+                    <span className="text-stone-600 block text-[9px] mt-0.5">Counterfactual simulation & structural flow gaps</span>
+                  </div>
+                  <div>
+                    <span className="text-stone-600 block uppercase font-bold text-[9px]">Short-Term Benchmark (2024 Lag)</span>
+                    <span className="font-mono text-stone-800 font-bold">OOS R² = 0.7637</span>
+                    <span className="text-stone-600 block text-[9px] mt-0.5">Point forecasting exploiting corridor inertia</span>
+                  </div>
+                </div>
+                <p className="text-[9.5px] text-stone-600 leading-relaxed italic">
+                  {modelMetrics?.gravity?.baseline_comparison_note ||
+                    "Autoregressive persistence (2024 Lag, R²_OOS = 0.7637) outperforms structural PPML (R²_OOS = 0.5890) for pure 1-step-ahead forecasting due to year-over-year corridor inertia. PPML is retained as the authoritative decision engine because autoregressive lags cannot evaluate counterfactual policy interventions, distance friction shifts, or structural gravity gaps."}
+                </p>
+              </div>
             </div>
           )}
         </div>
@@ -642,7 +716,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                   <div className="text-stone-700 text-[11px] space-y-1">
                     {topDiversified.map((c) => (
                       <div key={c.destination}>
-                        • <strong>{c.destination}</strong> (HHI: {c.interstate_origin_hhi?.toFixed(0)} — {c.meaningful_origin_count || 5} active feeders)
+                        • <strong>{c.destination}</strong> (HHI: {c.interstate_origin_hhi?.toFixed(0)} — {c.meaningful_origin_count != null ? `${c.meaningful_origin_count} active feeders` : 'feeders unobserved'})
                       </div>
                     ))}
                   </div>
@@ -701,6 +775,14 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                   </button>
                 )}
                 <button
+                  onClick={() => openEvidenceDrawerForCorridor(selectedCorridor)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-semibold transition-all cursor-pointer shadow-sm"
+                  title="Inspect 7-element decision evidence drawer"
+                >
+                  <HelpCircle className="w-3.5 h-3.5" />
+                  <span>Why is this recommended?</span>
+                </button>
+                <button
                   onClick={() => setSelectedCorridor(null)}
                   className="p-1.5 rounded-lg bg-violet-50 hover:bg-violet-100 text-stone-600 hover:text-stone-900 transition-all cursor-pointer ml-1"
                 >
@@ -720,7 +802,9 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                 </div>
                 <div className="p-2.5 rounded-lg bg-stone-50/70 border border-violet-100">
                   <span className="text-[10px] uppercase text-stone-600 block font-semibold">Spatial Distance</span>
-                  <strong className="text-indigo-600 text-base font-mono">{selectedCorridor.distance_km?.toFixed(0) || '250'} km</strong>
+                  <strong className="text-indigo-600 text-base font-mono">
+                    {selectedCorridor.distance_km != null ? `${selectedCorridor.distance_km.toFixed(0)} km` : 'N/A'}
+                  </strong>
                   <span className="text-[10px] text-stone-600 block">{selectedCorridor.is_cross_region ? '✈️ Cross-Region Air' : '🚗 Overland Highway'}</span>
                 </div>
                 <div className="p-2.5 rounded-lg bg-stone-50/70 border border-violet-100">
@@ -778,19 +862,35 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                         <div className="grid grid-cols-4 gap-1 text-center text-[10px]">
                           <div className="p-1 rounded bg-stone-50/80">
                             <span className="text-indigo-600 block font-medium">15–24</span>
-                            <strong className="text-stone-900 font-mono">{orig?.demographics?.dts_age_classes?.age_15_24_pct || 22}%</strong>
+                            <strong className="text-stone-900 font-mono">
+                              {orig?.demographics?.dts_age_classes?.age_15_24_pct != null
+                                ? `${orig.demographics.dts_age_classes.age_15_24_pct}%`
+                                : 'N/A'}
+                            </strong>
                           </div>
                           <div className="p-1 rounded bg-violet-50/30 border border-violet-400/30">
                             <span className="text-violet-700 block font-medium">25–39 (Prime)</span>
-                            <strong className="text-violet-700 font-mono">{orig?.demographics?.dts_age_classes?.age_25_39_pct || 35}%</strong>
+                            <strong className="text-violet-700 font-mono">
+                              {orig?.demographics?.dts_age_classes?.age_25_39_pct != null
+                                ? `${orig.demographics.dts_age_classes.age_25_39_pct}%`
+                                : 'N/A'}
+                            </strong>
                           </div>
                           <div className="p-1 rounded bg-stone-50/80">
                             <span className="text-amber-700 block font-medium">40–54</span>
-                            <strong className="text-stone-900 font-mono">{orig?.demographics?.dts_age_classes?.age_40_54_pct || 24}%</strong>
+                            <strong className="text-stone-900 font-mono">
+                              {orig?.demographics?.dts_age_classes?.age_40_54_pct != null
+                                ? `${orig.demographics.dts_age_classes.age_40_54_pct}%`
+                                : 'N/A'}
+                            </strong>
                           </div>
                           <div className="p-1 rounded bg-stone-50/80">
                             <span className="text-violet-700 block font-medium">≥ 55</span>
-                            <strong className="text-stone-900 font-mono">{orig?.demographics?.dts_age_classes?.age_55plus_pct || 19}%</strong>
+                            <strong className="text-stone-900 font-mono">
+                              {orig?.demographics?.dts_age_classes?.age_55plus_pct != null
+                                ? `${orig.demographics.dts_age_classes.age_55plus_pct}%`
+                                : 'N/A'}
+                            </strong>
                           </div>
                         </div>
                       </div>
@@ -917,7 +1017,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                         ? 'text-blue-700'
                         : 'text-stone-700'
                     }`}>
-                      {selectedCorridor.gravity_performance_category || 'Conforming'}
+                      {selectedCorridor.gravity_performance_category || 'N/A'}
                     </strong>
                     <span className="text-[9px] text-stone-500 block font-mono">
                       Gap: {selectedCorridor.gravity_flow_gap_thousands != null ? `${selectedCorridor.gravity_flow_gap_thousands > 0 ? '+' : ''}${selectedCorridor.gravity_flow_gap_thousands.toFixed(0)}k` : '0k'}
@@ -930,7 +1030,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                       {selectedCorridor.capacity_headroom_pct != null ? `${selectedCorridor.capacity_headroom_pct.toFixed(0)}% Room Space` : 'N/A'}
                     </strong>
                     <span className="text-[9px] text-stone-500 block truncate" title={selectedCorridor.capacity_tier}>
-                      {selectedCorridor.capacity_tier?.split('(')[0].trim() || 'Feasible'}
+                      {selectedCorridor.capacity_tier ? selectedCorridor.capacity_tier.split('(')[0].trim() : 'N/A'}
                     </span>
                   </div>
 
@@ -940,7 +1040,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                       {selectedCorridor.is_dominant_feeder ? 'Dominant Feeder' : 'Diversifying Origin'}
                     </strong>
                     <span className="text-[9px] text-stone-500 block truncate" title={selectedCorridor.diversification_benefit}>
-                      {selectedCorridor.diversification_benefit?.split('(')[0].trim() || 'Standard'}
+                      {selectedCorridor.diversification_benefit ? selectedCorridor.diversification_benefit.split('(')[0].trim() : 'N/A'}
                     </span>
                   </div>
                 </div>
@@ -993,6 +1093,13 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
           </div>
         </div>
       )}
+
+      {/* Evidence Drawer (Plan Section 30 / Sprint E) */}
+      <EvidenceDrawer
+        isOpen={evidenceDrawerData !== null}
+        onClose={() => setEvidenceDrawerData(null)}
+        evidence={evidenceDrawerData}
+      />
     </div>
   );
 };

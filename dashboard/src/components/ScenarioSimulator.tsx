@@ -159,6 +159,9 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
   const [simulationMode, setSimulationMode] = useState<'policy' | 'monte_carlo' | 'portfolio'>('policy'); // Sprint 8
   const [selectedBudget, setSelectedBudget] = useState<number>(5.0);
   const [selectedOptimizerThreshold, setSelectedOptimizerThreshold] = useState<number>(80);
+  const [optimizationMode, setOptimizationMode] = useState<'expected' | 'conservative_p10' | 'risk_adjusted'>('expected');
+  const [customCosts, setCustomCosts] = useState<Record<string, number>>({}); // corridor_id -> RM '000
+  const [showAllCandidates, setShowAllCandidates] = useState<boolean>(false);
 
   useEffect(() => {
     if (initialDestination && stateProfiles[initialDestination]) {
@@ -1079,6 +1082,72 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                   <span className="block text-[10px] text-amber-700 font-semibold">Risk of Saturation</span>
                 </div>
               </div>
+              {/* Sprint D Phase 17: Uncertainty Provenance Architecture */}
+              {mc?.uncertainty_provenance && (
+                <div className="mt-5 p-4 rounded-xl bg-white border border-purple-200">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold text-stone-900 uppercase tracking-wider flex items-center gap-2">
+                      <Sparkles className="w-3.5 h-3.5 text-purple-700" />
+                      Uncertainty Provenance Architecture (Plan Section 17)
+                    </span>
+                    <span className="text-[10px] text-stone-500 font-medium">Separation of Empirical Data vs Policy Assumptions</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                    {/* Data Uncertainty */}
+                    <div className="p-3 rounded-lg bg-emerald-50/60 border border-emerald-200/80">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="font-bold text-emerald-900">Data-Calibrated Empirical Variation</span>
+                        <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 text-[9px] font-bold">DATA CALIBRATED</span>
+                      </div>
+                      <div className="space-y-1.5 text-stone-700 text-[11px]">
+                        <div className="flex justify-between">
+                          <span>Destination Nightly Spend CV:</span>
+                          <strong className="font-mono text-emerald-800">{((mc.uncertainty_provenance.data_uncertainty.spend_per_night_cv * 100)).toFixed(1)}%</strong>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>TSA Accommodation VAI SD (σ):</span>
+                          <strong className="font-mono text-emerald-800">±{(mc.uncertainty_provenance.data_uncertainty.vai_historical_sd * 100).toFixed(1)}%</strong>
+                        </div>
+                        {mc.uncertainty_provenance.data_uncertainty.destination_aor_sd != null && (
+                          <div className="flex justify-between">
+                            <span>Historical Occupancy SD:</span>
+                            <strong className="font-mono text-emerald-800">±{mc.uncertainty_provenance.data_uncertainty.destination_aor_sd.toFixed(1)}%</strong>
+                          </div>
+                        )}
+                        <p className="text-[10px] text-stone-500 pt-1 border-t border-emerald-100/80">
+                          {mc.uncertainty_provenance.data_uncertainty.calibration_source}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Policy Assumption Uncertainty */}
+                    <div className="p-3 rounded-lg bg-amber-50/60 border border-amber-200/80">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="font-bold text-amber-900">Configurable Policy Priors</span>
+                        <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">POLICY ASSUMPTION</span>
+                      </div>
+                      <div className="space-y-1.5 text-stone-700 text-[11px]">
+                        <div className="flex justify-between">
+                          <span>Campaign Reach Prior:</span>
+                          <strong className="font-mono text-amber-800">{((mc.uncertainty_provenance.policy_uncertainty.affected_share.mean * 100)).toFixed(0)}% (±{((mc.uncertainty_provenance.policy_uncertainty.affected_share.sd * 100)).toFixed(0)}%)</strong>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Length-of-Stay Expansion:</span>
+                          <strong className="font-mono text-amber-800">+{mc.uncertainty_provenance.policy_uncertainty.delta_alos.mean.toFixed(1)}d (±{mc.uncertainty_provenance.policy_uncertainty.delta_alos.sd.toFixed(2)}d)</strong>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Room Guest Density:</span>
+                          <strong className="font-mono text-amber-800">{mc.uncertainty_provenance.policy_uncertainty.guests_per_room.mean.toFixed(1)} guests/room</strong>
+                        </div>
+                        <p className="text-[10px] text-stone-500 pt-1 border-t border-amber-100/80">
+                          Policy levers configured by campaign planners. Stochastic priors capture implementation variance.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Chart: Probability Density Distribution */}
@@ -1098,21 +1167,165 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
       {/* MODE 3: Tourism Investment Portfolio Optimizer (Phase 36) */}
       {simulationMode === 'portfolio' && (() => {
         const tiers = scenarioConfig.portfolio_optimization?.solved_tiers || {};
-        const currentTier = tiers[String(selectedBudget)]?.[String(selectedOptimizerThreshold)] || tiers['5.0']?.['80'];
-        const summary = currentTier?.summary;
-        const corridors = currentTier?.selected_corridors || [];
+        const tiersByMode = (scenarioConfig.portfolio_optimization as any)?.solved_tiers_by_mode || {};
+        const candidates = scenarioConfig.portfolio_optimization?.candidates || [];
+        const currentTier = tiersByMode[optimizationMode]?.[String(selectedBudget)]?.[String(selectedOptimizerThreshold)]
+          || tiers[String(selectedBudget)]?.[String(selectedOptimizerThreshold)]
+          || tiers['5.0']?.['80'];
+
+        const hasCustomCosts = Object.keys(customCosts).length > 0;
+
+        // Dynamic solving if custom costs have been applied by the user or mode is non-default
+        const { displayCorridors, summary, isCustomSolution } = (() => {
+          if (!hasCustomCosts && currentTier) {
+            return {
+              displayCorridors: currentTier?.selected_corridors || [],
+              summary: currentTier?.summary,
+              isCustomSolution: false,
+            };
+          }
+
+          if (candidates.length === 0) {
+            return {
+              displayCorridors: [],
+              summary: undefined,
+              isCustomSolution: false,
+            };
+          }
+
+          // Evaluate candidate pool with user-supplied custom costs and selected optimization mode
+          const candidatePool = candidates.map(c => {
+            const userK = customCosts[c.corridor_id];
+            const costM = userK !== undefined ? userK / 1000 : c.cost_rm_million;
+            
+            let targetGva = c.expected_gva_rm_million;
+            if (optimizationMode === 'conservative_p10') {
+              targetGva = c.p10_gva_rm_million ?? (c.expected_gva_rm_million * 0.58);
+            } else if (optimizationMode === 'risk_adjusted') {
+              targetGva = c.risk_adjusted_gva_rm_million ?? (c.expected_gva_rm_million * 0.81);
+            }
+
+            const ratio = costM > 0 ? targetGva / costM : 0;
+            return {
+              ...c,
+              cost_rm_million: costM,
+              target_gva_rm_million: targetGva,
+              value_to_cost_multiple: ratio,
+              cost_status: userK !== undefined ? 'CUSTOM USER COST' : (c.cost_status || 'ILLUSTRATIVE COST ASSUMPTION'),
+              is_custom: userK !== undefined
+            };
+          });
+
+          // Rank by target value-to-cost efficiency
+          const sorted = [...candidatePool].sort(
+            (a, b) => (b.value_to_cost_multiple || 0) - (a.value_to_cost_multiple || 0)
+          );
+
+          const allocatedRooms: Record<string, number> = {};
+          const selected: any[] = [];
+          let totalCost = 0;
+          let totalGva = 0;
+          let totalP10 = 0;
+          let totalRiskAdj = 0;
+          let totalSpend = 0;
+          let totalNights = 0;
+
+          for (const c of sorted) {
+            if (totalCost + c.cost_rm_million > selectedBudget) continue;
+
+            const dest = c.destination;
+            const baseState = scenarioConfig.state_baselines?.[dest];
+            const hotelRooms = baseState?.hotel_rooms || 10000;
+            const baseAor = baseState?.aor || 60;
+            const maxExtraRooms = Math.max(0, hotelRooms * ((selectedOptimizerThreshold - baseAor) / 100));
+
+            const currentAlloc = allocatedRooms[dest] || 0;
+            if (currentAlloc + c.daily_rooms_demanded > maxExtraRooms) continue;
+
+            selected.push(c);
+            totalCost += c.cost_rm_million;
+            totalGva += c.expected_gva_rm_million;
+            totalP10 += c.p10_gva_rm_million ?? (c.expected_gva_rm_million * 0.58);
+            totalRiskAdj += c.risk_adjusted_gva_rm_million ?? (c.expected_gva_rm_million * 0.81);
+            totalSpend += c.additional_spend_rm_million;
+            totalNights += c.additional_nights;
+            allocatedRooms[dest] = currentAlloc + c.daily_rooms_demanded;
+          }
+
+          return {
+            displayCorridors: selected,
+            summary: {
+              budget_allocated_rm_million: selectedBudget,
+              total_cost_rm_million: totalCost,
+              budget_utilization_pct: selectedBudget > 0 ? (totalCost / selectedBudget) * 100 : 0,
+              total_expected_gva_rm_million: totalGva,
+              total_p10_gva_rm_million: totalP10,
+              total_risk_adjusted_gva_rm_million: totalRiskAdj,
+              objective_mode: optimizationMode,
+              total_additional_spend_rm_million: totalSpend,
+              total_additional_nights: totalNights,
+              value_to_cost_multiple: totalCost > 0 ? totalGva / totalCost : 0,
+              portfolio_roi_multiplier: totalCost > 0 ? totalGva / totalCost : 0,
+              total_corridors_funded: selected.length,
+              planning_threshold_pct: selectedOptimizerThreshold,
+              cost_status: 'CUSTOM USER COSTS APPLIED'
+            },
+            isCustomSolution: true
+          };
+        })();
+
+        const tableCorridors = showAllCandidates && candidates.length > 0
+          ? candidates.map((c: any) => {
+              const isFunded = displayCorridors.some((dc: any) => dc.corridor_id === c.corridor_id);
+              const userK = customCosts[c.corridor_id];
+              const costM = userK !== undefined ? userK / 1000 : c.cost_rm_million;
+              return {
+                ...c,
+                cost_rm_million: costM,
+                is_funded: isFunded,
+                value_to_cost_multiple: costM > 0 ? c.expected_gva_rm_million / costM : 0,
+              };
+            })
+          : displayCorridors.map((c: any) => ({ ...c, is_funded: true }));
 
         return (
           <div className="space-y-6 animate-fadeIn">
+            {/* Warning / Provenance Banner for Illustrative Costs */}
+            <div className="bg-amber-50/90 border border-amber-300 rounded-xl p-4 text-xs text-stone-700 flex items-start justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <span className="px-2 py-0.5 rounded bg-amber-200 text-amber-900 font-bold uppercase tracking-wider text-[10px] shrink-0 mt-0.5">
+                  ILLUSTRATIVE COST ASSUMPTION
+                </span>
+                <div className="space-y-1">
+                  <p className="font-semibold text-stone-900">
+                    Campaign Costs are Illustrative Benchmarks — Editable by Planners:
+                  </p>
+                  <p className="text-stone-600 leading-relaxed">
+                    Default corridor campaign budgets represent scenario planning baselines (RM 50,000 base + RM 25 per 1,000 feeder tourists). Destination planners and budget officers can directly edit campaign costs below in RM &apos;000 to test custom funding allocations. Value-to-Cost Multiples indicate scenario economic yields, not commercial ROI.
+                  </p>
+                </div>
+              </div>
+              {hasCustomCosts && (
+                <button
+                  onClick={() => setCustomCosts({})}
+                  className="px-3 py-1.5 rounded-lg bg-amber-200/80 hover:bg-amber-300 text-amber-900 text-xs font-semibold shrink-0 transition-colors border border-amber-400/50"
+                >
+                  Reset Illustrative Defaults
+                </button>
+              )}
+            </div>
+
             {/* Portfolio Optimizer Header & Controls */}
             <div className="glass-panel p-5 border border-indigo-200">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-bold uppercase tracking-wider">
-                      Phase 36 Mixed-Integer Linear Programming (MILP)
+                      {isCustomSolution ? 'Dynamic Knapsack Allocation' : 'Phase 36 Mixed-Integer Linear Programming (MILP)'}
                     </span>
-                    <span className="text-xs text-stone-500">Global Optimal Resource Allocation</span>
+                    <span className="text-xs text-stone-500">
+                      {isCustomSolution ? 'User Custom Cost Overrides Active' : 'Global Optimal Resource Allocation'}
+                    </span>
                   </div>
                   <h3 className="text-xl font-bold text-stone-900">Tourism Investment Portfolio Optimizer</h3>
                   <p className="text-xs text-stone-600 mt-0.5">
@@ -1120,22 +1333,48 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                   </p>
                 </div>
 
-                {/* Planning Threshold Selector */}
-                <div className="flex items-center gap-1.5 bg-stone-100 p-1 rounded-lg border border-stone-200">
-                  <span className="text-[11px] text-stone-600 px-1 font-medium">Ceiling:</span>
-                  {[75, 80, 85].map(t => (
-                    <button
-                      key={t}
-                      onClick={() => setSelectedOptimizerThreshold(t)}
-                      className={`px-2 py-1 rounded text-xs font-semibold transition-all ${
-                        selectedOptimizerThreshold === t
-                          ? 'bg-indigo-600 text-white shadow-sm'
-                          : 'text-stone-600 hover:text-stone-900'
-                      }`}
-                    >
-                      {t}%
-                    </button>
-                  ))}
+                {/* Right controls: Optimization Mode & Planning Ceiling */}
+                <div className="flex flex-wrap items-center gap-2">
+                  {/* Sprint D Plan Section 19: Optimization Mode Selector */}
+                  <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-lg border border-stone-200">
+                    <span className="text-[11px] text-stone-600 px-1 font-medium">Objective:</span>
+                    {[
+                      { key: 'expected', label: 'Expected Value', title: 'Maximizes national E[GVA]' },
+                      { key: 'conservative_p10', label: 'Conservative (P10)', title: 'Maximizes 10th percentile downside certainty' },
+                      { key: 'risk_adjusted', label: 'Risk-Adjusted (E - 0.5σ)', title: 'Penalizes destination spending volatility' }
+                    ].map(m => (
+                      <button
+                        key={m.key}
+                        onClick={() => setOptimizationMode(m.key as any)}
+                        title={m.title}
+                        className={`px-2 py-1 rounded text-xs font-semibold transition-all ${
+                          optimizationMode === m.key
+                            ? 'bg-indigo-600 text-white shadow-sm'
+                            : 'text-stone-600 hover:text-stone-900'
+                        }`}
+                      >
+                        {m.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Planning Threshold Selector */}
+                  <div className="flex items-center gap-1.5 bg-stone-100 p-1 rounded-lg border border-stone-200">
+                    <span className="text-[11px] text-stone-600 px-1 font-medium">Ceiling:</span>
+                    {[75, 80, 85].map(t => (
+                      <button
+                        key={t}
+                        onClick={() => setSelectedOptimizerThreshold(t)}
+                        className={`px-2 py-1 rounded text-xs font-semibold transition-all ${
+                          selectedOptimizerThreshold === t
+                            ? 'bg-indigo-600 text-white shadow-sm'
+                            : 'text-stone-600 hover:text-stone-900'
+                        }`}
+                      >
+                        {t}%
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -1161,7 +1400,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                 </div>
               </div>
 
-              {/* Top 4 KPI Cards */}
+              {/* Top 4 KPI Cards with Risk-Adjusted Metric Display */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5">
                 <div className="p-3.5 rounded-xl bg-white border border-indigo-100">
                   <span className="text-[10px] font-semibold text-stone-500 uppercase">Budget Utilized</span>
@@ -1174,11 +1413,25 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                 </div>
 
                 <div className="p-3.5 rounded-xl bg-white border border-indigo-100">
-                  <span className="text-[10px] font-semibold text-stone-500 uppercase">Expected Incremental GVA</span>
+                  <span className="text-[10px] font-semibold text-stone-500 uppercase">
+                    {optimizationMode === 'conservative_p10' ? 'Conservative P10 GVA' : optimizationMode === 'risk_adjusted' ? 'Risk-Adjusted GVA' : 'Expected Incremental GVA'}
+                  </span>
                   <div className="text-lg font-bold text-indigo-700 mt-0.5 font-mono">
-                    +RM {summary ? summary.total_expected_gva_rm_million.toFixed(1) : '—'}M
+                    +RM {summary ? (
+                      optimizationMode === 'conservative_p10'
+                        ? (summary.total_p10_gva_rm_million ?? summary.total_expected_gva_rm_million * 0.58).toFixed(1)
+                        : optimizationMode === 'risk_adjusted'
+                        ? (summary.total_risk_adjusted_gva_rm_million ?? summary.total_expected_gva_rm_million * 0.81).toFixed(1)
+                        : summary.total_expected_gva_rm_million.toFixed(1)
+                    ) : '—'}M
                   </div>
-                  <span className="text-[10px] text-indigo-600 font-mono">Macroeconomic yield</span>
+                  <span className="text-[10px] text-indigo-600 font-mono">
+                    {optimizationMode === 'conservative_p10'
+                      ? `E[GVA]: +RM ${summary?.total_expected_gva_rm_million.toFixed(1)}M`
+                      : optimizationMode === 'risk_adjusted'
+                      ? `E[GVA]: +RM ${summary?.total_expected_gva_rm_million.toFixed(1)}M`
+                      : `P10: RM ${(summary?.total_p10_gva_rm_million ?? summary?.total_expected_gva_rm_million * 0.58)?.toFixed(1)}M`}
+                  </span>
                 </div>
 
                 <div className="p-3.5 rounded-xl bg-white border border-indigo-100" title="Scenario benchmark multiple based on promotional budget allocation assumptions; not a guaranteed financial ROI.">
@@ -1201,37 +1454,133 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
 
             {/* Selected Corridors Table */}
             <div className="glass-panel p-5 border border-indigo-100">
-              <h4 className="text-sm font-bold text-stone-900 mb-3 flex items-center justify-between">
-                <span>Optimal Corridor Allocations ({corridors.length} Funded)</span>
-                <span className="text-xs text-stone-500 font-normal">Ranked by Expected GVA</span>
-              </h4>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                <div>
+                  <h4 className="text-sm font-bold text-stone-900 flex items-center gap-2">
+                    <span>Optimal Corridor Allocations ({displayCorridors.length} Funded)</span>
+                    {isCustomSolution && (
+                      <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-bold">
+                        CUSTOM COSTS APPLIED
+                      </span>
+                    )}
+                    <span className="px-2 py-0.5 rounded bg-stone-100 text-stone-700 text-[10px] font-mono">
+                      Target: {optimizationMode === 'conservative_p10' ? 'P10 Downside' : optimizationMode === 'risk_adjusted' ? 'Risk-Adjusted (E - 0.5σ)' : 'Expected Value'}
+                    </span>
+                  </h4>
+                  <p className="text-xs text-stone-500 mt-0.5">
+                    Click any cost input to override with custom campaign budget (in RM &apos;000). System dynamically reallocates resources.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowAllCandidates(!showAllCandidates)}
+                    className="px-2.5 py-1 text-xs font-medium rounded border border-stone-200 bg-stone-50 hover:bg-stone-100 text-stone-700 transition-colors"
+                  >
+                    {showAllCandidates ? `Showing All (${candidates.length})` : `Funded Only (${displayCorridors.length})`}
+                  </button>
+                </div>
+              </div>
+
               <div className="overflow-x-auto">
                 <table className="w-full text-xs text-left">
                   <thead className="bg-stone-100 text-stone-600 uppercase font-semibold">
                     <tr>
                       <th className="py-2 px-3 rounded-l-lg">Corridor</th>
+                      <th className="py-2 px-3">Intervention Strategy</th>
                       <th className="py-2 px-3">Category</th>
                       <th className="py-2 px-3">Feeder Flow</th>
-                      <th className="py-2 px-3">Campaign Cost</th>
+                      <th className="py-2 px-3">Editable Campaign Cost</th>
                       <th className="py-2 px-3">Expected GVA</th>
+                      <th className="py-2 px-3">Risk-Adjusted / P10</th>
+                      <th className="py-2 px-3">Multiple</th>
                       <th className="py-2 px-3 rounded-r-lg">Additional Nights</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-stone-100">
-                    {corridors.map((c: any, idx: number) => (
-                      <tr key={idx} className="hover:bg-indigo-50/40 transition-colors">
-                        <td className="py-2 px-3 font-semibold text-stone-900">{c.origin} ➔ {c.destination}</td>
-                        <td className="py-2 px-3">
-                          <span className="px-1.5 py-0.5 rounded text-[10px] bg-purple-100 text-purple-800 font-medium">
-                            {c.category}
-                          </span>
-                        </td>
-                        <td className="py-2 px-3 font-mono">{c.tourist_flow_thousands.toFixed(1)}k</td>
-                        <td className="py-2 px-3 font-mono">RM {(c.cost_rm_million * 1000).toFixed(0)}k</td>
-                        <td className="py-2 px-3 font-mono font-bold text-indigo-700">+RM {c.expected_gva_rm_million.toFixed(2)}M</td>
-                        <td className="py-2 px-3 font-mono">+{Math.round(c.additional_nights).toLocaleString()}</td>
-                      </tr>
-                    ))}
+                    {tableCorridors.map((c: any, idx: number) => {
+                      const isFunded = c.is_funded !== false;
+                      const hasCustom = customCosts[c.corridor_id] !== undefined;
+
+                      return (
+                        <tr
+                          key={idx}
+                          className={`transition-colors ${
+                            isFunded
+                              ? 'hover:bg-indigo-50/40 bg-white'
+                              : 'opacity-50 hover:opacity-80 bg-stone-50/50'
+                          }`}
+                        >
+                          <td className="py-2 px-3 font-semibold text-stone-900">
+                            <div className="flex items-center gap-1.5">
+                              <span>{c.origin} ➔ {c.destination}</span>
+                              {!isFunded && (
+                                <span className="px-1 py-0.2 rounded text-[9px] bg-stone-200 text-stone-600">Unfunded</span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="py-2 px-3">
+                            <span className="px-1.5 py-0.5 rounded text-[10px] bg-indigo-50 text-indigo-700 font-medium border border-indigo-200/60">
+                              {c.intervention_type || 'Stay-Extension Campaign'}
+                            </span>
+                          </td>
+                          <td className="py-2 px-3">
+                            <span className="px-1.5 py-0.5 rounded text-[10px] bg-purple-100 text-purple-800 font-medium">
+                              {c.category}
+                            </span>
+                          </td>
+                          <td className="py-2 px-3 font-mono">{c.tourist_flow_thousands.toFixed(1)}k</td>
+                          <td className="py-2 px-3">
+                            <div className="flex items-center gap-1">
+                              <span className="font-mono text-stone-400 text-[10px]">RM</span>
+                              <input
+                                type="number"
+                                min={1}
+                                max={5000}
+                                step={5}
+                                value={
+                                  hasCustom
+                                    ? customCosts[c.corridor_id]
+                                    : Math.round(c.cost_rm_million * 1000)
+                                }
+                                onChange={(e) => {
+                                  const val = parseFloat(e.target.value);
+                                  if (!isNaN(val) && val > 0) {
+                                    setCustomCosts(prev => ({ ...prev, [c.corridor_id]: val }));
+                                  }
+                                }}
+                                className="w-16 px-1.5 py-0.5 text-xs font-mono font-bold bg-white border border-stone-300 rounded focus:ring-1 focus:ring-indigo-500 text-stone-900"
+                                title="Edit campaign budget (in RM '000)"
+                              />
+                              <span className="font-mono text-stone-400 text-[10px]">k</span>
+                              {hasCustom ? (
+                                <span className="px-1 py-0.2 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">CUSTOM</span>
+                              ) : (
+                                <span className="px-1 py-0.2 rounded bg-stone-100 text-stone-600 text-[9px]" title="Illustrative Cost Assumption">ILLUS.</span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="py-2 px-3 font-mono font-bold text-indigo-700">
+                            +RM {c.expected_gva_rm_million.toFixed(2)}M
+                          </td>
+                          <td className="py-2 px-3 font-mono">
+                            <div className="font-semibold text-stone-800">
+                              {optimizationMode === 'conservative_p10'
+                                ? `RM ${(c.p10_gva_rm_million ?? c.expected_gva_rm_million * 0.58).toFixed(2)}M`
+                                : `RM ${(c.risk_adjusted_gva_rm_million ?? c.expected_gva_rm_million * 0.81).toFixed(2)}M`
+                              }
+                            </div>
+                            <div className="text-[10px] text-stone-500">
+                              {optimizationMode === 'conservative_p10' ? 'P10 Certainty' : 'E - 0.5σ'}
+                              {c.dest_spend_cv ? ` (CV ${(c.dest_spend_cv * 100).toFixed(0)}%)` : ''}
+                            </div>
+                          </td>
+                          <td className="py-2 px-3 font-mono font-bold text-emerald-700">
+                            {(c.value_to_cost_multiple || (c.expected_gva_rm_million / (c.cost_rm_million || 0.001))).toFixed(1)}x
+                          </td>
+                          <td className="py-2 px-3 font-mono">+{Math.round(c.additional_nights).toLocaleString()}</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

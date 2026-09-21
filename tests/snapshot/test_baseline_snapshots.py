@@ -16,6 +16,7 @@ BASELINE_DIR = ROOT_DIR / "artifacts/baseline"
 DUCKDB_PATH = ROOT_DIR / "data/processed/tourism_data.duckdb"
 
 
+@pytest.mark.snapshot
 class TestBaselineSnapshots:
     """Snapshot regression checks against artifacts/baseline/."""
 

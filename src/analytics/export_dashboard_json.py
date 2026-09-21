@@ -147,12 +147,12 @@ def export_dashboard_data():
             "archetype_color": c_row["archetype_color"],
             "cluster_id": int(c_row["cluster_id"]),
             "radar_scores": {
-                "stay_duration": float(c_row.get("stay_duration_score", 50.0)),
-                "nightly_yield": float(c_row.get("nightly_yield_score", 50.0)),
-                "accom_intensity": float(c_row.get("accom_intensity_score", 50.0)),
-                "leisure_orientation": float(c_row.get("leisure_orientation_score", 50.0)),
-                "luxury_supply": float(c_row.get("luxury_supply_score", 50.0)),
-                "resident_affluence": float(c_row.get("resident_affluence_score", 50.0)),
+                "stay_duration": round(float(c_row["stay_duration_score"]), 1) if pd.notnull(c_row.get("stay_duration_score")) else None,
+                "nightly_yield": round(float(c_row["nightly_yield_score"]), 1) if pd.notnull(c_row.get("nightly_yield_score")) else None,
+                "accom_intensity": round(float(c_row["accom_intensity_score"]), 1) if pd.notnull(c_row.get("accom_intensity_score")) else None,
+                "leisure_orientation": round(float(c_row["leisure_orientation_score"]), 1) if pd.notnull(c_row.get("leisure_orientation_score")) else None,
+                "luxury_supply": round(float(c_row["luxury_supply_score"]), 1) if pd.notnull(c_row.get("luxury_supply_score")) else None,
+                "resident_affluence": round(float(c_row["resident_affluence_score"]), 1) if pd.notnull(c_row.get("resident_affluence_score")) else None,
             },
             "baseline_2025": {
                 "visitors_thousands": float(s25["visitors_thousands"]) if s25 is not None else float(c_row["avg_visitors_k"]),
@@ -423,20 +423,46 @@ def export_dashboard_data():
         except Exception as e:
             pass
 
-    # Sprint 8 Phase 36: Pre-computed Portfolio Optimizer tiers
+    # Sprint 8 & Sprint D Phase 36: Pre-computed Portfolio Optimizer tiers across risk modes
     from src.scenarios.portfolio_optimizer import PortfolioOptimizer, get_implementation_metadata
     port_opt = PortfolioOptimizer()
     portfolio_tiers = {}
+    portfolio_tiers_by_mode = {
+        "expected": {},
+        "conservative_p10": {},
+        "risk_adjusted": {},
+    }
     for budget in [1.0, 2.5, 5.0, 10.0, 20.0]:
         portfolio_tiers[str(budget)] = {}
+        for m in ["expected", "conservative_p10", "risk_adjusted"]:
+            portfolio_tiers_by_mode[m][str(budget)] = {}
+
         for thresh in [75.0, 80.0, 85.0]:
             try:
-                res = port_opt.optimize_portfolio(
+                res_exp = port_opt.optimize_portfolio(
                     budget_rm_million=budget,
                     planning_threshold=thresh,
                     max_corridors_per_dest=4,
+                    objective_mode="expected",
                 )
-                portfolio_tiers[str(budget)][str(int(thresh))] = res
+                portfolio_tiers[str(budget)][str(int(thresh))] = res_exp
+                portfolio_tiers_by_mode["expected"][str(budget)][str(int(thresh))] = res_exp
+
+                res_p10 = port_opt.optimize_portfolio(
+                    budget_rm_million=budget,
+                    planning_threshold=thresh,
+                    max_corridors_per_dest=4,
+                    objective_mode="conservative_p10",
+                )
+                portfolio_tiers_by_mode["conservative_p10"][str(budget)][str(int(thresh))] = res_p10
+
+                res_risk = port_opt.optimize_portfolio(
+                    budget_rm_million=budget,
+                    planning_threshold=thresh,
+                    max_corridors_per_dest=4,
+                    objective_mode="risk_adjusted",
+                )
+                portfolio_tiers_by_mode["risk_adjusted"][str(budget)][str(int(thresh))] = res_risk
             except Exception as e:
                 pass
 
@@ -478,7 +504,9 @@ def export_dashboard_data():
         "portfolio_optimization": {
             "default_budget_rm_million": 5.0,
             "default_planning_threshold": 80.0,
+            "candidates": port_opt.df_candidates[port_opt.df_candidates["eligible"] == True].to_dict(orient="records"),
             "solved_tiers": portfolio_tiers,
+            "solved_tiers_by_mode": portfolio_tiers_by_mode,
         },
         "implementation_roadmap": impl_metadata,
         "gravity_models": {
@@ -545,7 +573,96 @@ def export_dashboard_data():
             registry_data = yaml.safe_load(f)
         with open(DASHBOARD_DATA_DIR / "source_metadata.json", "w", encoding="utf-8") as f:
             json.dump(registry_data, f, indent=2)
-        print(f"  [7/7] Compiled Source Provenance: source_metadata.json ({len(registry_data.get('sources', {}))} sources)")
+        print(f"  [7/8] Compiled Source Provenance: source_metadata.json ({len(registry_data.get('sources', {}))} sources)")
+
+    # 8. Export Authoritative Current-Results Summary (artifacts/current_results.json)
+    # Per Plan Section 31 (Sprint 18 / Sprint F)
+    # Serves as the authoritative single-source-of-truth contract across README, dashboard, deck, and CLI
+    artifacts_dir = ROOT_DIR / "artifacts"
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+
+    metrics_file = artifacts_dir / "model_metrics.json"
+    m_metrics: Dict[str, Any] = {}
+    if metrics_file.exists():
+        with open(metrics_file, "r", encoding="utf-8") as f:
+            m_metrics = json.load(f)
+
+    p_top = con.execute("SELECT product, vai_rank, post_recovery_median_vai FROM product_value_summary ORDER BY vai_rank LIMIT 1").fetchone()
+    n_prod = con.execute("SELECT COUNT(*) FROM tourism_product_year").fetchone()[0]
+    n_corrs = con.execute("SELECT COUNT(*) FROM corridor_opportunity_gap").fetchone()[0]
+    n_pareto_c = con.execute("SELECT COUNT(*) FROM corridor_opportunity_gap WHERE is_pareto_optimal = True").fetchone()[0]
+    top_c = con.execute("SELECT origin, destination, pareto_rank, opportunity_rank, composite_opportunity_score FROM corridor_opportunity_gap ORDER BY opportunity_rank LIMIT 1").fetchone()
+
+    current_results = {
+        "contract_version": "1.0.0",
+        "reference_year": 2025,
+        "panel": {
+            "primary_model": m_metrics.get("panel", {}).get("primary_model", "Model_2_TwoWay_FE_Clustered"),
+            "sample_period": m_metrics.get("panel", {}).get("sample_period", "2018–2025"),
+            "observations": m_metrics.get("panel", {}).get("observations", 126),
+            "states": m_metrics.get("panel", {}).get("states", 16),
+            "years": m_metrics.get("panel", {}).get("years", 8),
+            "alos_elasticity": m_metrics.get("panel", {}).get("alos_elasticity", 0.6628),
+            "alos_p_value": m_metrics.get("panel", {}).get("alos_pvalue", 0.0952),
+            "tourist_elasticity": m_metrics.get("panel", {}).get("tourist_elasticity", 0.7327),
+            "tourist_p_value": m_metrics.get("panel", {}).get("tourist_pvalue", 0.0),
+            "leave_one_out_stability": "16/16",
+            "yield_model": {
+                "r_squared": m_metrics.get("panel", {}).get("yield_model", {}).get("r_squared", 0.8018),
+                "aor_elasticity": m_metrics.get("panel", {}).get("yield_model", {}).get("aor_elasticity", 0.2068),
+            }
+        },
+        "gravity": {
+            "primary_model": m_metrics.get("gravity", {}).get("model", "PPML"),
+            "specification": m_metrics.get("gravity", {}).get("specification", "Structural Poisson Pseudo-Maximum Likelihood (Zero-Flow Robust)"),
+            "train_period": m_metrics.get("gravity", {}).get("train_period", "2018–2024"),
+            "test_period": m_metrics.get("gravity", {}).get("test_period", "2025 Actuals"),
+            "total_panel_observations": m_metrics.get("gravity", {}).get("total_panel_observations", 1920),
+            "train_observations": m_metrics.get("gravity", {}).get("train_observations", 1680),
+            "test_observations": m_metrics.get("gravity", {}).get("test_observations", 240),
+            "ppml_oos_r2": m_metrics.get("gravity", {}).get("r2_oos", 0.5890),
+            "correlation": m_metrics.get("gravity", {}).get("correlation", 0.8759),
+            "mae": m_metrics.get("gravity", {}).get("mae", 175.50),
+            "rmse": m_metrics.get("gravity", {}).get("rmse", 329.04),
+            "distance_decay_friction": m_metrics.get("gravity", {}).get("distance_decay_friction", -0.4104),
+            "cross_region_barrier": m_metrics.get("gravity", {}).get("cross_region_barrier", -0.8022),
+            "structural_invariance_p_value": m_metrics.get("gravity", {}).get("structural_change_test", {}).get("p_value", 0.1198),
+            "naive_baselines": {
+                "lag_2024_oos_r2": 0.7637,
+                "historical_mean_oos_r2": 0.6732,
+                "log_ols_oos_r2": 0.2936
+            }
+        },
+        "tsa": {
+            "top_product": p_top[0] if p_top else "Accommodation services",
+            "accommodation_post_recovery_median_vai": float(p_top[2]) if p_top else 0.8579,
+            "accommodation_vai_rank": int(p_top[1]) if p_top else 1,
+            "total_product_records": int(n_prod)
+        },
+        "corridors": {
+            "total_directional_corridors": int(n_corrs),
+            "total_bilateral_pairs_with_intrastate": 256,
+            "pareto_optimal_corridors_count": int(n_pareto_c),
+            "top_ranked_corridor": {
+                "origin": top_c[0] if top_c else "Selangor",
+                "destination": top_c[1] if top_c else "W.P. Kuala Lumpur",
+                "pareto_rank": int(top_c[2]) if top_c else 1,
+                "opportunity_rank": int(top_c[3]) if top_c else 1,
+                "composite_opportunity_score": float(top_c[4]) if top_c else 71.51
+            }
+        },
+        "scenarios": {
+            "policy_disclaimer": "Scenario estimate, not a causal forecast.",
+            "default_planning_threshold_pct": 80.0,
+            "default_budget_rm_million": 5.0
+        }
+    }
+
+    with open(artifacts_dir / "current_results.json", "w", encoding="utf-8") as f:
+        json.dump(clean_nan(current_results), f, indent=2)
+    with open(DASHBOARD_DATA_DIR / "current_results.json", "w", encoding="utf-8") as f:
+        json.dump(clean_nan(current_results), f, indent=2)
+    print(f"  [8/8] Exported Current-Results Contract: artifacts/current_results.json and {DASHBOARD_DATA_DIR / 'current_results.json'}")
 
     con.close()
     print("=" * 70)

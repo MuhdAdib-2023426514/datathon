@@ -9,7 +9,7 @@
 
 ## 1. Spatial Gravity Model Validation (RQ6)
 
-The bilateral interstate corridor model evaluates $240$ directed origin-destination pairs. Out-of-sample predictive performance was evaluated by training on 2018–2024 data ($N = 1,680$) and projecting onto the held-out 2025 actual observations ($N = 240$).
+The bilateral interstate corridor model evaluates $240$ directed origin-destination pairs ($16 \times 15$) over 8 years ($1,920$ interstate corridor-years). Out-of-sample predictive performance was evaluated by training on 2018–2024 data ($N = 1,680$) and projecting onto the held-out 2025 actual observations ($N = 240$). The overall spatial network comprises $256$ total bilateral pairs ($16 \times 16 \times 8 = 2,048$ panel observations including $128$ intrastate pairs).
 
 ### 1.1 Out-of-Sample Performance Comparison
 
