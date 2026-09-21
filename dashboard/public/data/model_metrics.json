@@ -23,11 +23,11 @@
     "structural_change_test": {
       "interaction_variable": "ln(Distance) * PostRecovery(2023\u20132025)",
       "interaction_coef": 0.1023,
-      "std_error": 0.0482,
-      "t_statistic": 2.1216,
-      "p_value": 0.0339,
-      "h0_rejected_5pct": true,
-      "conclusion": "Statistically significant post-recovery shift in distance sensitivity (interaction beta = +0.1023, p = 0.0339)."
+      "std_error": 0.0658,
+      "t_statistic": 1.5557,
+      "p_value": 0.1198,
+      "h0_rejected_5pct": false,
+      "conclusion": "No statistically significant post-recovery break in distance sensitivity (interaction beta = +0.1023, p = 0.1198). Spatial friction remains structurally invariant."
     },
     "naive_baselines": [
       {

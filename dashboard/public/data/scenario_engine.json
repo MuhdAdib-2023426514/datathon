@@ -86505,11 +86505,11 @@
         "model_type": "Structural Shift Interaction Model (Phase 18)",
         "variable": "ln(Distance) * PostRecovery(2023\u20132025)",
         "coefficient": 0.1023,
-        "std_error": 0.0482,
-        "t_statistic": 2.1216,
-        "p_value": 0.0339,
-        "significance": "p < 0.05",
-        "interpretation": "Statistically significant post-recovery shift in distance sensitivity (interaction beta = +0.1023, p = 0.0339)."
+        "std_error": 0.0658,
+        "t_statistic": 1.5557,
+        "p_value": 0.1198,
+        "significance": "Not sig (Stable)",
+        "interpretation": "No statistically significant post-recovery break in distance sensitivity (interaction beta = +0.1023, p = 0.1198). Spatial friction remains structurally invariant."
       }
     ]
   }

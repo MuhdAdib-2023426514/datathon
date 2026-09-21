@@ -135,12 +135,7 @@ def evaluate_distance_structural_change(df: pd.DataFrame) -> Dict[str, Any]:
     )
     if "corridor_id" not in df_test.columns:
         df_test["corridor_id"] = df_test["origin"].astype(str) + "_" + df_test["destination"].astype(str)
-    try:
-        model = glm(formula, data=df_test, family=sm.families.Poisson()).fit(
-            cov_type="cluster", cov_kwds={"groups": df_test["corridor_id"]}
-        )
-    except Exception:
-        model = glm(formula, data=df_test, family=sm.families.Poisson()).fit(cov_type="HC1")
+    model = glm(formula, data=df_test, family=sm.families.Poisson()).fit(cov_type="HC1")
 
     coef = float(model.params.get("dist_x_post", 0.0))
     se = float(model.bse.get("dist_x_post", 0.0))

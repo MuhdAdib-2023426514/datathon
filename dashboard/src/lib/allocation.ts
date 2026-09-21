@@ -20,7 +20,7 @@ export function allocateHeuristic(candidates: any[], baselines: Record<string, a
     total_expected_gva_rm_million:gva,total_p10_gva_rm_million:sum('p10_gva_rm_million'),
     total_risk_adjusted_gva_rm_million:sum('risk_adjusted_gva_rm_million'),
     total_additional_spend_rm_million:sum('additional_spend_rm_million'),total_additional_nights:sum('additional_nights'),
-    objective_mode:mode,value_to_cost_multiple:cost>0?gva/cost:null,total_corridors_funded:selected.length,
+    objective_mode:mode,value_to_cost_multiple:cost>0?gva/cost:0,portfolio_roi_multiplier:cost>0?gva/cost:0,total_corridors_funded:selected.length,
     planning_threshold_pct:threshold,cost_status:'Illustrative cost assumptions or user-supplied costs',
   }};
 }

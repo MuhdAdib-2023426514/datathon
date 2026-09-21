@@ -31,7 +31,7 @@
     "rmse": 329.04,
     "distance_decay_friction": -0.4104,
     "cross_region_barrier": -0.8022,
-    "structural_invariance_p_value": 0.0339,
+    "structural_invariance_p_value": 0.1198,
     "naive_baselines": {
       "lag_2024_oos_r2": 0.7637,
       "historical_mean_oos_r2": 0.6732,

@@ -1123,8 +1123,12 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
         const tiers = scenarioConfig.portfolio_optimization?.solved_tiers || {};
         const tiersByMode = (scenarioConfig.portfolio_optimization as any)?.solved_tiers_by_mode || {};
         const candidates = scenarioConfig.portfolio_optimization?.candidates || [];
-        const currentTier = tiersByMode[optimizationMode]?.[String(selectedBudget)]?.[String(selectedOptimizerThreshold)]
-          || (optimizationMode === 'expected' ? tiers[String(selectedBudget)]?.[String(selectedOptimizerThreshold)] : undefined);
+        const bKey1 = selectedBudget.toFixed(1);
+        const bKey2 = String(selectedBudget);
+        const tKey = String(selectedOptimizerThreshold);
+        const currentTier = tiersByMode[optimizationMode]?.[bKey1]?.[tKey]
+          || tiersByMode[optimizationMode]?.[bKey2]?.[tKey]
+          || (optimizationMode === 'expected' ? (tiers[bKey1]?.[tKey] || tiers[bKey2]?.[tKey]) : undefined);
 
         const hasCustomCosts = Object.keys(customCosts).length > 0;
 
@@ -1158,7 +1162,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                 ...c,
                 cost_rm_million: costM,
                 is_funded: isFunded,
-                value_to_cost_multiple: costM > 0 ? c.expected_gva_rm_million / costM : 0,
+                value_to_cost_multiple: costM > 0 ? (c.expected_gva_rm_million || 0) / costM : 0,
               };
             })
           : displayCorridors.map((c: any) => ({ ...c, is_funded: true }));
@@ -1280,10 +1284,10 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                 <div className="p-3.5 rounded-xl bg-white border border-indigo-100">
                   <span className="text-[10px] font-semibold text-stone-500 uppercase">Budget Utilized</span>
                   <div className="text-lg font-bold text-stone-900 mt-0.5 font-mono">
-                    RM {summary ? summary.total_cost_rm_million.toFixed(2) : '—'}M
+                    RM {summary?.total_cost_rm_million != null ? summary.total_cost_rm_million.toFixed(2) : '—'}M
                   </div>
                   <span className="text-[10px] text-stone-500 font-mono">
-                    {summary ? summary.budget_utilization_pct.toFixed(1) : '—'}% of RM {selectedBudget}M
+                    {summary?.budget_utilization_pct != null ? summary.budget_utilization_pct.toFixed(1) : '—'}% of RM {selectedBudget}M
                   </span>
                 </div>
 
@@ -1294,25 +1298,25 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                   <div className="text-lg font-bold text-indigo-700 mt-0.5 font-mono">
                     +RM {summary ? (
                       optimizationMode === 'conservative_p10'
-                        ? (summary.total_p10_gva_rm_million ?? summary.total_expected_gva_rm_million * 0.58).toFixed(1)
+                        ? (summary.total_p10_gva_rm_million ?? (summary.total_expected_gva_rm_million != null ? summary.total_expected_gva_rm_million * 0.58 : 0)).toFixed(1)
                         : optimizationMode === 'risk_adjusted'
-                        ? (summary.total_risk_adjusted_gva_rm_million ?? summary.total_expected_gva_rm_million * 0.81).toFixed(1)
-                        : summary.total_expected_gva_rm_million.toFixed(1)
+                        ? (summary.total_risk_adjusted_gva_rm_million ?? (summary.total_expected_gva_rm_million != null ? summary.total_expected_gva_rm_million * 0.81 : 0)).toFixed(1)
+                        : (summary.total_expected_gva_rm_million ?? 0).toFixed(1)
                     ) : '—'}M
                   </div>
                   <span className="text-[10px] text-indigo-600 font-mono">
                     {optimizationMode === 'conservative_p10'
-                      ? `E[GVA]: +RM ${summary?.total_expected_gva_rm_million.toFixed(1)}M`
+                      ? `E[GVA]: +RM ${summary?.total_expected_gva_rm_million?.toFixed(1) ?? '—'}M`
                       : optimizationMode === 'risk_adjusted'
-                      ? `E[GVA]: +RM ${summary?.total_expected_gva_rm_million.toFixed(1)}M`
-                      : `P10: RM ${(summary?.total_p10_gva_rm_million ?? summary?.total_expected_gva_rm_million * 0.58)?.toFixed(1)}M`}
+                      ? `E[GVA]: +RM ${summary?.total_expected_gva_rm_million?.toFixed(1) ?? '—'}M`
+                      : `P10: RM ${(summary?.total_p10_gva_rm_million ?? (summary?.total_expected_gva_rm_million != null ? summary.total_expected_gva_rm_million * 0.58 : null))?.toFixed(1) ?? '—'}M`}
                   </span>
                 </div>
 
                 <div className="p-3.5 rounded-xl bg-white border border-indigo-100" title="Scenario benchmark multiple based on promotional budget allocation assumptions; not a guaranteed financial ROI.">
                   <span className="text-[10px] font-semibold text-stone-500 uppercase">Scenario GVA-to-Cost Multiple</span>
                   <div className="text-lg font-bold text-emerald-700 mt-0.5 font-mono">
-                    {summary ? summary.portfolio_roi_multiplier.toFixed(1) : '—'}x
+                    {(summary?.value_to_cost_multiple ?? summary?.portfolio_roi_multiplier)?.toFixed(1) ?? '—'}x
                   </div>
                   <span className="text-[10px] text-emerald-600 font-mono">GVA per RM cost (Benchmark)</span>
                 </div>
@@ -1320,7 +1324,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                 <div className="p-3.5 rounded-xl bg-white border border-indigo-100">
                   <span className="text-[10px] font-semibold text-stone-500 uppercase">Corridors Funded</span>
                   <div className="text-lg font-bold text-purple-700 mt-0.5 font-mono">
-                    {summary ? summary.total_corridors_funded : '—'}
+                    {summary?.total_corridors_funded != null ? summary.total_corridors_funded : '—'}
                   </div>
                   <span className="text-[10px] text-purple-600 font-mono">Inter-state routes</span>
                 </div>
@@ -1403,7 +1407,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                               {c.category}
                             </span>
                           </td>
-                          <td className="py-2 px-3 font-mono">{c.tourist_flow_thousands.toFixed(1)}k</td>
+                          <td className="py-2 px-3 font-mono">{c.tourist_flow_thousands != null ? `${c.tourist_flow_thousands.toFixed(1)}k` : '—'}</td>
                           <td className="py-2 px-3">
                             <div className="flex items-center gap-1">
                               <span className="font-mono text-stone-400 text-[10px]">RM</span>
@@ -1415,7 +1419,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                                 value={
                                   hasCustom
                                     ? customCosts[c.corridor_id]
-                                    : Math.round(c.cost_rm_million * 1000)
+                                    : Math.round((c.cost_rm_million || 0) * 1000)
                                 }
                                 onChange={(e) => {
                                   const val = parseFloat(e.target.value);
@@ -1435,13 +1439,13 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                             </div>
                           </td>
                           <td className="py-2 px-3 font-mono font-bold text-indigo-700">
-                            +RM {c.expected_gva_rm_million.toFixed(2)}M
+                            +RM {c.expected_gva_rm_million != null ? c.expected_gva_rm_million.toFixed(2) : '0.00'}M
                           </td>
                           <td className="py-2 px-3 font-mono">
                             <div className="font-semibold text-stone-800">
                               {optimizationMode === 'conservative_p10'
-                                ? `RM ${(c.p10_gva_rm_million ?? c.expected_gva_rm_million * 0.58).toFixed(2)}M`
-                                : `RM ${(c.risk_adjusted_gva_rm_million ?? c.expected_gva_rm_million * 0.81).toFixed(2)}M`
+                                ? `RM ${(c.p10_gva_rm_million ?? (c.expected_gva_rm_million != null ? c.expected_gva_rm_million * 0.58 : 0)).toFixed(2)}M`
+                                : `RM ${(c.risk_adjusted_gva_rm_million ?? (c.expected_gva_rm_million != null ? c.expected_gva_rm_million * 0.81 : 0)).toFixed(2)}M`
                               }
                             </div>
                             <div className="text-[10px] text-stone-500">
@@ -1450,9 +1454,9 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                             </div>
                           </td>
                           <td className="py-2 px-3 font-mono font-bold text-emerald-700">
-                            {(c.value_to_cost_multiple || (c.expected_gva_rm_million / (c.cost_rm_million || 0.001))).toFixed(1)}x
+                            {((c.value_to_cost_multiple ?? (c.expected_gva_rm_million != null && c.cost_rm_million ? c.expected_gva_rm_million / c.cost_rm_million : 0)) || 0).toFixed(1)}x
                           </td>
-                          <td className="py-2 px-3 font-mono">+{Math.round(c.additional_nights).toLocaleString()}</td>
+                          <td className="py-2 px-3 font-mono">+{Math.round(c.additional_nights || 0).toLocaleString()}</td>
                         </tr>
                       );
                     })}
