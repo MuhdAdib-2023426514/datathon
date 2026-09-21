@@ -62,7 +62,8 @@
         "rmsle": 1.0788,
         "smape": 80.13
       }
-    ]
+    ],
+    "baseline_comparison_note": "Autoregressive persistence (2024 Lag, R\u00b2_OOS = 0.7637) outperforms structural PPML (R\u00b2_OOS = 0.5890) for pure 1-step-ahead forecasting due to year-over-year corridor inertia. PPML is retained as the authoritative decision engine because autoregressive lags cannot evaluate counterfactual policy interventions, distance friction shifts, or structural gravity gaps."
   },
   "panel": {
     "primary_model": "Model_2_TwoWay_FE_Clustered",

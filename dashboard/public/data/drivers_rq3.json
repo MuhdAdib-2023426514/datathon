@@ -249,7 +249,7 @@
       "r_squared": 0.8018,
       "covariance_type": "State-Clustered Standard Errors (16 clusters)",
       "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside leave-one-state-out sensitivity.",
-      "interpretation": "Explains variation in lodging yield per tourist night; reflects pricing power under tighter capacity (AOR) and higher-spending traveler profiles."
+      "interpretation": "Explains variation in lodging yield per tourist night; reflects occupancy intensity and lodging yield responsiveness under tighter capacity (AOR) and higher-spending traveler profiles."
     },
     {
       "model_id": "Model_4_Yield_TwoWay_FE",
@@ -267,7 +267,7 @@
       "r_squared": 0.8018,
       "covariance_type": "State-Clustered Standard Errors (16 clusters)",
       "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside leave-one-state-out sensitivity.",
-      "interpretation": "Explains variation in lodging yield per tourist night; reflects pricing power under tighter capacity (AOR) and higher-spending traveler profiles."
+      "interpretation": "Explains variation in lodging yield per tourist night; reflects occupancy intensity and lodging yield responsiveness under tighter capacity (AOR) and higher-spending traveler profiles."
     },
     {
       "model_id": "Model_4_Yield_TwoWay_FE",
@@ -285,7 +285,7 @@
       "r_squared": 0.8018,
       "covariance_type": "State-Clustered Standard Errors (16 clusters)",
       "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside leave-one-state-out sensitivity.",
-      "interpretation": "Explains variation in lodging yield per tourist night; reflects pricing power under tighter capacity (AOR) and higher-spending traveler profiles."
+      "interpretation": "Explains variation in lodging yield per tourist night; reflects occupancy intensity and lodging yield responsiveness under tighter capacity (AOR) and higher-spending traveler profiles."
     }
   ],
   "recovery_trajectories": [

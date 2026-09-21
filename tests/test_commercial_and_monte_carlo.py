@@ -167,8 +167,80 @@ class TestCommercialImplementationContract:
         assert "evidence" in q1
         assert "source" in q1
         assert q1["confidence"] in ["High", "Very High"]
+        # Ensure no unsupported localized sub-state claims
+        assert "Bandar Hilir" not in q1["limitation"], "Localized sub-state claim found in limitation"
+        assert "Bandar Hilir" not in q1["answer"], "Localized sub-state claim found in answer"
 
         # Test High VAI product question
         q2 = query_grounded_assistant("Which tourism products have the highest Value-Added Intensity?")
         assert "Accommodation" in q2["answer"] or "VAI" in q2["answer"]
         assert "evidence" in q2
+
+    def test_monte_carlo_missing_data_handling(self):
+        """Sprint A: Monte Carlo returns UNAVAILABLE when baseline empirical data is missing."""
+        from src.scenarios.monte_carlo import MonteCarloSimulator
+
+        mc = MonteCarloSimulator()
+        # Mock a destination with missing alos/spend
+        mc.df_state.loc["MockState"] = pd.Series({"alos": np.nan, "spend_per_night": np.nan})
+        # Add mock row in df_od
+        mc.df_od = pd.concat([mc.df_od, pd.DataFrame([{
+            "origin": "Selangor", "destination": "MockState", "tourist_flow_thousands": 100.0
+        }])], ignore_index=True)
+
+        res = mc.simulate_corridor_uncertainty("Selangor", "MockState")
+        assert res["status"] == "UNAVAILABLE"
+        assert "missing baseline empirical data" in res["error"]
+        assert res["evidence_status"] == "insufficient_data"
+
+    def test_portfolio_optimizer_eligibility_filtering(self):
+        """Sprint A: Corridors with missing empirical data are marked ineligible."""
+        from src.scenarios.portfolio_optimizer import PortfolioOptimizer
+
+        opt = PortfolioOptimizer()
+        assert "eligible" in opt.df_candidates.columns
+        assert "evidence_status" in opt.df_candidates.columns
+
+        # Verify eligible candidates all have positive spend and room demand
+        eligible = opt.df_candidates[opt.df_candidates["eligible"] == True]
+        assert (eligible["expected_gva_rm_million"] > 0).all()
+        assert (eligible["daily_rooms_demanded"] > 0).all()
+
+    def test_no_zero_hallucination_or_pricing_power_claims(self):
+        """Sprint A: Enforce elimination of 'zero hallucination' and 'pricing power'."""
+        opt_py = (ROOT_DIR / "src/scenarios/portfolio_optimizer.py").read_text(encoding="utf-8")
+        roadmap_tsx = (ROOT_DIR / "dashboard/src/components/ImplementationRoadmap.tsx").read_text(encoding="utf-8")
+        econometrics_py = (ROOT_DIR / "src/analytics/panel_econometrics.py").read_text(encoding="utf-8")
+
+        assert "zero hallucination" not in opt_py.lower()
+        assert "zero-hallucination" not in opt_py.lower()
+        assert "zero hallucination" not in roadmap_tsx.lower()
+        assert "zero-hallucination" not in roadmap_tsx.lower()
+        assert "pricing power" not in econometrics_py.lower()
+
+    def test_grounded_assistant_truthful_metrics(self):
+        """Sprint D: Verify all facts in Grounded Query Assistant match official 2025 data."""
+        from src.scenarios.portfolio_optimizer import query_grounded_assistant
+
+        # 1. Melaka capacity facts
+        q_melaka = query_grounded_assistant("melaka capacity")
+        assert q_melaka["metrics"]["alos_days"] == 2.11
+        assert q_melaka["metrics"]["national_median_alos"] == 2.47
+        assert q_melaka["metrics"]["spend_per_night_rm"] == 63.00
+
+        # 2. VAI product ranking facts
+        q_vai = query_grounded_assistant("highest value products")
+        assert q_vai["metrics"]["accommodation_vai_pct"] == 85.8
+        assert q_vai["metrics"]["food_beverage_vai_pct"] == 65.5
+        assert q_vai["metrics"]["recreation_vai_pct"] == 60.4
+
+        # 3. Pareto frontier size
+        q_default = query_grounded_assistant("overview")
+        assert q_default["metrics"]["pareto_optimal_corridors"] == 58
+        assert q_default["metrics"]["national_median_alos"] == 2.47
+
+        # 4. Header headline verification
+        header_tsx = (ROOT_DIR / "dashboard/src/components/Header.tsx").read_text(encoding="utf-8")
+        assert "From More Tourists to" in header_tsx
+        assert "More Value" in header_tsx
+        assert "Monitor · Diagnose · Target · Simulate · Optimize" in header_tsx

@@ -49,10 +49,10 @@ export function Header({ activeTab, onSelectTab, selectedYear, onSelectYear, onO
         <div className="page-intro">
           <div>
             <p className="eyebrow">Tourism economic decision support</p>
-            <h1>Turn visitor demand into <em>lasting value.</em></h1>
-            <p className="page-intro-copy">Explore where longer stays, accommodation spending, and stronger tourism corridors can create more domestic value.</p>
+            <h1>From More Tourists to <em>More Value.</em></h1>
+            <p className="page-intro-copy">MYTourism Value Intelligence helps Malaysian destinations identify how to generate greater domestic economic value from each visitor-day while respecting destination capacity and market risk.</p>
           </div>
-          <div className="intro-note"><span>01 / 04</span><strong>Monitor · Diagnose · Target · Simulate</strong></div>
+          <div className="intro-note"><span>01 / 05</span><strong>Monitor · Diagnose · Target · Simulate · Optimize</strong></div>
         </div>
 
         <div className="toolbar-row">

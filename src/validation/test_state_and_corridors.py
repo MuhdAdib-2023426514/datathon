@@ -213,16 +213,17 @@ def test_granular_profile_and_drivers():
         "Mandatory policy disclaimer missing or incorrect in opportunity gap table"
     )
 
-    # Opportunity rank check
+    # Opportunity rank check (Pareto-first hierarchy)
     assert df_gap["opportunity_rank"].iloc[0] == 1, "Rank 1 corridor must be first"
-    assert df_gap["additional_accom_expenditure_rm_million"].is_monotonic_decreasing, (
-        "Opportunity gap must be sorted descending by additional spend"
+    assert (df_gap["pareto_rank"].diff().dropna() >= 0).all(), (
+        "Opportunity gap must be sorted monotonically by Pareto rank"
     )
 
     # Capacity feasibility checks
     assert "implied_dest_aor_pct" in df_gap.columns, "implied_dest_aor_pct missing from corridor_opportunity_gap"
     assert "capacity_constraint_alert" in df_gap.columns, "capacity_constraint_alert missing from corridor_opportunity_gap"
-    assert (df_gap["implied_dest_aor_pct"] > 0).all(), "Invalid implied AOR"
+    valid_aor = df_gap["implied_dest_aor_pct"].dropna()
+    assert (valid_aor > 0).all(), "Invalid implied AOR"
 
     print("  ✓ Granular DTS profiles (16 states), OLS driver regressions, and 240-corridor opportunity gap PASSED.")
 

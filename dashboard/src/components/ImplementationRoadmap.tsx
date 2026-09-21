@@ -114,29 +114,30 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
     melaka_capacity: {
       title: 'Melaka Capacity Constraint',
       question: 'Why is Melaka classified as capacity-constrained and what policy should be prioritized?',
-      answer: 'Melaka exhibits an Average Occupancy Rate (AOR) of 63.8%, leaving limited headroom before breaching peak weekend saturation (80% planning threshold). With a short Average Length of Stay (ALOS) of 1.70 days (vs national median 2.50d) but strong daily spending (RM 63.1/night), expanding volume without evening dispersion causes severe weekend room deficits in Bandar Hilir.',
+      answer: 'Melaka exhibits an Average Occupancy Rate (AOR) of 63.8%, leaving limited headroom before breaching peak weekend saturation (80% planning threshold). With an Average Length of Stay (ALOS) of 2.11 days (below the national median of 2.47d) and lodging spend of RM 63.00/night, expanding volume without evening dispersion risks physical hotel room bottlenecks.',
       metrics: {
         'Baseline AOR': '63.8%',
         'Planning Ceiling': '80.0%',
-        'Dest ALOS': '1.70 days (National Median: 2.50d)',
-        'Spend per Night': 'RM 63.10',
-        'Top Feeder': 'Selangor (1.68M tourists)'
+        'Dest ALOS': '2.11 days (National Median: 2.47d)',
+        'Spend per Night': 'RM 63.00',
+        'Top Feeder': 'Selangor (2.73M tourists)'
       },
       recommendation: 'Prioritize midweek stay-extension promotions, Friday-arrival incentives, and premium experiential heritage trails rather than unconstrained weekend excursion campaigns.',
       source: 'DOSM DTS 2025 & Tourism Malaysia Hotel Survey',
       confidence: 'Very High',
-      limitation: 'Annual average AOR masks acute weekend and school holiday congestion spikes.'
+      limitation: 'Annual state-level occupancy (63.8%) may conceal localized peak-period capacity pressure; finer-grained occupancy data would be required to verify sub-state constraints.'
     },
     vai_ranking: {
       title: 'High-Value Product Priority',
       question: 'Which tourism products consistently create the highest domestic Gross Value Added?',
-      answer: 'In Malaysia Tourism Satellite Accounts (2015-2025), Accommodation Services consistently achieves the highest Value-Added Intensity among core tourism products at 85.8% (2025p), followed by Travel Agencies & Reservation Services (47.7%) and Food & Beverage (38.8%). In contrast, Shopping has an intensity of only 23.8% because intermediate retail acquisition costs absorb over 76% of gross turnover.',
+      answer: 'In Malaysia Tourism Satellite Accounts (2015-2025), Accommodation Services consistently achieves the highest Value-Added Intensity among core tourism products with a post-recovery median of 85.8% (2025p VAI: 86.6%), followed by Food & Beverage (65.5%), Recreation & Cultural Services (60.4%), Shopping Retail Margin (47.0%), and Passenger Transport (40.7%). Travel Agencies expanded supply faster than GVA post-recovery, yielding a VAI of 28.5%.',
       metrics: {
-        'Accommodation VAI': '85.8% (Post-Recovery Median: 85.8%)',
-        'Travel Agencies VAI': '47.7%',
-        'Food & Beverage VAI': '38.8%',
-        'Shopping VAI': '23.8%',
-        'Tourism Ratio (Accom)': '62.4%'
+        'Accommodation VAI': '85.8% (Post-Recovery Median)',
+        'Food & Beverage VAI': '65.5%',
+        'Recreation VAI': '60.4%',
+        'Shopping Retail Margin': '47.0%',
+        'Passenger Transport': '40.7%',
+        'Tourism Ratio (Accom)': '96.7%'
       },
       recommendation: 'Redirect public tourism incentives from low-margin retail subsidies toward overnight accommodation, cultural immersion, and multi-day itinerary development.',
       source: 'DOSM Tourism Satellite Account 2015-2025p',
@@ -146,12 +147,12 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
     priority_corridors: {
       title: 'Priority Conversion Corridors',
       question: 'Which feeder corridors offer the highest economic return from stay extension?',
-      answer: 'Priority Conversion Corridors are high-volume feeder routes whose destination exhibits below-median stay duration (ALOS < 2.50 days) and/or below-median accommodation capture. Major examples include Selangor -> Melaka (1.68M tourists, ALOS 1.70d), Johor -> Melaka (1.42M tourists), and W.P. Kuala Lumpur -> Pahang (1.85M tourists). Extending stays by +0.4 days with 15% reach generates over RM 15M incremental GVA per route.',
+      answer: 'Priority Conversion Corridors are high-volume feeder routes whose destination exhibits below-median stay duration (ALOS < 2.47 days) and/or below-median accommodation capture. Major examples include Selangor -> Melaka (2.73M tourists, ALOS 2.11d), Johor -> Melaka (1.42M tourists), and Negeri Sembilan -> Melaka. The non-dominated Pareto frontier identifies 58 optimal inter-state corridors nationwide.',
       metrics: {
-        'Selangor -> Melaka': '1.68M tourists | +RM 15.4M Potential GVA',
-        'Johor -> Melaka': '1.42M tourists | +RM 13.0M Potential GVA',
-        'W.P. KL -> Pahang': '1.85M tourists | +RM 16.8M Potential GVA',
-        'Pareto Frontier': '77 optimal corridors identified nationwide'
+        'Selangor -> Melaka': '2.73M tourists | Priority Conversion',
+        'Negeri Sembilan -> Melaka': '114k flow gap | Rank 2 Pareto',
+        'Selangor -> W.P. KL': '84k stay gap | Rank 1 Pareto',
+        'Pareto Frontier': '58 non-dominated corridors nationwide'
       },
       recommendation: 'Deploy joint digital marketing campaigns between origin state transport hubs and destination accommodation providers with 2-night minimum stay incentives.',
       source: 'DOSM DTS 2025 Origin-Destination Matrix & Corridor Opportunity Framework',
@@ -161,12 +162,12 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
     portfolio_budget: {
       title: 'Strategic Budget Allocation',
       question: 'How should a RM 5.0M tourism development budget be allocated across corridors?',
-      answer: 'The Mixed-Integer Linear Programming (MILP) portfolio optimizer selects 18 optimal inter-state corridors, generating RM 140.3M in expected incremental GVA (an ROI multiplier of 28.1x) while strictly ensuring no destination breaches its 80% hotel room capacity ceiling. The largest allocations go to high-yield feeder corridors into Pahang, Perak, and Pulau Pinang.',
+      answer: 'The Mixed-Integer Linear Programming (MILP) portfolio optimizer selects 18 optimal inter-state corridors, generating RM 140.3M in expected incremental GVA (a benchmark multiple of 28.1x) while strictly ensuring no destination breaches its 80% hotel room capacity ceiling. The largest allocations go to high-yield feeder corridors into Pahang, Perak, and Pulau Pinang.',
       metrics: {
         'Budget Allocated': 'RM 5.00M',
         'Budget Utilized': 'RM 4.98M (99.6%)',
         'Expected GVA': 'RM 140.3M',
-        'Portfolio ROI': '28.1x GVA / Cost',
+        'Value-to-Cost Multiple': '28.1x (Scenario Benchmark)',
         'Corridors Funded': '18 inter-state corridors'
       },
       recommendation: 'Execute the optimized 18-corridor campaign portfolio via coordinated digital promotions with state tourism boards and hotel associations.',
@@ -190,7 +191,7 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
                 GOVERNANCE & OPERATING ARCHITECTURE
               </span>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-                SPRINT 8 DELIVERABLE
+                COMMERCIAL DECISION INTELLIGENCE
               </span>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white">
@@ -381,14 +382,14 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
           <div className="flex items-center gap-2.5">
             <Sparkles className="w-5 h-5 text-amber-400" />
             <div>
-              <h2 className="text-lg font-bold text-white">Grounded Policy Decision Assistant</h2>
+              <h2 className="text-lg font-bold text-white">Evidence Query Assistant</h2>
               <p className="text-xs text-purple-200/80 mt-0.5">
-                Zero-hallucination policy query assistant strictly synthesizing verified statistics from DuckDB & official tables.
+                Evidence-grounded structured query assistant strictly synthesizing verified statistics from DuckDB analytical tables.
               </p>
             </div>
           </div>
           <span className="px-2.5 py-1 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xs font-semibold shrink-0">
-            STRUCTURED FACT GROUNDING
+            STRUCTURED EVIDENCE GROUNDING
           </span>
         </div>
 

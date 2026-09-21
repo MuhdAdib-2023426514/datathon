@@ -194,16 +194,16 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
     # 5. Strategic Policy Prescriptions
     def get_policy_prescription(row):
         typology = str(row.get("yield_typology", ""))
-        paid_share = row.get("paid_commercial_share_pct", 50.0)
+        paid_share = row.get("paid_commercial_share_pct")
 
         if "Short Stay / Low Yield" in typology:
-            if paid_share < 40.0:
+            if pd.notnull(paid_share) and paid_share < 40.0:
                 return "Commercial lodging conversion: Upgrade private VFR lodging into certified homestays; bundle multi-day experiential packages to lift ALOS."
             return "Shift focus from volume to length of stay; bundle evening cultural events, weekend passes, and premium boutique lodging."
         elif "Short Stay / High Yield" in typology:
             return "High day-trip and short-stay spend capture; develop evening cultural circuits and overnight incentive packaging to deepen stay."
         elif "Long Stay / Low Yield" in typology:
-            if paid_share < 40.0:
+            if pd.notnull(paid_share) and paid_share < 40.0:
                 return "Commercial accommodation capture opportunity: Deepen commercial accommodation penetration, expand boutique eco-resorts, and monetize local heritage."
             return "Formalize homestays and commercial lodging; monetize culinary and local craft experiences to increase spend per day."
         elif "Long Stay / High Yield" in typology:
@@ -300,12 +300,12 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
             ).df()
             df_corr_raw = df_corr_raw.merge(df_conc, on="destination", how="left")
         else:
-            df_corr_raw["dest_interstate_hhi"] = 1500.0
+            df_corr_raw["dest_interstate_hhi"] = np.nan
             df_corr_raw["top_feeder_origin"] = "None"
-            df_corr_raw["top_feeder_share_pct"] = 0.0
-            df_corr_raw["top_3_origin_share_pct"] = 0.0
-            df_corr_raw["meaningful_origin_count"] = 5
-            df_corr_raw["dest_concentration_tier"] = "Diversified Feeder Base (< 1,500)"
+            df_corr_raw["top_feeder_share_pct"] = np.nan
+            df_corr_raw["top_3_origin_share_pct"] = np.nan
+            df_corr_raw["meaningful_origin_count"] = np.nan
+            df_corr_raw["dest_concentration_tier"] = "Unknown (Concentration Data Unavailable)"
 
         # Merge SDG Yield Metrics (Sprint 2)
         if "sdg_sustainable_metrics" in existing_tables:
@@ -332,19 +332,25 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
             ).df()
             df_corr_raw = df_corr_raw.merge(df_cap, on="destination", how="left")
         else:
-            df_corr_raw["dest_baseline_aor_pct"] = 50.0
-            df_corr_raw["dest_available_rooms"] = 5000.0
+            df_corr_raw["dest_baseline_aor_pct"] = np.nan
+            df_corr_raw["dest_available_rooms"] = np.nan
 
-        # Capacity Headroom
-        df_corr_raw["dest_baseline_aor_pct"] = df_corr_raw["dest_baseline_aor_pct"].fillna(50.0)
-        df_corr_raw["capacity_headroom_pct"] = (100.0 - df_corr_raw["dest_baseline_aor_pct"]).round(2)
+        # Capacity Headroom - preserve NaN without 50.0 substitution
+        df_corr_raw["capacity_headroom_pct"] = np.where(
+            pd.notnull(df_corr_raw["dest_baseline_aor_pct"]),
+            (100.0 - df_corr_raw["dest_baseline_aor_pct"]).round(2),
+            np.nan
+        )
         df_corr_raw["capacity_tier"] = np.where(
-            df_corr_raw["dest_baseline_aor_pct"] < 60.0, "Substantial Headroom (<60% AOR)",
+            pd.isna(df_corr_raw["dest_baseline_aor_pct"]), "Unknown (Capacity Data Unavailable)",
             np.where(
-                df_corr_raw["dest_baseline_aor_pct"] < 75.0, "Moderate Headroom (60-75% AOR)",
+                df_corr_raw["dest_baseline_aor_pct"] < 60.0, "Substantial Headroom (<60% AOR)",
                 np.where(
-                    df_corr_raw["dest_baseline_aor_pct"] <= 85.0, "Constrained (75-85% AOR)",
-                    "Saturated (>85% AOR)"
+                    df_corr_raw["dest_baseline_aor_pct"] < 75.0, "Moderate Headroom (60-75% AOR)",
+                    np.where(
+                        df_corr_raw["dest_baseline_aor_pct"] <= 85.0, "Constrained (75-85% AOR)",
+                        "Saturated (>85% AOR)"
+                    )
                 )
             )
         )
@@ -378,57 +384,85 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
             np.where(df_gap["performance_ratio"] > 1.15, "Above Model Expected", "Near Model Expected")
         )
 
-        # Accessibility
+        # Accessibility - preserve NaN without 300.0 substitution
         is_cross = df_gap["is_cross_region"].fillna(False) if "is_cross_region" in df_gap.columns else pd.Series(False, index=df_gap.index)
-        dist = df_gap["distance_km"].fillna(300.0) if "distance_km" in df_gap.columns else pd.Series(300.0, index=df_gap.index)
+        dist = df_gap["distance_km"] if "distance_km" in df_gap.columns else pd.Series(np.nan, index=df_gap.index)
         df_gap["accessibility_tier"] = np.where(
-            ~is_cross & (dist < 250), "High Accessibility (<250km Road/Rail)",
-            np.where(~is_cross & (dist <= 500), "Moderate Accessibility (250-500km Road/Rail)",
-                     "Lower Accessibility (>500km or Flight Barrier)")
+            pd.isna(dist), "Unknown Accessibility (Distance Unavailable)",
+            np.where(
+                ~is_cross & (dist < 250), "High Accessibility (<250km Road/Rail)",
+                np.where(~is_cross & (dist <= 500), "Moderate Accessibility (250-500km Road/Rail)",
+                         "Lower Accessibility (>500km or Flight Barrier)")
+            )
         )
 
-        # Diversification Benefit (Phase 20)
-        top_origin = df_gap["top_feeder_origin"].fillna("None") if "top_feeder_origin" in df_gap.columns else pd.Series("None", index=df_gap.index)
+        # Diversification Benefit - preserve NaN without 1500.0 substitution
+        top_origin = df_gap["top_feeder_origin"] if "top_feeder_origin" in df_gap.columns else pd.Series("None", index=df_gap.index)
         df_gap["is_dominant_feeder"] = (df_gap["origin"] == top_origin)
-        hhi_val = df_gap["dest_interstate_hhi"].fillna(1500.0) if "dest_interstate_hhi" in df_gap.columns else pd.Series(1500.0, index=df_gap.index)
+        hhi_val = df_gap["dest_interstate_hhi"] if "dest_interstate_hhi" in df_gap.columns else pd.Series(np.nan, index=df_gap.index)
         df_gap["diversification_benefit"] = np.where(
-            (hhi_val > 2000) & ~df_gap["is_dominant_feeder"], "High Diversification (Reduces Feeder Concentration)",
-            np.where(~df_gap["is_dominant_feeder"], "Moderate Diversification", "Consolidating Existing Dominance")
+            pd.isna(hhi_val), "Unknown Diversification (HHI Unavailable)",
+            np.where(
+                (hhi_val > 2000) & ~df_gap["is_dominant_feeder"], "High Diversification (Reduces Feeder Concentration)",
+                np.where(~df_gap["is_dominant_feeder"], "Moderate Diversification", "Consolidating Existing Dominance")
+            )
         )
 
         # Model Confidence
-        flows = df_gap["tourist_flow_thousands"].fillna(0.0)
+        flows = df_gap["tourist_flow_thousands"]
         df_gap["model_confidence_tier"] = np.where(
-            flows >= 50.0, "High Confidence (Robust Historical Flow)",
-            np.where(flows >= 10.0, "Moderate Confidence (Moderate Flow)", "Exploratory (Sparse Flow)")
+            pd.isna(flows), "Unknown Confidence (Flow Unavailable)",
+            np.where(
+                flows >= 50.0, "High Confidence (Robust Historical Flow)",
+                np.where(flows >= 10.0, "Moderate Confidence (Moderate Flow)", "Exploratory (Sparse Flow)")
+            )
         )
 
-        # Economic Yield Tiers
-        spend_nt = df_gap["dest_spend_per_night"].fillna(120.0) if "dest_spend_per_night" in df_gap.columns else pd.Series(120.0, index=df_gap.index)
+        # Economic Yield Tiers - preserve NaN without 120.0 substitution
+        spend_nt = df_gap["dest_spend_per_night"] if "dest_spend_per_night" in df_gap.columns else pd.Series(np.nan, index=df_gap.index)
         df_gap["yield_tier"] = np.where(
-            spend_nt >= 160.0, "High Yield (>= RM160/night)",
-            np.where(spend_nt >= 100.0, "Moderate Yield (RM100-160/night)", "Lower Yield (< RM100/night)")
+            pd.isna(spend_nt), "Unknown Yield (Spend Data Unavailable)",
+            np.where(
+                spend_nt >= 160.0, "High Yield (>= RM160/night)",
+                np.where(spend_nt >= 100.0, "Moderate Yield (RM100-160/night)", "Lower Yield (< RM100/night)")
+            )
         )
 
-        # Scenario metrics (Stay extension delta_alos = 0.5)
+        # Scenario metrics (Stay extension delta_alos = 0.5 - illustrative benchmark, not ranking basis)
         delta_alos = 0.5
         df_gap["delta_alos_scenario_days"] = delta_alos
-        df_gap["target_alos_days"] = (df_gap["dest_alos"] + delta_alos).round(2)
-        df_gap["additional_tourist_nights_thousands"] = (df_gap["tourist_flow_thousands"] * delta_alos).round(3)
-        df_gap["additional_accom_expenditure_rm_million"] = (
-            (df_gap["additional_tourist_nights_thousands"] * df_gap["dest_spend_per_night"]) / 1000.0
-        ).round(2)
-        df_gap["potential_additional_value_added_rm_million"] = (
-            df_gap["additional_accom_expenditure_rm_million"] * ACCOMMODATION_VAI
-        ).round(2)
+        df_gap["target_alos_days"] = np.where(
+            pd.notnull(df_gap["dest_alos"]),
+            (df_gap["dest_alos"] + delta_alos).round(2),
+            np.nan
+        )
+        df_gap["additional_tourist_nights_thousands"] = np.where(
+            pd.notnull(df_gap["tourist_flow_thousands"]),
+            (df_gap["tourist_flow_thousands"] * delta_alos).round(3),
+            np.nan
+        )
+        df_gap["additional_accom_expenditure_rm_million"] = np.where(
+            pd.notnull(df_gap["additional_tourist_nights_thousands"]) & pd.notnull(df_gap["dest_spend_per_night"]),
+            ((df_gap["additional_tourist_nights_thousands"] * df_gap["dest_spend_per_night"]) / 1000.0).round(2),
+            np.nan
+        )
+        df_gap["potential_additional_value_added_rm_million"] = np.where(
+            pd.notnull(df_gap["additional_accom_expenditure_rm_million"]),
+            (df_gap["additional_accom_expenditure_rm_million"] * ACCOMMODATION_VAI).round(2),
+            np.nan
+        )
         df_gap["potential_retained_gva_rm_million"] = df_gap["potential_additional_value_added_rm_million"]
         df_gap["policy_disclaimer"] = MANDATORY_SCENARIO_DISCLAIMER
 
         # Hotel room demand and implied AOR
-        daily_rooms_demanded = (df_gap["additional_tourist_nights_thousands"] * 1000.0) / (365.0 * 1.8)
-        has_rooms = df_gap["dest_available_rooms"].fillna(0) > 0
+        daily_rooms_demanded = np.where(
+            pd.notnull(df_gap["additional_tourist_nights_thousands"]),
+            (df_gap["additional_tourist_nights_thousands"] * 1000.0) / (365.0 * 1.8),
+            np.nan
+        )
+        has_rooms = (df_gap["dest_available_rooms"].fillna(0) > 0)
         delta_aor = np.where(
-            has_rooms,
+            has_rooms & pd.notnull(daily_rooms_demanded),
             (daily_rooms_demanded / df_gap["dest_available_rooms"]) * 100.0,
             np.nan,
         )
@@ -449,43 +483,71 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
             return "Feasible (Within Hotel Capacity)"
         df_gap["capacity_constraint_alert"] = df_gap["implied_dest_aor_pct"].apply(_capacity_label)
 
-        # Pareto Opportunity Framework (Phase 19.3)
-        c1 = np.maximum(0, df_gap["gravity_flow_gap_thousands"]) + 0.5 * df_gap["tourist_flow_thousands"]
-        c2 = spend_nt
-        c3 = df_gap["capacity_headroom_pct"].fillna(50.0)
-        c4 = -dist - (500.0 * is_cross.astype(float))
+        # Pareto Opportunity Framework (Phase 19.3 & Sprint A)
+        # O1: Demand gap / room to model expected (Clean: no arbitrary +0.5 * flow)
+        c1 = np.maximum(0.0, df_gap["gravity_flow_gap_thousands"].fillna(0.0))
+        # O2: Destination economic yield
+        c2 = spend_nt.fillna(0.0)
+        # O3: Destination capacity headroom (unobserved capacity -> 0 headroom in sorting)
+        c3 = df_gap["capacity_headroom_pct"].fillna(0.0)
+        # O4: Overland accessibility (penalize cross-region flight barrier and distance)
+        c4 = -dist.fillna(1000.0) - (500.0 * is_cross.astype(float))
+        # O5: Market diversification benefit
         orig_share = df_gap["origin_share_of_dest_pct"].fillna(0.0) if "origin_share_of_dest_pct" in df_gap.columns else pd.Series(0.0, index=df_gap.index)
-        c5 = (100.0 - orig_share) * (hhi_val / 2500.0)
+        c5 = (100.0 - orig_share) * (hhi_val.fillna(1000.0) / 2500.0)
+
+        # Flag evidence completeness
+        has_critical_evidence = (
+            pd.notnull(df_gap["tourist_flow_thousands"]) &
+            pd.notnull(df_gap["dest_spend_per_night"]) &
+            pd.notnull(df_gap["dest_baseline_aor_pct"])
+        )
+        df_gap["evidence_status"] = np.where(has_critical_evidence, "complete", "insufficient_data")
 
         M = np.column_stack([c1, c2, c3, c4, c5])
         N_corrs = len(df_gap)
         dom_count = np.zeros(N_corrs, dtype=int)
         for i in range(N_corrs):
+            if not has_critical_evidence.iloc[i]:
+                dom_count[i] = 998  # Demote corridors with insufficient evidence
+                continue
             for j in range(N_corrs):
-                if i == j:
+                if i == j or not has_critical_evidence.iloc[j]:
                     continue
                 if np.all(M[j] >= M[i]) and np.any(M[j] > M[i]):
                     dom_count[i] += 1
 
-        df_gap["is_pareto_optimal"] = (dom_count == 0)
-        df_gap["pareto_rank"] = dom_count + 1
+        df_gap["is_pareto_optimal"] = (dom_count == 0) & has_critical_evidence
+        df_gap["pareto_rank"] = np.where(has_critical_evidence, dom_count + 1, 999)
 
         # Normalized Composite Opportunity Score [0, 100]
         def _minmax(arr):
-            mn, mx = np.min(arr), np.max(arr)
-            return (arr - mn) / (mx - mn + 1e-9)
+            valid_mask = has_critical_evidence.to_numpy()
+            if not np.any(valid_mask):
+                return np.zeros_like(arr)
+            mn = np.min(arr[valid_mask])
+            mx = np.max(arr[valid_mask])
+            if mx - mn < 1e-9:
+                return np.zeros_like(arr)
+            res = (arr - mn) / (mx - mn)
+            return np.where(valid_mask, np.clip(res, 0.0, 1.0), 0.0)
 
         comp_score = 100.0 * (
-            0.25 * _minmax(c2) +
-            0.20 * _minmax(c3) +
-            0.20 * _minmax(c1) +
-            0.20 * _minmax(c4) +
-            0.15 * _minmax(c5)
+            0.25 * _minmax(c2.to_numpy()) +
+            0.20 * _minmax(c3.to_numpy()) +
+            0.20 * _minmax(c1.to_numpy()) +
+            0.20 * _minmax(c4.to_numpy()) +
+            0.15 * _minmax(c5.to_numpy())
         )
-        df_gap["composite_opportunity_score"] = comp_score.round(2)
+        df_gap["composite_opportunity_score"] = np.where(has_critical_evidence, comp_score.round(2), 0.0)
 
-        # Sort descending by economic opportunity for monotonic backward-compatibility
-        df_gap = df_gap.sort_values(by="additional_accom_expenditure_rm_million", ascending=False).reset_index(drop=True)
+        # Strict Multi-Objective Ranking Hierarchy (Plan Section 8):
+        # Primary: Pareto Rank ascending (Non-dominated Frontier 1 first)
+        # Secondary: Composite Opportunity Score descending
+        df_gap = df_gap.sort_values(
+            by=["pareto_rank", "composite_opportunity_score"],
+            ascending=[True, False]
+        ).reset_index(drop=True)
         df_gap["opportunity_rank"] = range(1, len(df_gap) + 1)
 
     # 9. Export All Tables to DuckDB & Parquet

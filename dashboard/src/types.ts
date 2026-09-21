@@ -121,11 +121,11 @@ export interface StateHotelStars {
 }
 
 export interface StateLodgingShares {
-  unpaid_vfr_pct: number;
-  paid_commercial_pct: number;
-  hotel_pct: number;
-  homestay_pct: number;
-  apartment_pct?: number;
+  unpaid_vfr_pct?: number | null;
+  paid_commercial_pct?: number | null;
+  hotel_pct?: number | null;
+  homestay_pct?: number | null;
+  apartment_pct?: number | null;
 }
 
 export interface StateProfile {

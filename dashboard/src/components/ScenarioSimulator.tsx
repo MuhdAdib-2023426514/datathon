@@ -209,7 +209,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
 
   // 3. Converted unpaid VFR stays into commercial/registered paid lodging (Phase 24)
   const hasVfrData = activeProfile.lodging_shares?.unpaid_vfr_pct != null;
-  const unpaidVfrPct = hasVfrData ? activeProfile.lodging_shares!.unpaid_vfr_pct : 0.0;
+  const unpaidVfrPct: number = (hasVfrData && activeProfile.lodging_shares?.unpaid_vfr_pct != null) ? activeProfile.lodging_shares.unpaid_vfr_pct : 0.0;
   const vfrTouristsK = baselineTouristsK * (unpaidVfrPct / 100.0);
   const convertedVfrTouristsK = vfrTouristsK * (vfrConversionRate / 100.0);
   const vfrNightsK = convertedVfrTouristsK * (baselineAlos + deltaAlos);
@@ -1181,12 +1181,12 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                   <span className="text-[10px] text-indigo-600 font-mono">Macroeconomic yield</span>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-white border border-indigo-100">
-                  <span className="text-[10px] font-semibold text-stone-500 uppercase">Portfolio ROI Multiplier</span>
+                <div className="p-3.5 rounded-xl bg-white border border-indigo-100" title="Scenario benchmark multiple based on promotional budget allocation assumptions; not a guaranteed financial ROI.">
+                  <span className="text-[10px] font-semibold text-stone-500 uppercase">Value-to-Cost Multiple</span>
                   <div className="text-lg font-bold text-emerald-700 mt-0.5 font-mono">
                     {summary ? summary.portfolio_roi_multiplier.toFixed(1) : '—'}x
                   </div>
-                  <span className="text-[10px] text-emerald-600 font-mono">GVA per RM invested</span>
+                  <span className="text-[10px] text-emerald-600 font-mono">GVA per RM cost (Benchmark)</span>
                 </div>
 
                 <div className="p-3.5 rounded-xl bg-white border border-indigo-100">

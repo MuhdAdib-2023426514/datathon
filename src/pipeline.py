@@ -64,9 +64,12 @@ STAGES = {
         ("scenario_engine_tests", "tests/test_scenario_engine.py"),
         ("dashboard_integrity_tests", "tests/test_dashboard_integrity.py"),
         ("commercial_and_monte_carlo", "tests/test_commercial_and_monte_carlo.py"),
+        ("baseline_snapshots", "tests/snapshot/test_baseline_snapshots.py"),
         ("tsa_accounting", "src/validation/test_tsa_accounting.py"),
         ("state_and_corridors", "src/validation/test_state_and_corridors.py"),
         ("data_quality_report", "src/validation/data_quality_report.py"),
+        ("pre_submission_audit", "tests/test_pre_submission_audit.py"),
+        ("submission_packaging", "tests/test_submission_packaging.py"),
     ],
     "export": [
         ("dashboard_json", "src/analytics/export_dashboard_json.py"),

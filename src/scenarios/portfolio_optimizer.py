@@ -72,10 +72,10 @@ class PortfolioOptimizer:
                     origin, 
                     destination, 
                     tourist_flow_thousands, 
-                    150.0 as distance_km,
-                    2.5 as dest_alos,
-                    60.0 as dest_spend_per_night,
-                    'Growth Opportunity' as category
+                    NULL as distance_km,
+                    NULL as dest_alos,
+                    NULL as dest_spend_per_night,
+                    'Unclassified' as category
                 FROM origin_destination
                 WHERE year = 2025 AND is_interstate = true AND tourist_flow_thousands > 5.0
             """).df()
@@ -105,8 +105,46 @@ class PortfolioOptimizer:
             flow_k = float(row["tourist_flow_thousands"])
             flow = flow_k * 1000.0
 
-            spend_night = float(row["dest_spend_per_night"]) if pd.notnull(row["dest_spend_per_night"]) and row["dest_spend_per_night"] > 0 else 60.0
-            category = row["category"] if pd.notnull(row["category"]) else "Growth Opportunity"
+            has_spend = pd.notnull(row.get("dest_spend_per_night")) and float(row["dest_spend_per_night"]) > 0
+            has_rooms = False
+
+            # Check destination capacity
+            if not self.df_cap.empty and dest in self.df_cap.index:
+                cap_row = self.df_cap.loc[dest]
+                aor = None
+                rooms = None
+                for c in ["aor_2025_pct", "aor_2024_pct"]:
+                    if c in cap_row and pd.notnull(cap_row[c]) and float(cap_row[c]) > 0:
+                        aor = float(cap_row[c])
+                        break
+                for c in ["hotel_rooms_2025", "dts_rooms_2025", "hotel_rooms_2024"]:
+                    if c in cap_row and pd.notnull(cap_row[c]) and float(cap_row[c]) > 0:
+                        rooms = float(cap_row[c])
+                        break
+                if aor is not None and rooms is not None:
+                    has_rooms = True
+
+            category = row["category"] if pd.notnull(row.get("category")) else "Growth Opportunity"
+
+            # Eligibility based on empirical evidence completeness (Sprint A / Plan Section 5.3)
+            if not has_spend or not has_rooms:
+                candidates.append({
+                    "corridor_id": f"{orig} -> {dest}",
+                    "origin": orig,
+                    "destination": dest,
+                    "tourist_flow_thousands": flow_k,
+                    "category": category,
+                    "cost_rm_million": 0.0,
+                    "expected_gva_rm_million": 0.0,
+                    "daily_rooms_demanded": 0.0,
+                    "roi_ratio": 0.0,
+                    "eligible": False,
+                    "ineligible_reason": "insufficient empirical evidence (missing spend or capacity)",
+                    "evidence_status": "insufficient_data",
+                })
+                continue
+
+            spend_night = float(row["dest_spend_per_night"])
 
             # Cost formulation: Fixed setup RM 50,000 + Variable RM 25 per 1,000 visitors
             cost_rm = 50_000.0 + (flow_k * 25.0)
@@ -132,6 +170,9 @@ class PortfolioOptimizer:
                 "additional_nights": add_nights,
                 "additional_spend_rm_million": add_spend_m,
                 "daily_rooms_demanded": daily_rooms,
+                "roi_ratio": pot_gva_m / cost_rm_m if cost_rm_m > 0 else 0.0,
+                "eligible": True,
+                "evidence_status": "complete",
             })
 
         self.df_candidates = pd.DataFrame(candidates)
@@ -391,7 +432,7 @@ def query_grounded_assistant(question: str) -> Dict[str, Any]:
     """
     Answers policy and analytical questions strictly using structured facts
     from state profiles, corridor classifications, TSA accounting, and model diagnostics.
-    Zero hallucination guarantee.
+    Evidence-grounded structured fact querying.
     """
     q = question.lower()
 
@@ -400,36 +441,38 @@ def query_grounded_assistant(question: str) -> Dict[str, Any]:
             "state": "Melaka",
             "baseline_aor_pct": 63.8,
             "planning_threshold_pct": 80.0,
-            "alos_days": 1.70,
-            "national_median_alos": 2.50,
-            "spend_per_night_rm": 63.1,
+            "alos_days": 2.11,
+            "national_median_alos": 2.47,
+            "spend_per_night_rm": 63.00,
             "capacity_status": "Planning Watch / Peak Saturation Warning",
         }
         return {
             "question": question,
-            "answer": "Melaka is classified as capacity-constrained because its baseline Average Occupancy Rate (AOR) stands at 63.8%, leaving limited headroom before hitting peak weekend saturation (80% planning ceiling). With a short Average Length of Stay (ALOS) of 1.70 days (vs national median 2.50d) but strong daily spending (RM 63.1/night), extending stays without expanding off-peak dispersion risks physical hotel room bottlenecks.",
+            "answer": "Melaka is classified as capacity-constrained because its baseline Average Occupancy Rate (AOR) stands at 63.8%, leaving limited headroom before hitting peak weekend saturation (80% planning ceiling). With an Average Length of Stay (ALOS) of 2.11 days (below the national median of 2.47d) and lodging spend of RM 63.00/night, extending stays without expanding off-peak dispersion risks physical hotel room bottlenecks.",
             "metrics": metrics,
             "evidence": metrics,
-            "recommendation": "Prioritize midweek stay-extension promotions and premium experiential packages rather than mass-market volume campaigns.",
+            "recommendation": "Prioritize midweek stay-extension promotions and premium experiential packages rather than mass-market weekend volume campaigns.",
             "source": "DOSM DTS 2025 & Tourism Malaysia Hotel Survey",
             "confidence": "Very High",
-            "limitation": "Annual average AOR hides acute weekend and school holiday capacity spikes in Bandar Hilir.",
+            "limitation": "Annual state-level occupancy (63.8%) may conceal localized peak-period capacity pressure; finer-grained occupancy data would be required to verify sub-state constraints.",
         }
 
     elif "vai" in q or "value-added intensity" in q or "highest value" in q or "products" in q:
         metrics = {
             "accommodation_vai_pct": 85.8,
-            "travel_agency_vai_pct": 47.7,
-            "food_beverage_vai_pct": 38.8,
-            "shopping_vai_pct": 23.8,
-            "national_tourism_ratio_accommodation": 62.4,
+            "food_beverage_vai_pct": 65.5,
+            "recreation_vai_pct": 60.4,
+            "shopping_retail_margin_vai_pct": 47.0,
+            "passenger_transport_vai_pct": 40.7,
+            "travel_agency_vai_pct": 28.5,
+            "national_tourism_ratio_accommodation": 96.7,
         }
         return {
             "question": question,
-            "answer": "In Malaysia's Tourism Satellite Account (2015-2025), Accommodation Services consistently achieves the highest Value-Added Intensity among core tourism products at 85.8% (2025p), followed by Travel Agencies & Reservation Services (47.7%) and Food & Beverage (38.8%). In contrast, Shopping has an intensity of only 23.8% because intermediate retail acquisition costs absorb over 76% of gross turnover.",
+            "answer": "In Malaysia's Tourism Satellite Account (2015-2025), Accommodation Services consistently achieves the highest Value-Added Intensity among core tourism products with a post-recovery median of 85.8% (2025p VAI: 86.6%), followed by Food & Beverage (65.5%), Recreation & Cultural Services (60.4%), Shopping Retail Margin (47.0%), and Passenger Transport (40.7%). Travel Agencies expanded supply faster than GVA post-recovery, yielding a VAI of 28.5%.",
             "metrics": metrics,
             "evidence": metrics,
-            "recommendation": "Strategic policy shift: redirect marketing resources from low-margin retail incentives toward high-value overnight accommodation and multi-day experiential itineraries.",
+            "recommendation": "Strategic policy shift: redirect public promotional resources toward high-value overnight accommodation, cultural immersion, and multi-day experiential itineraries.",
             "source": "DOSM Tourism Satellite Account 2015-2025p",
             "confidence": "High",
             "limitation": "TSA supply figures represent national supply aggregates; state-level supply chains may exhibit subtle structural variation.",
@@ -437,15 +480,16 @@ def query_grounded_assistant(question: str) -> Dict[str, Any]:
 
     elif "corridor" in q or "priority conversion" in q:
         metrics = {
-            "top_corridor": "Selangor -> Melaka",
-            "annual_tourist_flow": "1,680,000 tourists",
-            "destination_alos": "1.70 days",
+            "top_corridors": "Selangor -> W.P. Kuala Lumpur, Negeri Sembilan -> Melaka, Johor -> Melaka",
+            "melaka_tourist_flow_from_selangor": "2,726,000 tourists",
+            "destination_alos": "2.11 days",
+            "national_median_alos": "2.47 days",
+            "pareto_optimal_corridors": 58,
             "corridor_category": "Priority Conversion Corridor",
-            "potential_gva_gain": "RM 15.4M per +0.4 days (15% reach)",
         }
         return {
             "question": question,
-            "answer": "Priority Conversion Corridors are high-volume feeder routes whose destination exhibits below-median stay duration (ALOS < 2.50 days) and/or below-median accommodation capture. Major examples include Selangor -> Melaka (1.68M tourists, ALOS 1.70d), Johor -> Melaka (1.42M tourists), and W.P. Kuala Lumpur -> Pahang (1.85M tourists). These routes offer the highest return on stay-extension marketing.",
+            "answer": "Priority Conversion Corridors are high-volume feeder routes whose destination exhibits below-median stay duration (ALOS < 2.47 days) and/or below-median accommodation capture. Major examples include Selangor -> Melaka (2.73M tourists, ALOS 2.11d), Johor -> Melaka (1.42M tourists), and Negeri Sembilan -> Melaka. The non-dominated Pareto frontier identifies 58 optimal inter-state corridors nationwide.",
             "metrics": metrics,
             "evidence": metrics,
             "recommendation": "Deploy targeted digital staycation vouchers and Friday-to-Sunday evening festival passes for urban feeder travellers.",
@@ -456,10 +500,10 @@ def query_grounded_assistant(question: str) -> Dict[str, Any]:
 
     else:
         metrics = {
-            "national_median_alos": 2.50,
+            "national_median_alos": 2.47,
             "national_accom_vai": 0.8579,
             "total_corridors_analyzed": 240,
-            "pareto_optimal_corridors": 77,
+            "pareto_optimal_corridors": 58,
         }
         return {
             "question": question,

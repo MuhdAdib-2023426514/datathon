@@ -59,8 +59,17 @@ class MonteCarloSimulator:
             raise ValueError(f"Destination '{destination}' not found in state data.")
         row = self.df_state.loc[destination]
 
-        alos = float(row["alos"]) if pd.notnull(row.get("alos")) and row["alos"] > 0 else 2.5
-        spend_night = float(row["spend_per_night"]) if pd.notnull(row.get("spend_per_night")) and row["spend_per_night"] > 0 else 60.0
+        alos = None
+        for c in ["alos_days", "alos"]:
+            if c in row and pd.notnull(row[c]) and float(row[c]) > 0:
+                alos = float(row[c])
+                break
+
+        spend_night = None
+        for c in ["spend_per_night_rm", "spend_per_night"]:
+            if c in row and pd.notnull(row[c]) and float(row[c]) > 0:
+                spend_night = float(row[c])
+                break
 
         base_aor, avail_rooms = None, None
         if not self.df_cap.empty and destination in self.df_cap.index:
@@ -98,8 +107,18 @@ class MonteCarloSimulator:
 
         dest_meta = self._get_destination_baseline(destination)
         base_spend = dest_meta["spend_per_night"]
+        base_alos = dest_meta["alos"]
         base_aor = dest_meta["base_aor"]
         avail_rooms = dest_meta["avail_rooms"]
+
+        if base_spend is None or base_alos is None:
+            return {
+                "status": "UNAVAILABLE",
+                "error": "missing baseline empirical data",
+                "reason": f"Destination '{destination}' lacks empirical ALOS or spend per night observation in official tables.",
+                "disclaimer": MANDATORY_DISCLAIMER,
+                "evidence_status": "insufficient_data"
+            }
 
         # Fetch corridor flow
         match = self.df_od[(self.df_od["origin"] == origin) & (self.df_od["destination"] == destination)]

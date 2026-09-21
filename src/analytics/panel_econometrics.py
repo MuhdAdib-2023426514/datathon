@@ -377,7 +377,7 @@ def run_panel_econometrics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, 
             "r_squared": round(float(fe_model_yield.rsquared), 4),
             "covariance_type": f"State-Clustered Standard Errors ({n_states} clusters)",
             "small_cluster_caveat": small_cluster_msg,
-            "interpretation": f"Explains variation in lodging yield per tourist night; reflects pricing power under tighter capacity (AOR) and higher-spending traveler profiles."
+            "interpretation": f"Explains variation in lodging yield per tourist night; reflects occupancy intensity and lodging yield responsiveness under tighter capacity (AOR) and higher-spending traveler profiles."
         })
 
     df_summary = pd.DataFrame(panel_summary_records)

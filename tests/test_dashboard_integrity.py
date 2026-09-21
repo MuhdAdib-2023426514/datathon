@@ -166,6 +166,139 @@ class TestNoHardcodedModelFallbacks:
         assert "|| '-0.410'" not in content, "Found hardcoded '-0.410' fallback in CorridorNetwork.tsx"
 
 
+@pytest.fixture(scope="module")
+def duckdb_con():
+    import duckdb
+    duckdb_path = ROOT_DIR / "data/processed/tourism_data.duckdb"
+    con = duckdb.connect(str(duckdb_path), read_only=True)
+    yield con
+    con.close()
+
+
+class TestDashboardAnalyticalContracts:
+    """
+    Phase 41: Dashboard Analytical Contract Tests.
+    Mandates exact numerical parity between Python model outputs in DuckDB and dashboard JSON feeds:
+      1. Dashboard R² == Python / Model R²
+      2. Dashboard coefficients == Python / Model coefficients
+      3. Dashboard scenario GVA == Python scenario engine output
+      4. Dashboard HHI == Python analytical output
+      5. Dashboard state KPI == Pipeline output
+    """
+
+    def test_dashboard_r2_parity_with_python(self, duckdb_con):
+        """Phase 41.1: Assert dashboard R² == Python R² across Gravity and Panel models."""
+        metrics_file = DATA_DIR / "model_metrics.json"
+        with open(metrics_file, "r", encoding="utf-8") as f:
+            metrics = json.load(f)
+
+        # 1. Gravity Out-of-Sample R²
+        db_grav_r2 = duckdb_con.execute(
+            "SELECT predictive_r2 FROM corridor_gravity_validation WHERE model_specification = 'PPML Structural Gravity (Primary)'"
+        ).fetchone()[0]
+        dash_grav_r2 = metrics["gravity"]["r2_oos"]
+        assert abs(dash_grav_r2 - db_grav_r2) < 1e-4, f"Gravity R² mismatch: Dash={dash_grav_r2}, DB={db_grav_r2}"
+
+        # 2. Panel Yield Model R²
+        db_yield_r2 = duckdb_con.execute(
+            "SELECT r_squared FROM panel_regression_summary WHERE model_id = 'Model_4_Yield_TwoWay_FE' LIMIT 1"
+        ).fetchone()[0]
+        dash_yield_r2 = metrics["panel"]["yield_model"]["r_squared"]
+        assert abs(dash_yield_r2 - db_yield_r2) < 1e-4, f"Yield Model R² mismatch: Dash={dash_yield_r2}, DB={db_yield_r2}"
+
+    def test_dashboard_coefficients_parity_with_model_output(self, duckdb_con):
+        """Phase 41.2: Assert dashboard coefficients == model output."""
+        metrics_file = DATA_DIR / "model_metrics.json"
+        with open(metrics_file, "r", encoding="utf-8") as f:
+            metrics = json.load(f)
+
+        # 1. Gravity Distance Decay & Cross-Region Coefficients
+        grav_rows = duckdb_con.execute(
+            "SELECT variable, coefficient FROM corridor_gravity_model_summary WHERE model_type LIKE 'PPML%'"
+        ).fetchall()
+        grav_dict = {r[0]: r[1] for r in grav_rows}
+
+        db_dist = grav_dict["Distance Decay Friction (PPML)"]
+        db_cross = grav_dict["Cross-Region Flight Barrier (Peninsula <-> Borneo)"]
+        assert abs(metrics["gravity"]["distance_decay_friction"] - db_dist) < 1e-4
+        assert abs(metrics["gravity"]["cross_region_barrier"] - db_cross) < 1e-4
+
+        # 2. Panel Two-Way FE Elasticities
+        panel_rows = duckdb_con.execute(
+            "SELECT independent_variable, elasticity_coefficient FROM panel_regression_summary WHERE model_id = 'Model_2_TwoWay_FE_Clustered'"
+        ).fetchall()
+        panel_dict = {r[0]: r[1] for r in panel_rows}
+
+        assert abs(metrics["panel"]["alos_elasticity"] - panel_dict["ln(ALOS)"]) < 1e-4
+        assert abs(metrics["panel"]["tourist_elasticity"] - panel_dict["ln(Overnight Tourists)"]) < 1e-4
+
+    def test_dashboard_scenario_gva_parity_with_scenario_engine(self):
+        """Phase 41.3: Assert dashboard scenario GVA proxy == Python scenario engine output."""
+        from src.scenarios.simulator import ScenarioSimulator
+        simulator = ScenarioSimulator()
+
+        # Test corridor simulation parity
+        res = simulator.simulate_corridor("Selangor", "Melaka", delta_alos=0.5, affected_share=0.15)
+        spend = res["simulated_impact"]["additional_accommodation_spend_rm_million"]
+        gva = res["simulated_impact"]["potential_additional_value_added_rm_million"]
+        vai = res["inputs"]["accommodation_vai_used"]
+        expected_gva_proxy = round(spend * vai, 2)
+        assert abs(gva - expected_gva_proxy) < 1e-2, f"Corridor GVA proxy mismatch: {gva} vs {expected_gva_proxy}"
+
+        # Test state benchmark JSON scenario GVA formula consistency
+        scen_file = DATA_DIR / "scenario_engine.json"
+        with open(scen_file, "r", encoding="utf-8") as f:
+            scen = json.load(f)
+
+        for state, benchmarks in scen.get("benchmarks", {}).items():
+            for bname, bdata in benchmarks.items():
+                impact = bdata["simulated_impact"]
+                inputs = bdata["inputs"]
+                b_spend = impact["additional_accommodation_spend_rm_million"]
+                b_gva = impact["potential_additional_value_added_rm_million"]
+                b_vai = inputs["accommodation_vai_used"]
+                b_expected_gva = round(b_spend * b_vai, 2)
+                assert abs(b_gva - b_expected_gva) <= 0.05, f"Scenario GVA mismatch for {state} ({bname}): {b_gva} vs {b_expected_gva}"
+
+    def test_dashboard_hhi_parity_with_analytical_output(self, duckdb_con):
+        """Phase 41.4: Assert dashboard destination feeder HHI == analytical output."""
+        db_hhi_rows = duckdb_con.execute(
+            "SELECT destination, interstate_origin_hhi, top_feeder_origin FROM destination_concentration WHERE year = 2025"
+        ).fetchall()
+        db_hhi = {r[0]: (round(r[1], 2), r[2]) for r in db_hhi_rows}
+
+        profiles_file = DATA_DIR / "state_profiles.json"
+        with open(profiles_file, "r", encoding="utf-8") as f:
+            profiles = json.load(f)
+
+        for state, (expected_hhi, expected_feeder) in db_hhi.items():
+            if state in profiles and "sdg_metrics" in profiles[state]:
+                state_sdg = profiles[state]["sdg_metrics"]
+                if "hhi_interstate" in state_sdg:
+                    assert abs(state_sdg["hhi_interstate"] - expected_hhi) < 0.1, (
+                        f"HHI mismatch for {state}: Dash={state_sdg['hhi_interstate']}, DB={expected_hhi}"
+                    )
+
+    def test_dashboard_state_kpi_parity_with_pipeline_output(self, duckdb_con):
+        """Phase 41.5: Assert dashboard state KPIs == pipeline state_year output."""
+        db_state_rows = duckdb_con.execute(
+            "SELECT state, alos_days, tourists_thousands, spend_per_night_rm FROM state_year WHERE year = 2025"
+        ).fetchall()
+        db_states = {r[0]: {"alos": r[1], "tourists": r[2], "spend": r[3]} for r in db_state_rows}
+
+        profiles_file = DATA_DIR / "state_profiles.json"
+        with open(profiles_file, "r", encoding="utf-8") as f:
+            profiles = json.load(f)
+
+        assert len(profiles) == 16
+        for state, exp in db_states.items():
+            assert state in profiles, f"State {state} missing from state_profiles.json"
+            b = profiles[state]["baseline_2025"]
+            assert abs(b["alos_days"] - exp["alos"]) < 1e-2, f"ALOS mismatch for {state}"
+            assert abs(b["tourists_thousands"] - exp["tourists"]) < 0.1, f"Tourists mismatch for {state}"
+            assert abs(b["spend_per_night_rm"] - exp["spend"]) < 1e-2, f"Spend per night mismatch for {state}"
+
+
 if __name__ == "__main__":
     import sys
     sys.exit(pytest.main([__file__]))

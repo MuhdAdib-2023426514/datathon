@@ -123,6 +123,7 @@ class TestCorridorOpportunityEngine:
         assert "is_pareto_optimal" in df_gap.columns, "is_pareto_optimal missing"
         assert "pareto_rank" in df_gap.columns, "pareto_rank missing"
         assert "composite_opportunity_score" in df_gap.columns, "composite_opportunity_score missing"
+        assert "opportunity_rank" in df_gap.columns, "opportunity_rank missing"
 
         pareto_corridors = df_gap[df_gap["is_pareto_optimal"] == True]
         assert len(pareto_corridors) >= 3, "Pareto frontier has too few corridors (< 3)"
@@ -132,9 +133,30 @@ class TestCorridorOpportunityEngine:
         scores = df_gap["composite_opportunity_score"].dropna()
         assert (scores >= 0.0).all() and (scores <= 100.0).all(), "Composite score out of [0, 100]"
 
-        # Rank 1 corridor should have the top composite score
-        sorted_by_score = df_gap.sort_values("composite_opportunity_score", ascending=False).reset_index(drop=True)
-        assert sorted_by_score.iloc[0]["composite_opportunity_score"] >= sorted_by_score.iloc[-1]["composite_opportunity_score"]
+        # Rank 1 corridor must be on Pareto Frontier 1
+        rank_1 = df_gap[df_gap["opportunity_rank"] == 1].iloc[0]
+        assert rank_1["pareto_rank"] == 1, "Rank 1 corridor must reside on Pareto Front 1"
+        assert rank_1["is_pareto_optimal"] == True, "Rank 1 corridor must be Pareto optimal"
+
+    def test_opportunity_ranking_hierarchy(self, db_connection):
+        """Sprint A: Verify strict Pareto-first ranking hierarchy (pareto_rank ASC, composite_score DESC)."""
+        df_gap = db_connection.execute("SELECT * FROM corridor_opportunity_gap ORDER BY opportunity_rank").df()
+        
+        # Verify pareto_rank is monotonically non-decreasing
+        pareto_ranks = df_gap["pareto_rank"].to_numpy()
+        for i in range(len(pareto_ranks) - 1):
+            assert pareto_ranks[i] <= pareto_ranks[i + 1], (
+                f"Pareto rank violated monotonic ordering at row {i}: {pareto_ranks[i]} > {pareto_ranks[i+1]}"
+            )
+
+        # Within the same pareto_rank, composite_opportunity_score should be non-increasing
+        for prank in df_gap["pareto_rank"].unique():
+            subset = df_gap[df_gap["pareto_rank"] == prank]
+            scores = subset["composite_opportunity_score"].to_numpy()
+            for j in range(len(scores) - 1):
+                assert scores[j] >= scores[j + 1] - 1e-5, (
+                    f"Composite score not sorted descending within pareto_rank {prank}"
+                )
 
     def test_scenario_disclaimer_preservation(self, db_connection):
         df_gap = db_connection.execute("SELECT * FROM corridor_opportunity_gap").df()

@@ -22,6 +22,11 @@ import duckdb
 import pandas as pd
 import numpy as np
 
+import sys
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 from src.config.paths import DUCKDB_PATH, ARTIFACTS_DIR
 
 

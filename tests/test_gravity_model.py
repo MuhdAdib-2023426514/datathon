@@ -139,3 +139,20 @@ class TestModelMetricsSerialization:
         assert "rmse" in grav
         assert "smape" in grav
         assert "naive_baselines" in grav
+        assert "baseline_comparison_note" in grav, "Sprint B: baseline_comparison_note must explain persistence vs PPML"
+        assert "inertia" in grav["baseline_comparison_note"].lower() or "persistence" in grav["baseline_comparison_note"].lower()
+
+        # Sprint B: Dynamic panel metrics validation
+        assert "panel" in data
+        panel = data["panel"]
+        assert "alos_elasticity" in panel
+        assert "tourist_elasticity" in panel
+        assert "yield_model" in panel
+        assert panel["yield_model"]["r_squared"] > 0.70
+
+        # Verify DuckDB parity
+        con = duckdb.connect(str(DUCKDB_PATH), read_only=True)
+        m2_row = con.execute("SELECT elasticity_coefficient FROM panel_regression_summary WHERE model_id='Model_2_TwoWay_FE_Clustered' AND independent_variable='ln(ALOS)'").fetchone()
+        con.close()
+        if m2_row:
+            assert abs(panel["alos_elasticity"] - float(m2_row[0])) < 1e-4, "Parity mismatch between JSON panel metrics and DuckDB"
