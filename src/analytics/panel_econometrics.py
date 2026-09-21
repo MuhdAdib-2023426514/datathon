@@ -28,6 +28,7 @@ import pandas as pd
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
 from statsmodels.stats.outliers_influence import OLSInfluence
+from patsy import dmatrices
 
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 if str(ROOT_DIR) not in sys.path:
@@ -116,6 +117,71 @@ def calc_influence_diagnostics(model, df: pd.DataFrame, model_id: str = "Model_2
     return pd.DataFrame(records)
 
 
+def compute_wild_cluster_bootstrap_pvalue(
+    df: pd.DataFrame,
+    formula_unrestricted: str,
+    formula_restricted: str,
+    target_var: str,
+    cluster_col: str = "state",
+    n_boot: int = 999,
+    seed: int = 42
+) -> float:
+    """
+    Computes Cameron, Gelbach, & Miller (2008) Wild Cluster Bootstrap p-value
+    for a panel model with small cluster count (e.g. N=16 states).
+    Uses Rademacher distribution weights (+1 / -1 with p=0.5) per cluster under H0.
+    """
+    y_mat, X_mat = dmatrices(formula_unrestricted, data=df, return_type="dataframe")
+    X = X_mat.to_numpy()
+    N, K = X.shape
+    target_idx = list(X_mat.columns).index(target_var)
+
+    # Restricted model under H0
+    res_fit = ols(formula_restricted, data=df).fit()
+    y_null = res_fit.fittedvalues.to_numpy()
+    e_null = res_fit.resid.to_numpy()
+
+    clusters = df[cluster_col].unique()
+    G = len(clusters)
+    inv_XX = np.linalg.pinv(X.T @ X)
+    A_row = inv_XX[target_idx, :] @ X.T
+    df_adj = (N - 1) / (N - K) * (G / (G - 1))
+
+    v = inv_XX[target_idx, :]
+    cluster_indices = [np.where(df[cluster_col].to_numpy() == c)[0] for c in clusters]
+    q_clusters = [X[idx] @ v for idx in cluster_indices]
+
+    # Actual t-stat
+    unres = ols(formula_unrestricted, data=df).fit(cov_type="cluster", cov_kwds={"groups": df[cluster_col]})
+    t_act = abs(float(unres.tvalues[target_var]))
+
+    rng = np.random.default_rng(seed)
+    w_draws = rng.choice([-1.0, 1.0], size=(n_boot, G))
+    t_boot_exceed = 0
+
+    for b in range(n_boot):
+        w = w_draws[b]
+        y_star = y_null.copy()
+        for g_idx, idx in enumerate(cluster_indices):
+            y_star[idx] += w[g_idx] * e_null[idx]
+
+        beta_star_target = A_row @ y_star
+        e_star = y_star - X @ (inv_XX @ (X.T @ y_star))
+
+        meat_diag = 0.0
+        for g_idx, idx in enumerate(cluster_indices):
+            s_g = q_clusters[g_idx] @ e_star[idx]
+            meat_diag += s_g ** 2
+
+        se_star = np.sqrt(max(1e-12, df_adj * meat_diag))
+        t_star = abs(beta_star_target / se_star)
+        if t_star >= t_act:
+            t_boot_exceed += 1
+
+    p_val = (t_boot_exceed + 1.0) / (n_boot + 1.0)
+    return round(float(p_val), 4)
+
+
 def run_panel_econometrics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     con = duckdb.connect(str(DUCKDB_PATH))
 
@@ -182,7 +248,9 @@ def run_panel_econometrics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, 
     df["ln_tourists"] = np.log(df["tourists_thousands"].clip(lower=1.0))
     df["ln_visitors"] = np.log(df["visitors_thousands"].clip(lower=1.0))
     df["ln_aor"] = np.log(df["aor_pct"].clip(lower=1.0))
+    df["is_imputed_foreign_share"] = df["foreign_guest_share_pct"].isna()
     df["foreign_share"] = df["foreign_guest_share_pct"].fillna(0.0)
+    df["is_imputed_holiday_share"] = df["holiday_share_tourist"].isna()
     df["holiday_share"] = df["holiday_share_tourist"].fillna(df["holiday_share_tourist"].median())
 
     panel_summary_records = []
@@ -193,7 +261,7 @@ def run_panel_econometrics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, 
     small_cluster_msg = (
         f"N={n_states} state clusters. Robust cluster-adjusted inference accounts for within-state "
         f"persistence across 2018–2025. Given cluster count < 30, results are evaluated alongside "
-        f"leave-one-state-out sensitivity."
+        f"wild cluster bootstrap and leave-one-state-out sensitivity."
     )
 
     # =========================================================================
@@ -222,6 +290,7 @@ def run_panel_econometrics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, 
         "ci_upper": round(float(ci_1[1]), 4),
         "t_statistic": round(float(fe_model_m1.tvalues["ln_alos"]), 4),
         "p_value": round(alos_pval_1, 4),
+        "wild_bootstrap_p_value": None,
         "significance": "p < 0.01" if alos_pval_1 < 0.01 else ("p < 0.05" if alos_pval_1 < 0.05 else "Not sig"),
         "r_squared": round(float(fe_model_m1.rsquared), 4),
         "covariance_type": "HC1 Heteroskedasticity-Robust",
@@ -239,6 +308,7 @@ def run_panel_econometrics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, 
         "ci_upper": round(float(fe_model_m1.conf_int().loc["ln_tourists"][1]), 4),
         "t_statistic": round(float(fe_model_m1.tvalues["ln_tourists"]), 4),
         "p_value": round(tour_pval_1, 4),
+        "wild_bootstrap_p_value": None,
         "significance": "p < 0.01" if tour_pval_1 < 0.01 else ("p < 0.05" if tour_pval_1 < 0.05 else "Not sig"),
         "r_squared": round(float(fe_model_m1.rsquared), 4),
         "covariance_type": "HC1 Heteroskedasticity-Robust",
@@ -249,14 +319,27 @@ def run_panel_econometrics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, 
     # =========================================================================
     # Model 2: Primary Two-Way Fixed-Effects Model (State + Year FE, Clustered SEs)
     # =========================================================================
+    formula_m2_unres = "ln_real_accom_spend ~ ln_alos + ln_tourists + C(state) + C(year)"
+    formula_m2_res = "ln_real_accom_spend ~ ln_tourists + C(state) + C(year)"
     fe_model_m2 = ols(
-        "ln_real_accom_spend ~ ln_alos + ln_tourists + C(state) + C(year)", data=df
+        formula_m2_unres, data=df
     ).fit(cov_type="cluster", cov_kwds={"groups": df["state"]})
 
     alos_coef_2 = float(fe_model_m2.params["ln_alos"])
     alos_pval_2 = float(fe_model_m2.pvalues["ln_alos"])
     alos_se_2 = float(fe_model_m2.bse["ln_alos"])
     ci_2 = fe_model_m2.conf_int().loc["ln_alos"]
+
+    # Wild cluster bootstrap p-value for headline ALOS elasticity (Cameron, Gelbach, Miller 2008)
+    p_boot_alos_2 = compute_wild_cluster_bootstrap_pvalue(
+        df=df,
+        formula_unrestricted=formula_m2_unres,
+        formula_restricted=formula_m2_res,
+        target_var="ln_alos",
+        cluster_col="state",
+        n_boot=999,
+        seed=42
+    )
 
     tour_coef_2 = float(fe_model_m2.params["ln_tourists"])
     tour_pval_2 = float(fe_model_m2.pvalues["ln_tourists"])
@@ -274,11 +357,12 @@ def run_panel_econometrics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, 
         "ci_upper": round(float(ci_2[1]), 4),
         "t_statistic": round(float(fe_model_m2.tvalues["ln_alos"]), 4),
         "p_value": round(alos_pval_2, 4),
+        "wild_bootstrap_p_value": round(p_boot_alos_2, 4),
         "significance": "p < 0.01" if alos_pval_2 < 0.01 else ("p < 0.05" if alos_pval_2 < 0.05 else ("p < 0.10" if alos_pval_2 < 0.10 else "Not statistically significant at 5%")),
         "r_squared": round(float(fe_model_m2.rsquared), 4),
         "covariance_type": f"State-Clustered Standard Errors ({n_states} clusters)",
         "small_cluster_caveat": small_cluster_msg,
-        "interpretation": f"After controlling for national annual shocks and clustering by state, the ALOS elasticity is {alos_coef_2:.2f} (95% CI: [{ci_2[0]:.2f}, {ci_2[1]:.2f}]). Reflects sensitivity to macroeconomic recovery dynamics."
+        "interpretation": f"After controlling for national annual shocks and clustering by state, the ALOS elasticity is {alos_coef_2:.2f} (95% CI: [{ci_2[0]:.2f}, {ci_2[1]:.2f}]; state-clustered p={alos_pval_2:.4f}, wild-bootstrap p={p_boot_alos_2:.4f}). Reflects sensitivity to macroeconomic recovery dynamics."
     }, {
         "model_id": "Model_2_TwoWay_FE_Clustered",
         "specification": "Two-Way FE (State + Year, State-Clustered SEs)",
@@ -291,6 +375,7 @@ def run_panel_econometrics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, 
         "ci_upper": round(float(fe_model_m2.conf_int().loc["ln_tourists"][1]), 4),
         "t_statistic": round(float(fe_model_m2.tvalues["ln_tourists"]), 4),
         "p_value": round(tour_pval_2, 4),
+        "wild_bootstrap_p_value": None,
         "significance": "p < 0.01" if tour_pval_2 < 0.01 else ("p < 0.05" if tour_pval_2 < 0.05 else "Not sig"),
         "r_squared": round(float(fe_model_m2.rsquared), 4),
         "covariance_type": f"State-Clustered Standard Errors ({n_states} clusters)",

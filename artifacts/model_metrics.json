@@ -15,19 +15,19 @@
     "rmsle": 0.9993,
     "smape": 75.43,
     "distance_decay_friction": -0.4104,
-    "distance_decay_se": 0.0517,
-    "distance_decay_pval": 0.0,
+    "distance_decay_se": 0.1096,
+    "distance_decay_pval": 0.0002,
     "cross_region_barrier": -0.8022,
-    "cross_region_se": 0.1289,
+    "cross_region_se": 0.2041,
     "target_leakage_status": "Zero target leakage: destination visitor totals eliminated from predictors; absorbed via destination fixed effects.",
     "structural_change_test": {
       "interaction_variable": "ln(Distance) * PostRecovery(2023\u20132025)",
       "interaction_coef": 0.1023,
-      "std_error": 0.0658,
-      "t_statistic": 1.5557,
-      "p_value": 0.1198,
-      "h0_rejected_5pct": false,
-      "conclusion": "No statistically significant post-recovery break in distance sensitivity (interaction beta = +0.1023, p = 0.1198). Spatial friction remains structurally invariant."
+      "std_error": 0.0482,
+      "t_statistic": 2.1216,
+      "p_value": 0.0339,
+      "h0_rejected_5pct": true,
+      "conclusion": "Statistically significant post-recovery shift in distance sensitivity (interaction beta = +0.1023, p = 0.0339)."
     },
     "naive_baselines": [
       {

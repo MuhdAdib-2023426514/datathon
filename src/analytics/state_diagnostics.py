@@ -17,7 +17,7 @@ Exports diagnostic tables to DuckDB and Parquet:
 
 import sys
 from pathlib import Path
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Optional
 import duckdb
 import numpy as np
 import pandas as pd
@@ -49,7 +49,7 @@ MANDATORY_SCENARIO_DISCLAIMER = "Scenario estimate, not a causal forecast."
 
 
 
-def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def run_state_diagnostics(policy_weights: Optional[Dict[str, float]] = None) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
     Computes statistical diagnostics, driver regressions, and corridor opportunity gaps
     across all 16 Malaysian states and Federal Territories.
@@ -337,13 +337,14 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
             df_corr_raw["dest_available_rooms"] = np.nan
 
         # Capacity Headroom - preserve NaN without 50.0 substitution
+        # Capacity Headroom - preserve NaN without synthetic substitution
         df_corr_raw["capacity_headroom_pct"] = np.where(
             pd.notnull(df_corr_raw["dest_baseline_aor_pct"]),
             (100.0 - df_corr_raw["dest_baseline_aor_pct"]).round(2),
             np.nan
         )
         df_corr_raw["capacity_tier"] = np.where(
-            pd.isna(df_corr_raw["dest_baseline_aor_pct"]), "Unknown (Capacity Data Unavailable)",
+            pd.isna(df_corr_raw["dest_baseline_aor_pct"]), "Insufficient Evidence",
             np.where(
                 df_corr_raw["dest_baseline_aor_pct"] < 60.0, "Substantial Headroom (<60% AOR)",
                 np.where(
@@ -385,11 +386,11 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
 
         df_gap.loc[df_gap["performance_ratio"].isna(), "gravity_performance_category"] = "Unavailable"
 
-        # Accessibility - preserve NaN without 300.0 substitution
+        # Accessibility - preserve NaN without synthetic substitution
         is_cross = df_gap["is_cross_region"] if "is_cross_region" in df_gap.columns else pd.Series(np.nan, index=df_gap.index)
         dist = df_gap["distance_km"] if "distance_km" in df_gap.columns else pd.Series(np.nan, index=df_gap.index)
         df_gap["accessibility_tier"] = np.where(
-            pd.isna(dist), "Unknown Accessibility (Distance Unavailable)",
+            pd.isna(dist), "Insufficient Evidence",
             np.where(
                 (is_cross == False) & (dist < 250), "High Accessibility (<250km Road/Rail)",
                 np.where((is_cross == False) & (dist <= 500), "Moderate Accessibility (250-500km Road/Rail)",
@@ -397,12 +398,12 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
             )
         )
 
-        # Diversification Benefit - preserve NaN without 1500.0 substitution
+        # Diversification Benefit - preserve NaN without synthetic substitution
         top_origin = df_gap["top_feeder_origin"] if "top_feeder_origin" in df_gap.columns else pd.Series("None", index=df_gap.index)
         df_gap["is_dominant_feeder"] = (df_gap["origin"] == top_origin)
         hhi_val = df_gap["dest_interstate_hhi"] if "dest_interstate_hhi" in df_gap.columns else pd.Series(np.nan, index=df_gap.index)
         df_gap["diversification_benefit"] = np.where(
-            pd.isna(hhi_val), "Unknown Diversification (HHI Unavailable)",
+            pd.isna(hhi_val), "Insufficient Evidence",
             np.where(
                 (hhi_val > 2000) & ~df_gap["is_dominant_feeder"], "High Diversification (Reduces Feeder Concentration)",
                 np.where(~df_gap["is_dominant_feeder"], "Moderate Diversification", "Consolidating Existing Dominance")
@@ -412,17 +413,17 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
         # Model Confidence
         flows = df_gap["tourist_flow_thousands"]
         df_gap["model_confidence_tier"] = np.where(
-            pd.isna(flows), "Unknown Confidence (Flow Unavailable)",
+            pd.isna(flows), "Insufficient Evidence",
             np.where(
                 flows >= 50.0, "High Confidence (Robust Historical Flow)",
                 np.where(flows >= 10.0, "Moderate Confidence (Moderate Flow)", "Exploratory (Sparse Flow)")
             )
         )
 
-        # Economic Yield Tiers - preserve NaN without 120.0 substitution
+        # Economic Yield Tiers - preserve NaN without synthetic substitution
         spend_nt = df_gap["dest_spend_per_night"] if "dest_spend_per_night" in df_gap.columns else pd.Series(np.nan, index=df_gap.index)
         df_gap["yield_tier"] = np.where(
-            pd.isna(spend_nt), "Unknown Yield (Spend Data Unavailable)",
+            pd.isna(spend_nt), "Insufficient Evidence",
             np.where(
                 spend_nt >= 160.0, "High Yield (>= RM160/night)",
                 np.where(spend_nt >= 100.0, "Moderate Yield (RM100-160/night)", "Lower Yield (< RM100/night)")
@@ -439,8 +440,11 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
         df_gap["policy_disclaimer"] = MANDATORY_SCENARIO_DISCLAIMER
 
         # Pareto Opportunity Framework (Phase 19.3 & Sprint A)
-        # O1: Demand gap / room to model expected (Clean: no arbitrary +0.5 * flow)
-        c1 = np.maximum(0.0, df_gap["gravity_flow_gap_thousands"])
+        # O1: Clean gravity demand flow gap = max(0, Expected - Actual) (no arbitrary +0.5 * flow bonus)
+        expected_flows = df_gap["expected_flow_thousands"]
+        raw_gap = np.maximum(0.0, df_gap["gravity_flow_gap_thousands"])
+        df_gap["gravity_gap_rate"] = np.where(expected_flows > 0, (raw_gap / expected_flows).round(4), np.nan)
+        c1 = raw_gap
         # O2: Destination economic yield
         c2 = spend_nt
         # O3: Destination capacity headroom (unobserved capacity -> 0 headroom in sorting)
@@ -460,7 +464,22 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
         df_gap["is_pareto_optimal"] = (ranks == 1) & has_critical_evidence
         df_gap["pareto_rank"] = np.where(has_critical_evidence, ranks, np.nan)
 
-        # Normalized Composite Opportunity Score [0, 100]
+        # Policy Preference Weights (Review Item 5: Transparent Normative Weighting)
+        weights = policy_weights if policy_weights is not None else {
+            "yield": 0.25,
+            "capacity": 0.20,
+            "demand": 0.20,
+            "accessibility": 0.20,
+            "diversification": 0.15,
+        }
+        total_w = sum(weights.values())
+        w_yield = weights.get("yield", 0.25) / total_w
+        w_cap = weights.get("capacity", 0.20) / total_w
+        w_demand = weights.get("demand", 0.20) / total_w
+        w_access = weights.get("accessibility", 0.20) / total_w
+        w_div = weights.get("diversification", 0.15) / total_w
+
+        # Normalized Composite Policy Preference Score [0, 100]
         def _minmax(arr):
             valid_mask = has_critical_evidence.to_numpy()
             if not np.any(valid_mask):
@@ -473,22 +492,25 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
             return np.where(valid_mask, np.clip(res, 0.0, 1.0), 0.0)
 
         comp_score = 100.0 * (
-            0.25 * _minmax(c2.to_numpy()) +
-            0.20 * _minmax(c3.to_numpy()) +
-            0.20 * _minmax(c1.to_numpy()) +
-            0.20 * _minmax(c4.to_numpy()) +
-            0.15 * _minmax(c5.to_numpy())
+            w_yield * _minmax(np.asarray(c2, dtype=float)) +
+            w_cap * _minmax(np.asarray(c3, dtype=float)) +
+            w_demand * _minmax(np.asarray(c1, dtype=float)) +
+            w_access * _minmax(np.asarray(c4, dtype=float)) +
+            w_div * _minmax(np.asarray(c5, dtype=float))
         )
-        df_gap["composite_opportunity_score"] = np.where(has_critical_evidence, comp_score.round(2), np.nan)
+        df_gap["policy_preference_score"] = np.where(has_critical_evidence, comp_score.round(2), np.nan)
+        df_gap["composite_opportunity_score"] = df_gap["policy_preference_score"]
 
-        # Strict Multi-Objective Ranking Hierarchy (Plan Section 8):
+        # Strict Multi-Objective Ranking Hierarchy:
         # Primary: Pareto Rank ascending (Non-dominated Frontier 1 first)
-        # Secondary: Composite Opportunity Score descending
+        # Secondary: Policy Preference Score descending
         df_gap = df_gap.sort_values(
             by=["pareto_rank", "composite_opportunity_score"],
             ascending=[True, False]
         ).reset_index(drop=True)
-        df_gap["opportunity_rank"] = np.where(df_gap["evidence_status"] == "complete", np.arange(1, len(df_gap) + 1), np.nan)
+        complete_mask = df_gap["evidence_status"] == "complete"
+        df_gap["opportunity_rank"] = np.nan
+        df_gap.loc[complete_mask, "opportunity_rank"] = np.arange(1, complete_mask.sum() + 1)
 
     # 9. Export All Tables to DuckDB & Parquet
     con.execute("CREATE OR REPLACE TABLE state_year AS SELECT * FROM df")

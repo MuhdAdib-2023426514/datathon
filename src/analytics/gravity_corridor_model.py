@@ -100,7 +100,14 @@ def estimate_ppml_gravity(df: pd.DataFrame, include_year_fe: bool = True):
     else:
         formula = "tourist_flow_thousands ~ ln_dist + cross_region_int + C(origin) + C(destination)"
 
-    model = glm(formula, data=df_fit, family=sm.families.Poisson()).fit(cov_type="HC1")
+    if "corridor_id" not in df_fit.columns:
+        df_fit["corridor_id"] = df_fit["origin"].astype(str) + "_" + df_fit["destination"].astype(str)
+    try:
+        model = glm(formula, data=df_fit, family=sm.families.Poisson()).fit(
+            cov_type="cluster", cov_kwds={"groups": df_fit["corridor_id"]}
+        )
+    except Exception:
+        model = glm(formula, data=df_fit, family=sm.families.Poisson()).fit(cov_type="HC1")
     return model
 
 
@@ -126,7 +133,14 @@ def evaluate_distance_structural_change(df: pd.DataFrame) -> Dict[str, Any]:
         "tourist_flow_thousands ~ ln_dist + dist_x_post + "
         "cross_region_int + C(origin) + C(destination) + C(year_factor)"
     )
-    model = glm(formula, data=df_test, family=sm.families.Poisson()).fit(cov_type="HC1")
+    if "corridor_id" not in df_test.columns:
+        df_test["corridor_id"] = df_test["origin"].astype(str) + "_" + df_test["destination"].astype(str)
+    try:
+        model = glm(formula, data=df_test, family=sm.families.Poisson()).fit(
+            cov_type="cluster", cov_kwds={"groups": df_test["corridor_id"]}
+        )
+    except Exception:
+        model = glm(formula, data=df_test, family=sm.families.Poisson()).fit(cov_type="HC1")
 
     coef = float(model.params.get("dist_x_post", 0.0))
     se = float(model.bse.get("dist_x_post", 0.0))

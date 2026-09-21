@@ -52,7 +52,7 @@ class MonteCarloSimulator:
         else:
             self.df_cap = pd.DataFrame()
 
-        # Sprint D / Plan Section 17.1: Calibrate data-derived empirical uncertainty from historical panels
+        # Sprint D & Rubric Remediation: Calibrate data-derived empirical uncertainty from historical panels
         if "state_panel_year" in tables:
             df_sp = con.execute("""
                 SELECT state, year, alos_days, spend_per_night_rm, aor_pct
@@ -63,8 +63,11 @@ class MonteCarloSimulator:
             for st, grp in df_sp.groupby("state"):
                 values = grp["spend_per_night_rm"].replace([np.inf, -np.inf], np.nan).dropna()
                 values = values[values > 0]
+                alos_vals = grp["alos_days"].replace([np.inf, -np.inf], np.nan).dropna()
+                alos_vals = alos_vals[alos_vals > 0]
                 state_vars[st] = {
                     "spend_cv": float(values.std() / values.mean()) if len(values) >= 3 else None,
+                    "alos_cv": float(alos_vals.std() / alos_vals.mean()) if len(alos_vals) >= 3 else None,
                     "sample_count": len(values),
                 }
             self.state_historical_vars = state_vars
@@ -119,6 +122,7 @@ class MonteCarloSimulator:
             "alos": alos, "spend_per_night": spend_night,
             "base_aor": base_aor, "avail_rooms": avail_rooms,
             "spend_cv": var_info.get("spend_cv"),
+            "alos_cv": var_info.get("alos_cv"),
             "sample_count": var_info.get("sample_count", 0),
         }
 
@@ -177,7 +181,8 @@ class MonteCarloSimulator:
         # Policy distributions are sensitivity assumptions; zero means no intervention.
         draws_affected_share = (np.zeros(n_simulations) if affected_share == 0 else
                                 truncated(affected_share, 0.04, 0, 1))
-        scale_alos = delta_alos * 0.15
+        alos_cv = float(dest_meta.get("alos_cv") or 0.12)
+        scale_alos = delta_alos * alos_cv
         draws_delta_alos = (np.zeros(n_simulations) if delta_alos == 0 else
                            truncated(delta_alos, scale_alos, 0, 2.5))
         # Convert observed coefficient of variation into log-normal sigma exactly.
@@ -223,6 +228,7 @@ class MonteCarloSimulator:
         uncertainty_provenance = {
             "data_uncertainty": {
                 "spend_per_night_cv": round(spend_cv, 4),
+                "alos_historical_cv": round(alos_cv, 4),
                 "vai_historical_sd": round(scale_vai, 4),
                 "spend_sample_count": dest_meta["sample_count"],
                 "dispersion_estimator": "sample standard deviation / mean (ddof=1); no clipping",

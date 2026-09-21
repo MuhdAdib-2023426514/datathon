@@ -5684,125 +5684,125 @@
       },
       "percentiles": {
         "additional_nights": {
-          "p10": 101350.0,
-          "p50": 159689.0,
-          "p90": 232142.0
+          "p10": 108343.0,
+          "p50": 163104.0,
+          "p90": 222081.0
         },
         "additional_spend_rm_m": {
-          "p10": 5.91,
-          "p25": 7.48,
-          "p50": 9.84,
-          "p75": 12.49,
-          "p90": 15.68
+          "p10": 6.04,
+          "p25": 7.72,
+          "p50": 9.93,
+          "p75": 12.44,
+          "p90": 15.07
         },
         "potential_gva_rm_m": {
-          "p10": 4.91,
-          "p25": 6.35,
+          "p10": 5.02,
+          "p25": 6.45,
           "p50": 8.49,
-          "p75": 10.75,
-          "p90": 13.42
+          "p75": 10.53,
+          "p90": 12.93
         },
         "projected_aor_pct": {
-          "p10": 46.86,
-          "p25": 47.06,
-          "p50": 47.28,
-          "p75": 47.55,
-          "p90": 47.83
+          "p10": 46.9,
+          "p25": 47.09,
+          "p50": 47.31,
+          "p75": 47.52,
+          "p90": 47.76
         }
       },
       "mean": {
-        "additional_nights": 164211.0,
-        "additional_spend_rm_m": 10.41,
-        "potential_gva_rm_m": 8.88,
-        "projected_aor_pct": 47.32
+        "additional_nights": 163375.0,
+        "additional_spend_rm_m": 10.36,
+        "potential_gva_rm_m": 8.84,
+        "projected_aor_pct": 47.31
       },
       "std": {
-        "additional_spend_rm_m": 4.13,
-        "potential_gva_rm_m": 3.62,
-        "projected_aor_pct": 0.39
+        "additional_spend_rm_m": 3.77,
+        "potential_gva_rm_m": 3.3,
+        "projected_aor_pct": 0.34
       },
       "prob_capacity_breach": 0.0,
       "capacity_status": "observed",
       "distribution": {
         "gva_density": [
           {
-            "bin_mid": 2.74,
-            "frequency": 25
+            "bin_mid": 2.71,
+            "frequency": 17
           },
           {
-            "bin_mid": 4.21,
-            "frequency": 80
+            "bin_mid": 4.09,
+            "frequency": 63
           },
           {
-            "bin_mid": 5.68,
-            "frequency": 151
+            "bin_mid": 5.46,
+            "frequency": 129
           },
           {
-            "bin_mid": 7.15,
-            "frequency": 175
+            "bin_mid": 6.84,
+            "frequency": 164
           },
           {
-            "bin_mid": 8.61,
+            "bin_mid": 8.21,
             "frequency": 188
           },
           {
-            "bin_mid": 10.08,
-            "frequency": 135
+            "bin_mid": 9.58,
+            "frequency": 162
           },
           {
-            "bin_mid": 11.55,
-            "frequency": 91
+            "bin_mid": 10.96,
+            "frequency": 100
           },
           {
-            "bin_mid": 13.02,
-            "frequency": 66
+            "bin_mid": 12.33,
+            "frequency": 81
           },
           {
-            "bin_mid": 14.49,
-            "frequency": 40
+            "bin_mid": 13.71,
+            "frequency": 41
           },
           {
-            "bin_mid": 15.95,
-            "frequency": 20
+            "bin_mid": 15.08,
+            "frequency": 26
           },
           {
-            "bin_mid": 17.42,
-            "frequency": 10
+            "bin_mid": 16.45,
+            "frequency": 12
           },
           {
-            "bin_mid": 18.89,
-            "frequency": 8
+            "bin_mid": 17.83,
+            "frequency": 6
           },
           {
-            "bin_mid": 20.36,
-            "frequency": 3
+            "bin_mid": 19.2,
+            "frequency": 1
           },
           {
-            "bin_mid": 21.83,
+            "bin_mid": 20.58,
+            "frequency": 4
+          },
+          {
+            "bin_mid": 21.95,
             "frequency": 2
           },
           {
-            "bin_mid": 23.29,
-            "frequency": 1
-          },
-          {
-            "bin_mid": 24.76,
-            "frequency": 1
-          },
-          {
-            "bin_mid": 26.23,
+            "bin_mid": 23.32,
             "frequency": 2
           },
           {
-            "bin_mid": 27.7,
+            "bin_mid": 24.7,
             "frequency": 1
           },
           {
-            "bin_mid": 29.17,
+            "bin_mid": 26.07,
             "frequency": 0
           },
           {
-            "bin_mid": 30.63,
+            "bin_mid": 27.45,
+            "frequency": 0
+          },
+          {
+            "bin_mid": 28.82,
             "frequency": 1
           }
         ]
@@ -5810,6 +5810,7 @@
       "uncertainty_provenance": {
         "data_uncertainty": {
           "spend_per_night_cv": 0.2134,
+          "alos_historical_cv": 0.0328,
           "vai_historical_sd": 0.0691,
           "spend_sample_count": 6,
           "dispersion_estimator": "sample standard deviation / mean (ddof=1); no clipping",
@@ -5835,7 +5836,7 @@
           "delta_alos": {
             "distribution": "truncated_normal",
             "location": 0.4,
-            "sd": 0.06,
+            "sd": 0.0131,
             "bounds": [
               0,
               2.5
@@ -5872,125 +5873,125 @@
       },
       "percentiles": {
         "additional_nights": {
-          "p10": 49991.0,
-          "p50": 78766.0,
-          "p90": 114504.0
+          "p10": 53440.0,
+          "p50": 80451.0,
+          "p90": 109541.0
         },
         "additional_spend_rm_m": {
-          "p10": 2.91,
-          "p25": 3.69,
-          "p50": 4.85,
-          "p75": 6.16,
-          "p90": 7.73
+          "p10": 2.98,
+          "p25": 3.81,
+          "p50": 4.9,
+          "p75": 6.14,
+          "p90": 7.43
         },
         "potential_gva_rm_m": {
-          "p10": 2.42,
-          "p25": 3.13,
+          "p10": 2.48,
+          "p25": 3.18,
           "p50": 4.19,
-          "p75": 5.3,
-          "p90": 6.62
+          "p75": 5.19,
+          "p90": 6.38
         },
         "projected_aor_pct": {
-          "p10": 46.47,
-          "p25": 46.57,
-          "p50": 46.68,
-          "p75": 46.82,
-          "p90": 46.95
+          "p10": 46.49,
+          "p25": 46.59,
+          "p50": 46.7,
+          "p75": 46.8,
+          "p90": 46.92
         }
       },
       "mean": {
-        "additional_nights": 80997.0,
-        "additional_spend_rm_m": 5.14,
-        "potential_gva_rm_m": 4.38,
+        "additional_nights": 80585.0,
+        "additional_spend_rm_m": 5.11,
+        "potential_gva_rm_m": 4.36,
         "projected_aor_pct": 46.7
       },
       "std": {
-        "additional_spend_rm_m": 2.04,
-        "potential_gva_rm_m": 1.78,
-        "projected_aor_pct": 0.19
+        "additional_spend_rm_m": 1.86,
+        "potential_gva_rm_m": 1.63,
+        "projected_aor_pct": 0.17
       },
       "prob_capacity_breach": 0.0,
       "capacity_status": "observed",
       "distribution": {
         "gva_density": [
           {
-            "bin_mid": 1.35,
-            "frequency": 25
+            "bin_mid": 1.34,
+            "frequency": 17
           },
           {
-            "bin_mid": 2.08,
-            "frequency": 80
+            "bin_mid": 2.02,
+            "frequency": 63
           },
           {
-            "bin_mid": 2.8,
-            "frequency": 151
+            "bin_mid": 2.69,
+            "frequency": 129
           },
           {
-            "bin_mid": 3.52,
-            "frequency": 175
+            "bin_mid": 3.37,
+            "frequency": 164
           },
           {
-            "bin_mid": 4.25,
+            "bin_mid": 4.05,
             "frequency": 188
           },
           {
-            "bin_mid": 4.97,
-            "frequency": 135
+            "bin_mid": 4.73,
+            "frequency": 162
           },
           {
-            "bin_mid": 5.7,
-            "frequency": 91
+            "bin_mid": 5.41,
+            "frequency": 100
           },
           {
-            "bin_mid": 6.42,
-            "frequency": 66
+            "bin_mid": 6.08,
+            "frequency": 81
           },
           {
-            "bin_mid": 7.15,
-            "frequency": 40
+            "bin_mid": 6.76,
+            "frequency": 41
           },
           {
-            "bin_mid": 7.87,
-            "frequency": 20
+            "bin_mid": 7.44,
+            "frequency": 26
           },
           {
-            "bin_mid": 8.59,
-            "frequency": 10
+            "bin_mid": 8.12,
+            "frequency": 12
           },
           {
-            "bin_mid": 9.32,
-            "frequency": 8
+            "bin_mid": 8.79,
+            "frequency": 6
           },
           {
-            "bin_mid": 10.04,
-            "frequency": 3
+            "bin_mid": 9.47,
+            "frequency": 1
           },
           {
-            "bin_mid": 10.77,
+            "bin_mid": 10.15,
+            "frequency": 4
+          },
+          {
+            "bin_mid": 10.83,
             "frequency": 2
           },
           {
-            "bin_mid": 11.49,
-            "frequency": 1
-          },
-          {
-            "bin_mid": 12.21,
-            "frequency": 1
-          },
-          {
-            "bin_mid": 12.94,
+            "bin_mid": 11.51,
             "frequency": 2
           },
           {
-            "bin_mid": 13.66,
+            "bin_mid": 12.18,
             "frequency": 1
           },
           {
-            "bin_mid": 14.39,
+            "bin_mid": 12.86,
             "frequency": 0
           },
           {
-            "bin_mid": 15.11,
+            "bin_mid": 13.54,
+            "frequency": 0
+          },
+          {
+            "bin_mid": 14.22,
             "frequency": 1
           }
         ]
@@ -5998,6 +5999,7 @@
       "uncertainty_provenance": {
         "data_uncertainty": {
           "spend_per_night_cv": 0.2134,
+          "alos_historical_cv": 0.0328,
           "vai_historical_sd": 0.0691,
           "spend_sample_count": 6,
           "dispersion_estimator": "sample standard deviation / mean (ddof=1); no clipping",
@@ -6023,7 +6025,7 @@
           "delta_alos": {
             "distribution": "truncated_normal",
             "location": 0.4,
-            "sd": 0.06,
+            "sd": 0.0131,
             "bounds": [
               0,
               2.5
@@ -6060,125 +6062,125 @@
       },
       "percentiles": {
         "additional_nights": {
-          "p10": 60793.0,
-          "p50": 95787.0,
-          "p90": 139246.0
+          "p10": 64064.0,
+          "p50": 97696.0,
+          "p90": 135473.0
         },
         "additional_spend_rm_m": {
-          "p10": 3.17,
-          "p25": 4.0,
-          "p50": 5.1,
-          "p75": 6.38,
-          "p90": 7.79
+          "p10": 3.27,
+          "p25": 4.08,
+          "p50": 5.2,
+          "p75": 6.32,
+          "p90": 7.53
         },
         "potential_gva_rm_m": {
-          "p10": 2.6,
-          "p25": 3.34,
-          "p50": 4.38,
-          "p75": 5.46,
-          "p90": 6.64
+          "p10": 2.7,
+          "p25": 3.41,
+          "p50": 4.43,
+          "p75": 5.39,
+          "p90": 6.37
         },
         "projected_aor_pct": {
-          "p10": 76.57,
+          "p10": 76.58,
           "p25": 76.65,
-          "p50": 76.72,
+          "p50": 76.73,
           "p75": 76.82,
-          "p90": 76.92
+          "p90": 76.9
         }
       },
       "mean": {
-        "additional_nights": 98499.0,
-        "additional_spend_rm_m": 5.32,
-        "potential_gva_rm_m": 4.54,
+        "additional_nights": 98177.0,
+        "additional_spend_rm_m": 5.3,
+        "potential_gva_rm_m": 4.52,
         "projected_aor_pct": 76.74
       },
       "std": {
-        "additional_spend_rm_m": 1.9,
-        "potential_gva_rm_m": 1.67,
-        "projected_aor_pct": 0.14
+        "additional_spend_rm_m": 1.75,
+        "potential_gva_rm_m": 1.54,
+        "projected_aor_pct": 0.13
       },
       "prob_capacity_breach": 0.0,
       "capacity_status": "observed",
       "distribution": {
         "gva_density": [
           {
-            "bin_mid": 1.35,
-            "frequency": 22
+            "bin_mid": 1.39,
+            "frequency": 16
           },
           {
-            "bin_mid": 1.99,
-            "frequency": 40
+            "bin_mid": 2.01,
+            "frequency": 33
           },
           {
-            "bin_mid": 2.63,
-            "frequency": 87
+            "bin_mid": 2.62,
+            "frequency": 89
           },
           {
-            "bin_mid": 3.28,
-            "frequency": 155
+            "bin_mid": 3.24,
+            "frequency": 137
           },
           {
-            "bin_mid": 3.92,
-            "frequency": 162
+            "bin_mid": 3.85,
+            "frequency": 150
           },
           {
-            "bin_mid": 4.57,
-            "frequency": 172
+            "bin_mid": 4.46,
+            "frequency": 186
           },
           {
-            "bin_mid": 5.21,
-            "frequency": 118
+            "bin_mid": 5.08,
+            "frequency": 139
           },
           {
-            "bin_mid": 5.86,
-            "frequency": 92
+            "bin_mid": 5.69,
+            "frequency": 88
           },
           {
-            "bin_mid": 6.5,
-            "frequency": 65
+            "bin_mid": 6.31,
+            "frequency": 79
           },
           {
-            "bin_mid": 7.14,
+            "bin_mid": 6.92,
             "frequency": 38
           },
           {
-            "bin_mid": 7.79,
-            "frequency": 21
+            "bin_mid": 7.54,
+            "frequency": 18
           },
           {
-            "bin_mid": 8.43,
-            "frequency": 6
-          },
-          {
-            "bin_mid": 9.08,
+            "bin_mid": 8.15,
             "frequency": 13
           },
           {
-            "bin_mid": 9.72,
-            "frequency": 3
+            "bin_mid": 8.77,
+            "frequency": 4
           },
           {
-            "bin_mid": 10.37,
+            "bin_mid": 9.38,
+            "frequency": 4
+          },
+          {
+            "bin_mid": 10.0,
             "frequency": 0
           },
           {
-            "bin_mid": 11.01,
+            "bin_mid": 10.61,
+            "frequency": 4
+          },
+          {
+            "bin_mid": 11.23,
             "frequency": 1
           },
           {
-            "bin_mid": 11.65,
-            "frequency": 2
-          },
-          {
-            "bin_mid": 12.3,
-            "frequency": 2
-          },
-          {
-            "bin_mid": 12.94,
+            "bin_mid": 11.84,
             "frequency": 0
           },
           {
-            "bin_mid": 13.59,
+            "bin_mid": 12.46,
+            "frequency": 0
+          },
+          {
+            "bin_mid": 13.07,
             "frequency": 1
           }
         ]
@@ -6186,6 +6188,7 @@
       "uncertainty_provenance": {
         "data_uncertainty": {
           "spend_per_night_cv": 0.1507,
+          "alos_historical_cv": 0.0747,
           "vai_historical_sd": 0.0691,
           "spend_sample_count": 6,
           "dispersion_estimator": "sample standard deviation / mean (ddof=1); no clipping",
@@ -6211,7 +6214,7 @@
           "delta_alos": {
             "distribution": "truncated_normal",
             "location": 0.4,
-            "sd": 0.06,
+            "sd": 0.0299,
             "bounds": [
               0,
               2.5
@@ -6248,42 +6251,42 @@
       },
       "percentiles": {
         "additional_nights": {
-          "p10": 31089.0,
-          "p50": 48985.0,
-          "p90": 71210.0
+          "p10": 33221.0,
+          "p50": 50037.0,
+          "p90": 68207.0
         },
         "additional_spend_rm_m": {
-          "p10": 2.22,
-          "p25": 2.78,
-          "p50": 3.54,
-          "p75": 4.39,
-          "p90": 5.27
+          "p10": 2.28,
+          "p25": 2.84,
+          "p50": 3.6,
+          "p75": 4.28,
+          "p90": 5.05
         },
         "potential_gva_rm_m": {
-          "p10": 1.82,
-          "p25": 2.32,
-          "p50": 3.04,
-          "p75": 3.75,
-          "p90": 4.5
+          "p10": 1.89,
+          "p25": 2.4,
+          "p50": 3.07,
+          "p75": 3.69,
+          "p90": 4.29
         },
         "projected_aor_pct": {
-          "p10": 58.77,
+          "p10": 58.78,
           "p25": 58.82,
           "p50": 58.87,
-          "p75": 58.93,
-          "p90": 58.99
+          "p75": 58.92,
+          "p90": 58.98
         }
       },
       "mean": {
-        "additional_nights": 50372.0,
-        "additional_spend_rm_m": 3.65,
-        "potential_gva_rm_m": 3.12,
-        "projected_aor_pct": 58.88
+        "additional_nights": 50119.0,
+        "additional_spend_rm_m": 3.64,
+        "potential_gva_rm_m": 3.1,
+        "projected_aor_pct": 58.87
       },
       "std": {
-        "additional_spend_rm_m": 1.26,
-        "potential_gva_rm_m": 1.11,
-        "projected_aor_pct": 0.09
+        "additional_spend_rm_m": 1.12,
+        "potential_gva_rm_m": 0.99,
+        "projected_aor_pct": 0.08
       },
       "prob_capacity_breach": 0.0,
       "capacity_status": "observed",
@@ -6291,82 +6294,82 @@
         "gva_density": [
           {
             "bin_mid": 0.9,
-            "frequency": 16
+            "frequency": 12
           },
           {
-            "bin_mid": 1.32,
+            "bin_mid": 1.29,
+            "frequency": 19
+          },
+          {
+            "bin_mid": 1.68,
+            "frequency": 65
+          },
+          {
+            "bin_mid": 2.07,
+            "frequency": 113
+          },
+          {
+            "bin_mid": 2.46,
+            "frequency": 130
+          },
+          {
+            "bin_mid": 2.85,
+            "frequency": 149
+          },
+          {
+            "bin_mid": 3.24,
+            "frequency": 180
+          },
+          {
+            "bin_mid": 3.62,
+            "frequency": 115
+          },
+          {
+            "bin_mid": 4.01,
+            "frequency": 92
+          },
+          {
+            "bin_mid": 4.4,
+            "frequency": 56
+          },
+          {
+            "bin_mid": 4.79,
             "frequency": 33
           },
           {
-            "bin_mid": 1.73,
-            "frequency": 75
+            "bin_mid": 5.18,
+            "frequency": 20
           },
           {
-            "bin_mid": 2.15,
-            "frequency": 137
+            "bin_mid": 5.57,
+            "frequency": 6
           },
           {
-            "bin_mid": 2.57,
-            "frequency": 146
-          },
-          {
-            "bin_mid": 2.98,
-            "frequency": 154
-          },
-          {
-            "bin_mid": 3.4,
-            "frequency": 154
-          },
-          {
-            "bin_mid": 3.82,
-            "frequency": 97
-          },
-          {
-            "bin_mid": 4.23,
-            "frequency": 81
-          },
-          {
-            "bin_mid": 4.65,
-            "frequency": 44
-          },
-          {
-            "bin_mid": 5.07,
-            "frequency": 28
-          },
-          {
-            "bin_mid": 5.48,
-            "frequency": 11
-          },
-          {
-            "bin_mid": 5.9,
-            "frequency": 8
-          },
-          {
-            "bin_mid": 6.32,
-            "frequency": 9
-          },
-          {
-            "bin_mid": 6.73,
-            "frequency": 1
-          },
-          {
-            "bin_mid": 7.15,
-            "frequency": 0
-          },
-          {
-            "bin_mid": 7.57,
-            "frequency": 3
-          },
-          {
-            "bin_mid": 7.98,
+            "bin_mid": 5.96,
             "frequency": 2
           },
           {
-            "bin_mid": 8.4,
+            "bin_mid": 6.35,
+            "frequency": 3
+          },
+          {
+            "bin_mid": 6.74,
+            "frequency": 2
+          },
+          {
+            "bin_mid": 7.13,
+            "frequency": 2
+          },
+          {
+            "bin_mid": 7.52,
             "frequency": 0
           },
           {
-            "bin_mid": 8.81,
+            "bin_mid": 7.91,
+            "frequency": 0
+          },
+          {
+            "bin_mid": 8.3,
             "frequency": 1
           }
         ]
@@ -6374,6 +6377,7 @@
       "uncertainty_provenance": {
         "data_uncertainty": {
           "spend_per_night_cv": 0.1262,
+          "alos_historical_cv": 0.0345,
           "vai_historical_sd": 0.0691,
           "spend_sample_count": 6,
           "dispersion_estimator": "sample standard deviation / mean (ddof=1); no clipping",
@@ -6399,7 +6403,7 @@
           "delta_alos": {
             "distribution": "truncated_normal",
             "location": 0.4,
-            "sd": 0.06,
+            "sd": 0.0138,
             "bounds": [
               0,
               2.5
@@ -6436,125 +6440,125 @@
       },
       "percentiles": {
         "additional_nights": {
-          "p10": 115873.0,
-          "p50": 182572.0,
-          "p90": 265407.0
+          "p10": 121630.0,
+          "p50": 185474.0,
+          "p90": 259347.0
         },
         "additional_spend_rm_m": {
-          "p10": 3.36,
-          "p25": 4.22,
-          "p50": 5.58,
-          "p75": 7.09,
-          "p90": 9.0
+          "p10": 3.39,
+          "p25": 4.31,
+          "p50": 5.65,
+          "p75": 7.1,
+          "p90": 8.84
         },
         "potential_gva_rm_m": {
-          "p10": 2.77,
-          "p25": 3.59,
-          "p50": 4.8,
-          "p75": 6.13,
-          "p90": 7.66
+          "p10": 2.82,
+          "p25": 3.66,
+          "p50": 4.83,
+          "p75": 6.04,
+          "p90": 7.56
         },
         "projected_aor_pct": {
-          "p10": 47.31,
-          "p25": 47.56,
-          "p50": 47.82,
-          "p75": 48.15,
-          "p90": 48.48
+          "p10": 47.34,
+          "p25": 47.58,
+          "p50": 47.84,
+          "p75": 48.13,
+          "p90": 48.44
         }
       },
       "mean": {
-        "additional_nights": 187742.0,
-        "additional_spend_rm_m": 5.92,
-        "potential_gva_rm_m": 5.05,
+        "additional_nights": 187317.0,
+        "additional_spend_rm_m": 5.91,
+        "potential_gva_rm_m": 5.04,
         "projected_aor_pct": 47.87
       },
       "std": {
-        "additional_spend_rm_m": 2.38,
-        "potential_gva_rm_m": 2.08,
-        "projected_aor_pct": 0.47
+        "additional_spend_rm_m": 2.26,
+        "potential_gva_rm_m": 1.98,
+        "projected_aor_pct": 0.43
       },
       "prob_capacity_breach": 0.0,
       "capacity_status": "observed",
       "distribution": {
         "gva_density": [
           {
-            "bin_mid": 1.56,
-            "frequency": 26
+            "bin_mid": 1.6,
+            "frequency": 22
           },
           {
-            "bin_mid": 2.41,
-            "frequency": 84
+            "bin_mid": 2.42,
+            "frequency": 79
           },
           {
-            "bin_mid": 3.26,
-            "frequency": 159
+            "bin_mid": 3.25,
+            "frequency": 150
           },
           {
-            "bin_mid": 4.11,
-            "frequency": 173
+            "bin_mid": 4.07,
+            "frequency": 172
           },
           {
-            "bin_mid": 4.96,
-            "frequency": 188
+            "bin_mid": 4.89,
+            "frequency": 194
           },
           {
-            "bin_mid": 5.81,
-            "frequency": 138
+            "bin_mid": 5.72,
+            "frequency": 140
           },
           {
-            "bin_mid": 6.66,
-            "frequency": 82
+            "bin_mid": 6.54,
+            "frequency": 87
           },
           {
-            "bin_mid": 7.51,
-            "frequency": 68
+            "bin_mid": 7.37,
+            "frequency": 72
           },
           {
-            "bin_mid": 8.36,
-            "frequency": 38
+            "bin_mid": 8.19,
+            "frequency": 40
           },
           {
-            "bin_mid": 9.22,
-            "frequency": 15
+            "bin_mid": 9.02,
+            "frequency": 16
           },
           {
-            "bin_mid": 10.07,
-            "frequency": 10
+            "bin_mid": 9.84,
+            "frequency": 11
           },
           {
-            "bin_mid": 10.92,
-            "frequency": 8
+            "bin_mid": 10.66,
+            "frequency": 6
           },
           {
-            "bin_mid": 11.77,
-            "frequency": 3
+            "bin_mid": 11.49,
+            "frequency": 4
           },
           {
-            "bin_mid": 12.62,
-            "frequency": 2
-          },
-          {
-            "bin_mid": 13.47,
+            "bin_mid": 12.31,
             "frequency": 1
           },
           {
-            "bin_mid": 14.32,
+            "bin_mid": 13.14,
             "frequency": 1
           },
           {
-            "bin_mid": 15.17,
+            "bin_mid": 13.96,
             "frequency": 3
           },
           {
-            "bin_mid": 16.02,
+            "bin_mid": 14.79,
+            "frequency": 1
+          },
+          {
+            "bin_mid": 15.61,
             "frequency": 0
           },
           {
-            "bin_mid": 16.87,
+            "bin_mid": 16.43,
             "frequency": 0
           },
           {
-            "bin_mid": 17.72,
+            "bin_mid": 17.26,
             "frequency": 1
           }
         ]
@@ -6562,6 +6566,7 @@
       "uncertainty_provenance": {
         "data_uncertainty": {
           "spend_per_night_cv": 0.2214,
+          "alos_historical_cv": 0.0979,
           "vai_historical_sd": 0.0691,
           "spend_sample_count": 6,
           "dispersion_estimator": "sample standard deviation / mean (ddof=1); no clipping",
@@ -6587,7 +6592,7 @@
           "delta_alos": {
             "distribution": "truncated_normal",
             "location": 0.4,
-            "sd": 0.06,
+            "sd": 0.0392,
             "bounds": [
               0,
               2.5
@@ -6624,125 +6629,125 @@
       },
       "percentiles": {
         "additional_nights": {
-          "p10": 54654.0,
-          "p50": 86114.0,
-          "p90": 125185.0
+          "p10": 57655.0,
+          "p50": 87885.0,
+          "p90": 121801.0
         },
         "additional_spend_rm_m": {
-          "p10": 2.3,
-          "p25": 2.9,
-          "p50": 3.68,
-          "p75": 4.57,
-          "p90": 5.58
+          "p10": 2.37,
+          "p25": 2.96,
+          "p50": 3.75,
+          "p75": 4.52,
+          "p90": 5.35
         },
         "potential_gva_rm_m": {
-          "p10": 1.88,
-          "p25": 2.41,
-          "p50": 3.17,
-          "p75": 3.92,
-          "p90": 4.72
+          "p10": 1.95,
+          "p25": 2.48,
+          "p50": 3.21,
+          "p75": 3.87,
+          "p90": 4.56
         },
         "projected_aor_pct": {
-          "p10": 54.44,
+          "p10": 54.45,
           "p25": 54.5,
           "p50": 54.57,
           "p75": 54.65,
-          "p90": 54.74
+          "p90": 54.72
         }
       },
       "mean": {
-        "additional_nights": 88553.0,
-        "additional_spend_rm_m": 3.82,
-        "potential_gva_rm_m": 3.26,
+        "additional_nights": 88255.0,
+        "additional_spend_rm_m": 3.81,
+        "potential_gva_rm_m": 3.25,
         "projected_aor_pct": 54.58
       },
       "std": {
-        "additional_spend_rm_m": 1.33,
-        "potential_gva_rm_m": 1.17,
-        "projected_aor_pct": 0.12
+        "additional_spend_rm_m": 1.22,
+        "potential_gva_rm_m": 1.08,
+        "projected_aor_pct": 0.11
       },
       "prob_capacity_breach": 0.0,
       "capacity_status": "observed",
       "distribution": {
         "gva_density": [
           {
-            "bin_mid": 0.95,
-            "frequency": 18
+            "bin_mid": 0.98,
+            "frequency": 16
           },
           {
-            "bin_mid": 1.4,
-            "frequency": 39
+            "bin_mid": 1.41,
+            "frequency": 25
           },
           {
-            "bin_mid": 1.84,
-            "frequency": 74
+            "bin_mid": 1.83,
+            "frequency": 83
           },
           {
-            "bin_mid": 2.29,
-            "frequency": 144
+            "bin_mid": 2.26,
+            "frequency": 123
           },
           {
-            "bin_mid": 2.73,
-            "frequency": 152
+            "bin_mid": 2.68,
+            "frequency": 140
           },
           {
-            "bin_mid": 3.18,
-            "frequency": 164
+            "bin_mid": 3.11,
+            "frequency": 166
           },
           {
-            "bin_mid": 3.63,
-            "frequency": 146
+            "bin_mid": 3.53,
+            "frequency": 172
           },
           {
-            "bin_mid": 4.07,
-            "frequency": 88
+            "bin_mid": 3.96,
+            "frequency": 90
           },
           {
-            "bin_mid": 4.52,
-            "frequency": 78
+            "bin_mid": 4.38,
+            "frequency": 91
           },
           {
-            "bin_mid": 4.96,
-            "frequency": 39
+            "bin_mid": 4.81,
+            "frequency": 38
           },
           {
-            "bin_mid": 5.41,
-            "frequency": 26
+            "bin_mid": 5.23,
+            "frequency": 22
           },
           {
-            "bin_mid": 5.86,
-            "frequency": 8
+            "bin_mid": 5.66,
+            "frequency": 15
           },
           {
-            "bin_mid": 6.3,
-            "frequency": 13
+            "bin_mid": 6.08,
+            "frequency": 9
           },
           {
-            "bin_mid": 6.75,
-            "frequency": 4
+            "bin_mid": 6.51,
+            "frequency": 3
           },
           {
-            "bin_mid": 7.19,
+            "bin_mid": 6.93,
             "frequency": 1
           },
           {
-            "bin_mid": 7.64,
-            "frequency": 1
+            "bin_mid": 7.36,
+            "frequency": 3
           },
           {
-            "bin_mid": 8.09,
+            "bin_mid": 7.78,
             "frequency": 2
           },
           {
-            "bin_mid": 8.53,
-            "frequency": 2
-          },
-          {
-            "bin_mid": 8.98,
+            "bin_mid": 8.21,
             "frequency": 0
           },
           {
-            "bin_mid": 9.42,
+            "bin_mid": 8.63,
+            "frequency": 0
+          },
+          {
+            "bin_mid": 9.06,
             "frequency": 1
           }
         ]
@@ -6750,6 +6755,7 @@
       "uncertainty_provenance": {
         "data_uncertainty": {
           "spend_per_night_cv": 0.1357,
+          "alos_historical_cv": 0.0727,
           "vai_historical_sd": 0.0691,
           "spend_sample_count": 6,
           "dispersion_estimator": "sample standard deviation / mean (ddof=1); no clipping",
@@ -6775,7 +6781,7 @@
           "delta_alos": {
             "distribution": "truncated_normal",
             "location": 0.4,
-            "sd": 0.06,
+            "sd": 0.0291,
             "bounds": [
               0,
               2.5
@@ -86469,9 +86475,9 @@
         "model_type": "PPML Structural Gravity (Primary, 2018\u20132025)",
         "variable": "Distance Decay Friction (PPML)",
         "coefficient": -0.4104,
-        "std_error": 0.0517,
-        "t_statistic": -7.9442,
-        "p_value": 0.0,
+        "std_error": 0.1096,
+        "t_statistic": -3.7457,
+        "p_value": 0.0002,
         "significance": "p < 0.001",
         "interpretation": "Under PPML (zero-flow robust, zero target leakage), a 10% increase in corridor distance reduces tourist flow by 4.1%."
       },
@@ -86479,9 +86485,9 @@
         "model_type": "PPML Structural Gravity (Primary, 2018\u20132025)",
         "variable": "Cross-Region Flight Barrier (Peninsula <-> Borneo)",
         "coefficient": -0.8022,
-        "std_error": 0.1289,
-        "t_statistic": -6.2238,
-        "p_value": 0.0,
+        "std_error": 0.2041,
+        "t_statistic": -3.9306,
+        "p_value": 0.0001,
         "significance": "p < 0.001",
         "interpretation": "Corridors crossing between Peninsular Malaysia and Borneo face an extra 55.2% flight barrier penalty."
       },
@@ -86499,11 +86505,11 @@
         "model_type": "Structural Shift Interaction Model (Phase 18)",
         "variable": "ln(Distance) * PostRecovery(2023\u20132025)",
         "coefficient": 0.1023,
-        "std_error": 0.0658,
-        "t_statistic": 1.5557,
-        "p_value": 0.1198,
-        "significance": "Not sig (Stable)",
-        "interpretation": "No statistically significant post-recovery break in distance sensitivity (interaction beta = +0.1023, p = 0.1198). Spatial friction remains structurally invariant."
+        "std_error": 0.0482,
+        "t_statistic": 2.1216,
+        "p_value": 0.0339,
+        "significance": "p < 0.05",
+        "interpretation": "Statistically significant post-recovery shift in distance sensitivity (interaction beta = +0.1023, p = 0.0339)."
       }
     ]
   }

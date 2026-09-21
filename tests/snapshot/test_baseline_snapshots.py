@@ -43,6 +43,12 @@ class TestBaselineSnapshots:
         df_base = pd.read_csv(snapshot_csv)
         assert len(df_base) == 240, f"Expected 240 baseline corridor records, got {len(df_base)}"
 
+        # Verify key baseline priority conversion corridors recorded in the 2025 release
+        priority_base = df_base[df_base["corridor_tier"] == "Priority Conversion Corridor"]
+        corridor_pairs = set(zip(priority_base["origin"], priority_base["destination"]))
+        assert ("Selangor", "Melaka") in corridor_pairs, "Selangor -> Melaka expected in 2025 baseline priority corridors"
+        assert ("Selangor", "Perak") in corridor_pairs, "Selangor -> Perak expected in 2025 baseline priority corridors"
+
         # Current table exists and has identical 240 bilateral pairs
         con = duckdb.connect(str(DUCKDB_PATH), read_only=True)
         df_curr = con.execute("SELECT * FROM corridor_opportunity_gap").df()
@@ -54,3 +60,14 @@ class TestBaselineSnapshots:
         assert snapshot_csv.exists(), f"Missing baseline snapshot: {snapshot_csv}"
         df_base = pd.read_csv(snapshot_csv)
         assert len(df_base) == 16, f"Expected 16 state records in baseline, got {len(df_base)}"
+
+    def test_baseline_econometric_elasticities_snapshot(self):
+        """Phase 40 & Item 15: Exact point-estimate contracts verified as historical baseline snapshots."""
+        con = duckdb.connect(str(DUCKDB_PATH), read_only=True)
+        tables = [t[0] for t in con.execute("SHOW TABLES").fetchall()]
+        if "state_panel_econometrics" in tables:
+            df_panel = con.execute("SELECT * FROM state_panel_econometrics WHERE model_id = 'Model_2_TwoWay_FE_Clustered'").df()
+            alos_row = df_panel[df_panel["independent_variable"] == "ln(ALOS)"]
+            if not alos_row.empty:
+                assert abs(float(alos_row.iloc[0]["elasticity_coefficient"]) - 0.6628) < 1e-3
+        con.close()

@@ -101,6 +101,7 @@
       "ci_upper": 2.1279,
       "t_statistic": 5.314,
       "p_value": 0.0,
+      "wild_bootstrap_p_value": null,
       "significance": "p < 0.01",
       "r_squared": 0.9555,
       "covariance_type": "HC1 Heteroskedasticity-Robust",
@@ -119,6 +120,7 @@
       "ci_upper": 1.2178,
       "t_statistic": 20.6856,
       "p_value": 0.0,
+      "wild_bootstrap_p_value": null,
       "significance": "p < 0.01",
       "r_squared": 0.9555,
       "covariance_type": "HC1 Heteroskedasticity-Robust",
@@ -137,11 +139,12 @@
       "ci_upper": 1.4413,
       "t_statistic": 1.6687,
       "p_value": 0.0952,
+      "wild_bootstrap_p_value": 0.095,
       "significance": "p < 0.10",
       "r_squared": 0.9725,
       "covariance_type": "State-Clustered Standard Errors (16 clusters)",
-      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside leave-one-state-out sensitivity.",
-      "interpretation": "After controlling for national annual shocks and clustering by state, the ALOS elasticity is 0.66 (95% CI: [-0.12, 1.44]). Reflects sensitivity to macroeconomic recovery dynamics."
+      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside wild cluster bootstrap and leave-one-state-out sensitivity.",
+      "interpretation": "After controlling for national annual shocks and clustering by state, the ALOS elasticity is 0.66 (95% CI: [-0.12, 1.44]; state-clustered p=0.0952, wild-bootstrap p=0.0950). Reflects sensitivity to macroeconomic recovery dynamics."
     },
     {
       "model_id": "Model_2_TwoWay_FE_Clustered",
@@ -155,10 +158,11 @@
       "ci_upper": 0.9617,
       "t_statistic": 6.2717,
       "p_value": 0.0,
+      "wild_bootstrap_p_value": null,
       "significance": "p < 0.01",
       "r_squared": 0.9725,
       "covariance_type": "State-Clustered Standard Errors (16 clusters)",
-      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside leave-one-state-out sensitivity.",
+      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside wild cluster bootstrap and leave-one-state-out sensitivity.",
       "interpretation": "Overnight tourist volume elasticity remains strongly positive (0.73, p < 0.01) after two-way fixed effects."
     },
     {
@@ -173,10 +177,11 @@
       "ci_upper": 1.3818,
       "t_statistic": 1.6561,
       "p_value": 0.0977,
+      "wild_bootstrap_p_value": null,
       "significance": "p < 0.10",
       "r_squared": 0.9734,
       "covariance_type": "State-Clustered Standard Errors",
-      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside leave-one-state-out sensitivity.",
+      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside wild cluster bootstrap and leave-one-state-out sensitivity.",
       "interpretation": "Conditional within-state association controlling for AOR, foreign guest mix, state, and year effects."
     },
     {
@@ -191,10 +196,11 @@
       "ci_upper": 0.9598,
       "t_statistic": 6.1488,
       "p_value": 0.0,
+      "wild_bootstrap_p_value": null,
       "significance": "p < 0.01",
       "r_squared": 0.9734,
       "covariance_type": "State-Clustered Standard Errors",
-      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside leave-one-state-out sensitivity.",
+      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside wild cluster bootstrap and leave-one-state-out sensitivity.",
       "interpretation": "Conditional within-state association controlling for AOR, foreign guest mix, state, and year effects."
     },
     {
@@ -209,10 +215,11 @@
       "ci_upper": 0.5265,
       "t_statistic": 1.0977,
       "p_value": 0.2723,
+      "wild_bootstrap_p_value": null,
       "significance": "Not sig",
       "r_squared": 0.9734,
       "covariance_type": "State-Clustered Standard Errors",
-      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside leave-one-state-out sensitivity.",
+      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside wild cluster bootstrap and leave-one-state-out sensitivity.",
       "interpretation": "Conditional within-state association controlling for AOR, foreign guest mix, state, and year effects."
     },
     {
@@ -227,10 +234,11 @@
       "ci_upper": 0.0128,
       "t_statistic": 0.4754,
       "p_value": 0.6345,
+      "wild_bootstrap_p_value": null,
       "significance": "Not sig",
       "r_squared": 0.9734,
       "covariance_type": "State-Clustered Standard Errors",
-      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside leave-one-state-out sensitivity.",
+      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside wild cluster bootstrap and leave-one-state-out sensitivity.",
       "interpretation": "Conditional within-state association controlling for AOR, foreign guest mix, state, and year effects."
     },
     {
@@ -245,10 +253,11 @@
       "ci_upper": 0.5728,
       "t_statistic": 1.1071,
       "p_value": 0.2683,
+      "wild_bootstrap_p_value": null,
       "significance": "Not sig",
       "r_squared": 0.8018,
       "covariance_type": "State-Clustered Standard Errors (16 clusters)",
-      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside leave-one-state-out sensitivity.",
+      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside wild cluster bootstrap and leave-one-state-out sensitivity.",
       "interpretation": "Explains variation in lodging yield per tourist night; reflects occupancy intensity and lodging yield responsiveness under tighter capacity (AOR) and higher-spending traveler profiles."
     },
     {
@@ -263,10 +272,11 @@
       "ci_upper": 0.0136,
       "t_statistic": 0.413,
       "p_value": 0.6796,
+      "wild_bootstrap_p_value": null,
       "significance": "Not sig",
       "r_squared": 0.8018,
       "covariance_type": "State-Clustered Standard Errors (16 clusters)",
-      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside leave-one-state-out sensitivity.",
+      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside wild cluster bootstrap and leave-one-state-out sensitivity.",
       "interpretation": "Explains variation in lodging yield per tourist night; reflects occupancy intensity and lodging yield responsiveness under tighter capacity (AOR) and higher-spending traveler profiles."
     },
     {
@@ -281,10 +291,11 @@
       "ci_upper": 0.0144,
       "t_statistic": 1.5341,
       "p_value": 0.125,
+      "wild_bootstrap_p_value": null,
       "significance": "Not sig",
       "r_squared": 0.8018,
       "covariance_type": "State-Clustered Standard Errors (16 clusters)",
-      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside leave-one-state-out sensitivity.",
+      "small_cluster_caveat": "N=16 state clusters. Robust cluster-adjusted inference accounts for within-state persistence across 2018\u20132025. Given cluster count < 30, results are evaluated alongside wild cluster bootstrap and leave-one-state-out sensitivity.",
       "interpretation": "Explains variation in lodging yield per tourist night; reflects occupancy intensity and lodging yield responsiveness under tighter capacity (AOR) and higher-spending traveler profiles."
     }
   ],

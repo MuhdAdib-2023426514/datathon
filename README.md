@@ -95,13 +95,13 @@ $$\text{TotalAdditionalGuestNights} = \text{AddNights}_{\text{ALOS}} - \text{VFR
 $$\text{ScenarioGVAToCostMultiple} = \frac{\text{Potential Additional GVA (RM Million)}}{\text{Assumed Campaign Cost (RM Million)}}$$
 *Disclosed: Measures macroeconomic Gross Value Added generated per promotional campaign expenditure unit under transparent scenario assumptions; not an investor cash return, commercial net profit, or fiscal tax receipt.*
 
-Full mathematical formulas are documented in [docs/methodology.md](file:///home/muhammad_adib/dosm/docs/methodology.md).
+Full mathematical formulas are documented in [docs/methodology.md](docs/methodology.md).
 
 ---
 
 ## 5. Official Data Sources & Provenance
 
-All data streams are sourced from official Malaysian government publications, cataloged with SHA-256 cryptographic hashes in `data/metadata/source_registry.yaml` and [docs/data_quality.md](file:///home/muhammad_adib/dosm/docs/data_quality.md):
+All data streams are sourced from official Malaysian government publications, cataloged with SHA-256 cryptographic hashes in `data/metadata/source_registry.yaml` and [docs/data_quality.md](docs/data_quality.md):
 
 1. **DOSM Tourism Satellite Account (TSA) 2015–2025**: GVA, domestic supply, tourism ratios, internal tourism consumption (ITC), and employment across 8 characteristic products.
 2. **DOSM Domestic Tourism Survey (DTS) 2018–2025**: State visitors, overnight tourists, excursionists, expenditure components, ALOS, and bilateral OD flows. (State DTS publication date verified as 15 September 2026; all 16 state workbooks cataloged with individual SHA-256 byte hashes in source registry).
@@ -183,7 +183,7 @@ The end-to-end analytical decision chain follows a 10-stage sequential flow:
 ## 7. Main Empirical Findings
 
 ### A. Accommodation Services Confirmed #1 in Value-Added Intensity
-- Out of every RM 100 spent on accommodation services in Malaysia, **RM 85.79 is retained as direct domestic Gross Value Added (GVA)** (2023–2025 post-recovery median VAI = 0.8579, CV = 0.039).
+- Out of every RM 100 spent on accommodation services in Malaysia, **RM 85.79 is retained as direct domestic Gross Value Added (GVA)** (2023–2025 post-recovery median VAI = 0.8579, CV = 0.039), meaning RM 85.79 of industry Gross Value Added (GVA) is generated per RM 100 of accommodation domestic supply.
 - Comparison: Food & Beverage retains RM 65.50, Cultural/Recreation retains RM 60.40, Retail Shopping margin retains RM 47.00, and Passenger Transport retains RM 40.70.
 
 ### B. Econometric Panel Models of Accommodation Expenditure ($N = 126$, 2018–2025)
@@ -220,7 +220,7 @@ The end-to-end analytical decision chain follows a 10-stage sequential flow:
 
 ## 8. Model Validation & Robustness Diagnostics
 
-Detailed validation metrics are reported in [docs/model_validation.md](file:///home/muhammad_adib/dosm/docs/model_validation.md):
+Detailed validation metrics are reported in [docs/model_validation.md](docs/model_validation.md):
 
 | Model Specification | Out-of-Sample $R^2_{OOS}$ | Pearson Correlation ($r$) | MAE (Thousands) | RMSE (Thousands) | RMSLE | sMAPE (%) | Role in Platform |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
@@ -250,7 +250,7 @@ The React + TypeScript web application (`dashboard/`) provides 8 specialized dec
 
 ## 10. Commercial & Institutional Implementation Model
 
-Detailed in [docs/implementation_model.md](file:///home/muhammad_adib/dosm/docs/implementation_model.md):
+Detailed in [docs/implementation_model.md](docs/implementation_model.md):
 - **Target Beneficiaries**: Ministry of Tourism, Arts and Culture (MOTAC), Tourism Malaysia, State Tourism Action Councils, DMOs, Malaysian Association of Hotels (MAH), and Malaysia Budget & Business Hotel Association (MyBHA).
 - **Decision Workflow**: `Monitor` (TSA accounts) $\rightarrow$ `Diagnose` (State capture) $\rightarrow$ `Target` (Pareto corridors) $\rightarrow$ `Simulate` (Capacity checks) $\rightarrow$ `Optimize` (MILP budget allocation) $\rightarrow$ `Act` (Marketing campaigns & homestay licensing).
 - **Melaka Heritage Pilot Specification**: Comprehensive 8–12 week operational pilot plan targeting Selangor $\rightarrow$ Melaka and Negeri Sembilan $\rightarrow$ Melaka corridors, complete with RACI governance matrix, allocated budget (RM 85k–120k), and a quasi-experimental Difference-in-Differences (DiD) evaluation design using non-targeted control feeder corridors.
@@ -261,7 +261,7 @@ Detailed in [docs/implementation_model.md](file:///home/muhammad_adib/dosm/docs/
 
 ## 11. Limitations & Methodological Caveats
 
-Detailed in [docs/limitations.md](file:///home/muhammad_adib/dosm/docs/limitations.md):
+Detailed in [docs/limitations.md](docs/limitations.md):
 1. **Observational Nature**: All econometric relationships represent statistical associations, not causal guarantees.
 2. **Small State Sample**: The panel contains $N = 16$ states over 8 years ($126$ observations). State-clustered inference is supported by 16/16 leave-one-out sign stability.
 3. **National VAI on State Expenditure**: State-level GVA proxies apply national TSA value-added ratios to state expenditure composition.
@@ -330,17 +330,17 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## 13. Standalone Documentation Directory
 
-- [artifacts/rubric_evidence_matrix.md](file:///home/muhammad_adib/dosm/artifacts/rubric_evidence_matrix.md) — Comprehensive 25-Criteria Rubric Evidence Matrix & Verification Register.
-- [docs/rubric_remediation_plan.md](file:///home/muhammad_adib/dosm/docs/rubric_remediation_plan.md) — Priority remediation plan (R01–R12 & C00–C17) resolving audit findings.
-- [docs/presentation_deck.md](file:///home/muhammad_adib/dosm/docs/presentation_deck.md) — 10-Slide Executive Pitch Deck & Storyline (Phase 51).
-- [docs/judge_defense.md](file:///home/muhammad_adib/dosm/docs/judge_defense.md) — The Five Judge Questions & Competition Defense Package (Phases 58 & 63).
-- [notebooks/tourism_value_optimizer_walkthrough.ipynb](file:///home/muhammad_adib/dosm/notebooks/tourism_value_optimizer_walkthrough.ipynb) — Interactive Python analytical walkthrough (AGENTS.md Section 17).
-- [docs/methodology.md](file:///home/muhammad_adib/dosm/docs/methodology.md) — Authoritative mathematical specifications and econometric equations.
-- [docs/data_dictionary.md](file:///home/muhammad_adib/dosm/docs/data_dictionary.md) — Comprehensive schema, units, formulas, and null semantics for all tables.
-- [docs/model_validation.md](file:///home/muhammad_adib/dosm/docs/model_validation.md) — Out-of-sample holdout benchmarking, GLM break tests, and panel diagnostics.
-- [docs/data_quality.md](file:///home/muhammad_adib/dosm/docs/data_quality.md) — Automated QA audit, domain boundary checks, and SHA-256 provenance hashes.
-- [docs/limitations.md](file:///home/muhammad_adib/dosm/docs/limitations.md) — Transparent methodological limitations and non-causal disclosures.
-- [docs/implementation_model.md](file:///home/muhammad_adib/dosm/docs/implementation_model.md) — Commercial adoption roadmap and institutional user workflows.
-- [artifacts/final_rubric_audit.md](file:///home/muhammad_adib/dosm/artifacts/final_rubric_audit.md) — Historical audit record (superseded by `artifacts/rubric_evidence_matrix.md`).
+- [artifacts/rubric_evidence_matrix.md](artifacts/rubric_evidence_matrix.md) — Comprehensive 25-Criteria Rubric Evidence Matrix & Verification Register.
+- [docs/rubric_remediation_plan.md](docs/rubric_remediation_plan.md) — Priority remediation plan (R01–R12 & C00–C17) resolving audit findings.
+- [docs/presentation_deck.md](docs/presentation_deck.md) — 10-Slide Executive Pitch Deck & Storyline (Phase 51).
+- [docs/judge_defense.md](docs/judge_defense.md) — The Five Judge Questions & Competition Defense Package (Phases 58 & 63).
+- [notebooks/tourism_value_optimizer_walkthrough.ipynb](notebooks/tourism_value_optimizer_walkthrough.ipynb) — Interactive Python analytical walkthrough (AGENTS.md Section 17).
+- [docs/methodology.md](docs/methodology.md) — Authoritative mathematical specifications and econometric equations.
+- [docs/data_dictionary.md](docs/data_dictionary.md) — Comprehensive schema, units, formulas, and null semantics for all tables.
+- [docs/model_validation.md](docs/model_validation.md) — Out-of-sample holdout benchmarking, GLM break tests, and panel diagnostics.
+- [docs/data_quality.md](docs/data_quality.md) — Automated QA audit, domain boundary checks, and SHA-256 provenance hashes.
+- [docs/limitations.md](docs/limitations.md) — Transparent methodological limitations and non-causal disclosures.
+- [docs/implementation_model.md](docs/implementation_model.md) — Commercial adoption roadmap and institutional user workflows.
+- [artifacts/final_rubric_audit.md](artifacts/final_rubric_audit.md) — Historical audit record (superseded by `artifacts/rubric_evidence_matrix.md`).
 
 

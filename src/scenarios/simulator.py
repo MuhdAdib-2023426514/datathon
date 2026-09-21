@@ -131,13 +131,13 @@ class ScenarioSimulator:
         origin: str,
         destination: str,
         delta_alos: float = 0.5,
-        affected_share: float = 1.0,
+        affected_share: float = DEFAULT_AFFECTED_SHARE,
         guests_per_room: float = DEFAULT_GUESTS_PER_ROOM,
         planning_threshold: float = DEFAULT_PLANNING_THRESHOLD,
     ) -> Dict[str, Any]:
         """
         Simulates the economic opportunity and capacity feasibility for a specific origin-destination corridor.
-        Includes campaign affected share and room-night capacity conversion.
+        Includes campaign affected share (default: 0.15 / 15% reach) and room-night capacity conversion.
         """
         if origin not in self.valid_states:
             raise ValueError(f"Invalid origin state: '{origin}'. Must be one of 16 Malaysian states.")
