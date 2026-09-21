@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-21 09:01:24 UTC",
+  "timestamp": "2026-09-21 09:16:58 UTC",
   "database_path": "/home/muhammad_adib/dosm/data/processed/tourism_data.duckdb",
   "total_tables": 42,
   "table_inventory": {
@@ -221,12 +221,12 @@
   "provenance_summary": {
     "tourism_product_year": [
       {
-        "status": "preliminary",
-        "count": 8
-      },
-      {
         "status": "actual",
         "count": 72
+      },
+      {
+        "status": "preliminary",
+        "count": 8
       },
       {
         "status": "estimate",

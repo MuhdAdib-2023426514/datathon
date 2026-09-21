@@ -6,7 +6,9 @@
 > **North-Star Principle (Phase 60)**:  
 > $$\boxed{\text{Do not only maximize tourists. Maximize sustainable economic value per visitor-day.}}$$
 
-[![Tests](https://img.shields.io/badge/tests-passing%20%7C%200%20warnings-success)](tests/)
+[![Tests](https://img.shields.io/badge/tests-153%20passed%20%7C%2020%2F20%20pipeline%20steps-success)](tests/)
+[![Frontend Tests](https://img.shields.io/badge/frontend-node%3Atest%20(6%2F6)-blue)](dashboard/tests/)
+[![Rubric Evidence](https://img.shields.io/badge/Rubric%20Evidence-25%20Criteria%20Verified-purple)](artifacts/rubric_evidence_matrix.md)
 [![TSA-VAI](https://img.shields.io/badge/TSA%20Accommodation%20VAI-85.8%25%20(%231)-purple)](data/processed/)
 [![SDG](https://img.shields.io/badge/UN%20SDG-8.9%20%7C%2012.b-blue)](docs/methodology.md)
 [![Data Quality](https://img.shields.io/badge/Data%20Quality-100%25%20Pass%20(DuckDB)-emerald)](docs/data_quality.md)
@@ -82,6 +84,17 @@ $$\text{TourismGVAIntensity}_s = \frac{\text{EstimatedTourismGVA}_s}{\text{Mappe
 ### 4.4 Constant-Price Deflation (Real 2025 RM)
 $$\text{RealExpenditure}_{s,t} = \text{NominalExpenditure}_{s,t} \times \left( \frac{\text{CPI}_{2025}}{\text{CPI}_t} \right)$$
 
+### 4.5 Combined Scenario Accounting & Overlap Resolution
+$$\text{AdditionalTouristNights} = \text{AddNights}_{\text{ALOS}} + \text{AddNights}_{\text{DayTrip}}$$
+$$\text{TransferredExistingVFRNights} = \text{ConvertedVFRTourists} \times \text{BaselineALOS}$$
+$$\text{VFROverlapNights} = \text{ConvertedVFRTourists} \times \text{AffectedShare} \times \Delta\text{ALOS}$$
+$$\text{TotalAdditionalGuestNights} = \text{AddNights}_{\text{ALOS}} - \text{VFROverlapNights} + \text{AddNights}_{\text{DayTrip}} + \text{VFRGuestNights}$$
+*Disclosed: Stay extension applied to VFR converts within paid lodging demand is subtracted from general extension demand to prevent double-counting.*
+
+### 4.6 Scenario GVA-to-Cost Multiple (Macroeconomic Efficiency)
+$$\text{ScenarioGVAToCostMultiple} = \frac{\text{Potential Additional GVA (RM Million)}}{\text{Assumed Campaign Cost (RM Million)}}$$
+*Disclosed: Measures macroeconomic Gross Value Added generated per promotional campaign expenditure unit under transparent scenario assumptions; not an investor cash return, commercial net profit, or fiscal tax receipt.*
+
 Full mathematical formulas are documented in [docs/methodology.md](file:///home/muhammad_adib/dosm/docs/methodology.md).
 
 ---
@@ -91,7 +104,7 @@ Full mathematical formulas are documented in [docs/methodology.md](file:///home/
 All data streams are sourced from official Malaysian government publications, cataloged with SHA-256 cryptographic hashes in `data/metadata/source_registry.yaml` and [docs/data_quality.md](file:///home/muhammad_adib/dosm/docs/data_quality.md):
 
 1. **DOSM Tourism Satellite Account (TSA) 2015–2025**: GVA, domestic supply, tourism ratios, internal tourism consumption (ITC), and employment across 8 characteristic products.
-2. **DOSM Domestic Tourism Survey (DTS) 2018–2025**: State visitors, overnight tourists, excursionists, expenditure components, ALOS, and bilateral OD flows.
+2. **DOSM Domestic Tourism Survey (DTS) 2018–2025**: State visitors, overnight tourists, excursionists, expenditure components, ALOS, and bilateral OD flows. (State DTS publication date verified as 15 September 2026; all 16 state workbooks cataloged with individual SHA-256 byte hashes in source registry).
 3. **MOTAC Hotel Operations & Capacity 2016–2025**: Average Occupancy Rate (AOR), room inventory, domestic vs. foreign hotel guests across all 16 states.
 4. **MOTAC Homestay Performance Statistics 2023–2024**: Registered homestay capacity, village operators, and guest income.
 5. **DOSM Household Income & Expenditure Survey (HIES 2024)**: State median household income series.
@@ -149,19 +162,19 @@ The end-to-end analytical decision chain follows a 10-stage sequential flow:
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐
 │                            UNCERTAINTY                                 │
-│        1,000-Draw Monte Carlo Simulation (P10–P90 Spread)              │
+│      1,000-Draw Monte Carlo (Data-Calibrated CV, Null Capacity Alert)  │
 └───────────────────────────────────┬────────────────────────────────────┘
                                     │
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐
 │                        BUDGET OPTIMIZATION                             │
-│        Exact MILP Allocation Under Destination Capacity Limits         │
+│     Exact MILP Benchmarks & Heuristic User Allocations (No False Opt)  │
 └───────────────────────────────────┬────────────────────────────────────┘
                                     │
                                     ▼
 ┌────────────────────────────────────────────────────────────────────────┐
 │                           DECISION BRIEF                               │
-│        Actionable Evidence Query Assistant & Provenance Trace          │
+│        Grounded State Evidence Query & 7-Element Evidence Drawer       │
 └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -196,6 +209,8 @@ The end-to-end analytical decision chain follows a 10-stage sequential flow:
 
 ### D. Multi-Dimensional Opportunity Framework & Pareto Frontier
 - Rather than equating gravity flow residuals with policy priority, corridors are evaluated across 5 criteria: structural flow gap, yield, capacity headroom, accessibility, and feeder diversification.
+- Dominance is computed strictly across complete, finite evidence vectors (`evidence_status = "complete"`); candidates with unobserved capacity or yield are flagged as `insufficient_data` and excluded from dominating complete candidates.
+- Opportunity screening is structurally decoupled from hypothetical +0.5-night scenario projections, ensuring targeting reflects empirical baseline capacity and yield.
 - Exactly **58 inter-state corridors** reside on Pareto Front 1, led by:
   1. *Selangor $\rightarrow$ W.P. Kuala Lumpur* (Pareto Rank 1, Score 75.47, 84k stay gap, RM 83/night yield).
   2. *Negeri Sembilan $\rightarrow$ Melaka* (Pareto Rank 1, Score 71.88, 114k stay gap, RM 63/night yield).
@@ -227,9 +242,9 @@ The React + TypeScript web application (`dashboard/`) provides 8 specialized dec
 3. **Accommodation Drivers**: Which measurable factors are associated with lodging economic capture? (Two-Way FE panel models, VFR vs. commercial hotel shares).
 4. **Mobility & OD Network**: Where do domestic visitors originate and travel? (Bilateral flow arcs, interstate vs. all-origin HHI concentration).
 5. **Corridor Opportunities**: Which corridors combine structural demand gaps, high yield, and spare hotel capacity? (58 Pareto optimal corridors, multi-attribute filtering).
-6. **Scenario Simulator**: What might happen under a targeted stay extension or day-trip conversion? (Decoupled policy levers, 4-tier hotel capacity saturation checks).
-7. **Portfolio Optimizer**: How should a fixed tourism promotional budget be allocated? (Exact MILP optimizer maximizing GVA under hotel headroom limits).
-8. **Action Brief**: What operational decisions should be implemented? (Executive decision summary, Evidence Query Assistant, Provenance Drawer).
+6. **Scenario Simulator**: What might happen under a targeted stay extension or day-trip conversion? (Direct TypeScript formula execution in `dashboard/src/lib/scenario.ts`, explicit VFR extension overlap subtraction, 4-tier hotel capacity saturation checks).
+7. **Portfolio Optimizer**: How should a fixed tourism promotional budget be allocated? (Precomputed exact MILP benchmarks, dynamic heuristic allocation for custom user costs, and Scenario GVA-to-Cost Multiples).
+8. **Action Brief**: What operational decisions should be implemented? (Executive decision summary, deterministic State Evidence Lookup, and 7-element Evidence Drawer).
 
 ---
 
@@ -238,6 +253,8 @@ The React + TypeScript web application (`dashboard/`) provides 8 specialized dec
 Detailed in [docs/implementation_model.md](file:///home/muhammad_adib/dosm/docs/implementation_model.md):
 - **Target Beneficiaries**: Ministry of Tourism, Arts and Culture (MOTAC), Tourism Malaysia, State Tourism Action Councils, DMOs, Malaysian Association of Hotels (MAH), and Malaysia Budget & Business Hotel Association (MyBHA).
 - **Decision Workflow**: `Monitor` (TSA accounts) $\rightarrow$ `Diagnose` (State capture) $\rightarrow$ `Target` (Pareto corridors) $\rightarrow$ `Simulate` (Capacity checks) $\rightarrow$ `Optimize` (MILP budget allocation) $\rightarrow$ `Act` (Marketing campaigns & homestay licensing).
+- **Melaka Heritage Pilot Specification**: Comprehensive 8–12 week operational pilot plan targeting Selangor $\rightarrow$ Melaka and Negeri Sembilan $\rightarrow$ Melaka corridors, complete with RACI governance matrix, allocated budget (RM 85k–120k), and a quasi-experimental Difference-in-Differences (DiD) evaluation design using non-targeted control feeder corridors.
+- **Adoption & External Proof Status**: While the decision architecture and pilot design are fully operational in code, direct stakeholder interview feedback and formal inter-agency data-sharing agreements remain **EXTERNAL EVIDENCE PENDING** awaiting real-world institutional engagement.
 - **Refresh Model**: Annual TSA refresh, annual DTS survey ingestion, monthly MOTAC occupancy updates.
 
 ---
@@ -250,6 +267,8 @@ Detailed in [docs/limitations.md](file:///home/muhammad_adib/dosm/docs/limitatio
 3. **National VAI on State Expenditure**: State-level GVA proxies apply national TSA value-added ratios to state expenditure composition.
 4. **Annual AOR Masks Peak Congestion**: Hotel occupancy rates represent annual averages; weekend and holiday surges may face tighter capacity.
 5. **Zero-Fabrication Policy**: Missing empirical fields remain `null`/`NaN` and are never replaced with arbitrary synthetic defaults.
+6. **Heuristic Custom Portfolio Optimization**: Custom user-cost funding allocations use a constrained greedy knapsack heuristic labeled *"Heuristic allocation; optimality not established"*, while standard preset tiers retain exact precomputed MILP solutions.
+7. **Non-Causal Policy Projections**: All simulation projections display the mandatory disclaimer: *"Scenario estimate, not a causal forecast."*
 
 ---
 
@@ -272,13 +291,16 @@ pip install -e .
 # Run end-to-end pipeline (ingest -> analytics -> validate -> export)
 python src/pipeline.py --stage all
 
+# Run automated 20-step validation gate
+python src/pipeline.py --stage validate
+
 # Check pipeline status and table row counts
 python src/pipeline.py --status
 ```
 
 ### C. Run Full Test & Validation Suite
 ```bash
-# Run all unit, contract, snapshot, and pre-submission audit test suites
+# Run all unit, contract, snapshot, and remediation test suites (153 tests)
 pytest tests/
 
 # Run national accounting, corridor verification, and data quality audits
@@ -287,10 +309,19 @@ python src/validation/test_state_and_corridors.py
 python src/validation/data_quality_report.py
 ```
 
-### D. Run Decision Dashboard Locally
+### D. Run Frontend Tests & Local Dashboard
 ```bash
 cd dashboard
 npm install
+
+# Run frontend unit & cross-language formula parity tests (Node.js test runner)
+npm test
+
+# Run linter and verify production build
+npm run lint
+npm run build
+
+# Launch development server
 npm run dev
 ```
 Open [http://localhost:5173](http://localhost:5173) in your browser.
@@ -299,6 +330,8 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## 13. Standalone Documentation Directory
 
+- [artifacts/rubric_evidence_matrix.md](file:///home/muhammad_adib/dosm/artifacts/rubric_evidence_matrix.md) — Comprehensive 25-Criteria Rubric Evidence Matrix & Verification Register.
+- [docs/rubric_remediation_plan.md](file:///home/muhammad_adib/dosm/docs/rubric_remediation_plan.md) — Priority remediation plan (R01–R12 & C00–C17) resolving audit findings.
 - [docs/presentation_deck.md](file:///home/muhammad_adib/dosm/docs/presentation_deck.md) — 10-Slide Executive Pitch Deck & Storyline (Phase 51).
 - [docs/judge_defense.md](file:///home/muhammad_adib/dosm/docs/judge_defense.md) — The Five Judge Questions & Competition Defense Package (Phases 58 & 63).
 - [notebooks/tourism_value_optimizer_walkthrough.ipynb](file:///home/muhammad_adib/dosm/notebooks/tourism_value_optimizer_walkthrough.ipynb) — Interactive Python analytical walkthrough (AGENTS.md Section 17).
@@ -308,5 +341,6 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 - [docs/data_quality.md](file:///home/muhammad_adib/dosm/docs/data_quality.md) — Automated QA audit, domain boundary checks, and SHA-256 provenance hashes.
 - [docs/limitations.md](file:///home/muhammad_adib/dosm/docs/limitations.md) — Transparent methodological limitations and non-causal disclosures.
 - [docs/implementation_model.md](file:///home/muhammad_adib/dosm/docs/implementation_model.md) — Commercial adoption roadmap and institutional user workflows.
+- [artifacts/final_rubric_audit.md](file:///home/muhammad_adib/dosm/artifacts/final_rubric_audit.md) — Historical audit record (superseded by `artifacts/rubric_evidence_matrix.md`).
 
 

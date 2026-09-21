@@ -2,38 +2,38 @@
   "stages": {
     "validate": {
       "success": true,
-      "completed_at": "2026-09-21 17:01:26",
+      "completed_at": "2026-09-21 17:17:00",
       "steps": [
         {
           "step": "accounting_fixtures",
           "path": "tests/test_accounting_fixtures.py",
           "success": true,
-          "duration_sec": 0.25,
-          "timestamp": "2026-09-21 17:01:19",
+          "duration_sec": 0.23,
+          "timestamp": "2026-09-21 17:16:53",
           "log_snippet": ""
         },
         {
           "step": "scenario_fixtures",
           "path": "tests/test_scenario_fixtures.py",
           "success": true,
-          "duration_sec": 0.1,
-          "timestamp": "2026-09-21 17:01:19",
+          "duration_sec": 0.07,
+          "timestamp": "2026-09-21 17:16:53",
           "log_snippet": ""
         },
         {
           "step": "gravity_fixtures",
           "path": "tests/test_gravity_fixtures.py",
           "success": true,
-          "duration_sec": 0.08,
-          "timestamp": "2026-09-21 17:01:20",
+          "duration_sec": 0.09,
+          "timestamp": "2026-09-21 17:16:53",
           "log_snippet": ""
         },
         {
           "step": "missing_values",
           "path": "tests/test_missing_values.py",
           "success": true,
-          "duration_sec": 0.32,
-          "timestamp": "2026-09-21 17:01:20",
+          "duration_sec": 0.31,
+          "timestamp": "2026-09-21 17:16:53",
           "log_snippet": ""
         },
         {
@@ -41,95 +41,95 @@
           "path": "tests/test_paths_and_metadata.py",
           "success": true,
           "duration_sec": 0.05,
-          "timestamp": "2026-09-21 17:01:20",
+          "timestamp": "2026-09-21 17:16:53",
           "log_snippet": ""
         },
         {
           "step": "economic_metrics",
           "path": "tests/test_economic_metrics.py",
           "success": true,
-          "duration_sec": 0.3,
-          "timestamp": "2026-09-21 17:01:20",
+          "duration_sec": 0.28,
+          "timestamp": "2026-09-21 17:16:54",
           "log_snippet": ""
         },
         {
           "step": "panel_econometrics_tests",
           "path": "tests/test_panel_econometrics.py",
           "success": true,
-          "duration_sec": 0.92,
-          "timestamp": "2026-09-21 17:01:21",
+          "duration_sec": 0.94,
+          "timestamp": "2026-09-21 17:16:55",
           "log_snippet": ""
         },
         {
           "step": "gravity_model_tests",
           "path": "tests/test_gravity_model.py",
           "success": true,
-          "duration_sec": 0.9,
-          "timestamp": "2026-09-21 17:01:22",
+          "duration_sec": 0.89,
+          "timestamp": "2026-09-21 17:16:55",
           "log_snippet": ""
         },
         {
           "step": "corridor_opportunity_tests",
           "path": "tests/test_corridor_opportunity.py",
           "success": true,
-          "duration_sec": 0.5,
-          "timestamp": "2026-09-21 17:01:23",
-          "log_snippet": "============================= test session starts ==============================\nplatform linux -- Python 3.14.0, pytest-9.1.1, pluggy-1.6.0\nrootdir: /home/muhammad_adib/dosm\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 8 items\n\ntests/test_corridor_opportunity.py ........                              [100%]\n\n============================== 8 passed in 0.06s ===============================\n"
+          "duration_sec": 0.45,
+          "timestamp": "2026-09-21 17:16:56",
+          "log_snippet": "============================= test session starts ==============================\nplatform linux -- Python 3.14.0, pytest-9.1.1, pluggy-1.6.0\nrootdir: /home/muhammad_adib/dosm\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 8 items\n\ntests/test_corridor_opportunity.py ........                              [100%]\n\n============================== 8 passed in 0.05s ===============================\n"
         },
         {
           "step": "scenario_engine_tests",
           "path": "tests/test_scenario_engine.py",
           "success": true,
-          "duration_sec": 0.49,
-          "timestamp": "2026-09-21 17:01:23",
+          "duration_sec": 0.45,
+          "timestamp": "2026-09-21 17:16:56",
           "log_snippet": "============================= test session starts ==============================\nplatform linux -- Python 3.14.0, pytest-9.1.1, pluggy-1.6.0\nrootdir: /home/muhammad_adib/dosm\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 8 items\n\ntests/test_scenario_engine.py ........                                   [100%]\n\n============================== 8 passed in 0.04s ===============================\n"
         },
         {
           "step": "dashboard_integrity_tests",
           "path": "tests/test_dashboard_integrity.py",
           "success": true,
-          "duration_sec": 0.52,
-          "timestamp": "2026-09-21 17:01:24",
-          "log_snippet": "============================= test session starts ==============================\nplatform linux -- Python 3.14.0, pytest-9.1.1, pluggy-1.6.0\nrootdir: /home/muhammad_adib/dosm\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 17 items\n\ntests/test_dashboard_integrity.py .................                      [100%]\n\n============================== 17 passed in 0.31s ==============================\n"
+          "duration_sec": 0.51,
+          "timestamp": "2026-09-21 17:16:57",
+          "log_snippet": "============================= test session starts ==============================\nplatform linux -- Python 3.14.0, pytest-9.1.1, pluggy-1.6.0\nrootdir: /home/muhammad_adib/dosm\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 17 items\n\ntests/test_dashboard_integrity.py .................                      [100%]\n\n============================== 17 passed in 0.30s ==============================\n"
         },
         {
           "step": "commercial_and_monte_carlo",
           "path": "tests/test_commercial_and_monte_carlo.py",
           "success": true,
-          "duration_sec": 0.29,
-          "timestamp": "2026-09-21 17:01:24",
+          "duration_sec": 0.27,
+          "timestamp": "2026-09-21 17:16:57",
           "log_snippet": ""
         },
         {
           "step": "baseline_snapshots",
           "path": "tests/snapshot/test_baseline_snapshots.py",
           "success": true,
-          "duration_sec": 0.28,
-          "timestamp": "2026-09-21 17:01:24",
+          "duration_sec": 0.3,
+          "timestamp": "2026-09-21 17:16:57",
           "log_snippet": ""
         },
         {
           "step": "tsa_accounting",
           "path": "src/validation/test_tsa_accounting.py",
           "success": true,
-          "duration_sec": 0.31,
-          "timestamp": "2026-09-21 17:01:24",
+          "duration_sec": 0.32,
+          "timestamp": "2026-09-21 17:16:58",
           "log_snippet": "nd formula assertions PASSED.\n\n[TEST 2] Validating tsa_macro_year...\n  \u2713 tsa_macro_year values and benchmarks PASSED.\n\n[TEST 3] Validating Product Value Summary & Quadrant Integrity...\n  \u2713 Product value summary integrity and quadrant assignments PASSED.\n  \u2713 Travel agency structural supply and GVA metrics PASSED.\n\n======================================================================\nALL VALIDATION TESTS PASSED (100% SUCCESS)\n======================================================================\n"
         },
         {
           "step": "state_and_corridors",
           "path": "src/validation/test_state_and_corridors.py",
           "success": true,
-          "duration_sec": 0.43,
-          "timestamp": "2026-09-21 17:01:25",
+          "duration_sec": 0.37,
+          "timestamp": "2026-09-21 17:16:58",
           "log_snippet": "ons & Corridor Opportunity Gap...\n  \u2713 Granular DTS profiles (16 states), OLS driver regressions, and 240-corridor opportunity gap PASSED.\n\n[TEST 6] Validating MyTourism KPI Hotel & Homestay Operations...\n  \u2713 MyTourism KPI operations (160 hotel, 28 homestay), capacity table, and full 2018\u20132025 panel PASSED.\n\n======================================================================\nALL VALIDATION TEST SUITES PASSED (100% SUCCESS)\n======================================================================\n"
         },
         {
           "step": "data_quality_report",
           "path": "src/validation/data_quality_report.py",
           "success": true,
-          "duration_sec": -0.42,
-          "timestamp": "2026-09-21 17:01:24",
+          "duration_sec": 0.35,
+          "timestamp": "2026-09-21 17:16:58",
           "log_snippet": "Data quality report saved to:\n  - /home/muhammad_adib/dosm/artifacts/data_quality_report.json\n  - /home/muhammad_adib/dosm/artifacts/data_quality_report.md\n\nOverall Quality Status: PASS\n"
         },
         {
@@ -137,7 +137,7 @@
           "path": "tests/test_pre_submission_audit.py",
           "success": true,
           "duration_sec": 0.48,
-          "timestamp": "2026-09-21 17:01:25",
+          "timestamp": "2026-09-21 17:16:59",
           "log_snippet": "============================= test session starts ==============================\nplatform linux -- Python 3.14.0, pytest-9.1.1, pluggy-1.6.0\nrootdir: /home/muhammad_adib/dosm\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 13 items\n\ntests/test_pre_submission_audit.py .............                         [100%]\n\n============================== 13 passed in 0.27s ==============================\n"
         },
         {
@@ -145,15 +145,15 @@
           "path": "tests/test_submission_packaging.py",
           "success": true,
           "duration_sec": 0.36,
-          "timestamp": "2026-09-21 17:01:25",
-          "log_snippet": "============================= test session starts ==============================\nplatform linux -- Python 3.14.0, pytest-9.1.1, pluggy-1.6.0\nrootdir: /home/muhammad_adib/dosm\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 5 items\n\ntests/test_submission_packaging.py .....                                 [100%]\n\n============================== 5 passed in 0.22s ===============================\n"
+          "timestamp": "2026-09-21 17:16:59",
+          "log_snippet": "============================= test session starts ==============================\nplatform linux -- Python 3.14.0, pytest-9.1.1, pluggy-1.6.0\nrootdir: /home/muhammad_adib/dosm\nconfigfile: pyproject.toml\nplugins: anyio-4.15.1\ncollected 5 items\n\ntests/test_submission_packaging.py .....                                 [100%]\n\n============================== 5 passed in 0.21s ===============================\n"
         },
         {
           "step": "scenario_parity",
           "path": "tests/test_scenario_parity.py",
           "success": true,
-          "duration_sec": 0.6,
-          "timestamp": "2026-09-21 17:01:26",
+          "duration_sec": 0.56,
+          "timestamp": "2026-09-21 17:17:00",
           "log_snippet": ""
         },
         {
@@ -161,8 +161,8 @@
           "path": "tests/test_results_consistency.py",
           "success": true,
           "duration_sec": 0.17,
-          "timestamp": "2026-09-21 17:01:26",
-          "log_snippet": "ency::test_drivers_rq3_json_matches_contract PASSED [ 57%]\ntests/test_results_consistency.py::TestDashboardExportsConsistency::test_scenario_engine_json_matches_contract PASSED [ 71%]\ntests/test_results_consistency.py::TestDashboardExportsConsistency::test_model_metrics_json_matches_contract PASSED [ 85%]\ntests/test_results_consistency.py::TestSnapshotTestSeparation::test_snapshot_directory_structure PASSED [100%]\n\n============================== 7 passed in 0.03s ===============================\n"
+          "timestamp": "2026-09-21 17:17:00",
+          "log_snippet": "ency::test_drivers_rq3_json_matches_contract PASSED [ 57%]\ntests/test_results_consistency.py::TestDashboardExportsConsistency::test_scenario_engine_json_matches_contract PASSED [ 71%]\ntests/test_results_consistency.py::TestDashboardExportsConsistency::test_model_metrics_json_matches_contract PASSED [ 85%]\ntests/test_results_consistency.py::TestSnapshotTestSeparation::test_snapshot_directory_structure PASSED [100%]\n\n============================== 7 passed in 0.02s ===============================\n"
         }
       ]
     },
@@ -259,5 +259,5 @@
       ]
     }
   },
-  "last_run": "2026-09-21 17:01:26"
+  "last_run": "2026-09-21 17:17:00"
 }
