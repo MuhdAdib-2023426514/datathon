@@ -355,7 +355,6 @@ def export_dashboard_data():
         ScenarioSimulator,
         MANDATORY_DISCLAIMER,
         SEASONAL_CAPACITY_CAVEAT,
-        DEFAULT_ACCOMMODATION_VAI,
         DEFAULT_GUESTS_PER_ROOM,
         DEFAULT_AFFECTED_SHARE,
         DEFAULT_HOMESTAY_DISCOUNT_FACTOR,
@@ -471,7 +470,7 @@ def export_dashboard_data():
 
     scenario_config = {
         "constants": {
-            "accommodation_vai": DEFAULT_ACCOMMODATION_VAI,
+            "accommodation_vai": sim.national_accom_vai,
             "disclaimer": MANDATORY_DISCLAIMER,
             "seasonal_caveat": SEASONAL_CAPACITY_CAVEAT,
             "average_guests_per_room": DEFAULT_GUESTS_PER_ROOM,
@@ -599,17 +598,17 @@ def export_dashboard_data():
         "panel": {
             "primary_model": m_metrics.get("panel", {}).get("primary_model", "Model_2_TwoWay_FE_Clustered"),
             "sample_period": m_metrics.get("panel", {}).get("sample_period", "2018–2025"),
-            "observations": m_metrics.get("panel", {}).get("observations", 126),
-            "states": m_metrics.get("panel", {}).get("states", 16),
-            "years": m_metrics.get("panel", {}).get("years", 8),
-            "alos_elasticity": m_metrics.get("panel", {}).get("alos_elasticity", 0.6628),
-            "alos_p_value": m_metrics.get("panel", {}).get("alos_pvalue", 0.0952),
-            "tourist_elasticity": m_metrics.get("panel", {}).get("tourist_elasticity", 0.7327),
-            "tourist_p_value": m_metrics.get("panel", {}).get("tourist_pvalue", 0.0),
+            "observations": m_metrics.get("panel", {}).get("observations"),
+            "states": m_metrics.get("panel", {}).get("states"),
+            "years": m_metrics.get("panel", {}).get("years"),
+            "alos_elasticity": m_metrics.get("panel", {}).get("alos_elasticity"),
+            "alos_p_value": m_metrics.get("panel", {}).get("alos_pvalue"),
+            "tourist_elasticity": m_metrics.get("panel", {}).get("tourist_elasticity"),
+            "tourist_p_value": m_metrics.get("panel", {}).get("tourist_pvalue"),
             "leave_one_out_stability": "16/16",
             "yield_model": {
-                "r_squared": m_metrics.get("panel", {}).get("yield_model", {}).get("r_squared", 0.8018),
-                "aor_elasticity": m_metrics.get("panel", {}).get("yield_model", {}).get("aor_elasticity", 0.2068),
+                "r_squared": m_metrics.get("panel", {}).get("yield_model", {}).get("r_squared"),
+                "aor_elasticity": m_metrics.get("panel", {}).get("yield_model", {}).get("aor_elasticity"),
             }
         },
         "gravity": {
@@ -617,26 +616,26 @@ def export_dashboard_data():
             "specification": m_metrics.get("gravity", {}).get("specification", "Structural Poisson Pseudo-Maximum Likelihood (Zero-Flow Robust)"),
             "train_period": m_metrics.get("gravity", {}).get("train_period", "2018–2024"),
             "test_period": m_metrics.get("gravity", {}).get("test_period", "2025 Actuals"),
-            "total_panel_observations": m_metrics.get("gravity", {}).get("total_panel_observations", 1920),
-            "train_observations": m_metrics.get("gravity", {}).get("train_observations", 1680),
-            "test_observations": m_metrics.get("gravity", {}).get("test_observations", 240),
-            "ppml_oos_r2": m_metrics.get("gravity", {}).get("r2_oos", 0.5890),
-            "correlation": m_metrics.get("gravity", {}).get("correlation", 0.8759),
-            "mae": m_metrics.get("gravity", {}).get("mae", 175.50),
-            "rmse": m_metrics.get("gravity", {}).get("rmse", 329.04),
-            "distance_decay_friction": m_metrics.get("gravity", {}).get("distance_decay_friction", -0.4104),
-            "cross_region_barrier": m_metrics.get("gravity", {}).get("cross_region_barrier", -0.8022),
-            "structural_invariance_p_value": m_metrics.get("gravity", {}).get("structural_change_test", {}).get("p_value", 0.1198),
+            "total_panel_observations": m_metrics.get("gravity", {}).get("total_panel_observations"),
+            "train_observations": m_metrics.get("gravity", {}).get("train_observations"),
+            "test_observations": m_metrics.get("gravity", {}).get("test_observations"),
+            "ppml_oos_r2": m_metrics.get("gravity", {}).get("r2_oos"),
+            "correlation": m_metrics.get("gravity", {}).get("correlation"),
+            "mae": m_metrics.get("gravity", {}).get("mae"),
+            "rmse": m_metrics.get("gravity", {}).get("rmse"),
+            "distance_decay_friction": m_metrics.get("gravity", {}).get("distance_decay_friction"),
+            "cross_region_barrier": m_metrics.get("gravity", {}).get("cross_region_barrier"),
+            "structural_invariance_p_value": m_metrics.get("gravity", {}).get("structural_change_test", {}).get("p_value"),
             "naive_baselines": {
-                "lag_2024_oos_r2": 0.7637,
-                "historical_mean_oos_r2": 0.6732,
+                "lag_2024_oos_r2": next((x["r2_oos"] for x in m_metrics["gravity"]["naive_baselines"] if "2024" in x["name"]), None),
+                "historical_mean_oos_r2": next((x["r2_oos"] for x in m_metrics["gravity"]["naive_baselines"] if "Historical" in x["name"]), None),
                 "log_ols_oos_r2": 0.2936
             }
         },
         "tsa": {
             "top_product": p_top[0] if p_top else "Accommodation services",
             "accommodation_post_recovery_median_vai": float(p_top[2]) if p_top else 0.8579,
-            "accommodation_vai_rank": int(p_top[1]) if p_top else 1,
+            "accommodation_vai_rank": int(p_top[1]) if p_top else None,
             "total_product_records": int(n_prod)
         },
         "corridors": {
@@ -644,11 +643,11 @@ def export_dashboard_data():
             "total_bilateral_pairs_with_intrastate": 256,
             "pareto_optimal_corridors_count": int(n_pareto_c),
             "top_ranked_corridor": {
-                "origin": top_c[0] if top_c else "Selangor",
-                "destination": top_c[1] if top_c else "W.P. Kuala Lumpur",
-                "pareto_rank": int(top_c[2]) if top_c else 1,
-                "opportunity_rank": int(top_c[3]) if top_c else 1,
-                "composite_opportunity_score": float(top_c[4]) if top_c else 71.51
+                "origin": top_c[0] if top_c else None,
+                "destination": top_c[1] if top_c else None,
+                "pareto_rank": int(top_c[2]) if top_c else None,
+                "opportunity_rank": int(top_c[3]) if top_c else None,
+                "composite_opportunity_score": float(top_c[4]) if top_c else None
             }
         },
         "scenarios": {

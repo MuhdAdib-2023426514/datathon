@@ -2,6 +2,8 @@
 
 > **Current remediation plan (2026-09-21):** See [Rubric remediation implementation plan](docs/rubric_remediation_plan.md) for the code-review fixes, dependency order, acceptance gates, and evidence requirements covering all 25 rubric criteria. These issues remain open regardless of historical completion claims below. The original plan is retained as architectural context.
 
+> **Execution scope:** Implement R01–R12 **and** the mandatory [C00–C17 checklist addendum](docs/rubric_remediation_plan.md#7-mandatory-checklist-addendum-workspace-analytical-claims-and-publication). Track each acceptance gate separately. The addendum covers GitHub reconciliation, README/results consistency, diagnostic and optimizer fallbacks, scenario-independent ranking, Pareto eligibility, assistant claims, provenance, uncertainty/risk modes, test separation, audit claims, and optional wild-cluster bootstrap. Local completion and verified delivery to GitHub `main` are separate milestones.
+
 ## Malaysian Sustainable Tourism Economic Intelligence
 
 Repository:

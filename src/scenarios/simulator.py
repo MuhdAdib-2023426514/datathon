@@ -32,7 +32,6 @@ DUCKDB_PATH = PROCESSED_DIR / "tourism_data.duckdb"
 
 MANDATORY_DISCLAIMER = "Scenario estimate, not a causal forecast."
 SEASONAL_CAPACITY_CAVEAT = "Annual occupancy may hide seasonal/weekend capacity pressure."
-DEFAULT_ACCOMMODATION_VAI = 0.8579
 DEFAULT_GUESTS_PER_ROOM = 1.8
 DEFAULT_AFFECTED_SHARE = 0.15
 DEFAULT_HOMESTAY_DISCOUNT_FACTOR = 0.85
@@ -59,9 +58,13 @@ class ScenarioSimulator:
             vai_res = con.execute(
                 "SELECT post_recovery_median_vai FROM product_value_summary WHERE product_id = 'accommodation'"
             ).fetchone()
-            self.national_accom_vai = float(vai_res[0]) if (vai_res and vai_res[0]) else DEFAULT_ACCOMMODATION_VAI
+            self.national_accom_vai = float(vai_res[0]) if (vai_res and vai_res[0]) else np.nan
         else:
-            self.national_accom_vai = DEFAULT_ACCOMMODATION_VAI
+            self.national_accom_vai = np.nan
+
+        if not np.isfinite(self.national_accom_vai):
+            con.close()
+            raise ValueError("Accommodation VAI baseline unavailable")
 
         # Fetch hotel capacity metrics
         if "accommodation_capacity" in tables:
@@ -79,7 +82,7 @@ class ScenarioSimulator:
         # Base AOR precedence
         base_aor = None
         for col in ["aor_2025_pct", "aor_2024_pct"]:
-            if col in row and pd.notnull(row[col]) and float(row[col]) > 0:
+            if col in row and pd.notnull(row[col]) and 0 <= float(row[col]) <= 100:
                 base_aor = float(row[col])
                 break
 
@@ -138,6 +141,10 @@ class ScenarioSimulator:
         """
         if origin not in self.valid_states:
             raise ValueError(f"Invalid origin state: '{origin}'. Must be one of 16 Malaysian states.")
+        if not all(np.isfinite(v) for v in [delta_alos, guests_per_room, planning_threshold]):
+            raise ValueError("Scenario parameters must be finite")
+        if not 0 < planning_threshold <= 100:
+            raise ValueError("planning_threshold must be in (0, 100]")
         if destination not in self.valid_states:
             raise ValueError(f"Invalid destination state: '{destination}'. Must be one of 16 Malaysian states.")
         if delta_alos < 0 or delta_alos > 3.0:
@@ -230,6 +237,11 @@ class ScenarioSimulator:
                 "seasonal_caveat": SEASONAL_CAPACITY_CAVEAT,
             },
             "metadata": metadata,
+            "assumptions": {"capacity_scope": "Hotel-equivalent demand sensitivity; homestay inventory not observed separately",
+                            "spend_basis": "Destination-average accommodation spending per all tourist nights, not a room rate",
+                            "vfr_overlap": "Same reach applied within converted VFR cohort; extension counted once",
+                            "homestay_rate": "Assumed max(RM75, 85% of average spend per tourist-night)",
+                            "yield_uplift_scope": "All baseline accommodation spending"},
             "disclaimer": MANDATORY_DISCLAIMER,
         }
 
@@ -251,6 +263,10 @@ class ScenarioSimulator:
           3. Converted unpaid VFR stays into commercial paid/homestay lodging (with room night capacity impact)
           4. Room-night capacity constraint and sensitivity analysis
         """
+        if not all(np.isfinite(v) for v in [delta_alos, guests_per_room, planning_threshold]):
+            raise ValueError("Scenario parameters must be finite")
+        if not 0 < planning_threshold <= 100:
+            raise ValueError("planning_threshold must be in (0, 100]")
         if destination not in self.valid_states:
             raise ValueError(f"Invalid destination state: '{destination}'.")
         if delta_alos < 0 or delta_alos > 3.0:
@@ -291,7 +307,7 @@ class ScenarioSimulator:
         if has_vfr_data and unpaid_vfr_pct is not None:
             vfr_tourists = baseline_tourists * (unpaid_vfr_pct / 100.0)
             converted_vfr_tourists = vfr_tourists * (vfr_conversion_pct / 100.0)
-            vfr_guest_nights = converted_vfr_tourists * (baseline_alos + delta_alos)
+            vfr_guest_nights = converted_vfr_tourists * (baseline_alos + affected_share * delta_alos)
             homestay_nightly_rate = max(75.0, spend_per_night * DEFAULT_HOMESTAY_DISCOUNT_FACTOR)
             vfr_accom_spend_rm = vfr_guest_nights * homestay_nightly_rate
         else:
@@ -300,8 +316,10 @@ class ScenarioSimulator:
             vfr_guest_nights = 0.0
             vfr_accom_spend_rm = 0.0
 
-        # Total additional guest nights across all levers (Phase 24: includes VFR guest nights!)
-        total_additional_guest_nights = add_nights_alos + add_nights_daytrip + vfr_guest_nights
+        # Remove extension overlap: VFR converts already receive extension in their paid nights.
+        vfr_overlap_nights = converted_vfr_tourists * affected_share * delta_alos
+        # Paid-demand proxy, distinct from incremental tourist nights.
+        total_additional_guest_nights = add_nights_alos - vfr_overlap_nights + add_nights_daytrip + vfr_guest_nights
 
         # Pricing yield uplift
         new_spend_per_night = spend_per_night * (1.0 + yield_uplift_pct / 100.0)
@@ -309,7 +327,7 @@ class ScenarioSimulator:
         # Additional accommodation expenditure
         existing_nights = baseline_tourists * baseline_alos
         existing_nights_uplift_rm = existing_nights * (new_spend_per_night - spend_per_night)
-        new_nights_spend_rm = (add_nights_alos + add_nights_daytrip) * new_spend_per_night
+        new_nights_spend_rm = (add_nights_alos - vfr_overlap_nights + add_nights_daytrip) * new_spend_per_night
         total_additional_spend_rm = new_nights_spend_rm + existing_nights_uplift_rm + vfr_accom_spend_rm
         total_additional_spend_m = total_additional_spend_rm / 1e6
         potential_gva_m = (total_additional_spend_rm * self.national_accom_vai) / 1e6
@@ -367,6 +385,8 @@ class ScenarioSimulator:
             },
             "simulated_impact": {
                 "stay_extension_nights": round(add_nights_alos, 0),
+                "additional_tourist_nights": round(add_nights_alos + add_nights_daytrip, 0),
+                "transferred_existing_vfr_nights": round(converted_vfr_tourists * baseline_alos, 0),
                 "daytrip_converted_tourists": round(converted_tourists, 0),
                 "daytrip_converted_nights": round(add_nights_daytrip, 0),
                 "vfr_converted_tourists": round(converted_vfr_tourists, 0),
@@ -385,6 +405,11 @@ class ScenarioSimulator:
                 "seasonal_caveat": SEASONAL_CAPACITY_CAVEAT,
             },
             "metadata": metadata,
+            "assumptions": {"capacity_scope": "Hotel-equivalent demand sensitivity; homestay inventory not observed separately",
+                            "spend_basis": "Destination-average accommodation spending per all tourist nights, not a room rate",
+                            "vfr_overlap": "Same reach applied within converted VFR cohort; extension counted once",
+                            "homestay_rate": "Assumed max(RM75, 85% of average spend per tourist-night)",
+                            "yield_uplift_scope": "All baseline accommodation spending"},
             "disclaimer": MANDATORY_DISCLAIMER,
         }
 
@@ -475,6 +500,11 @@ class ScenarioSimulator:
                 "seasonal_caveat": SEASONAL_CAPACITY_CAVEAT,
             },
             "metadata": metadata,
+            "assumptions": {"capacity_scope": "Hotel-equivalent demand sensitivity; homestay inventory not observed separately",
+                            "spend_basis": "Destination-average accommodation spending per all tourist nights, not a room rate",
+                            "vfr_overlap": "Same reach applied within converted VFR cohort; extension counted once",
+                            "homestay_rate": "Assumed max(RM75, 85% of average spend per tourist-night)",
+                            "yield_uplift_scope": "All baseline accommodation spending"},
             "disclaimer": MANDATORY_DISCLAIMER,
         }
 

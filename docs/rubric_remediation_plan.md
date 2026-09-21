@@ -258,3 +258,241 @@ If only three days are available, reduce feature scope rather than weakening cor
 - **Day 3:** Run critical R06–R09 checks, repair claims, and rehearse R11 with one verified corridor. Produce the evidence matrix and describe R10 as a proposed pilot wherever external validation is absent.
 
 Defer live solver infrastructure, new models, extra animation, and expanded assistants. Outstanding source, correctness, or adoption gaps remain visible; the contingency does not establish full rubric coverage by itself.
+
+## 7. Mandatory checklist addendum: workspace, analytical claims, and publication
+
+This addendum is part of the executable plan, not optional background. Execute **C00–C17** alongside their linked R work packages. These tasks make the additional review checklist explicit and take precedence over historical claims of completion. Inspect current code first: a fix already present still requires verification, not unnecessary reimplementation.
+
+All tasks initially remain **OPEN**. Track them individually in `IMPLEMENTATION_STATUS.md` using the completion rules in Section 1. For each task record the implementation commit, changed files, executed checks, evidence artifact, and unresolved limitations. C17 is conditional as specified below; C00 has separate local and remote completion gates.
+
+### C00 — Reconcile the workspace with GitHub `main`
+
+**Order:** Capture the baseline before R01; perform remote delivery after C01–C16 and release validation.  
+**Files/evidence:** Git history and working tree, `IMPLEMENTATION_STATUS.md`, proposed `artifacts/release_verification.md`.
+
+- Inspect the configured remote, current branch, HEAD, working-tree changes, and local/remote tracking state. Fetch remote refs when access permits; do not treat a stale tracking ref as current GitHub state.
+- Compare HEAD and current remote `main` using their merge base and ahead/behind commits. Inspect differences in code, README, results artifacts, and implementation status.
+- Preserve existing local edits. Integrate relevant remote changes through a reviewed merge/rebase or isolated branch as appropriate; do not discard changes, overwrite unrelated work, or force-push to resolve divergence.
+- Reconcile documentation against actual tested behavior, not whichever document declares the most progress.
+- Prepare a reviewable implementation commit/branch and release report before any final publication step. Commit/push/merge only within the authorization of the execution session and repository rules. This document-editing request does not itself publish changes or authorize bypassing branch protection.
+- When publication is authorized, push the verified branch and use the repository's supported path to `main`. If a PR or merge remains pending, report it as pending; a branch push is not completion of a `main` delivery.
+- After delivery, fetch again and verify that the implementation commit is included in remote `main`, that the expected files/results match, and that required remote checks pass. Record the remote SHA and verification time. If other commits landed meanwhile, verify inclusion and relevant content rather than requiring HEAD equality blindly.
+
+**Gate:** Local reconciliation is complete only with a documented comparison and passing validation. Remote delivery is complete only with verified inclusion in current GitHub `main`. Lack of credentials, authorization, or an unmerged PR must remain an explicit outstanding delivery item.
+
+### C01 — Rebuild README findings from `current_results.json`
+
+**Links:** R07, R12.  
+**Files:** `src/analytics/export_dashboard_json.py`, `artifacts/current_results.json`, `dashboard/public/data/current_results.json`, `README.md`, `tests/test_results_consistency.py`.
+
+- Derive the results contract from freshly validated analytics, then render README numerical findings from that contract using a reproducible generator or marked generated section.
+- Keep explanations and limitations editable outside generated sections. Do not manually edit the JSON to reproduce preferred README claims.
+- Validate the contract's schema, units, status, and data/model version. Replace brittle assertions about specific historical coefficients with comparisons against the actual current contract where appropriate.
+- Include the README and matching artifacts in C00 delivery; do not push an updated README against incompatible code/results.
+
+**Gate:** Changing a fixture result changes the generated finding; regeneration is idempotent; README and both results JSON copies agree. Record local completion separately from verified remote publication.
+
+### C02 — Remove empirical fallbacks from state diagnostics
+
+**Links:** R01, R09.  
+**Files:** `src/analytics/state_diagnostics.py`, its exporters/consumers, `tests/test_missing_values.py` and diagnostic fixtures.
+
+- Audit every default for observed ALOS, spending, lodging share, population, room capacity, and other empirical inputs, including `.fillna`, dictionary defaults, and truthiness expressions.
+- Preserve legitimate observed zeros; propagate unavailable values and reasons. Do not invent observations to keep a recommendation or score available.
+- Allow policy assumptions only in explicitly labeled scenario fields, never in observed diagnostic fields.
+
+**Gate:** Removing each required empirical field in fixtures produces unavailable/insufficient-evidence diagnostics rather than substituted numbers. Complete-data results remain correct.
+
+### C03 — Remove the +0.5-night scenario from opportunity ranking
+
+**Links:** R06, R09.  
+**Files:** `src/analytics/state_diagnostics.py`, `src/network/corridor_network.py`, ranking exports and consumers; locate other ranking implementations before editing.
+
+- Trace the ranking dependency graph and remove fixed +0.5-night simulated spending/GVA from opportunity eligibility, scores, ordering, Pareto objectives, and tie-breakers.
+- Build opportunity classification from documented observed indicators and transparently labeled model diagnostics. Keep model residual gaps distinct from demonstrated economic opportunities.
+- Preserve +0.5 nights as a selectable scenario if useful, displayed separately after targeting. Scenario portfolio allocation is a separate, explicitly assumption-dependent decision.
+
+**Gate:** Changing any stay-extension scenario setting cannot change the observed opportunity classification, ordering, or frontier. Tests demonstrate this invariance while showing scenario outputs change as expected.
+
+### C04 — Restrict Pareto comparisons to complete evidence
+
+**Links:** R01, R09.  
+**Files:** Pareto/frontier computation located during C03, export contracts, corridor/map displays, `tests/test_corridor_opportunity.py`.
+
+- Declare the exact objective set, direction of preference, units, and required fields before determining eligibility.
+- Admit only candidates with finite, conceptually compatible observations for every required objective. Treat zero as valid where its domain permits it.
+- Exclude incomplete candidates from comparisons and rankings without treating them as dominated. Display “Insufficient evidence” and list missing objectives.
+- Retain excluded counts and coverage in the exported evidence; do not manufacture values or silently drop rows from reporting.
+
+**Gate:** Hand-computed fixtures cover dominance, ties, zero, null, and infinity. Incomplete rows never enter the frontier or dominate complete rows. Counts reconcile across eligible, excluded, and total candidates.
+
+### C05 — Ground assistant responses in current JSON or withdraw the claim
+
+**Links:** R09, R11.  
+**Files:** `dashboard/src/components/ImplementationRoadmap.tsx`, evidence/result JSON, related README and status claims.
+
+- Locate response construction and remove hard-coded empirical findings from answer templates. Templates may supply phrasing, but values, entities, periods, status, and supporting evidence must come from the selected current dataset.
+- Show evidence references and limitations. Unsupported questions or unavailable fields must receive a clear unsupported/unavailable response.
+- Describe a deterministic lookup interface as an evidence-query tool. Do not imply a generative AI capability that is not implemented.
+- If dynamic evidence cannot be delivered reliably, remove/disable the assistant feature and its unsupported capability claims while preserving the rest of the decision workflow.
+
+**Gate:** Mutating a JSON fixture changes the corresponding answer, missing evidence produces no invented answer, and unrelated questions do not receive an apparently authoritative canned result. Claims match the implemented capability.
+
+### C06 — Remove “zero hallucination” guarantees
+
+**Links:** R11, R12.  
+**Files:** README, status, plans, presentation material, dashboard text, assistant descriptions, and generated metadata.
+
+- Remove affirmative guarantees such as “zero hallucination,” “hallucination-free,” and equivalent certainty claims. Use testable descriptions such as “answers use the displayed dataset and show supporting evidence.”
+- Keep any necessary historical quotation explicitly identified as a withdrawn claim; instructions prohibiting the phrase are not product claims.
+
+**Gate:** A repository text audit and rendered UI review find no active unsupported guarantee. Document the scope actually validated by C05 tests.
+
+### C07 — Verify and correct the state-DTS publication date
+
+**Links:** R07.  
+**Files:** `data/metadata/source_registry.yaml`, exported source metadata, provenance UI, source citations in documentation.
+
+- Verify the claimed **15 September 2026** date against the exact official DOSM state-DTS publication. Distinguish publication date from the 2025 reference year and from any national-DTS release date.
+- If the official state release confirms this date, update every affected record and regenerate exports. If it contradicts the supplied date, use the evidenced official date and document the discrepancy.
+- If verification is unavailable, mark the release date unverified and retain this task as pending. Do not infer authenticity from a plausible URL or silently overwrite all DTS dates.
+
+**Gate:** Record the exact official release URL, title, supported publication date, and verification date. Registry, exported JSON, and UI agree with that evidence.
+
+### C08 — Make source-URL and checksum claims real
+
+**Links:** R07.  
+**Files:** Source registry, provenance export/drawer, raw-input manifest, `docs/data_quality.md`, README.
+
+- Add working official source/download URLs and computed SHA-256 values for the actual files used, with file paths, sizes, reference periods, retrieval information where known, and source identity.
+- Compute checksums from bytes rather than inserting placeholder strings. Ensure claims accurately describe which artifacts contain the hashes.
+- A registry-only URL is not proof of an accessible download or authentic content. Document unresolved access/provenance gaps and narrow claims accordingly.
+
+**Gate:** Recomputing hashes matches the manifest; changing a fixture file fails verification; sampled source links resolve to the intended official release. Do not claim complete verification where coverage is partial.
+
+### C09 — Remove Monte Carlo ALOS, RM60, and VAI defaults
+
+**Links:** R01, R02.  
+**Files:** `src/scenarios/monte_carlo.py`, exports, consumers, Monte Carlo tests.
+
+- Explicitly search for fallback ALOS, RM60 spend-per-night, fixed VAI, and equivalent empirical defaults in all executable branches, not just the usual dataset path.
+- Require empirical baselines or return insufficient evidence. Remove unused constants that imply an empirical default is supported.
+- Keep user-selected policy parameters separate from empirical baselines and label them accordingly.
+
+**Gate:** Missing each baseline independently makes the simulation unavailable with its reason. No simulated distribution is presented as evidence-based when a required empirical baseline is absent.
+
+### C10 — Validate historical uncertainty calibration claims
+
+**Links:** R02, R06.  
+**Files:** Monte Carlo calibration, historical panel queries, uncertainty provenance exports, tests and methodology.
+
+- Define the calibration window, exclusions, units/price basis, required sample count, dispersion estimator, bounds, and treatment of missing observations for each random parameter.
+- Derive claimed empirical dispersion from the documented historical series. Distinguish spending variability, national VAI variability, and policy-assumption uncertainty.
+- Do not report a parameter as sampled when it is only exported as metadata. Identify assumed dispersion explicitly where empirical calibration is unavailable, or disable that mode.
+- If full calibration is deferred, withdraw the historical-calibration claim for unsupported parameters rather than retaining it in status/docs.
+
+**Gate:** Synthetic histories with known dispersion yield expected calibration; changing historical inputs changes calibrated parameters; insufficient histories are flagged. Recorded provenance describes the distributions actually used.
+
+### C11 — Remove optimizer distance, ALOS, and spending defaults
+
+**Links:** R01, R04.  
+**Files:** `src/scenarios/portfolio_optimizer.py`, candidate generation, frontend allocation utility, candidate exports/tests.
+
+- Audit distance, ALOS, spend-per-night, VAI, and capacity defaults across Python and TypeScript. Specify which inputs are required for each allocation mode.
+- Make candidates missing required evidence ineligible with explicit reasons. An optional display-only field may remain unavailable without unnecessarily disqualifying a valid candidate.
+- Prevent custom-cost edits from bypassing backend eligibility or recreating missing observations.
+
+**Gate:** Candidate fixtures with absent required fields remain ineligible in both precomputed and custom paths; frontend and backend eligibility agree. Real zero values receive domain-specific handling.
+
+### C12 — Label illustrative costs and test editable overrides
+
+**Links:** R04, R10.  
+**Files:** Optimizer, scenario component/allocation utility, types, exported cost metadata and implementation model.
+
+- Label generated campaign costs **“Illustrative cost assumption”** in candidate records, tables, summaries, and exported briefs. Expose the formula, units, and bounds.
+- Allow valid user overrides in clearly stated RM units and identify them as user-supplied assumptions, not observed market prices.
+- Recalculate allocation and totals using overrides; state whether the result uses a heuristic or an exact solver. Validate invalid/negative/non-finite costs and explicitly define zero-cost handling.
+
+**Gate:** An edited cost changes the actual allocation inputs and budget totals, resetting restores the benchmark, and provenance survives export. No resulting multiple is labeled commercial profitability.
+
+### C13 — Replace “Portfolio ROI Multiplier” terminology
+
+**Links:** R04, R09.  
+**Files:** Optimizer fields, frontend types/labels, JSON exports, README, reports, tests, implementation metadata.
+
+- Use **“Scenario GVA-to-Cost Multiple”** for scenario potential GVA divided by assumed campaign cost. State numerator/denominator units and whether the numerator is expected or a downside objective.
+- Explain that GVA is economic value added, not investor cash return, net profit, or tax receipts. Return unavailable for an undefined denominator rather than inventing a multiple.
+- Migrate misleading internal `roi` fields where feasible; any temporarily retained compatibility alias must not surface as an ROI claim.
+
+**Gate:** No active dashboard/report label describes the measure as ROI. Fixtures verify the ratio and denominator boundaries; types, JSON, and displayed labels agree.
+
+### C14 — Verify risk-adjusted/P10 modes or remove their claims
+
+**Links:** R04, R05.  
+**Files:** Optimizer objective definitions, solver/export tiers, scenario controls, status/docs, optimizer tests.
+
+- Specify expected-value, risk-adjusted, and P10/downside objectives mathematically, including the risk-aversion parameter and uncertainty source. Remove hard-coded percentage substitutes for unavailable risk evidence.
+- Verify the selected objective reaches the allocation algorithm and every budget/threshold combination is correctly identified. Never show another mode's cached result under the selected label.
+- Respect R04's distinction between summed marginal P10 scores and a joint portfolio P10; explicitly model dependence if claiming the latter.
+- If a mode is not implemented and validated, remove/disable its control and retract the corresponding completion claim.
+
+**Gate:** A controlled candidate fixture where risk preferences should change selection demonstrates that they do. Objective totals reconcile and budget/capacity gates hold in every supported mode. Tests do not require different real-data selections when objectives legitimately agree.
+
+### C15 — Separate empirical snapshots from scientific validation
+
+**Links:** R06, R12.  
+**Files:** `tests/`, `tests/snapshot/`, pytest markers, `src/pipeline.py`, validation documentation.
+
+- Inventory assertions requiring a particular observed sign, significance threshold, ranking, coefficient, corridor count, or model superiority. Move dataset-specific expectations into versioned snapshot/regression tests where appropriate.
+- Keep formula correctness, inference implementation, leakage prevention, conservation, and domain constraints in scientific/functional validation using independent synthetic fixtures.
+- Preserve scientific tests with known simulated truths; the problem is requiring a preferred empirical conclusion, not testing an estimator on controlled data.
+- Update the pipeline and test reporting so snapshot success is never described as confirming an economic hypothesis.
+
+**Gate:** A plausible revised dataset can change empirical conclusions without falsely failing method correctness. Snapshot changes receive explicit review; validation summaries distinguish snapshots, functional tests, and inferential findings.
+
+### C16 — Withdraw the self-awarded 100/100 audit
+
+**Links:** R12.  
+**Files:** `artifacts/final_rubric_audit.md`, implementation status, README, presentation material, exported commercial metadata.
+
+- Replace active self-certification with a dated criterion-by-criterion evidence register and outstanding limitations.
+- If keeping the prior audit for history, mark it superseded and link to the verified evidence matrix; do not present its score as a current outcome.
+- State that rubric readiness is an internal assessment and competition marks are determined by judges.
+
+**Gate:** No current claim says full marks have been achieved. Every completed checklist item links to implementation and validation evidence, while incomplete external evidence remains visible.
+
+### C17 — Add wild-cluster bootstrap sensitivity if time permits
+
+**Links:** R06. **Priority:** P2, conditional on completion of correctness gates and continued use of headline FE inference.  
+**Files:** `src/analytics/panel_econometrics.py`, model-validation artifacts, tests, `docs/model_validation.md`, headline evidence panels.
+
+- Select and document an appropriate wild-cluster bootstrap procedure for the FE coefficient test with state-level clustering, including null restriction, weights, replication count, seed, and treatment of fixed effects.
+- Validate the implementation against an established reference implementation or independently checked benchmark. Save convergence/failure information and finite-sample limitations.
+- Present bootstrap sensitivity alongside the original coefficient, clustered interval/p-value, and the 16-cluster caveat. Do not select a procedure because it makes the result significant.
+- If deferred, record **DEFERRED — small-cluster inference limitation remains**, keep cautious association language, and remove any claim that bootstrap validation is complete.
+
+**Gate:** Either provide reproducible, independently checked bootstrap results and accurate UI/docs, or explicitly document deferral and retained limitations. The presence of this task does not justify claiming stronger inference before implementation.
+
+## 8. Combined completion checklist
+
+Use this checklist in addition to Section 5. Execute C00 baseline comparison first, integrate C01–C16 into R01–R12, resolve C17 as implemented or explicitly deferred, and finish C00 remote delivery only after validation and applicable authorization.
+
+- [ ] C00 local/remote comparison and safe local reconciliation recorded.
+- [ ] C01 README findings regenerated from validated current results.
+- [ ] C02 state diagnostics empirical defaults removed.
+- [ ] C03 observed opportunity ranking independent of +0.5-night scenarios.
+- [ ] C04 Pareto comparisons restricted to complete compatible evidence.
+- [ ] C05 evidence-query responses dynamic, or unsupported assistant claims withdrawn.
+- [ ] C06 unsupported hallucination guarantees removed.
+- [ ] C07 official state-DTS publication date verified and propagated.
+- [ ] C08 actual source URLs and computed checksums supplied with accurate coverage claims.
+- [ ] C09 Monte Carlo empirical defaults removed.
+- [ ] C10 historical calibration verified, or unsupported calibration claims withdrawn.
+- [ ] C11 optimizer empirical defaults removed and eligibility preserved.
+- [ ] C12 illustrative editable cost behavior verified.
+- [ ] C13 Scenario GVA-to-Cost Multiple terminology and formula verified.
+- [ ] C14 supported risk objectives executed and tested, or unsupported modes/claims removed.
+- [ ] C15 empirical snapshots separated from scientific validation.
+- [ ] C16 self-awarded full-mark claims replaced with evidence.
+- [ ] C17 wild-cluster sensitivity verified or explicitly deferred with limitations.
+- [ ] C00 remote delivery verified on GitHub `main`, or explicitly reported pending.

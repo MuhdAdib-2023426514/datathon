@@ -36,72 +36,27 @@ def simulate_typescript_contract(
     accom_vai: float = 0.8579,
     guests_per_room: float = 1.8,
 ) -> Dict[str, Any]:
-    """
-    Exact mathematical replica of the calculation pipeline executed in
-    dashboard/src/components/ScenarioSimulator.tsx lines 205-285.
-    """
-    baseline_excursionists_k = visitors_k - tourists_k
-
-    # 1. Stay extension with campaign affected share
-    add_nights_from_alos_k = tourists_k * (affected_share_pct / 100.0) * delta_alos
-
-    # 2. Converted excursionists into overnight tourists
-    converted_tourists_k = baseline_excursionists_k * (conversion_rate_pct / 100.0)
-    add_nights_from_converted_k = converted_tourists_k * (baseline_alos + delta_alos)
-
-    # 3. Converted unpaid VFR stays into commercial/registered lodging
-    has_vfr_data = unpaid_vfr_pct is not None
-    vfr_pct_val = unpaid_vfr_pct if has_vfr_data else 0.0
-    vfr_tourists_k = tourists_k * (vfr_pct_val / 100.0)
-    converted_vfr_tourists_k = vfr_tourists_k * (vfr_conversion_rate_pct / 100.0)
-    vfr_nights_k = converted_vfr_tourists_k * (baseline_alos + delta_alos)
-    homestay_nightly_rate = max(75.0, baseline_spend_per_night * 0.85)
-    vfr_accom_spend_rm = (vfr_nights_k * 1e3 * homestay_nightly_rate) / 1e6 if has_vfr_data else 0.0
-
-    # Total additional guest nights (thousands)
-    total_additional_guest_nights_k = add_nights_from_alos_k + add_nights_from_converted_k + vfr_nights_k
-
-    # 4. Expenditure uplift
-    new_spend_per_night = baseline_spend_per_night * (1.0 + yield_uplift_pct / 100.0)
-    existing_nights_k = tourists_k * baseline_alos
-    new_nights_spend_rm = ((add_nights_from_alos_k + add_nights_from_converted_k) * 1e3 * new_spend_per_night) / 1e6
-    existing_nights_uplift_rm = (existing_nights_k * 1e3 * (new_spend_per_night - baseline_spend_per_night)) / 1e6
-    total_additional_accom_spend_mil = new_nights_spend_rm + existing_nights_uplift_rm + vfr_accom_spend_rm
-
-    # 5. Potential Additional Tourism Value Added Proxy
-    potential_additional_tdgva_mil = total_additional_accom_spend_mil * accom_vai
-
-    # 6. Capacity Feasibility & Implied AOR
-    has_capacity_data = total_rooms is not None and baseline_aor is not None
-    available_room_nights_year_k = (total_rooms * 365.0) / 1e3 if (has_capacity_data and total_rooms > 0) else None
-    additional_room_nights_year_k = total_additional_guest_nights_k / guests_per_room
-    additional_aor_pct = (
-        (additional_room_nights_year_k / available_room_nights_year_k) * 100.0
-        if (has_capacity_data and available_room_nights_year_k and available_room_nights_year_k > 0)
-        else None
-    )
-    simulated_aor = (baseline_aor + additional_aor_pct) if (has_capacity_data and baseline_aor is not None and additional_aor_pct is not None) else None
-
-    # 7. Capacity status tier
-    if simulated_aor is None:
-        capacity_status = "Unknown"
-    elif simulated_aor > 100.0:
-        capacity_status = "Physical Breach"
-    elif simulated_aor > planning_threshold:
-        capacity_status = "Severe Saturation"
-    elif simulated_aor >= (planning_threshold - 10.0):
-        capacity_status = "Planning Watch"
-    else:
-        capacity_status = "Normal"
-
-    return {
-        "additional_visitor_nights": total_additional_guest_nights_k * 1000.0,
-        "additional_room_nights": additional_room_nights_year_k * 1000.0,
-        "additional_expenditure_rm_million": total_additional_accom_spend_mil,
-        "incremental_gva_rm_million": potential_additional_tdgva_mil,
-        "projected_aor_pct": simulated_aor,
-        "capacity_status": capacity_status,
-    }
+    import json
+    import subprocess
+    from pathlib import Path
+    args = dict(baselineTouristsK=tourists_k, baselineExcursionistsK=visitors_k-tourists_k,
+                baselineAlos=baseline_alos, baselineSpendPerNight=baseline_spend_per_night,
+                deltaAlos=delta_alos, affectedShare=affected_share_pct, conversionRate=conversion_rate_pct,
+                yieldUplift=yield_uplift_pct, vfrConversionRate=vfr_conversion_rate_pct,
+                unpaidVfrInput=unpaid_vfr_pct, totalRooms=total_rooms, baselineAor=baseline_aor,
+                accomVAI=accom_vai, guestsPerRoom=guests_per_room, residentHouseholds=None,
+                hasCapacityData=total_rooms is not None and baseline_aor is not None)
+    root = Path(__file__).resolve().parents[1]
+    command = "import {calculateScenario} from './dashboard/src/lib/scenario.ts'; let s=''; for await (const c of process.stdin) s+=c; console.log(JSON.stringify(calculateScenario(JSON.parse(s))));"
+    result = json.loads(subprocess.check_output(['node','--input-type=module','-e',command],input=json.dumps(args),text=True,cwd=root))
+    aor = result['simulatedAor']
+    tier = ('Unknown' if aor is None else 'Physical Breach' if aor > 100 else
+            'Severe Saturation' if aor > planning_threshold else 'Planning Watch' if aor >= planning_threshold-10 else 'Normal')
+    return {'additional_visitor_nights': result['totalAdditionalGuestNightsK']*1000,
+            'additional_room_nights': result['additionalRoomNightsYearK']*1000,
+            'additional_expenditure_rm_million': result['totalAdditionalAccomSpendMil'],
+            'incremental_gva_rm_million': result['potentialAdditionalTdgvaMil'],
+            'projected_aor_pct': aor, 'capacity_status': tier}
 
 
 class TestScenarioParity(unittest.TestCase):

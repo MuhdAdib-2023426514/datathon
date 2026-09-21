@@ -28,7 +28,7 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
   const [selectedUser, setSelectedUser] = useState<string>('MOTAC');
   const [activeStep, setActiveStep] = useState<number>(1);
   const [activeQuery, setActiveQuery] = useState<string>('melaka_capacity');
-  const [selectedStateQuery, setSelectedStateQuery] = useState<string>('');
+  const [selectedStateQuery, setSelectedStateQuery] = useState<string>('Melaka');
 
   const defaultUsers: ImplementationUser[] = [
     {
@@ -186,83 +186,8 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
     }
   ];
 
-  // Grounded AI Decision Intelligence Knowledge Base
-  const groundedQueries: Record<string, {
-    title: string;
-    question: string;
-    answer: string;
-    metrics: Record<string, any>;
-    recommendation: string;
-    source: string;
-    confidence: string;
-    limitation: string;
-  }> = {
-    melaka_capacity: {
-      title: 'Melaka Capacity Constraint',
-      question: 'Why is Melaka classified as capacity-constrained and what policy should be prioritized?',
-      answer: 'Melaka exhibits an Average Occupancy Rate (AOR) of 63.8%, leaving limited headroom before breaching peak weekend saturation (80% planning threshold). With an Average Length of Stay (ALOS) of 2.11 days (below the national median of 2.47d) and lodging spend of RM 63.00/night, expanding volume without evening dispersion risks physical hotel room bottlenecks.',
-      metrics: {
-        'Baseline AOR': '63.8%',
-        'Planning Ceiling': '80.0%',
-        'Dest ALOS': '2.11 days (National Median: 2.47d)',
-        'Spend per Night': 'RM 63.00',
-        'Top Feeder': 'Selangor (2.73M tourists)'
-      },
-      recommendation: 'Prioritize midweek stay-extension promotions, Friday-arrival incentives, and premium experiential heritage trails rather than unconstrained weekend excursion campaigns.',
-      source: 'DOSM DTS 2025 & Tourism Malaysia Hotel Survey',
-      confidence: 'Very High',
-      limitation: 'Annual state-level occupancy (63.8%) may conceal localized peak-period capacity pressure; finer-grained occupancy data would be required to verify sub-state constraints.'
-    },
-    vai_ranking: {
-      title: 'High-Value Product Priority',
-      question: 'Which tourism products consistently create the highest domestic Gross Value Added?',
-      answer: 'In Malaysia Tourism Satellite Accounts (2015-2025), Accommodation Services consistently achieves the highest Value-Added Intensity among core tourism products with a post-recovery median of 85.8% (2025p VAI: 86.6%), followed by Food & Beverage (65.5%), Recreation & Cultural Services (60.4%), Shopping Retail Margin (47.0%), and Passenger Transport (40.7%). Travel Agencies expanded supply faster than GVA post-recovery, yielding a VAI of 28.5%.',
-      metrics: {
-        'Accommodation VAI': '85.8% (Post-Recovery Median)',
-        'Food & Beverage VAI': '65.5%',
-        'Recreation VAI': '60.4%',
-        'Shopping Retail Margin': '47.0%',
-        'Passenger Transport': '40.7%',
-        'Tourism Ratio (Accom)': '96.7%'
-      },
-      recommendation: 'Redirect public tourism incentives from low-margin retail subsidies toward overnight accommodation, cultural immersion, and multi-day itinerary development.',
-      source: 'DOSM Tourism Satellite Account 2015-2025p',
-      confidence: 'High',
-      limitation: 'National TSA supply tables represent aggregate national input-output relationships.'
-    },
-    priority_corridors: {
-      title: 'Priority Conversion Corridors',
-      question: 'Which feeder corridors offer the highest economic return from stay extension?',
-      answer: 'Priority Conversion Corridors are high-volume feeder routes whose destination exhibits below-median stay duration (ALOS < 2.47 days) and/or below-median accommodation capture. Major examples include Selangor -> Melaka (2.73M tourists, ALOS 2.11d), Johor -> Melaka (1.42M tourists), and Negeri Sembilan -> Melaka. The non-dominated Pareto frontier identifies 58 optimal inter-state corridors nationwide.',
-      metrics: {
-        'Selangor -> Melaka': '2.73M tourists | Priority Conversion',
-        'Negeri Sembilan -> Melaka': '114k flow gap | Rank 2 Pareto',
-        'Selangor -> W.P. KL': '84k stay gap | Rank 1 Pareto',
-        'Pareto Frontier': '58 non-dominated corridors nationwide'
-      },
-      recommendation: 'Deploy joint digital marketing campaigns between origin state transport hubs and destination accommodation providers with 2-night minimum stay incentives.',
-      source: 'DOSM DTS 2025 Origin-Destination Matrix & Corridor Opportunity Framework',
-      confidence: 'High',
-      limitation: 'Origin-destination flows reflect primary destination reported; multi-leg road trips are attributed to main stay.'
-    },
-    portfolio_budget: {
-      title: 'Strategic Budget Allocation',
-      question: 'How should a RM 5.0M tourism development budget be allocated across corridors?',
-      answer: 'The Mixed-Integer Linear Programming (MILP) portfolio optimizer selects 18 optimal inter-state corridors, generating RM 140.3M in expected incremental GVA (a benchmark multiple of 28.1x) while strictly ensuring no destination breaches its 80% hotel room capacity ceiling. The largest allocations go to high-yield feeder corridors into Pahang, Perak, and Pulau Pinang.',
-      metrics: {
-        'Budget Allocated': 'RM 5.00M',
-        'Budget Utilized': 'RM 4.98M (99.6%)',
-        'Expected GVA': 'RM 140.3M',
-        'Value-to-Cost Multiple': '28.1x (Scenario Benchmark)',
-        'Corridors Funded': '18 inter-state corridors'
-      },
-      recommendation: 'Execute the optimized 18-corridor campaign portfolio via coordinated digital promotions with state tourism boards and hotel associations.',
-      source: 'Portfolio Optimizer MILP Engine (scipy.optimize.milp)',
-      confidence: 'Very High',
-      limitation: 'GVA returns are scenario estimates assuming 15% target reach and +0.4 night stay extension.'
-    }
-  };
-
+  // Only selected-state evidence is supported; no empirical canned answers.
+  const groundedQueries: Record<string, any> = {};
   // Dynamic Structured State Evidence (Plan Section 13.2 / Sprint E)
   const dynamicStateQueryData = (selectedStateQuery && stateProfiles && stateProfiles[selectedStateQuery]) ? (() => {
     const s = stateProfiles[selectedStateQuery];
@@ -292,7 +217,7 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
     return {
       title: `${s.state} Evidence Profile`,
       question: `What are the capacity headroom constraints, length of stay, and economic yield metrics for ${s.state}?`,
-      answer: `${s.state} (${s.archetype_name}) recorded ${(b.tourists_thousands / 1000).toFixed(2)}M overnight tourists in 2025 with an Average Length of Stay (ALOS) of ${alos.toFixed(2)} days (national median: 2.47d) and lodging spend of RM ${spend.toFixed(2)}/night. Its baseline Average Occupancy Rate (AOR) stands at ${aor != null ? `${aor.toFixed(1)}%` : 'unobserved'}, classifying its room capacity headroom as '${capTier}'. TVAY is ${tvay != null ? `RM ${tvay.toFixed(1)}/day` : 'under empirical baseline'}.`,
+      answer: `${s.state} (${s.archetype_name}) recorded ${(b.tourists_thousands / 1000).toFixed(2)}M overnight tourists in 2025 with an Average Length of Stay (ALOS) of ${alos.toFixed(2)} days  and lodging spend of RM ${spend.toFixed(2)}/night. Its baseline Average Occupancy Rate (AOR) stands at ${aor != null ? `${aor.toFixed(1)}%` : 'unobserved'}, classifying its room capacity headroom as '${capTier}'. TVAY is ${tvay != null ? `RM ${tvay.toFixed(1)}/day` : 'under empirical baseline'}.`,
       metrics: {
         'Baseline AOR': aor != null ? `${aor.toFixed(1)}%` : 'N/A',
         'Planning Ceiling': '80.0%',
@@ -309,7 +234,7 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
     };
   })() : null;
 
-  const selectedQueryData = dynamicStateQueryData || groundedQueries[activeQuery] || groundedQueries.melaka_capacity;
+  const selectedQueryData = dynamicStateQueryData || {title: 'Evidence unavailable', question: 'Select a state with baseline evidence', answer: 'No supported evidence for this selection.', metrics: {}, recommendation: 'Inspect the source registry.', source: 'state_profiles.json', confidence: 'Insufficient evidence', limitation: 'This is a deterministic state evidence lookup, not a generative assistant.'};
 
   return (
     <div className="space-y-8 animate-fadeIn pb-16">
@@ -718,7 +643,7 @@ export const ImplementationRoadmap: React.FC<ImplementationRoadmapProps> = ({
             <div>
               <h2 className="text-lg font-bold text-white">Evidence Query Assistant</h2>
               <p className="text-xs text-purple-200/80 mt-0.5">
-                Evidence-grounded structured query assistant strictly synthesizing verified statistics from DuckDB analytical tables.
+                Deterministic lookup of the selected state in state_profiles.json. Other questions are unsupported; this is not a generative assistant.
               </p>
             </div>
           </div>

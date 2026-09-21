@@ -17,7 +17,6 @@ from src.scenarios.simulator import (
     ScenarioSimulator,
     MANDATORY_DISCLAIMER,
     SEASONAL_CAPACITY_CAVEAT,
-    DEFAULT_ACCOMMODATION_VAI,
     DEFAULT_GUESTS_PER_ROOM,
     DEFAULT_AFFECTED_SHARE,
 )

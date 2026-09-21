@@ -1,199 +1,252 @@
-# Malaysia Tourism Value Optimizer — Official Source Provenance Registry
-# Standardized data catalog aligned with AGENTS.md Section 4 and FULL_MARK_IMPLEMENTATION_PLAN.md Section 16.
-
 sources:
   tsa_macro_and_products:
-    id: "tsa_2015_2025"
-    organization: "Department of Statistics Malaysia (DOSM)"
-    publication: "Tourism Satellite Account Malaysia (2015–2025)"
-    source_url: "https://www.dosm.gov.my/portal-main/release-content/tourism-satellite-account-2025"
-    source_file: "data/tsa/tourism_2025.xlsx"
-    reference_period: "2015–2025"
-    publication_date: "2026-09-15"
-    download_date: "2026-09-18"
-    data_status: "official / preliminary (2025p)"
-    geography: "Malaysia (National)"
-    unit: "RM Million, Ratio [0, 1]"
-    license: "Open Government Data License Malaysia (OGDL-MY)"
-    checksum: "d33836e9e6ebc8e4d520313af376ec7016d82e68d6af217ba971fb854a4a7b63"
+    id: tsa_2015_2025
+    organization: Department of Statistics Malaysia (DOSM)
+    publication: Tourism Satellite Account Malaysia (2015–2025)
+    source_url: https://www.dosm.gov.my/portal-main/release-content/tourism-satellite-account-2025
+    source_file: data/tsa/tourism_2025.xlsx
+    reference_period: 2015–2025
+    publication_date: '2026-09-15'
+    download_date: '2026-09-18'
+    data_status: official / preliminary (2025p)
+    geography: Malaysia (National)
+    unit: RM Million, Ratio [0, 1]
+    license: Open Government Data License Malaysia (OGDL-MY)
+    checksum: d33836e9e6ebc8e4d520313af376ec7016d82e68d6af217ba971fb854a4a7b63
     tables:
-      - "Jadual 4: Internal Tourism Consumption (ITC)"
-      - "Jadual 5: Production Accounts of Tourism Industries (GVA)"
-      - "Jadual 6: Domestic Supply and Tourism Ratios"
-      - "Jadual 1: Macro Aggregates (TDGVA, TDGDP, Tourism Employment)"
+    - 'Jadual 4: Internal Tourism Consumption (ITC)'
+    - 'Jadual 5: Production Accounts of Tourism Industries (GVA)'
+    - 'Jadual 6: Domestic Supply and Tourism Ratios'
+    - 'Jadual 1: Macro Aggregates (TDGVA, TDGDP, Tourism Employment)'
     normalized_units:
-      monetary: "RM Million"
-      vai: "Ratio [0, 1] (GVA / Domestic Supply)"
-      tourism_ratio: "Percentage / Ratio [0, 1]"
-    transformation: "Extracted via openpyxl into DuckDB tourism_product_year and tsa_macro_year."
-
+      monetary: RM Million
+      vai: Ratio [0, 1] (GVA / Domestic Supply)
+      tourism_ratio: Percentage / Ratio [0, 1]
+    transformation: Extracted via openpyxl into DuckDB tourism_product_year and tsa_macro_year.
+    checksum_algorithm: SHA-256
+    size_bytes: 715191
+    verification_status: local file hash verified; official link authentication pending
   state_domestic_tourism_2025:
-    id: "dts_state_2025"
-    organization: "Department of Statistics Malaysia (DOSM)"
-    publication: "Survei Pelancongan Domestik Mengikut Negeri 2025"
-    source_url: "https://www.dosm.gov.my/portal-main/release-content/domestic-tourism-survey-2025"
-    source_file: "data/dts/2025/national/TABLE DTS 2025.xlsx"
-    reference_period: "2025"
-    publication_date: "2026-06-30"
-    download_date: "2026-09-18"
-    data_status: "official / preliminary (2025p)"
-    geography: "16 Malaysian States and Federal Territories"
-    unit: "Thousands (k pax), RM Million, Days"
-    license: "Open Government Data License Malaysia (OGDL-MY)"
-    checksum: "c9fe28d1c516e58e6a79bfefa2ff53ddcfef109511c8c8dbe117a7bf87d04c96"
+    id: dts_state_2025
+    organization: Department of Statistics Malaysia (DOSM)
+    publication: Survei Pelancongan Domestik Mengikut Negeri 2025
+    source_url: https://www.dosm.gov.my/portal-main/release-content/domestic-tourism-survey-states-2025
+    reference_period: '2025'
+    publication_date: '2026-09-15'
+    download_date: '2026-09-18'
+    data_status: official / preliminary (2025p)
+    geography: 16 Malaysian States and Federal Territories
+    unit: Thousands (k pax), RM Million, Days
+    license: Open Government Data License Malaysia (OGDL-MY)
     tables:
-      - "Jadual 1: Pelawat Domestik & Perbelanjaan Pelancongan Mengikut Negeri"
-      - "Jadual 8: Tujuan Utama Lawatan"
-      - "Jadual 11 & 12: Mod Pengangkutan & Jenis Penginapan"
-      - "Jadual 13a: Taburan Pendapatan Isi Rumah Pelancong"
-      - "Jadual 14 & 15: Penawaran Hotel & Bilangan Bilik"
+    - 'Jadual 1: Pelawat Domestik & Perbelanjaan Pelancongan Mengikut Negeri'
+    - 'Jadual 8: Tujuan Utama Lawatan'
+    - 'Jadual 11 & 12: Mod Pengangkutan & Jenis Penginapan'
+    - 'Jadual 13a: Taburan Pendapatan Isi Rumah Pelancong'
+    - 'Jadual 14 & 15: Penawaran Hotel & Bilangan Bilik'
     normalized_units:
-      visitors: "Thousands (k pax)"
-      tourists: "Thousands (k pax)"
-      expenditure: "RM Million"
-      alos: "Days / Nights"
-    transformation: "Parsed into state_year, state_granular_profile, and destination_concentration."
-
+      visitors: Thousands (k pax)
+      tourists: Thousands (k pax)
+      expenditure: RM Million
+      alos: Days / Nights
+    checksum: c9fe28d1c516e58e6a79bfefa2ff53ddcfef109511c8c8dbe117a7bf87d04c96
+    source_file: data/dts/2025/national/TABLE DTS 2025.xlsx
+    checksum_algorithm: SHA-256
+    verification_status: official release page verified 2026-09-21; state workbook coverage in source_files
+    source_files:
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 JOHOR.xlsx
+        checksum: 8ea2c03020666367d36436e2cf60b1581069d406493f999f125208b15b68e580
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 KEDAH.xlsx
+        checksum: 4bb003e2af54ee0140f97276535ee3774cdf69c4ead5b6155b587ccfc2731997
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 KELANTAN.xlsx
+        checksum: f45acd561dc5177904dd678e9122a05a5efba0fa3b76e6dff4b8e9932a20c9bd
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 MELAKA.xlsx
+        checksum: 38b96737d78085d2dafd31c5fcc2e3bef7e4dbed8803260d0b5a06576b1deb99
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 NEGERI SEMBILAN.xlsx
+        checksum: 66f83f320b30e25d1d9f42409747c465e1dc42fa69437458823dbfebfb214f9c
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 PAHANG.xlsx
+        checksum: 55dd13dc8e2f6c0d944e29cb4cb062593bdf50086636904f997c8c75fc7e2a7f
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 PERAK.xlsx
+        checksum: fe7b29dfc648e94d737c751ce6431b23d48da64c1282393e578827c650c9b50e
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 PERLIS.xlsx
+        checksum: cf95e44513d57075236bfc1a941cc78a72952077b107ed7c5561472d7170d530
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 PULAU PINANG.xlsx
+        checksum: e5d587fde2cbbfa8399504e98c294065d2105b256c23133ca1d632db6e34d919
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 SABAH.xlsx
+        checksum: f72a3a29770b078cb5500977967f3db9bc0149858d4c8ec1e4a55427c21b3a31
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 SARAWAK.xlsx
+        checksum: 3cf439a885768525dd0e7bd712f2887dd376a666a5826ea4a0e23e9c4535536e
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 SELANGOR.xlsx
+        checksum: 014f74ba1b5423884e827a2b92e2783a448fb5f23ab6ec5579c20262b4970899
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 TERENGGANU.xlsx
+        checksum: 7cb72c8c0324bcc4e6c27df17b4beef2a635b0ba64c0061613948cb02fa1bfd2
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 W.P. KUALA LUMPUR.xlsx
+        checksum: 6330e167205e8397588bfda15a4368d08f499f2e5b5b159e5c49ab0b9aede755
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 W.P. LABUAN.xlsx
+        checksum: b6e36305b2f569e5e9d85b22920230a84129610e1d3ada5abdbbff22a9bd25b8
+      - path: data/dts/2025/state/TABLE OF PUBLICATION DTS 2025 W.P. PUTRAJAYA.xlsx
+        checksum: eab00f0f7c790e4a17411bad7d2ac5c427e4d6fb9ce1587902fe85e8608227bd
   multi_year_state_panel:
-    id: "dts_panel_2018_2025"
-    organization: "Department of Statistics Malaysia (DOSM)"
-    publication: "Domestic Tourism Survey State Series (2018–2025)"
-    source_url: "https://www.dosm.gov.my/portal-main/release-content/domestic-tourism-survey-by-state-2018-2025"
-    source_file: "data/dts/2025/national/TABLE DTS 2025.xlsx"
-    reference_period: "2018–2025"
-    publication_date: "2019–2026"
-    download_date: "2026-09-18"
-    data_status: "official"
-    geography: "16 Malaysian States and Federal Territories"
-    unit: "Thousands (k pax), RM Million, Days"
-    license: "Open Government Data License Malaysia (OGDL-MY)"
-    checksum: "c9fe28d1c516e58e6a79bfefa2ff53ddcfef109511c8c8dbe117a7bf87d04c96"
-    coverage: "126 state-year observations"
+    id: dts_panel_2018_2025
+    organization: Department of Statistics Malaysia (DOSM)
+    publication: Domestic Tourism Survey State Series (2018–2025)
+    source_url: https://www.dosm.gov.my/portal-main/release-content/domestic-tourism-survey-by-state-2018-2025
+    source_file: data/dts/2025/national/TABLE DTS 2025.xlsx
+    reference_period: 2018–2025
+    publication_date: 2019–2026
+    download_date: '2026-09-18'
+    data_status: official
+    geography: 16 Malaysian States and Federal Territories
+    unit: Thousands (k pax), RM Million, Days
+    license: Open Government Data License Malaysia (OGDL-MY)
+    checksum: c9fe28d1c516e58e6a79bfefa2ff53ddcfef109511c8c8dbe117a7bf87d04c96
+    coverage: 126 state-year observations
     normalized_units:
-      expenditure: "RM Million"
-      tourists: "Thousands"
-      alos: "Days"
-    transformation: "Consolidated longitudinal panel in state_panel_year."
-
+      expenditure: RM Million
+      tourists: Thousands
+      alos: Days
+    transformation: Consolidated longitudinal panel in state_panel_year.
+    checksum_algorithm: SHA-256
+    size_bytes: 57094
+    verification_status: local file hash verified; official link authentication pending
   origin_destination_flows:
-    id: "od_matrix_2018_2025"
-    organization: "Department of Statistics Malaysia (DOSM)"
-    publication: "DTS Inter-State Matrix of Tourist Movements"
-    source_url: "https://www.dosm.gov.my/portal-main/release-content/dts-matrix-tourist-movements-2025"
-    source_file: "data/dts/2025/national/TABLE DTS 2025.xlsx"
-    reference_period: "2018–2025 (2025 cross-section: 240 directional corridors)"
-    publication_date: "2026-06-30"
-    download_date: "2026-09-18"
-    data_status: "official"
-    geography: "16x16 Inter-state OD pairs"
-    unit: "Thousands of overnight tourists, Centroid Distance (km)"
-    license: "Open Government Data License Malaysia (OGDL-MY)"
-    checksum: "c9fe28d1c516e58e6a79bfefa2ff53ddcfef109511c8c8dbe117a7bf87d04c96"
+    id: od_matrix_2018_2025
+    organization: Department of Statistics Malaysia (DOSM)
+    publication: DTS Inter-State Matrix of Tourist Movements
+    source_url: https://www.dosm.gov.my/portal-main/release-content/dts-matrix-tourist-movements-2025
+    source_file: data/dts/2025/national/TABLE DTS 2025.xlsx
+    reference_period: '2018–2025 (2025 cross-section: 240 directional corridors)'
+    publication_date: '2026-06-30'
+    download_date: '2026-09-18'
+    data_status: official
+    geography: 16x16 Inter-state OD pairs
+    unit: Thousands of overnight tourists, Centroid Distance (km)
+    license: Open Government Data License Malaysia (OGDL-MY)
+    checksum: c9fe28d1c516e58e6a79bfefa2ff53ddcfef109511c8c8dbe117a7bf87d04c96
     normalized_units:
-      tourist_flow: "Thousands of overnight tourists"
-      distance: "Great-circle / Road centroid Distance (km)"
-    transformation: "Consolidated in origin_destination and origin_destination_panel."
-
+      tourist_flow: Thousands of overnight tourists
+      distance: Great-circle / Road centroid Distance (km)
+    transformation: Consolidated in origin_destination and origin_destination_panel.
+    checksum_algorithm: SHA-256
+    size_bytes: 57094
+    verification_status: local file hash verified; official link authentication pending
   motac_hotel_kpi:
-    id: "motac_kpi_2016_2025"
-    organization: "Ministry of Tourism, Arts and Culture Malaysia (MOTAC)"
-    publication: "Malaysia Tourism Operational Indicators & Hotel Statistics"
-    source_url: "https://www.motac.gov.my/en/corporate/statistics/tourism-operational-indicators"
-    source_file: "mytourism_kpi/ocr_summary.json"
-    reference_period: "2016–2025"
-    publication_date: "2026-07-20"
-    download_date: "2026-09-19"
-    data_status: "official"
-    geography: "16 Malaysian States"
-    unit: "Percentage (%), Establishments count, Room count"
-    license: "Official Public Release"
-    checksum: "ee4d81aea36d9b0654f20d85fc9c8f072eba3a3b40d1dab03ab591ec9330c448"
+    id: motac_kpi_2016_2025
+    organization: Ministry of Tourism, Arts and Culture Malaysia (MOTAC)
+    publication: Malaysia Tourism Operational Indicators & Hotel Statistics
+    source_url: https://www.motac.gov.my/en/corporate/statistics/tourism-operational-indicators
+    source_file: mytourism_kpi/ocr_summary.json
+    reference_period: 2016–2025
+    publication_date: '2026-07-20'
+    download_date: '2026-09-19'
+    data_status: official
+    geography: 16 Malaysian States
+    unit: Percentage (%), Establishments count, Room count
+    license: Official Public Release
+    checksum: ee4d81aea36d9b0654f20d85fc9c8f072eba3a3b40d1dab03ab591ec9330c448
     tables:
-      - "Average Occupancy Rate (AOR %) by State"
-      - "Hotel Guests (Domestic vs. Foreign)"
-      - "Registered Tourist Accommodation & Room Inventory"
-      - "Homestay Operations & Kampungstay Indicators"
+    - Average Occupancy Rate (AOR %) by State
+    - Hotel Guests (Domestic vs. Foreign)
+    - Registered Tourist Accommodation & Room Inventory
+    - Homestay Operations & Kampungstay Indicators
     normalized_units:
-      aor: "Percentage (%)"
-      hotels: "Establishments count"
-      rooms: "Room count"
-    transformation: "Materialized into hotel_operations_annual and accommodation_capacity."
-
+      aor: Percentage (%)
+      hotels: Establishments count
+      rooms: Room count
+    transformation: Materialized into hotel_operations_annual and accommodation_capacity.
+    checksum_algorithm: SHA-256
+    size_bytes: 681
+    verification_status: local file hash verified; official link authentication pending
   state_demographics:
-    id: "dosm_demographics_2015_2025"
-    organization: "Department of Statistics Malaysia (DOSM)"
-    publication: "Current Population Estimates by State & Administrative District"
-    source_url: "https://www.dosm.gov.my/portal-main/release-content/current-population-estimates-malaysia-2025"
-    source_file: "data/raw/population_state.parquet"
-    reference_period: "2015–2025"
-    publication_date: "2025-11-15"
-    download_date: "2026-09-18"
-    data_status: "official"
-    geography: "16 Malaysian States"
-    unit: "Thousands / Millions pax, RM / month"
-    license: "Open Government Data License Malaysia (OGDL-MY)"
-    checksum: "3ae425f5cf5a053ae799adfd59480ea46455f8ed6eb34a47dcece76f7fae63da"
+    id: dosm_demographics_2015_2025
+    organization: Department of Statistics Malaysia (DOSM)
+    publication: Current Population Estimates by State & Administrative District
+    source_url: https://www.dosm.gov.my/portal-main/release-content/current-population-estimates-malaysia-2025
+    source_file: data/raw/population_state.parquet
+    reference_period: 2015–2025
+    publication_date: '2025-11-15'
+    download_date: '2026-09-18'
+    data_status: official
+    geography: 16 Malaysian States
+    unit: Thousands / Millions pax, RM / month
+    license: Open Government Data License Malaysia (OGDL-MY)
+    checksum: 3ae425f5cf5a053ae799adfd59480ea46455f8ed6eb34a47dcece76f7fae63da
     normalized_units:
-      population: "Thousands / Millions"
-      median_income: "RM / month (HIES 2022/2024)"
-    transformation: "Merged into state_demographics_annual and state_panel_year."
-
+      population: Thousands / Millions
+      median_income: RM / month (HIES 2022/2024)
+    transformation: Merged into state_demographics_annual and state_panel_year.
+    checksum_algorithm: SHA-256
+    size_bytes: 389489
+    verification_status: local file hash verified; official link authentication pending
   consumer_price_index:
-    id: "cpi_2015_2025"
-    organization: "Department of Statistics Malaysia (DOSM)"
-    publication: "Consumer Price Index Malaysia (2015–2025)"
-    source_url: "https://www.dosm.gov.my/portal-main/release-content/consumer-price-index-malaysia-december-2025"
-    source_file: "data/processed/price_index.csv"
-    reference_period: "2015–2025"
-    publication_date: "2026-01-22"
-    download_date: "2026-09-18"
-    data_status: "official"
-    geography: "Malaysia (National)"
-    base_year: "2010=100"
-    unit: "Index points (2010=100)"
-    license: "Open Government Data License Malaysia (OGDL-MY)"
-    checksum: "c9b4becce2f9aaf36cd07383fd2759ef95ba4ca33798063679bdd104e651e747"
+    id: cpi_2015_2025
+    organization: Department of Statistics Malaysia (DOSM)
+    publication: Consumer Price Index Malaysia (2015–2025)
+    source_url: https://www.dosm.gov.my/portal-main/release-content/consumer-price-index-malaysia-december-2025
+    source_file: data/processed/price_index.csv
+    reference_period: 2015–2025
+    publication_date: '2026-01-22'
+    download_date: '2026-09-18'
+    data_status: official
+    geography: Malaysia (National)
+    base_year: 2010=100
+    unit: Index points (2010=100)
+    license: Open Government Data License Malaysia (OGDL-MY)
+    checksum: c9b4becce2f9aaf36cd07383fd2759ef95ba4ca33798063679bdd104e651e747
     normalized_units:
-      index: "Index points (2010=100)"
-      deflator_base: "2025 = 134.6"
-    transformation: "Compiled into data/processed/price_index.csv for Constant 2025 RM conversions."
-
+      index: Index points (2010=100)
+      deflator_base: 2025 = 134.6
+    transformation: Compiled into data/processed/price_index.csv for Constant 2025
+      RM conversions.
+    checksum_algorithm: SHA-256
+    size_bytes: 699
+    verification_status: local file hash verified; official link authentication pending
   geospatial_boundaries:
-    id: "malaysia_state_geojson"
-    organization: "DOSM / Department of Survey and Mapping Malaysia (JUPEM)"
-    publication: "National Boundary Topology (States & Federal Territories)"
-    source_url: "https://www.jupem.gov.my/"
-    source_file: "data/geo/malaysia.geojson"
-    reference_period: "2025"
-    publication_date: "2025-01-10"
-    download_date: "2026-09-18"
-    data_status: "official"
-    geography: "WGS84 EPSG:4326 GeoJSON"
-    unit: "Polygon / MultiPolygon Coordinates"
-    license: "Official Public Mapping Data"
-    checksum: "694fdc0281b86d25cde90cdacf6c753fa1a22d61baf1b22ad9ccbd67a905b946"
-    transformation: "Simplified topology in data/geo/malaysia.geojson and dashboard/public/data/geo_malaysia.json."
-
+    id: malaysia_state_geojson
+    organization: DOSM / Department of Survey and Mapping Malaysia (JUPEM)
+    publication: National Boundary Topology (States & Federal Territories)
+    source_url: https://www.jupem.gov.my/
+    source_file: data/geo/malaysia.geojson
+    reference_period: '2025'
+    publication_date: '2025-01-10'
+    download_date: '2026-09-18'
+    data_status: official
+    geography: WGS84 EPSG:4326 GeoJSON
+    unit: Polygon / MultiPolygon Coordinates
+    license: Official Public Mapping Data
+    checksum: 694fdc0281b86d25cde90cdacf6c753fa1a22d61baf1b22ad9ccbd67a905b946
+    transformation: Simplified topology in data/geo/malaysia.geojson and dashboard/public/data/geo_malaysia.json.
+    checksum_algorithm: SHA-256
+    size_bytes: 2377465
+    verification_status: local file hash verified; official link authentication pending
 derived_models:
   econometric_panel:
-    id: "panel_fe_models"
-    model_type: "Two-Way Fixed Effects & One-Way FE with State-Clustered SEs"
-    data_status: "model_estimate"
-    dependent_variable: "ln(Accommodation Expenditure per Tourist)"
-    sample_size: "126 state-years (2018–2025)"
-    source_datasets: ["dts_panel_2018_2025", "motac_kpi_2016_2025", "dosm_demographics_2015_2025"]
-
+    id: panel_fe_models
+    model_type: Two-Way Fixed Effects & One-Way FE with State-Clustered SEs
+    data_status: model_estimate
+    dependent_variable: ln(Accommodation Expenditure per Tourist)
+    sample_size: 126 state-years (2018–2025)
+    source_datasets:
+    - dts_panel_2018_2025
+    - motac_kpi_2016_2025
+    - dosm_demographics_2015_2025
   spatial_gravity:
-    id: "gravity_corridor_models"
-    model_type: "Poisson Pseudo-Maximum Likelihood (PPML) & Log-OLS"
-    data_status: "model_estimate"
-    dependent_variable: "Interstate Tourist Flow (thousands)"
-    sample_size: "1,920 interstate corridor-years (1,680 train 2018–2024, 240 holdout 2025; 2,048 total including intrastate)"
-    source_datasets: ["od_matrix_2018_2025", "dts_panel_2018_2025"]
-
+    id: gravity_corridor_models
+    model_type: Poisson Pseudo-Maximum Likelihood (PPML) & Log-OLS
+    data_status: model_estimate
+    dependent_variable: Interstate Tourist Flow (thousands)
+    sample_size: 1,920 interstate corridor-years (1,680 train 2018–2024, 240 holdout
+      2025; 2,048 total including intrastate)
+    source_datasets:
+    - od_matrix_2018_2025
+    - dts_panel_2018_2025
   scenario_simulator:
-    id: "decoupled_scenario_engine"
-    model_type: "Deterministic What-If Policy Simulator"
-    data_status: "scenario_assumption"
-    disclaimer: "Scenario estimate, not a causal forecast. Never guarantees future economic yield."
-    source_datasets: ["dts_state_2025", "tsa_2015_2025", "motac_kpi_2016_2025"]
+    id: decoupled_scenario_engine
+    model_type: Deterministic What-If Policy Simulator
+    data_status: scenario_assumption
+    disclaimer: Scenario estimate, not a causal forecast. Never guarantees future
+      economic yield.
+    source_datasets:
+    - dts_state_2025
+    - tsa_2015_2025
+    - motac_kpi_2016_2025

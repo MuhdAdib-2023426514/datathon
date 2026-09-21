@@ -6,7 +6,7 @@ Computes:
 3. SDG 8.9 & 12.b Economic Indicators (TEY, TVAY, Tourism GVA Intensity, Mapping Coverage, EPR).
 4. Granular DTS Sub-Table Integration (Paid Commercial vs Unpaid VFR, Demographics, Affluence).
 5. Cross-Sectional OLS Econometric Driver Regressions (Explaining Spend Per Night & Accom Share).
-6. Corridor Opportunity Gap Matrix (Quantifying incremental economic value for +0.5 nights across active corridors).
+6. Corridor Opportunity Gap Matrix (observed evidence and separate model diagnostics).
 
 Exports diagnostic tables to DuckDB and Parquet:
 - state_year (enriched with granular structural drivers & typologies)
@@ -27,6 +27,7 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from scipy import stats
+from src.analytics.pareto import pareto_evidence
 import statsmodels.api as sm
 from src.analytics.accounting import (
     calc_visitor_days,
@@ -45,7 +46,7 @@ PROCESSED_DIR = ROOT_DIR / "data/processed"
 DUCKDB_PATH = PROCESSED_DIR / "tourism_data.duckdb"
 
 MANDATORY_SCENARIO_DISCLAIMER = "Scenario estimate, not a causal forecast."
-ACCOMMODATION_VAI = 0.8579
+
 
 
 def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
@@ -370,28 +371,28 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
             df_gap = df_corr_raw.merge(df_grav[grav_cols], on=["origin", "destination"], how="left")
         else:
             df_gap = df_corr_raw
-            df_gap["expected_flow_thousands"] = df_gap["tourist_flow_thousands"]
-            df_gap["performance_ratio"] = 1.0
-            df_gap["gravity_residual"] = 0.0
-            df_gap["corridor_gravity_category"] = "Near Model Expected"
+            df_gap["expected_flow_thousands"] = np.nan
+            df_gap["performance_ratio"] = np.nan
+            df_gap["gravity_residual"] = np.nan
+            df_gap["corridor_gravity_category"] = "Unavailable"
 
         # Separate Model Gap from Opportunity (Phase 19.1)
-        df_gap["expected_flow_thousands"] = df_gap["expected_flow_thousands"].fillna(df_gap["tourist_flow_thousands"])
-        df_gap["performance_ratio"] = df_gap["performance_ratio"].fillna(1.0)
         df_gap["gravity_flow_gap_thousands"] = (df_gap["expected_flow_thousands"] - df_gap["tourist_flow_thousands"]).round(2)
         df_gap["gravity_performance_category"] = np.where(
             df_gap["performance_ratio"] < 0.85, "Below Model Expected",
             np.where(df_gap["performance_ratio"] > 1.15, "Above Model Expected", "Near Model Expected")
         )
 
+        df_gap.loc[df_gap["performance_ratio"].isna(), "gravity_performance_category"] = "Unavailable"
+
         # Accessibility - preserve NaN without 300.0 substitution
-        is_cross = df_gap["is_cross_region"].fillna(False) if "is_cross_region" in df_gap.columns else pd.Series(False, index=df_gap.index)
+        is_cross = df_gap["is_cross_region"] if "is_cross_region" in df_gap.columns else pd.Series(np.nan, index=df_gap.index)
         dist = df_gap["distance_km"] if "distance_km" in df_gap.columns else pd.Series(np.nan, index=df_gap.index)
         df_gap["accessibility_tier"] = np.where(
             pd.isna(dist), "Unknown Accessibility (Distance Unavailable)",
             np.where(
-                ~is_cross & (dist < 250), "High Accessibility (<250km Road/Rail)",
-                np.where(~is_cross & (dist <= 500), "Moderate Accessibility (250-500km Road/Rail)",
+                (is_cross == False) & (dist < 250), "High Accessibility (<250km Road/Rail)",
+                np.where((is_cross == False) & (dist <= 500), "Moderate Accessibility (250-500km Road/Rail)",
                          "Lower Accessibility (>500km or Flight Barrier)")
             )
         )
@@ -428,97 +429,36 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
             )
         )
 
-        # Scenario metrics (Stay extension delta_alos = 0.5 - illustrative benchmark, not ranking basis)
-        delta_alos = 0.5
-        df_gap["delta_alos_scenario_days"] = delta_alos
-        df_gap["target_alos_days"] = np.where(
-            pd.notnull(df_gap["dest_alos"]),
-            (df_gap["dest_alos"] + delta_alos).round(2),
-            np.nan
-        )
-        df_gap["additional_tourist_nights_thousands"] = np.where(
-            pd.notnull(df_gap["tourist_flow_thousands"]),
-            (df_gap["tourist_flow_thousands"] * delta_alos).round(3),
-            np.nan
-        )
-        df_gap["additional_accom_expenditure_rm_million"] = np.where(
-            pd.notnull(df_gap["additional_tourist_nights_thousands"]) & pd.notnull(df_gap["dest_spend_per_night"]),
-            ((df_gap["additional_tourist_nights_thousands"] * df_gap["dest_spend_per_night"]) / 1000.0).round(2),
-            np.nan
-        )
-        df_gap["potential_additional_value_added_rm_million"] = np.where(
-            pd.notnull(df_gap["additional_accom_expenditure_rm_million"]),
-            (df_gap["additional_accom_expenditure_rm_million"] * ACCOMMODATION_VAI).round(2),
-            np.nan
-        )
-        df_gap["potential_retained_gva_rm_million"] = df_gap["potential_additional_value_added_rm_million"]
+        # Scenario results belong to the simulator, never the opportunity ranking.
+        # Nullable compatibility columns keep older JSON consumers explicit about absence.
+        for column in ["delta_alos_scenario_days", "target_alos_days", "additional_tourist_nights_thousands",
+                       "additional_accom_expenditure_rm_million", "potential_additional_value_added_rm_million",
+                       "potential_retained_gva_rm_million", "implied_dest_aor_pct"]:
+            df_gap[column] = np.nan
+        df_gap["capacity_constraint_alert"] = "Baseline headroom only; simulate a policy to assess incremental capacity"
         df_gap["policy_disclaimer"] = MANDATORY_SCENARIO_DISCLAIMER
-
-        # Hotel room demand and implied AOR
-        daily_rooms_demanded = np.where(
-            pd.notnull(df_gap["additional_tourist_nights_thousands"]),
-            (df_gap["additional_tourist_nights_thousands"] * 1000.0) / (365.0 * 1.8),
-            np.nan
-        )
-        has_rooms = (df_gap["dest_available_rooms"].fillna(0) > 0)
-        delta_aor = np.where(
-            has_rooms & pd.notnull(daily_rooms_demanded),
-            (daily_rooms_demanded / df_gap["dest_available_rooms"]) * 100.0,
-            np.nan,
-        )
-        df_gap["implied_dest_aor_pct"] = np.where(
-            pd.notnull(delta_aor) & pd.notnull(df_gap["dest_baseline_aor_pct"]),
-            (df_gap["dest_baseline_aor_pct"] + delta_aor).round(2),
-            np.nan,
-        )
-        def _capacity_label(val):
-            if pd.isna(val):
-                return "Unknown (Capacity Data Unavailable)"
-            if val > 100.0:
-                return "Physical Capacity Breach (>100% Saturation)"
-            if val > 80.0:
-                return "Capacity Constraint Alert (>80% Saturation)"
-            if val >= 70.0:
-                return "Planning Watch (70-80% Saturation)"
-            return "Feasible (Within Hotel Capacity)"
-        df_gap["capacity_constraint_alert"] = df_gap["implied_dest_aor_pct"].apply(_capacity_label)
 
         # Pareto Opportunity Framework (Phase 19.3 & Sprint A)
         # O1: Demand gap / room to model expected (Clean: no arbitrary +0.5 * flow)
-        c1 = np.maximum(0.0, df_gap["gravity_flow_gap_thousands"].fillna(0.0))
+        c1 = np.maximum(0.0, df_gap["gravity_flow_gap_thousands"])
         # O2: Destination economic yield
-        c2 = spend_nt.fillna(0.0)
+        c2 = spend_nt
         # O3: Destination capacity headroom (unobserved capacity -> 0 headroom in sorting)
-        c3 = df_gap["capacity_headroom_pct"].fillna(0.0)
+        c3 = df_gap["capacity_headroom_pct"]
         # O4: Overland accessibility (penalize cross-region flight barrier and distance)
-        c4 = -dist.fillna(1000.0) - (500.0 * is_cross.astype(float))
+        c4 = -dist - (500.0 * is_cross.astype(float))
         # O5: Market diversification benefit
-        orig_share = df_gap["origin_share_of_dest_pct"].fillna(0.0) if "origin_share_of_dest_pct" in df_gap.columns else pd.Series(0.0, index=df_gap.index)
-        c5 = (100.0 - orig_share) * (hhi_val.fillna(1000.0) / 2500.0)
-
-        # Flag evidence completeness
-        has_critical_evidence = (
-            pd.notnull(df_gap["tourist_flow_thousands"]) &
-            pd.notnull(df_gap["dest_spend_per_night"]) &
-            pd.notnull(df_gap["dest_baseline_aor_pct"])
-        )
-        df_gap["evidence_status"] = np.where(has_critical_evidence, "complete", "insufficient_data")
+        orig_share = df_gap["origin_share_of_dest_pct"] if "origin_share_of_dest_pct" in df_gap.columns else pd.Series(np.nan, index=df_gap.index)
+        c5 = (100.0 - orig_share) * (hhi_val / 2500.0)
 
         M = np.column_stack([c1, c2, c3, c4, c5])
-        N_corrs = len(df_gap)
-        dom_count = np.zeros(N_corrs, dtype=int)
-        for i in range(N_corrs):
-            if not has_critical_evidence.iloc[i]:
-                dom_count[i] = 998  # Demote corridors with insufficient evidence
-                continue
-            for j in range(N_corrs):
-                if i == j or not has_critical_evidence.iloc[j]:
-                    continue
-                if np.all(M[j] >= M[i]) and np.any(M[j] > M[i]):
-                    dom_count[i] += 1
-
-        df_gap["is_pareto_optimal"] = (dom_count == 0) & has_critical_evidence
-        df_gap["pareto_rank"] = np.where(has_critical_evidence, dom_count + 1, 999)
+        complete, ranks = pareto_evidence(M)
+        has_critical_evidence = pd.Series(complete & np.isfinite(flows), index=df_gap.index)
+        df_gap["evidence_status"] = np.where(has_critical_evidence, "complete", "insufficient_data")
+        objective_names = ["model_flow_gap", "destination_yield", "capacity_headroom", "accessibility", "diversification"]
+        df_gap["missing_objectives"] = [", ".join(name for name, value in zip(objective_names, row) if not np.isfinite(value)) for row in M]
+        df_gap["is_pareto_optimal"] = (ranks == 1) & has_critical_evidence
+        df_gap["pareto_rank"] = np.where(has_critical_evidence, ranks, np.nan)
 
         # Normalized Composite Opportunity Score [0, 100]
         def _minmax(arr):
@@ -539,7 +479,7 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
             0.20 * _minmax(c4.to_numpy()) +
             0.15 * _minmax(c5.to_numpy())
         )
-        df_gap["composite_opportunity_score"] = np.where(has_critical_evidence, comp_score.round(2), 0.0)
+        df_gap["composite_opportunity_score"] = np.where(has_critical_evidence, comp_score.round(2), np.nan)
 
         # Strict Multi-Objective Ranking Hierarchy (Plan Section 8):
         # Primary: Pareto Rank ascending (Non-dominated Frontier 1 first)
@@ -548,7 +488,7 @@ def run_state_diagnostics() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, p
             by=["pareto_rank", "composite_opportunity_score"],
             ascending=[True, False]
         ).reset_index(drop=True)
-        df_gap["opportunity_rank"] = range(1, len(df_gap) + 1)
+        df_gap["opportunity_rank"] = np.where(df_gap["evidence_status"] == "complete", np.arange(1, len(df_gap) + 1), np.nan)
 
     # 9. Export All Tables to DuckDB & Parquet
     con.execute("CREATE OR REPLACE TABLE state_year AS SELECT * FROM df")

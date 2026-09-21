@@ -11,6 +11,8 @@ from typing import Dict, List, Tuple
 import openpyxl
 import pandas as pd
 from src.config.paths import TSA_DIR
+from src.ingestion.numeric import source_number
+from src.analytics.accounting import calc_vai
 
 TSA_FILE_PATH = TSA_DIR / "tourism_2025.xlsx"
 
@@ -137,23 +139,23 @@ def ingest_tsa_tables(file_path: Path = TSA_FILE_PATH) -> Tuple[pd.DataFrame, pd
     for prod in CANONICAL_PRODUCTS:
         for col_idx, year, status in col_mapping:
             # 1. Domestic Supply (Jad 6, rows 6-13)
-            supply_val = float(ws_jad6.cell(prod["row_jad6_supply"], col_idx).value or 0.0)
+            supply_val = source_number(ws_jad6.cell(prod["row_jad6_supply"], col_idx).value)
 
             # 2. Gross Value Added (Jad 5, rows 6-13)
-            gva_val = float(ws_jad5.cell(prod["row_jad5"], col_idx).value or 0.0)
+            gva_val = source_number(ws_jad5.cell(prod["row_jad5"], col_idx).value)
 
             # 3. Internal Tourism Consumption (Jad 4, rows 6-13)
-            itc_val = float(ws_jad4.cell(prod["row_jad4"], col_idx).value or 0.0)
+            itc_val = source_number(ws_jad4.cell(prod["row_jad4"], col_idx).value)
 
             # 4. Tourism Ratio (Jad 6, rows 17-24)
-            ratio_val = float(ws_jad6.cell(prod["row_jad6_ratio"], col_idx).value or 0.0)
+            ratio_val = source_number(ws_jad6.cell(prod["row_jad6_ratio"], col_idx).value)
 
             # 5. Employment in Thousand Persons (Jad 7, rows 6-13)
-            emp_val = float(ws_jad7.cell(prod["row_jad7"], col_idx).value or 0.0)
+            emp_val = source_number(ws_jad7.cell(prod["row_jad7"], col_idx).value)
 
             # Economic computations per AGENTS.md
             # Value-Added Intensity (VAI) = GVA / DomesticSupply
-            vai = gva_val / supply_val if supply_val > 0 else 0.0
+            vai = calc_vai(gva_val, supply_val)
 
             # Analytical proxy: Estimated tourism-attributable GVA = ITC * VAI
             # (or equivalently: GVA * TourismRatio)
@@ -188,17 +190,17 @@ def ingest_tsa_tables(file_path: Path = TSA_FILE_PATH) -> Tuple[pd.DataFrame, pd
     # Ingest Macro TSA aggregates (Rows in Jad 6 and Jad 5)
     macro_records = []
     for col_idx, year, status in col_mapping:
-        tdgva = float(ws_jad6.cell(28, col_idx).value or 0.0)
-        tdgdp = float(ws_jad6.cell(29, col_idx).value or 0.0)
-        tdgva_share_gva = float(ws_jad6.cell(36, col_idx).value or 0.0)
-        tdgdp_share_gdp = float(ws_jad6.cell(37, col_idx).value or 0.0)
+        tdgva = source_number(ws_jad6.cell(28, col_idx).value)
+        tdgdp = source_number(ws_jad6.cell(29, col_idx).value)
+        tdgva_share_gva = source_number(ws_jad6.cell(36, col_idx).value)
+        tdgdp_share_gdp = source_number(ws_jad6.cell(37, col_idx).value)
 
         # Macro totals
-        total_supply = float(ws_jad6.cell(14, col_idx).value or 0.0)
-        total_gvati = float(ws_jad5.cell(14, col_idx).value or 0.0)
-        total_itc = float(ws_jad4.cell(14, col_idx).value or 0.0)
-        total_emp = float(ws_jad7.cell(14, col_idx).value or 0.0)
-        overall_ratio = float(ws_jad6.cell(25, col_idx).value or 0.0)
+        total_supply = source_number(ws_jad6.cell(14, col_idx).value)
+        total_gvati = source_number(ws_jad5.cell(14, col_idx).value)
+        total_itc = source_number(ws_jad4.cell(14, col_idx).value)
+        total_emp = source_number(ws_jad7.cell(14, col_idx).value)
+        overall_ratio = source_number(ws_jad6.cell(25, col_idx).value)
 
         macro_records.append({
             "year": year,

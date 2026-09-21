@@ -314,6 +314,7 @@ export interface ScenarioEngineConfig {
 }
 
 export interface MonteCarloBenchmark {
+  parameters: { input_affected_share: number; input_delta_alos: number; input_guests_per_room: number; planning_threshold_pct: number };
   origin: string;
   destination: string;
   n_simulations: number;
@@ -334,7 +335,7 @@ export interface MonteCarloBenchmark {
     potential_gva_rm_m: number;
     projected_aor_pct?: number | null;
   };
-  prob_capacity_breach: number;
+  prob_capacity_breach: number | null;
   distribution?: {
     gva_density: Array<{ bin_mid: number; frequency: number }>;
   };
@@ -347,9 +348,9 @@ export interface MonteCarloBenchmark {
       status: string;
     };
     policy_uncertainty: {
-      affected_share: { distribution: string; mean: number; sd: number; bounds: number[]; status: string };
-      delta_alos: { distribution: string; mean: number; sd: number; bounds: number[]; status: string };
-      guests_per_room: { distribution: string; mean: number; sd: number; bounds: number[]; status: string };
+      affected_share: { distribution: string; location: number; sd: number; bounds: number[]; status: string };
+      delta_alos: { distribution: string; location: number; sd: number; bounds: number[]; status: string };
+      guests_per_room: { distribution: string; location: number; sd: number; bounds: number[]; status: string };
     };
   };
   disclaimer: string;

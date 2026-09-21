@@ -1,10 +1,12 @@
-# Malaysia Tourism Value Optimizer — Final Rubric Audit
+# Malaysia Tourism Value Optimizer — Historical Rubric Audit (Superseded)
 
-**Audit Date**: 2026-09-21  
+> **STATUS: SUPERSEDED by [artifacts/rubric_evidence_matrix.md](file:///home/muhammad_adib/dosm/artifacts/rubric_evidence_matrix.md)**  
+> In accordance with Rubric Remediation Plan C16, the previous self-awarded "100/100" claim has been withdrawn. Rubric readiness is an internal assessment; competition marks are determined solely by official judging panels. This document is retained for historical audit lineage. The authoritative criterion-by-criterion evidence register is maintained in `artifacts/rubric_evidence_matrix.md`.
+
+**Audit Date**: 2026-09-21 (Historical)  
 **Project**: Malaysia Tourism Value Optimizer (`MYTourism Value Intelligence`)  
 **Repository**: `https://github.com/MuhdAdib-2023426514/datathon`  
-**Target Quality Level**: **95–100 / 100 (Full-Mark Submission Standard)**  
-**Audit Standard**: [FULL_MARK_IMPLEMENTATION_PLAN.md](file:///home/muhammad_adib/dosm/FULL_MARK_IMPLEMENTATION_PLAN.md) Sections 33 & 34  
+**Current Status**: Superseded — refer to [artifacts/rubric_evidence_matrix.md](file:///home/muhammad_adib/dosm/artifacts/rubric_evidence_matrix.md)
 
 ---
 

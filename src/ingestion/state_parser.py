@@ -13,6 +13,8 @@ from typing import Dict, List, Tuple
 import duckdb
 import openpyxl
 import pandas as pd
+from src.ingestion.numeric import source_number
+from src.analytics.accounting import calc_vai
 
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 if str(ROOT_DIR) not in sys.path:
@@ -88,43 +90,43 @@ def ingest_all_states(state_dir: Path = STATE_DIR) -> pd.DataFrame:
 
         # 1. Jadual 1: Macro Volume, Receipts, ALOS
         ws1 = wb["Jadual 1"]
-        receipts_rm_m = float(ws1.cell(6, 8).value or 0.0)  # Row 6, Col 8 is 2025 (RM Million)
-        visitors_k = float(ws1.cell(8, 8).value or 0.0)     # Row 8 is 2025 ('000)
-        trips_k = float(ws1.cell(10, 8).value or 0.0)       # Row 10 is 2025 ('000)
-        alos_days = float(ws1.cell(16, 8).value or 0.0)     # Row 16 is ALOS (days)
+        receipts_rm_m = source_number(ws1.cell(6, 8).value)  # Row 6, Col 8 is 2025 (RM Million)
+        visitors_k = source_number(ws1.cell(8, 8).value)     # Row 8 is 2025 ('000)
+        trips_k = source_number(ws1.cell(10, 8).value)       # Row 10 is 2025 ('000)
+        alos_days = source_number(ws1.cell(16, 8).value)     # Row 16 is ALOS (days)
 
         # 2. Jadual 2 & 3: Overnight Tourists vs Same-Day Excursionists
         ws2 = wb["Jadual 2 & 3"]
-        excursionists_k = float(ws2.cell(8, 5).value or 0.0) # Row 8, Col 5 ('000)
-        tourists_k = float(ws2.cell(9, 5).value or 0.0)      # Row 9, Col 5 ('000)
+        excursionists_k = source_number(ws2.cell(8, 5).value) # Row 8, Col 5 ('000)
+        tourists_k = source_number(ws2.cell(9, 5).value)      # Row 9, Col 5 ('000)
 
         # 3. Jadual 7: Detailed Expenditure Components (values in RM '000 -> convert to RM Million)
         ws7 = wb["Jadual 7"]
-        shopping_m = float(ws7.cell(8, 3).value or 0.0) / 1000.0
-        fuel_m = float(ws7.cell(9, 3).value or 0.0) / 1000.0
-        transport_m = float(ws7.cell(10, 3).value or 0.0) / 1000.0
-        food_beverage_m = float(ws7.cell(11, 3).value or 0.0) / 1000.0
-        accommodation_m = float(ws7.cell(12, 3).value or 0.0) / 1000.0
-        pretrip_package_m = float(ws7.cell(13, 3).value or 0.0) / 1000.0
-        other_exp_m = float(ws7.cell(14, 3).value or 0.0) / 1000.0
-        household_exp_m = float(ws7.cell(15, 3).value or 0.0) / 1000.0
-        total_receipts_m = float(ws7.cell(16, 3).value or 0.0) / 1000.0
+        shopping_m = source_number(ws7.cell(8, 3).value) / 1000.0
+        fuel_m = source_number(ws7.cell(9, 3).value) / 1000.0
+        transport_m = source_number(ws7.cell(10, 3).value) / 1000.0
+        food_beverage_m = source_number(ws7.cell(11, 3).value) / 1000.0
+        accommodation_m = source_number(ws7.cell(12, 3).value) / 1000.0
+        pretrip_package_m = source_number(ws7.cell(13, 3).value) / 1000.0
+        other_exp_m = source_number(ws7.cell(14, 3).value) / 1000.0
+        household_exp_m = source_number(ws7.cell(15, 3).value) / 1000.0
+        total_receipts_m = source_number(ws7.cell(16, 3).value) / 1000.0
 
         wb.close()
 
         # Derived Accommodation & Economic Yield Metrics (per AGENTS.md Section 3 & 7)
         # Accommodation Share = Accommodation Expenditure / Total Tourism Expenditure
-        accom_share = accommodation_m / total_receipts_m if total_receipts_m > 0 else 0.0
+        accom_share = accommodation_m / total_receipts_m if total_receipts_m > 0 else float("nan")
 
         # Spend Per Visitor (RM) = Accommodation Expenditure (RM) / Domestic Visitors
-        spend_per_visitor = (accommodation_m * 1e6) / (visitors_k * 1e3) if visitors_k > 0 else 0.0
+        spend_per_visitor = (accommodation_m * 1e6) / (visitors_k * 1e3) if visitors_k > 0 else float("nan")
 
         # Spend Per Tourist (RM) = Accommodation Expenditure (RM) / Overnight Tourists
-        spend_per_tourist = (accommodation_m * 1e6) / (tourists_k * 1e3) if tourists_k > 0 else 0.0
+        spend_per_tourist = (accommodation_m * 1e6) / (tourists_k * 1e3) if tourists_k > 0 else float("nan")
 
         # Spend Per Tourist Night (RM) = Accommodation Expenditure (RM) / (Tourists * ALOS)
         tourist_nights_k = tourists_k * alos_days
-        spend_per_night = (accommodation_m * 1e6) / (tourist_nights_k * 1e3) if tourist_nights_k > 0 else 0.0
+        spend_per_night = (accommodation_m * 1e6) / (tourist_nights_k * 1e3) if tourist_nights_k > 0 else float("nan")
 
         records.append({
             "year": 2025,
@@ -182,7 +184,7 @@ def ingest_origin_destination(national_file: Path = NATIONAL_DTS_PATH) -> pd.Dat
         origin_code = STATE_METADATA[origin_key]["code"]
 
         for col, dest_name in dest_col_map.items():
-            flow_val = float(ws10.cell(r, col).value or 0.0)
+            flow_val = source_number(ws10.cell(r, col).value)
             is_interstate = (origin_name != dest_name)
 
             dest_meta = next(m for m in STATE_METADATA.values() if m["name"] == dest_name)

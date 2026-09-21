@@ -24,7 +24,6 @@ DUCKDB_PATH = PROCESSED_DIR / "tourism_data.duckdb"
 MANDATORY_DISCLAIMER = "Optimization model recommendation based on scenario assumptions, not a guaranteed fiscal return."
 SEASONAL_CAPACITY_CAVEAT = "Annual occupancy may hide seasonal/weekend capacity pressure."
 DEFAULT_PLANNING_THRESHOLD = 80.0
-DEFAULT_ACCOM_VAI = 0.8579
 DEFAULT_GUESTS_PER_ROOM = 1.8
 DEFAULT_AFFECTED_SHARE = 0.15
 DEFAULT_DELTA_ALOS = 0.40
@@ -97,17 +96,17 @@ class PortfolioOptimizer:
             for st, grp in df_sp.groupby("state"):
                 sp_mean = grp["spend_per_night_rm"].mean()
                 sp_sd = grp["spend_per_night_rm"].std()
-                sp_cv = (sp_sd / sp_mean) if (sp_mean and sp_mean > 0 and pd.notnull(sp_sd)) else 0.193
-                self.state_historical_vars[st] = float(np.clip(sp_cv, 0.08, 0.40))
+                sp_cv = (sp_sd / sp_mean) if (sp_mean and sp_mean > 0 and pd.notnull(sp_sd)) else None
+                self.state_historical_vars[st] = float(sp_cv) if sp_cv is not None and len(grp["spend_per_night_rm"].dropna()) >= 3 else None
 
         # National VAI
         if "product_value_summary" in tables:
             vai_res = con.execute(
                 "SELECT post_recovery_median_vai FROM product_value_summary WHERE product_id = 'accommodation'"
             ).fetchone()
-            self.national_vai = float(vai_res[0]) if (vai_res and vai_res[0]) else DEFAULT_ACCOM_VAI
+            self.national_vai = float(vai_res[0]) if (vai_res and vai_res[0]) else None
         else:
-            self.national_vai = DEFAULT_ACCOM_VAI
+            self.national_vai = None
 
         con.close()
 
@@ -128,7 +127,7 @@ class PortfolioOptimizer:
                 aor = None
                 rooms = None
                 for c in ["aor_2025_pct", "aor_2024_pct"]:
-                    if c in cap_row and pd.notnull(cap_row[c]) and float(cap_row[c]) > 0:
+                    if c in cap_row and pd.notnull(cap_row[c]) and 0 <= float(cap_row[c]) <= 100:
                         aor = float(cap_row[c])
                         break
                 for c in ["hotel_rooms_2025", "dts_rooms_2025", "hotel_rooms_2024"]:
@@ -141,7 +140,7 @@ class PortfolioOptimizer:
             category = row["category"] if pd.notnull(row.get("category")) else "Growth Opportunity"
 
             # Eligibility based on empirical evidence completeness (Sprint A / Plan Section 5.3)
-            if not has_spend or not has_rooms:
+            if not has_spend or not has_rooms or self.national_vai is None or self.state_historical_vars.get(dest) is None or pd.isna(row.get("dest_alos")):
                 candidates.append({
                     "corridor_id": f"{orig} -> {dest}",
                     "origin": orig,
@@ -194,7 +193,7 @@ class PortfolioOptimizer:
             daily_rooms = add_nights / (365.0 * DEFAULT_GUESTS_PER_ROOM)
 
             # Sprint D / Plan Section 19: Destination compound uncertainty and risk-adjusted metrics
-            dest_spend_cv = float(self.state_historical_vars.get(dest, 0.193))
+            dest_spend_cv = float(self.state_historical_vars[dest])
             cv_tot = float(np.sqrt((1.0 + 0.267**2) * (1.0 + 0.15**2) * (1.0 + dest_spend_cv**2) * (1.0 + 0.08**2) - 1.0))
             sigma_gva = float(pot_gva_m * cv_tot)
             sigma_ln = float(np.sqrt(np.log(1.0 + cv_tot**2)))
@@ -278,7 +277,13 @@ class PortfolioOptimizer:
                             'risk_adjusted' (E[GVA] - lambda * sigma_GVA).
             risk_aversion: Risk aversion parameter lambda for 'risk_adjusted' mode (default 0.5).
         """
-        df = self.df_candidates.copy()
+        if objective_mode not in {"expected", "conservative_p10", "risk_adjusted"}:
+            raise ValueError("Unsupported objective mode")
+        if not np.isfinite(budget_rm_million) or budget_rm_million < 0 or not 0 < planning_threshold <= 100:
+            raise ValueError("Invalid budget or threshold")
+        if custom_costs and any(not np.isfinite(v) or v <= 0 for v in custom_costs.values()):
+            raise ValueError("Custom costs must be finite and positive")
+        df = self.df_candidates[self.df_candidates["eligible"] == True].copy()
 
         # Apply user-supplied custom costs if provided (Plan Section 18.1)
         if custom_costs:
@@ -696,8 +701,10 @@ def query_grounded_assistant(question: str) -> Dict[str, Any]:
 
             if state_row:
                 s_name, vis_k, tour_k, alos, spend_night, accom_spend, vfr_pct, rooms, aor = state_row
-                alos = float(alos) if alos is not None else 2.47
-                spend_night = float(spend_night) if spend_night is not None else 65.0
+                alos = float(alos) if alos is not None else None
+                spend_night = float(spend_night) if spend_night is not None else None
+                if alos is None or spend_night is None:
+                    return {"answer": "Insufficient state baseline evidence", "source": "state_year", "confidence": "Insufficient evidence"}
                 aor = float(aor) if aor is not None else None
                 rooms = int(rooms) if rooms is not None else None
 

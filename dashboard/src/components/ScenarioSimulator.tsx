@@ -1,3 +1,5 @@
+import { allocateHeuristic } from '../lib/allocation';
+import { calculateScenario } from '../lib/scenario';
 import React, { useState, useEffect, useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
 import * as echarts from 'echarts';
@@ -194,7 +196,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
   const baselineExcursionistsK = activeProfile.baseline_2025.visitors_thousands - b.tourists_thousands;
   const baselineAlos = b.alos_days;
   const baselineSpendPerNight = b.spend_per_night_rm;
-  const accomVAI = scenarioConfig.constants?.accommodation_vai || 0.8579;
+  const accomVAI = scenarioConfig.constants.accommodation_vai;
   const guestsPerRoom = scenarioConfig.constants?.average_guests_per_room || 1.8;
   const seasonalCaveat = scenarioConfig.constants?.seasonal_caveat || "Annual occupancy may hide seasonal/weekend capacity pressure.";
   const residentHouseholds = activeProfile.demographics?.households_thousands || null;
@@ -202,52 +204,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
   const totalRooms = b.hotel_rooms;
   const baselineAor = b.aor_pct;
 
-  // Real-Time Scenario Calculations (AGENTS.md Stage F & Sprint 6 Formulas)
-  // 1. Stay extension with campaign affected share (Phase 22)
-  const addNightsFromAlosK = baselineTouristsK * (affectedShare / 100.0) * deltaAlos;
-
-  // 2. Converted excursionists into overnight tourists
-  const convertedTouristsK = baselineExcursionistsK * (conversionRate / 100.0);
-  const addNightsFromConvertedK = convertedTouristsK * (baselineAlos + deltaAlos);
-
-  // 3. Converted unpaid VFR stays into commercial/registered paid lodging (Phase 24)
-  const hasVfrData = activeProfile.lodging_shares?.unpaid_vfr_pct != null;
-  const unpaidVfrPct: number = (hasVfrData && activeProfile.lodging_shares?.unpaid_vfr_pct != null) ? activeProfile.lodging_shares.unpaid_vfr_pct : 0.0;
-  const vfrTouristsK = baselineTouristsK * (unpaidVfrPct / 100.0);
-  const convertedVfrTouristsK = vfrTouristsK * (vfrConversionRate / 100.0);
-  const vfrNightsK = convertedVfrTouristsK * (baselineAlos + deltaAlos);
-  const homestayNightlyRate = Math.max(75, baselineSpendPerNight * 0.85);
-  const vfrAccomSpendRM = hasVfrData ? (vfrNightsK * 1e3 * homestayNightlyRate) / 1e6 : 0.0;
-
-  // Total additional guest nights (thousands) — Phase 24 includes VFR nights
-  const totalAdditionalGuestNightsK = addNightsFromAlosK + addNightsFromConvertedK + vfrNightsK;
-
-  // New spend per night (RM)
-  const newSpendPerNight = baselineSpendPerNight * (1 + yieldUplift / 100.0);
-
-  // Additional accommodation expenditure (RM Million)
-  const existingNightsK = baselineTouristsK * baselineAlos;
-  const newNightsSpendRM = ((addNightsFromAlosK + addNightsFromConvertedK) * 1e3 * newSpendPerNight) / 1e6;
-  const existingNightsUpliftRM = (existingNightsK * 1e3 * (newSpendPerNight - baselineSpendPerNight)) / 1e6;
-  const totalAdditionalAccomSpendMil = newNightsSpendRM + existingNightsUpliftRM + vfrAccomSpendRM;
-
-  // Potential Additional Tourism Value Added Proxy (RM Million at official VAI)
-  const potentialAdditionalTdgvaMil = totalAdditionalAccomSpendMil * accomVAI;
-
-  // Incremental Yield per Resident Household (RM / Household)
-  const yieldPerHouseholdRM = (residentHouseholds && residentHouseholds > 0)
-    ? (totalAdditionalAccomSpendMil * 1e6) / (residentHouseholds * 1e3)
-    : 0;
-
-  // Capacity Feasibility: Convert Guest Nights to Room Nights (Phase 23 & 24)
-  const availableRoomNightsYearK = (hasCapacityData && totalRooms && totalRooms > 0) ? (totalRooms * 365) / 1e3 : null;
-  const additionalRoomNightsYearK = totalAdditionalGuestNightsK / guestsPerRoom;
-  const additionalAorPct = (hasCapacityData && availableRoomNightsYearK && availableRoomNightsYearK > 0)
-    ? (additionalRoomNightsYearK / availableRoomNightsYearK) * 100
-    : null;
-  const simulatedAor = (hasCapacityData && baselineAor != null && additionalAorPct != null)
-    ? baselineAor + additionalAorPct
-    : null;
+  const {addNightsFromAlosK, convertedTouristsK, hasVfrData, unpaidVfrPct, vfrTouristsK, convertedVfrTouristsK, vfrNightsK, homestayNightlyRate, vfrAccomSpendRM, totalAdditionalGuestNightsK, newSpendPerNight, totalAdditionalAccomSpendMil, potentialAdditionalTdgvaMil, yieldPerHouseholdRM, simulatedAor} = calculateScenario({baselineTouristsK, baselineExcursionistsK, baselineAlos, baselineSpendPerNight, accomVAI, guestsPerRoom, residentHouseholds, hasCapacityData, totalRooms, baselineAor, affectedShare, deltaAlos, conversionRate, vfrConversionRate, yieldUplift, unpaidVfrInput: activeProfile.lodging_shares?.unpaid_vfr_pct ?? null});
 
   // Saturation Tier based on Configurable Planning Threshold (Phase 27)
   const getCapacityStatus = (aor: number | null) => {
@@ -284,7 +241,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
       color: 'text-violet-700',
       bg: 'bg-violet-600',
       isConstrained: false,
-      msg: `Feasible (${aor.toFixed(1)}% AOR within sustainable hotel capacity)`,
+      msg: `Feasible (${aor.toFixed(1)}% AOR within annual hotel planning threshold)`,
     };
   };
 
@@ -303,7 +260,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
     grid: { left: '3%', right: '4%', bottom: '8%', top: '15%', containLabel: true },
     xAxis: {
       type: 'category',
-      data: ['Accom Revenue (Baseline)', 'Simulated Accom Revenue', 'Baseline TDGVA Proxy', 'Simulated TDGVA Proxy'],
+      data: ['Accom Revenue (Baseline)', 'Simulated Accom Revenue', 'Baseline tourism GVA proxy', 'Simulated tourism GVA proxy'],
       axisLine: { lineStyle: { color: '#d6d0df' } },
       axisLabel: { color: '#746d80', fontSize: 10, interval: 0 },
     },
@@ -955,13 +912,10 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
 
       {/* MODE 2: Monte Carlo Stochastic Uncertainty Engine (Phase 26) */}
       {simulationMode === 'monte_carlo' && (() => {
-        const activeMcKey = activeCorridorOrigin 
-          ? `${activeCorridorOrigin} -> ${selectedState}`
-          : (scenarioConfig.monte_carlo_benchmarks && scenarioConfig.monte_carlo_benchmarks[`Selangor -> ${selectedState}`]
-              ? `Selangor -> ${selectedState}`
-              : Object.keys(scenarioConfig.monte_carlo_benchmarks || {})[0] || 'Selangor -> Melaka');
-        
-        const mc = scenarioConfig.monte_carlo_benchmarks?.[activeMcKey] || scenarioConfig.monte_carlo_benchmarks?.['Selangor -> Melaka'];
+        const activeMcKey = `${activeCorridorOrigin || 'Selangor'} -> ${selectedState}`;
+        const benchmark = scenarioConfig.monte_carlo_benchmarks?.[activeMcKey];
+        const mc = benchmark && 'percentiles' in benchmark ? benchmark : undefined;
+        if (!mc) return <div role="status" className="glass-panel p-6">No precomputed uncertainty benchmark for {activeMcKey}. Select a supported corridor; no substitute result is shown.</div>;
         const histData = mc?.distribution?.gva_density || [];
 
         const mcChartOption = {
@@ -1009,15 +963,15 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="px-2 py-0.5 rounded bg-purple-100 text-purple-800 text-[10px] font-bold uppercase tracking-wider">
-                      Phase 26 Stochastic Simulation
+                      Uncertainty benchmark
                     </span>
-                    <span className="text-xs text-stone-500">1,000 Iterations across Policy Levers</span>
+                    <span className="text-xs text-stone-500">Fixed benchmark · {mc.n_simulations} draws · 2025 baseline</span>
                   </div>
                   <h3 className="text-xl font-bold text-stone-900">
                     Corridor Uncertainty: {mc ? `${mc.origin} ➔ ${mc.destination}` : `${selectedState} Feeder Corridor`}
                   </h3>
                   <p className="text-xs text-stone-600 mt-0.5">
-                    Stochastic variation in campaign reach (5–40%), stay duration (+0.05d to +2.0d), spending velocity (CV 15%), and guest density.
+                    Precomputed benchmark, independent of policy sliders: reach {mc.parameters.input_affected_share * 100}%, stay extension {mc.parameters.input_delta_alos} nights, guests per room {mc.parameters.input_guests_per_room}. Historical variability is a sensitivity assumption, not a confidence interval for campaign effectiveness.
                   </p>
                 </div>
 
@@ -1071,13 +1025,13 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                   <div>
                     <div className="text-xs font-bold text-amber-900">Capacity Saturation Breach Risk</div>
                     <div className="text-xs text-amber-800 mt-0.5">
-                      Probability that destination hotel occupancy exceeds {planningThreshold}% planning threshold under stochastic arrivals.
+                      Probability that destination hotel occupancy exceeds {mc.parameters.planning_threshold_pct}% benchmark planning threshold under stochastic arrivals.
                     </div>
                   </div>
                 </div>
                 <div className="text-right shrink-0">
                   <span className="text-xl font-bold text-amber-900 font-mono">
-                    {mc ? (mc.prob_capacity_breach * 100).toFixed(1) : 0}%
+                    {mc.prob_capacity_breach == null ? 'Unavailable' : `${(mc.prob_capacity_breach * 100).toFixed(1)}%`}
                   </span>
                   <span className="block text-[10px] text-amber-700 font-semibold">Risk of Saturation</span>
                 </div>
@@ -1130,15 +1084,15 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                       <div className="space-y-1.5 text-stone-700 text-[11px]">
                         <div className="flex justify-between">
                           <span>Campaign Reach Prior:</span>
-                          <strong className="font-mono text-amber-800">{((mc.uncertainty_provenance.policy_uncertainty.affected_share.mean * 100)).toFixed(0)}% (±{((mc.uncertainty_provenance.policy_uncertainty.affected_share.sd * 100)).toFixed(0)}%)</strong>
+                          <strong className="font-mono text-amber-800">{((mc.uncertainty_provenance.policy_uncertainty.affected_share.location * 100)).toFixed(0)}% (±{((mc.uncertainty_provenance.policy_uncertainty.affected_share.sd * 100)).toFixed(0)}%)</strong>
                         </div>
                         <div className="flex justify-between">
                           <span>Length-of-Stay Expansion:</span>
-                          <strong className="font-mono text-amber-800">+{mc.uncertainty_provenance.policy_uncertainty.delta_alos.mean.toFixed(1)}d (±{mc.uncertainty_provenance.policy_uncertainty.delta_alos.sd.toFixed(2)}d)</strong>
+                          <strong className="font-mono text-amber-800">+{mc.uncertainty_provenance.policy_uncertainty.delta_alos.location.toFixed(1)}d (±{mc.uncertainty_provenance.policy_uncertainty.delta_alos.sd.toFixed(2)}d)</strong>
                         </div>
                         <div className="flex justify-between">
                           <span>Room Guest Density:</span>
-                          <strong className="font-mono text-amber-800">{mc.uncertainty_provenance.policy_uncertainty.guests_per_room.mean.toFixed(1)} guests/room</strong>
+                          <strong className="font-mono text-amber-800">{mc.uncertainty_provenance.policy_uncertainty.guests_per_room.location.toFixed(1)} guests/room</strong>
                         </div>
                         <p className="text-[10px] text-stone-500 pt-1 border-t border-amber-100/80">
                           Policy levers configured by campaign planners. Stochastic priors capture implementation variance.
@@ -1170,8 +1124,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
         const tiersByMode = (scenarioConfig.portfolio_optimization as any)?.solved_tiers_by_mode || {};
         const candidates = scenarioConfig.portfolio_optimization?.candidates || [];
         const currentTier = tiersByMode[optimizationMode]?.[String(selectedBudget)]?.[String(selectedOptimizerThreshold)]
-          || tiers[String(selectedBudget)]?.[String(selectedOptimizerThreshold)]
-          || tiers['5.0']?.['80'];
+          || (optimizationMode === 'expected' ? tiers[String(selectedBudget)]?.[String(selectedOptimizerThreshold)] : undefined);
 
         const hasCustomCosts = Object.keys(customCosts).length > 0;
 
@@ -1193,85 +1146,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
             };
           }
 
-          // Evaluate candidate pool with user-supplied custom costs and selected optimization mode
-          const candidatePool = candidates.map(c => {
-            const userK = customCosts[c.corridor_id];
-            const costM = userK !== undefined ? userK / 1000 : c.cost_rm_million;
-            
-            let targetGva = c.expected_gva_rm_million;
-            if (optimizationMode === 'conservative_p10') {
-              targetGva = c.p10_gva_rm_million ?? (c.expected_gva_rm_million * 0.58);
-            } else if (optimizationMode === 'risk_adjusted') {
-              targetGva = c.risk_adjusted_gva_rm_million ?? (c.expected_gva_rm_million * 0.81);
-            }
-
-            const ratio = costM > 0 ? targetGva / costM : 0;
-            return {
-              ...c,
-              cost_rm_million: costM,
-              target_gva_rm_million: targetGva,
-              value_to_cost_multiple: ratio,
-              cost_status: userK !== undefined ? 'CUSTOM USER COST' : (c.cost_status || 'ILLUSTRATIVE COST ASSUMPTION'),
-              is_custom: userK !== undefined
-            };
-          });
-
-          // Rank by target value-to-cost efficiency
-          const sorted = [...candidatePool].sort(
-            (a, b) => (b.value_to_cost_multiple || 0) - (a.value_to_cost_multiple || 0)
-          );
-
-          const allocatedRooms: Record<string, number> = {};
-          const selected: any[] = [];
-          let totalCost = 0;
-          let totalGva = 0;
-          let totalP10 = 0;
-          let totalRiskAdj = 0;
-          let totalSpend = 0;
-          let totalNights = 0;
-
-          for (const c of sorted) {
-            if (totalCost + c.cost_rm_million > selectedBudget) continue;
-
-            const dest = c.destination;
-            const baseState = scenarioConfig.state_baselines?.[dest];
-            const hotelRooms = baseState?.hotel_rooms || 10000;
-            const baseAor = baseState?.aor || 60;
-            const maxExtraRooms = Math.max(0, hotelRooms * ((selectedOptimizerThreshold - baseAor) / 100));
-
-            const currentAlloc = allocatedRooms[dest] || 0;
-            if (currentAlloc + c.daily_rooms_demanded > maxExtraRooms) continue;
-
-            selected.push(c);
-            totalCost += c.cost_rm_million;
-            totalGva += c.expected_gva_rm_million;
-            totalP10 += c.p10_gva_rm_million ?? (c.expected_gva_rm_million * 0.58);
-            totalRiskAdj += c.risk_adjusted_gva_rm_million ?? (c.expected_gva_rm_million * 0.81);
-            totalSpend += c.additional_spend_rm_million;
-            totalNights += c.additional_nights;
-            allocatedRooms[dest] = currentAlloc + c.daily_rooms_demanded;
-          }
-
-          return {
-            displayCorridors: selected,
-            summary: {
-              budget_allocated_rm_million: selectedBudget,
-              total_cost_rm_million: totalCost,
-              budget_utilization_pct: selectedBudget > 0 ? (totalCost / selectedBudget) * 100 : 0,
-              total_expected_gva_rm_million: totalGva,
-              total_p10_gva_rm_million: totalP10,
-              total_risk_adjusted_gva_rm_million: totalRiskAdj,
-              objective_mode: optimizationMode,
-              total_additional_spend_rm_million: totalSpend,
-              total_additional_nights: totalNights,
-              value_to_cost_multiple: totalCost > 0 ? totalGva / totalCost : 0,
-              portfolio_roi_multiplier: totalCost > 0 ? totalGva / totalCost : 0,
-              total_corridors_funded: selected.length,
-              planning_threshold_pct: selectedOptimizerThreshold,
-              cost_status: 'CUSTOM USER COSTS APPLIED'
-            },
-            isCustomSolution: true
-          };
+          return allocateHeuristic(candidates, scenarioConfig.state_baselines || {}, selectedBudget, selectedOptimizerThreshold, customCosts, optimizationMode);
         })();
 
         const tableCorridors = showAllCandidates && candidates.length > 0
@@ -1301,7 +1176,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                     Campaign Costs are Illustrative Benchmarks — Editable by Planners:
                   </p>
                   <p className="text-stone-600 leading-relaxed">
-                    Default corridor campaign budgets represent scenario planning baselines (RM 50,000 base + RM 25 per 1,000 feeder tourists). Destination planners and budget officers can directly edit campaign costs below in RM &apos;000 to test custom funding allocations. Value-to-Cost Multiples indicate scenario economic yields, not commercial ROI.
+                    Default corridor campaign budgets represent scenario planning baselines (RM 50,000 base + RM 25 per 1,000 feeder tourists). Destination planners and budget officers can directly edit campaign costs below in RM &apos;000 to test custom funding allocations. Scenario GVA-to-Cost Multiples indicate scenario economic yields, not commercial ROI.
                   </p>
                 </div>
               </div>
@@ -1321,7 +1196,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span className="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-bold uppercase tracking-wider">
-                      {isCustomSolution ? 'Dynamic Knapsack Allocation' : 'Phase 36 Mixed-Integer Linear Programming (MILP)'}
+                      {isCustomSolution ? 'Heuristic allocation; optimality not established' : 'Mixed-Integer Linear Programming (MILP)'}
                     </span>
                     <span className="text-xs text-stone-500">
                       {isCustomSolution ? 'User Custom Cost Overrides Active' : 'Global Optimal Resource Allocation'}
@@ -1414,7 +1289,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
 
                 <div className="p-3.5 rounded-xl bg-white border border-indigo-100">
                   <span className="text-[10px] font-semibold text-stone-500 uppercase">
-                    {optimizationMode === 'conservative_p10' ? 'Conservative P10 GVA' : optimizationMode === 'risk_adjusted' ? 'Risk-Adjusted GVA' : 'Expected Incremental GVA'}
+                    {optimizationMode === 'conservative_p10' ? 'Sum of marginal P10 scores' : optimizationMode === 'risk_adjusted' ? 'Risk-Adjusted GVA' : 'Expected Incremental GVA'}
                   </span>
                   <div className="text-lg font-bold text-indigo-700 mt-0.5 font-mono">
                     +RM {summary ? (
@@ -1435,7 +1310,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                 </div>
 
                 <div className="p-3.5 rounded-xl bg-white border border-indigo-100" title="Scenario benchmark multiple based on promotional budget allocation assumptions; not a guaranteed financial ROI.">
-                  <span className="text-[10px] font-semibold text-stone-500 uppercase">Value-to-Cost Multiple</span>
+                  <span className="text-[10px] font-semibold text-stone-500 uppercase">Scenario GVA-to-Cost Multiple</span>
                   <div className="text-lg font-bold text-emerald-700 mt-0.5 font-mono">
                     {summary ? summary.portfolio_roi_multiplier.toFixed(1) : '—'}x
                   </div>
@@ -1457,7 +1332,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
                 <div>
                   <h4 className="text-sm font-bold text-stone-900 flex items-center gap-2">
-                    <span>Optimal Corridor Allocations ({displayCorridors.length} Funded)</span>
+                    <span>Selected Corridor Allocations ({displayCorridors.length} Funded)</span>
                     {isCustomSolution && (
                       <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-bold">
                         CUSTOM COSTS APPLIED
@@ -1570,7 +1445,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
                               }
                             </div>
                             <div className="text-[10px] text-stone-500">
-                              {optimizationMode === 'conservative_p10' ? 'P10 Certainty' : 'E - 0.5σ'}
+                              {optimizationMode === 'conservative_p10' ? 'Marginal downside score' : 'E - 0.5σ'}
                               {c.dest_spend_cv ? ` (CV ${(c.dest_spend_cv * 100).toFixed(0)}%)` : ''}
                             </div>
                           </td>

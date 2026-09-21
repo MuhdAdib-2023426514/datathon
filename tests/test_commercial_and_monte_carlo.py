@@ -380,7 +380,7 @@ class TestSprintDUncertaintyAndOptimization:
         melaka_var = mc.state_historical_vars.get("Melaka")
         assert melaka_var is not None
         assert 0.08 <= melaka_var["spend_cv"] <= 0.40
-        assert 0.05 <= melaka_var["alos_sd"] <= 0.50
+        assert melaka_var["sample_count"] >= 3
 
         # Check National TSA VAI standard deviation
         assert hasattr(mc, "national_vai_sd")

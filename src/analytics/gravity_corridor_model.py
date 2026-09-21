@@ -295,12 +295,12 @@ def run_gravity_corridor_model() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFra
     # 3. Naive Baseline 1: Lagged 2024 Flow (Persistence)
     flow_2024 = df_train[df_train["year"] == 2024].set_index(["origin", "destination"])["tourist_flow_thousands"]
     df_test["pred_base1_lag2024"] = df_test.set_index(["origin", "destination"]).index.map(flow_2024)
-    df_test["pred_base1_lag2024"] = df_test["pred_base1_lag2024"].fillna(df_test["tourist_flow_thousands"].mean())
+    df_test["pred_base1_lag2024"] = df_test["pred_base1_lag2024"].fillna(df_train["tourist_flow_thousands"].mean())
 
     # 4. Naive Baseline 2: Historical Corridor Mean (2018–2024)
     hist_mean = df_train.groupby(["origin", "destination"])["tourist_flow_thousands"].mean()
     df_test["pred_base2_histmean"] = df_test.set_index(["origin", "destination"]).index.map(hist_mean)
-    df_test["pred_base2_histmean"] = df_test["pred_base2_histmean"].fillna(df_test["tourist_flow_thousands"].mean())
+    df_test["pred_base2_histmean"] = df_test["pred_base2_histmean"].fillna(df_train["tourist_flow_thousands"].mean())
 
     # 5. Naive Baseline 3: Origin Feeder Share x Total 2024 Destination Intake
     share_mean = df_train.groupby(["origin", "destination"])["tourist_flow_thousands"].sum() / (
