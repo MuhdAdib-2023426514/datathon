@@ -1,0 +1,2920 @@
+[
+  {
+    "url": "https://www.booking.com/hotel/my/acappella-suite.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=141160204_261679408_0_2_0_641249&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=141160204_261679408_0_2_0_641249&hpos=1&matching_block_id=141160204_261679408_0_2_0_641249&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=141160204_261679408_0_2_0_641249_17407&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Acappella Suite Hotel, Shah Alam",
+    "address": "No. 8, Persiaran Sukan, 40100 Shah Alam, Malaysia",
+    "score_raw": "8.5\nVery Good · 2,104 reviews",
+    "score_right": "8.5\nRated: Very Good 8.5 – based on 2,104 reviews Expand ratings and reviews section\nVery Good\n2,104 reviews",
+    "stars": 4,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 9,
+      "facilities": 8.8,
+      "cleanliness": 8.9,
+      "comfort": 8.9,
+      "value_for_money": 8.8,
+      "location": 9,
+      "free_wifi": 8
+    },
+    "room_type_count": 166,
+    "facility_groups": {
+      "Great for your stay": [
+        "Restaurant",
+        "Private bathroom",
+        "Parking",
+        "Free Wifi",
+        "Air conditioning",
+        "Family rooms",
+        "Fitness center",
+        "Non-smoking rooms",
+        "Valet parking",
+        "Shower"
+      ],
+      "Bathroom": [
+        "Towels",
+        "Bidet",
+        "Towels/sheets (extra fee)",
+        "Private bathroom",
+        "Toilet",
+        "Free toiletries",
+        "Shower"
+      ],
+      "Bedroom": [
+        "Linens",
+        "Wardrobe or closet"
+      ],
+      "Kitchen": [
+        "Electric kettle",
+        "Refrigerator"
+      ],
+      "Room amenities": [
+        "Clothes rack"
+      ],
+      "Activities": [
+        "Playground",
+        "Golf course (within 2 miles)"
+      ],
+      "Living Area": [
+        "Desk"
+      ],
+      "Media & Technology": [
+        "Flat-screen TV",
+        "Cable channels",
+        "Telephone"
+      ],
+      "Food & Drink": [
+        "Wine/Champagne\nAdditional charge",
+        "Kid-friendly buffet",
+        "Bar",
+        "Restaurant"
+      ],
+      "Internet\nWifi is available in all areas and is free of charge.": [],
+      "Parking\nPrivate parking is available on site (reservation is not needed) and costs MYR 10 per day.": [
+        "Valet parking",
+        "Parking garage",
+        "Accessible parking"
+      ],
+      "Front Desk Services": [
+        "Invoice provided",
+        "Baggage storage",
+        "24-hour front desk"
+      ],
+      "Entertainment & Family Services": [
+        "Outdoor play equipment for kids"
+      ],
+      "Cleaning Services": [
+        "Daily housekeeping",
+        "Laundry\nAdditional charge"
+      ],
+      "Business Facilities": [
+        "Fax/Photocopying\nAdditional charge",
+        "Meeting/Banquet facilities\nAdditional charge"
+      ],
+      "Safety & security": [
+        "Fire extinguishers",
+        "CCTV outside property",
+        "CCTV in common areas",
+        "Smoke alarms",
+        "Key card access",
+        "Key access",
+        "24-hour security",
+        "Safe"
+      ],
+      "General": [
+        "Vending machine (snacks)",
+        "Vending machine (drinks)",
+        "Designated smoking area",
+        "Air conditioning",
+        "Smoke-free property",
+        "Wake-up service",
+        "Hardwood or parquet floors",
+        "Tile/marble floor",
+        "Elevator",
+        "Fan",
+        "Family rooms",
+        "Ironing facilities",
+        "Non-smoking rooms",
+        "Iron",
+        "Room service"
+      ],
+      "Outdoor swimming pool\nFree!": [
+        "Seasonal (temporarily closed)",
+        "All ages welcome",
+        "Pool with view",
+        "Beach chairs/Loungers"
+      ],
+      "Spa": [
+        "Beach chairs/Loungers",
+        "Fitness center"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Malay"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool (temporarily closed)",
+      "Non-smoking rooms",
+      "Room service",
+      "Fitness center",
+      "Private Parking",
+      "Free Wifi",
+      "Restaurant",
+      "Family rooms",
+      "Bar",
+      "Very Good Breakfast",
+      "Outdoor swimming pool (temporarily closed)",
+      "Non-smoking rooms",
+      "Room service",
+      "Fitness center",
+      "Private Parking",
+      "Free Wifi",
+      "Restaurant",
+      "Family rooms",
+      "Bar",
+      "Very Good Breakfast"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 1,
+    "search_listing": {
+      "title": "Acappella Suite Hotel, Shah Alam",
+      "url": "https://www.booking.com/hotel/my/acappella-suite.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=1&hapos=1&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=141160204_261679408_0_2_0_641249&highlighted_blocks=141160204_261679408_0_2_0_641249&matching_block_id=141160204_261679408_0_2_0_641249&sr_pri_blocks=141160204_261679408_0_2_0_641249_17407&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 8.5\n8.5\nVery Good\n2,104 reviews",
+      "price_raw": "MYR 174",
+      "distance": "4 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/hilton-shah-alam-glenmarie.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=2575238_95149490_2_34_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=2&highlighted_blocks=2575238_95149490_2_34_0&hpos=2&matching_block_id=2575238_95149490_2_34_0&nad_cpc=0.5&nad_id=eeb4f5e2-e3b1-431c-811f-c65e952e61fb_0&nad_placement=SR_MAIN&nad_track=eyJhdWN0aW9uRXBvY2giOjE3ODk3NDIxMzA0ODEsInJhbmsiOjEsImtvZGRpVHJhY2tpbmdJbmZvIjoiWFI5bjJMc0JzSXNHN2FJMTRHRy9lT21iZUIyMjNmVVJpSVR5Nm83QnE2TFI5OXh1bzJUWTBUTTNKZituNm9ERVk2WUt3OUllWlphekYxUzl5K0ttb3l1YUlPMmhxUVU2T3U3MXdBTkRYcEtVV1dVcE5TNW9GQldoTE0zQmhRMU93NHltYk1idEFrZk1zVHJPeFhCWGZadElMc2Y3L2k0ZHdWbitTdTk4L1o3RHBWTGozSGhtdCtRYVJwZXdza1ExK2U0SEF0VTFJR0p6ZGZBUFMyMDVCeWJZWkxjZzAwTG1TUm1Rd1VwL2dLMDFFdUFFWWwvUjZDeXVyazlORG1qaG04M0JYRXZESXFVY1g2WXFMTmxrZmdmN2xwRlRJL0ZFanhMLzRxblNFcVNPdFkrV25LZkV3dW8xK1RoSDBKY1NaU3pCQ29kQnhwbDlBbzhObmFHOUpPTlFjNi9QbjdmYWQ2R0FCSHIzVTFraGsya05wZDl6cXhXSnM1VjVBSkYyV1YvRkVWTi9vTlVFTHdXOGVGYXVQZ09rK2tJQzMzcmlFcHhISGVlNHZOclNkVlN5SzlER0o0czR2eTIvWGlXRktoMXN6ckJuWXRtdzRDMXY5am95NGwyTk1OVXNmcDhnemlEUlROL1p4Zlp4T2svUGlIOWVzT3locEJraU1qOTFscmZVWE05S3BZd29wb2pLQVJ3WGl6S1dPQkF2eGRPbGNBUzNTNUpBYnlSMHNtTjZkTlM5Wm9CTllkR21uL1d3QncxVExlcFcrYnZja2swaTBpZ1ppYXhMVU84ck9hM2syK0ZMRjhGZDUvYklUNVpCaVVJVHJ1K2lrMEtpVm44dDNtcUQvK0pseUFud0FhMlVINmU5cHB5b3RXZE5VenQ0SG5yKzcyano4ZG1tdXdvNDVINEFHUCtNVVNSVURhT25pb2xiR0s4VHpCTlhlNDhWMkVxRk0xOGtFTm5zTUlPbmgvb1g0eng5NlRDVHErMnNBL3A1RFhMaWZ3ME5ITWRLWGxMT3Q5NEFUNnM2ZUFEK0hhZW9USjRjTk8yWTN6bzA1RkdzamJ0NFRYUWRISk9LK3pOclNyMTM2SEdtd25pVldFc05rd2RJazEzaTEzZ1lBSWFVcHhOenBtN3lWYjF2L3dmSnI5NVh1MUpKNzY4RE5MOVZVcWhBdFZ1aDdPZWhOTFZzb1FiN2hMMUU2bDVmSVBFKzdDVG1HTkkzVmZibHJ5Z1dTNG5yY1lJaVduK1JnUlFFTmpLTGRVNmNuVE5mdzhTcHRkdSs2ODY0R3NGWi92NmMyRzZibEx2SUdla1VBZlhGTGtJK2MyYmt4a0xJUkJYRDJDMDhmUkI5M0t0R2VsbFFxSkxGcUFnN1ZqQXV5cVBybTl5UUtCa09oQkdVUUpQVFQ0UzhtcWFWendwTzgxd0RKeXg1Uy9NOGJzVWRhUElQR0RiYXR6TlV4U1hyMjl4RUcrSXJMdXFKWkJ6dFFLc3J1RVNNbWNTR0YzUGFYYmpXUVRkZ2hoL2VqaUViQnJXbzBoVGp1RDdkL0kzUTNhb04vTERJczNYWTBQZmhsOHk5ZStZdDRXNTg2c1ljc2FxQ2FzWE84aGdPeFFJcDRZT3JDQVJuYi9QSGovZFI3WWVGd09YS0tkU0dmbUJzR2k4aDJjSlhwUTd0OUQ4SG5QZlFUaEpReUdIdEtFbjg1UnlYcXZyYVZiSWp4REZxeCtaWWhRMU1HZUd5OTZmL3VEWFJBSjZUR29HR2tiYmhHbkZmZDBCZ0xmejRVQk4wdU5GR1FHTlVtMGVlMVpHcFVZZVlHemcreFUvZUxOSnBWT290QTRXemI0VkZweXNveHFwRGV1a1NNZkVLL0EyckhKQU9HMXRPRkxWL3lnVmNhVStrMXpwaG5QcnBQQ1FOcXhWZkxrQ3NhdXJoSWNRTWVMSjRqV1RQbzl6NVkraVBOR3dRZnBKaWJEOVo5aDhidEhPYVVybkF0bEtwTXNVZnB4dVpVV2IzbTVKc2dLVDVIazcxQ1NaK0VKemtyY0FSVHRXVnRsWEZvTHUvL1NOVnlMVERPU0FLOWtSR2hxMytQbCtTS1B5LzlQUENmYkNZeTM1OFRFaXlvUVlZMVUrU3BBYVVHQ3JQYXhSOG9lS2VDVitOdXFWdkhSTVlGQ0FMYkpEQWloU0V3Z00xTFppM2tXMGtGZ01rWW9KcHE2N242YmtGOWNKbC9EbUNOdz09In0%3D&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=2575238_95149490_2_34_0__40273&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Hilton Shah Alam Glenmarie",
+    "address": "Jalan Usahawan U1/8, Seksyen U1, 40250 Shah Alam, Malaysia",
+    "score_raw": "8.5\nVery Good · 1,199 reviews",
+    "score_right": "8.5\nRated: Very Good 8.5 – based on 1,199 reviews Expand ratings and reviews section\nVery Good\n1,199 reviews",
+    "stars": 5,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 8.9,
+      "facilities": 8.7,
+      "cleanliness": 9,
+      "comfort": 9.1,
+      "value_for_money": 8.7,
+      "location": 8.7,
+      "free_wifi": 8.8
+    },
+    "room_type_count": 197,
+    "facility_groups": {},
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Room service",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "2 restaurants",
+      "Tea/Coffee Maker in All Rooms",
+      "Bar",
+      "Very Good Breakfast",
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Room service",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "2 restaurants",
+      "Tea/Coffee Maker in All Rooms",
+      "Bar",
+      "Very Good Breakfast"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 2,
+    "search_listing": {
+      "title": "Hilton Shah Alam Glenmarie",
+      "url": "https://www.booking.com/hotel/my/hilton-shah-alam-glenmarie.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=2&hapos=2&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=2575238_95149490_2_34_0&highlighted_blocks=2575238_95149490_2_34_0&matching_block_id=2575238_95149490_2_34_0&sr_pri_blocks=2575238_95149490_2_34_0__40273&nad_id=eeb4f5e2-e3b1-431c-811f-c65e952e61fb_0&nad_cpc=0.5&nad_track=eyJhdWN0aW9uRXBvY2giOjE3ODk3NDIxMzA0ODEsInJhbmsiOjEsImtvZGRpVHJhY2tpbmdJbmZvIjoiWFI5bjJMc0JzSXNHN2FJMTRHRy9lT21iZUIyMjNmVVJpSVR5Nm83QnE2TFI5OXh1bzJUWTBUTTNKZituNm9ERVk2WUt3OUllWlphekYxUzl5K0ttb3l1YUlPMmhxUVU2T3U3MXdBTkRYcEtVV1dVcE5TNW9GQldoTE0zQmhRMU93NHltYk1idEFrZk1zVHJPeFhCWGZadElMc2Y3L2k0ZHdWbitTdTk4L1o3RHBWTGozSGhtdCtRYVJwZXdza1ExK2U0SEF0VTFJR0p6ZGZBUFMyMDVCeWJZWkxjZzAwTG1TUm1Rd1VwL2dLMDFFdUFFWWwvUjZDeXVyazlORG1qaG04M0JYRXZESXFVY1g2WXFMTmxrZmdmN2xwRlRJL0ZFanhMLzRxblNFcVNPdFkrV25LZkV3dW8xK1RoSDBKY1NaU3pCQ29kQnhwbDlBbzhObmFHOUpPTlFjNi9QbjdmYWQ2R0FCSHIzVTFraGsya05wZDl6cXhXSnM1VjVBSkYyV1YvRkVWTi9vTlVFTHdXOGVGYXVQZ09rK2tJQzMzcmlFcHhISGVlNHZOclNkVlN5SzlER0o0czR2eTIvWGlXRktoMXN6ckJuWXRtdzRDMXY5am95NGwyTk1OVXNmcDhnemlEUlROL1p4Zlp4T2svUGlIOWVzT3locEJraU1qOTFscmZVWE05S3BZd29wb2pLQVJ3WGl6S1dPQkF2eGRPbGNBUzNTNUpBYnlSMHNtTjZkTlM5Wm9CTllkR21uL1d3QncxVExlcFcrYnZja2swaTBpZ1ppYXhMVU84ck9hM2syK0ZMRjhGZDUvYklUNVpCaVVJVHJ1K2lrMEtpVm44dDNtcUQvK0pseUFud0FhMlVINmU5cHB5b3RXZE5VenQ0SG5yKzcyano4ZG1tdXdvNDVINEFHUCtNVVNSVURhT25pb2xiR0s4VHpCTlhlNDhWMkVxRk0xOGtFTm5zTUlPbmgvb1g0eng5NlRDVHErMnNBL3A1RFhMaWZ3ME5ITWRLWGxMT3Q5NEFUNnM2ZUFEK0hhZW9USjRjTk8yWTN6bzA1RkdzamJ0NFRYUWRISk9LK3pOclNyMTM2SEdtd25pVldFc05rd2RJazEzaTEzZ1lBSWFVcHhOenBtN3lWYjF2L3dmSnI5NVh1MUpKNzY4RE5MOVZVcWhBdFZ1aDdPZWhOTFZzb1FiN2hMMUU2bDVmSVBFKzdDVG1HTkkzVmZibHJ5Z1dTNG5yY1lJaVduK1JnUlFFTmpLTGRVNmNuVE5mdzhTcHRkdSs2ODY0R3NGWi92NmMyRzZibEx2SUdla1VBZlhGTGtJK2MyYmt4a0xJUkJYRDJDMDhmUkI5M0t0R2VsbFFxSkxGcUFnN1ZqQXV5cVBybTl5UUtCa09oQkdVUUpQVFQ0UzhtcWFWendwTzgxd0RKeXg1Uy9NOGJzVWRhUElQR0RiYXR6TlV4U1hyMjl4RUcrSXJMdXFKWkJ6dFFLc3J1RVNNbWNTR0YzUGFYYmpXUVRkZ2hoL2VqaUViQnJXbzBoVGp1RDdkL0kzUTNhb04vTERJczNYWTBQZmhsOHk5ZStZdDRXNTg2c1ljc2FxQ2FzWE84aGdPeFFJcDRZT3JDQVJuYi9QSGovZFI3WWVGd09YS0tkU0dmbUJzR2k4aDJjSlhwUTd0OUQ4SG5QZlFUaEpReUdIdEtFbjg1UnlYcXZyYVZiSWp4REZxeCtaWWhRMU1HZUd5OTZmL3VEWFJBSjZUR29HR2tiYmhHbkZmZDBCZ0xmejRVQk4wdU5GR1FHTlVtMGVlMVpHcFVZZVlHemcreFUvZUxOSnBWT290QTRXemI0VkZweXNveHFwRGV1a1NNZkVLL0EyckhKQU9HMXRPRkxWL3lnVmNhVStrMXpwaG5QcnBQQ1FOcXhWZkxrQ3NhdXJoSWNRTWVMSjRqV1RQbzl6NVkraVBOR3dRZnBKaWJEOVo5aDhidEhPYVVybkF0bEtwTXNVZnB4dVpVV2IzbTVKc2dLVDVIazcxQ1NaK0VKemtyY0FSVHRXVnRsWEZvTHUvL1NOVnlMVERPU0FLOWtSR2hxMytQbCtTS1B5LzlQUENmYkNZeTM1OFRFaXlvUVlZMVUrU3BBYVVHQ3JQYXhSOG9lS2VDVitOdXFWdkhSTVlGQ0FMYkpEQWloU0V3Z00xTFppM2tXMGtGZ01rWW9KcHE2N242YmtGOWNKbC9EbUNOdz09In0%3D&nad_placement=SR_MAIN&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 8.5\n8.5\nVery Good\n1,199 reviews",
+      "price_raw": "MYR 403",
+      "distance": "7.2 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/z-amp-a-cozyhome-homestay-in-seksyen-13-shah-alam-msu-aeon-mall.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=1313643101_404136416_2_0_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=3&highlighted_blocks=1313643101_404136416_2_0_0&hpos=3&matching_block_id=1313643101_404136416_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1313643101_404136416_2_0_0__20000&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Z&A CozyHome -Homestay in Seksyen 13, Shah Alam, MSU, AEON Mall",
+    "address": "17-19, Menara U, Persiaran Olahraga, 40100 Shah Alam, Malaysia",
+    "score_raw": "9.9\nExceptional · 30 reviews",
+    "score_right": "9.9\nRated: Exceptional 9.9 – based on 30 reviews Expand ratings and reviews section\nExceptional\n30 reviews",
+    "stars": 3,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 9.9,
+      "facilities": 9.8,
+      "cleanliness": 10,
+      "comfort": 9.9,
+      "value_for_money": 10,
+      "location": 9.8,
+      "free_wifi": 10
+    },
+    "room_type_count": 3,
+    "facility_groups": {
+      "Great for your stay": [
+        "Balcony",
+        "Parking",
+        "View",
+        "Free Wifi",
+        "Kitchenette",
+        "Air conditioning",
+        "Fitness center",
+        "Free parking",
+        "Outdoor swimming pool",
+        "Shower"
+      ],
+      "Parking\nFree private parking is available on site (reservation is not needed).": [],
+      "Internet\nWifi is available in all areas and is free of charge.": [],
+      "Kitchen": [
+        "Dining table",
+        "Cleaning products",
+        "Kitchenware",
+        "Electric kettle",
+        "Microwave",
+        "Refrigerator",
+        "Kitchenette"
+      ],
+      "Bathroom": [
+        "Toilet paper",
+        "Towels",
+        "Bidet",
+        "Bath or shower",
+        "Slippers",
+        "Toilet",
+        "Free toiletries",
+        "Shower"
+      ],
+      "Living Area": [
+        "Sofa"
+      ],
+      "Media & Technology": [
+        "Streaming service (like Netflix)",
+        "Flat-screen TV",
+        "TV"
+      ],
+      "Room amenities": [
+        "Socket near the bed",
+        "Drying rack for clothing",
+        "Clothes rack",
+        "Tile/marble floor",
+        "Carpeted",
+        "Fan",
+        "Ironing facilities",
+        "Iron"
+      ],
+      "Accessibility": [
+        "Entire unit wheelchair accessible",
+        "Upper floors accessible by elevator"
+      ],
+      "Outdoors": [
+        "Private pool",
+        "Balcony"
+      ],
+      "Outdoor swimming pool": [],
+      "Spa": [
+        "Massage chair",
+        "Fitness center"
+      ],
+      "Outdoor & View": [
+        "City view",
+        "View"
+      ],
+      "Building Characteristics": [
+        "Private apartment in building"
+      ],
+      "Front Desk Services": [
+        "Private check-in/out"
+      ],
+      "Entertainment & Family Services": [
+        "Board games/Puzzles",
+        "Books, DVDs, or music for children",
+        "Board games/puzzles"
+      ],
+      "Shops": [
+        "Convenience store on site"
+      ],
+      "Miscellaneous": [
+        "Air conditioning",
+        "Smoke-free property"
+      ],
+      "Safety & security": [
+        "24-hour security"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Malay"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "Outdoor swimming pool",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 3,
+    "search_listing": {
+      "title": "Z&A CozyHome -Homestay in Seksyen 13, Shah Alam, MSU, AEON Mall",
+      "url": "https://www.booking.com/hotel/my/z-amp-a-cozyhome-homestay-in-seksyen-13-shah-alam-msu-aeon-mall.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=3&hapos=3&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=1313643101_404136416_2_0_0&highlighted_blocks=1313643101_404136416_2_0_0&matching_block_id=1313643101_404136416_2_0_0&sr_pri_blocks=1313643101_404136416_2_0_0__20000&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 10\n10\nExceptional\n31 reviews",
+      "price_raw": "MYR 200",
+      "distance": "3.8 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/setia-alam-the-forum-by-gomain-next-to-sccc.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=1143879401_387242011_0_0_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=4&highlighted_blocks=1143879401_387242011_0_0_0&hpos=4&matching_block_id=1143879401_387242011_0_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1143879401_387242011_0_0_0__11030&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Setia Alam The Forum By GoMain // Next to SCCC",
+    "address": "Jalan Setia Dagang AL U13/AL The Forum, 40170 Shah Alam, Malaysia",
+    "score_raw": "7.1\nGood · 156 reviews",
+    "score_right": "7.1\nRated: Good 7.1 – based on 156 reviews Expand ratings and reviews section\nGood\n156 reviews",
+    "stars": 3,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 7.7,
+      "facilities": 7.5,
+      "cleanliness": 7.9,
+      "comfort": 7.8,
+      "value_for_money": 7.7,
+      "location": 8,
+      "free_wifi": 7.5
+    },
+    "room_type_count": 5,
+    "facility_groups": {
+      "Great for your stay": [
+        "Restaurant",
+        "Private bathroom",
+        "Parking",
+        "Bath",
+        "View",
+        "Terrace",
+        "Free Wifi",
+        "Kitchen",
+        "Air conditioning",
+        "Family rooms"
+      ],
+      "Parking\nFree private parking is available on site (reservation is not needed).": [],
+      "Internet\nWifi is available in all areas and is free of charge.": [],
+      "Kitchen": [
+        "Dining table",
+        "Cleaning products",
+        "Stovetop",
+        "Kitchenware",
+        "Electric kettle",
+        "Kitchen",
+        "Washing machine",
+        "Microwave",
+        "Refrigerator",
+        "Kitchenette"
+      ],
+      "Bedroom": [
+        "Linens",
+        "Wardrobe or closet",
+        "Dressing room"
+      ],
+      "Bathroom": [
+        "Toilet paper",
+        "Towels",
+        "Bidet",
+        "Sauna",
+        "Towels/sheets (extra fee)",
+        "Additional toilet",
+        "Bath or shower",
+        "Slippers",
+        "Private bathroom",
+        "Toilet",
+        "Free toiletries",
+        "Bathrobe",
+        "Hairdryer",
+        "Bath",
+        "Shower"
+      ],
+      "Living Area": [
+        "Dining area",
+        "Seating area",
+        "Desk"
+      ],
+      "Media & Technology": [
+        "Flat-screen TV",
+        "TV"
+      ],
+      "Room amenities": [
+        "Drying rack for clothing",
+        "Clothes rack",
+        "Hypoallergenic",
+        "Tile/marble floor",
+        "Soundproofing",
+        "Interconnected room(s) available",
+        "Heating",
+        "Fan",
+        "Ironing facilities",
+        "Iron"
+      ],
+      "Accessibility": [
+        "Entire unit wheelchair accessible",
+        "Upper floors accessible by elevator"
+      ],
+      "Outdoors": [
+        "Outdoor furniture",
+        "Outdoor dining area",
+        "Barbecue",
+        "Private pool",
+        "BBQ facilities",
+        "Terrace",
+        "Garden"
+      ],
+      "Outdoor swimming pool\nFree!": [
+        "Open all year",
+        "All ages welcome",
+        "Pool with view",
+        "Pool/Beach towels"
+      ],
+      "Spa": [
+        "Hot tub/Jacuzzi",
+        "Fitness center"
+      ],
+      "Food & Drink": [
+        "Coffee house on site",
+        "Grocery deliveries",
+        "Vending machine (snacks)",
+        "Vending machine (drinks)",
+        "Restaurant"
+      ],
+      "Outdoor & View": [
+        "City view",
+        "Landmark view",
+        "Mountain view",
+        "Pool view",
+        "Garden view",
+        "View"
+      ],
+      "Transportation": [
+        "Shuttle service\nAdditional charge",
+        "Airport shuttle\nAdditional charge"
+      ],
+      "Front Desk Services": [
+        "Invoice provided",
+        "Private check-in/out",
+        "ATM on site",
+        "Baggage storage",
+        "Express check-in/out"
+      ],
+      "Entertainment & Family Services": [
+        "Playground"
+      ],
+      "Cleaning Services": [
+        "Daily housekeeping",
+        "Laundry"
+      ],
+      "Business Facilities": [
+        "Meeting/Banquet facilities"
+      ],
+      "Shops": [
+        "Convenience store on site",
+        "Hair/Beauty salon"
+      ],
+      "Miscellaneous": [
+        "Designated smoking area",
+        "Air conditioning",
+        "Smoke-free property",
+        "Hypoallergenic room available",
+        "Soundproof rooms",
+        "Elevator",
+        "Family rooms",
+        "Non-smoking rooms"
+      ],
+      "Safety & security": [
+        "CCTV outside property",
+        "CCTV in common areas",
+        "Smoke alarms",
+        "Security alarm",
+        "Key card access",
+        "Key access",
+        "24-hour security",
+        "Carbon monoxide detector"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Indonesian",
+        "Malay",
+        "Cantonese",
+        "Chinese"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Airport shuttle",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "Restaurant",
+      "Family rooms",
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Airport shuttle",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "Restaurant",
+      "Family rooms"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 4,
+    "search_listing": {
+      "title": "Setia Alam The Forum By GoMain // Next to SCCC",
+      "url": "https://www.booking.com/hotel/my/setia-alam-the-forum-by-gomain-next-to-sccc.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=4&hapos=4&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=1143879401_387242011_0_0_0&highlighted_blocks=1143879401_387242011_0_0_0&matching_block_id=1143879401_387242011_0_0_0&sr_pri_blocks=1143879401_387242011_0_0_0__11030&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 7.1\n7.1\nGood\n156 reviews",
+      "price_raw": "MYR 110",
+      "distance": "7 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/f-1-5-pax-3bed-cozy-home-studio-trefoil-setia-alam-wifi-amp-tv.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=931047601_365122745_2_0_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=5&highlighted_blocks=931047601_365122745_2_0_0&hpos=5&matching_block_id=931047601_365122745_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=931047601_365122745_2_0_0__12960&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "F 1-5 Pax 3bed Cozy Home Studio Trefoil Setia Alam WIFI & TV",
+    "address": "trefoil @setia, 40170 Shah Alam, Malaysia",
+    "score_raw": "7.8\nGood · 72 reviews",
+    "score_right": "7.8\nRated: Good 7.8 – based on 72 reviews Expand ratings and reviews section\nGood\n72 reviews",
+    "stars": 4,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 7.9,
+      "facilities": 7.9,
+      "cleanliness": 8,
+      "comfort": 8.2,
+      "value_for_money": 8.3,
+      "location": 8.5
+    },
+    "room_type_count": 7,
+    "facility_groups": {
+      "Great for your stay": [
+        "Balcony",
+        "Parking",
+        "View",
+        "Free Wifi",
+        "Kitchen",
+        "Air conditioning",
+        "BBQ facilities",
+        "Swimming pool",
+        "Private Parking",
+        "Flat-screen TV"
+      ],
+      "Parking\nPrivate parking is available on site (reservation is not needed) and costs MYR 4 per day.": [],
+      "Internet\nWifi is available in all areas and is free of charge.": [],
+      "Kitchen": [
+        "Kitchen"
+      ],
+      "Media & Technology": [
+        "Flat-screen TV"
+      ],
+      "Outdoors": [
+        "Private pool",
+        "BBQ facilities",
+        "Balcony"
+      ],
+      "Swimming pool": [],
+      "Outdoor & View": [
+        "Garden view",
+        "View"
+      ],
+      "Miscellaneous": [
+        "Air conditioning",
+        "Smoke-free property"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Malay",
+        "Chinese"
+      ]
+    },
+    "popular_facilities": [
+      "Swimming pool",
+      "Private Parking",
+      "Free Wifi",
+      "Swimming pool",
+      "Private Parking",
+      "Free Wifi"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 5,
+    "search_listing": {
+      "title": "F 1-5 Pax 3bed Cozy Home Studio Trefoil Setia Alam WIFI & TV",
+      "url": "https://www.booking.com/hotel/my/f-1-5-pax-3bed-cozy-home-studio-trefoil-setia-alam-wifi-amp-tv.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=5&hapos=5&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=931047601_365122745_2_0_0&highlighted_blocks=931047601_365122745_2_0_0&matching_block_id=931047601_365122745_2_0_0&sr_pri_blocks=931047601_365122745_2_0_0__12960&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 7.8\n7.8\nGood\n72 reviews",
+      "price_raw": "MYR 130",
+      "distance": "8 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/alami-garden.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=34915210_444137804_0_0_0_569934&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=6&highlighted_blocks=34915210_444137804_0_0_0_569934&hpos=6&matching_block_id=34915210_444137804_0_0_0_569934&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=34915210_444137804_0_0_0_569934_16150&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Alami Garden Hotel",
+    "address": "1-13, Block 1, Presint Alami, No. 2, Persiaran Akuatik , 40100 Shah Alam, Malaysia",
+    "score_raw": "7.1\nGood · 210 reviews",
+    "score_right": "7.1\nRated: Good 7.1 – based on 210 reviews Expand ratings and reviews section\nGood\n210 reviews",
+    "stars": 3,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 8.5,
+      "facilities": 7.8,
+      "cleanliness": 7.8,
+      "comfort": 8,
+      "value_for_money": 7.7,
+      "location": 8.2,
+      "free_wifi": 7
+    },
+    "room_type_count": 6,
+    "facility_groups": {
+      "Great for your stay": [
+        "Restaurant",
+        "Private bathroom",
+        "Parking",
+        "Free Wifi",
+        "Air conditioning",
+        "Family rooms",
+        "Airport shuttle",
+        "Non-smoking rooms",
+        "Facilities for disabled guests",
+        "Outdoor swimming pool"
+      ],
+      "Bathroom": [
+        "Toilet paper",
+        "Towels",
+        "Bidet",
+        "Private bathroom",
+        "Toilet",
+        "Free toiletries",
+        "Hairdryer",
+        "Shower"
+      ],
+      "Kitchen": [
+        "Dryer",
+        "Electric kettle"
+      ],
+      "Room amenities": [
+        "Clothes rack"
+      ],
+      "Living Area": [
+        "Seating area",
+        "Desk"
+      ],
+      "Media & Technology": [
+        "Flat-screen TV",
+        "Telephone",
+        "TV"
+      ],
+      "Food & Drink": [
+        "Restaurant"
+      ],
+      "Internet\nWifi is available in all areas and is free of charge.": [],
+      "Parking\nPublic parking is available on site (reservation is not needed) and costs MYR 5 per day.": [
+        "Accessible parking"
+      ],
+      "Front Desk Services": [
+        "ATM on site",
+        "24-hour front desk"
+      ],
+      "Cleaning Services": [
+        "Daily housekeeping",
+        "Ironing service",
+        "Laundry\nAdditional charge"
+      ],
+      "Business Facilities": [
+        "Fax/Photocopying\nAdditional charge",
+        "Business center\nAdditional charge",
+        "Meeting/Banquet facilities\nAdditional charge"
+      ],
+      "Safety & security": [
+        "Fire extinguishers",
+        "CCTV outside property",
+        "CCTV in common areas",
+        "Smoke alarms",
+        "Key card access",
+        "24-hour security"
+      ],
+      "General": [
+        "Air conditioning",
+        "Wake-up service",
+        "Hardwood or parquet floors",
+        "Elevator",
+        "Family rooms",
+        "Ironing facilities",
+        "Facilities for disabled guests",
+        "Airport shuttle\nAdditional charge",
+        "Non-smoking rooms",
+        "Iron"
+      ],
+      "Accessibility": [
+        "Upper floors accessible by elevator"
+      ],
+      "Outdoor swimming pool\nFree!": [
+        "Opening times",
+        "Open all year",
+        "All ages welcome",
+        "Pool with view",
+        "Beach chairs/Loungers"
+      ],
+      "Spa": [
+        "Beach chairs/Loungers"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Malay",
+        "Chinese"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Airport shuttle",
+      "Parking on site",
+      "Free Wifi",
+      "Restaurant",
+      "Facilities for disabled guests",
+      "Family rooms",
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Airport shuttle",
+      "Parking on site",
+      "Free Wifi",
+      "Restaurant",
+      "Facilities for disabled guests",
+      "Family rooms"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 6,
+    "search_listing": {
+      "title": "Alami Garden Hotel",
+      "url": "https://www.booking.com/hotel/my/alami-garden.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=6&hapos=6&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=34915210_444137804_0_0_0_569934&highlighted_blocks=34915210_444137804_0_0_0_569934&matching_block_id=34915210_444137804_0_0_0_569934&sr_pri_blocks=34915210_444137804_0_0_0_569934_16150&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 7.1\n7.1\nGood\n210 reviews",
+      "price_raw": "MYR 162",
+      "distance": "2.6 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/homestay-shah-alam-near-uitm.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=1617116201_432566129_8_0_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=7&highlighted_blocks=1617116201_432566129_8_0_0&hpos=7&matching_block_id=1617116201_432566129_8_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1617116201_432566129_8_0_0__35910&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Homestay Shah Alam Near Uitm",
+    "address": "Puncak 7 Residences Level 19-11, 40000 Shah Alam, Malaysia",
+    "score_raw": "9.0\nWonderful · 1 review",
+    "score_right": "9.0\nRated: Wonderful 9 – based on 1 review Expand ratings and reviews section\nWonderful\n1 review",
+    "stars": 0,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 10,
+      "facilities": 10,
+      "cleanliness": 10,
+      "comfort": 10,
+      "value_for_money": 10,
+      "location": 10
+    },
+    "room_type_count": 5,
+    "facility_groups": {
+      "Great for your stay": [
+        "Private bathroom",
+        "Balcony",
+        "Parking",
+        "View",
+        "Free Wifi",
+        "Kitchen",
+        "Air conditioning",
+        "Swimming pool",
+        "Washing machine",
+        "Private Parking"
+      ],
+      "Parking\nPrivate parking is available on site (reservation is needed) and costs MYR 20 per stay.": [],
+      "Internet\nWifi is available in all areas and is free of charge.": [],
+      "Kitchen": [
+        "Kitchen",
+        "Washing machine",
+        "Kitchenette"
+      ],
+      "Bathroom": [
+        "Private bathroom"
+      ],
+      "Media & Technology": [
+        "Flat-screen TV"
+      ],
+      "Outdoors": [
+        "Private pool",
+        "Balcony"
+      ],
+      "Swimming pool": [],
+      "Outdoor & View": [
+        "View"
+      ],
+      "Miscellaneous": [
+        "Air conditioning",
+        "Smoke-free property"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Malay"
+      ]
+    },
+    "popular_facilities": [
+      "Swimming pool",
+      "Private Parking",
+      "Free Wifi",
+      "Swimming pool",
+      "Private Parking",
+      "Free Wifi"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 7,
+    "search_listing": {
+      "title": "Homestay Shah Alam Near Uitm",
+      "url": "https://www.booking.com/hotel/my/homestay-shah-alam-near-uitm.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=7&hapos=7&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=1617116201_432566129_8_0_0&highlighted_blocks=1617116201_432566129_8_0_0&matching_block_id=1617116201_432566129_8_0_0&sr_pri_blocks=1617116201_432566129_8_0_0__35910&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 9.0\n9.0\nWonderful\n1 review",
+      "price_raw": "MYR 359",
+      "distance": "2.3 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/cozy-4br-house-with-balcony-in-shah-alam.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=1581624301_429272841_9_0_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=8&highlighted_blocks=1581624301_429272841_9_0_0&hpos=8&matching_block_id=1581624301_429272841_9_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1581624301_429272841_9_0_0__40740&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Cozy 4BR House with Balcony in Shah Alam",
+    "address": "72, Jalan Pulau Lumut U10/76h, 40170 Shah Alam, Malaysia",
+    "score_raw": null,
+    "score_right": null,
+    "stars": 0,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {},
+    "room_type_count": 5,
+    "facility_groups": {
+      "Great for your stay": [
+        "Balcony",
+        "Parking",
+        "View",
+        "Terrace",
+        "Free Wifi",
+        "Kitchen",
+        "Air conditioning",
+        "BBQ facilities",
+        "Free parking",
+        "Washing machine"
+      ],
+      "Parking\nFree private parking is available on site (reservation is not needed).": [],
+      "Internet\nWifi is available in all areas and is free of charge.": [],
+      "Kitchen": [
+        "Kitchenware",
+        "Kitchen",
+        "Washing machine",
+        "Kitchenette"
+      ],
+      "Bedroom": [
+        "Wardrobe or closet",
+        "Dressing room"
+      ],
+      "Media & Technology": [
+        "Flat-screen TV"
+      ],
+      "Room amenities": [
+        "Drying rack for clothing",
+        "Clothes rack",
+        "Carpeted",
+        "Fan",
+        "Ironing facilities",
+        "Iron"
+      ],
+      "Outdoors": [
+        "BBQ facilities",
+        "Balcony",
+        "Terrace"
+      ],
+      "Outdoor & View": [
+        "View"
+      ],
+      "Miscellaneous": [
+        "Air conditioning",
+        "Smoke-free property"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Malay"
+      ]
+    },
+    "popular_facilities": [
+      "Free parking",
+      "Free Wifi",
+      "Free parking",
+      "Free Wifi"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 8,
+    "search_listing": {
+      "title": "Cozy 4BR House with Balcony in Shah Alam",
+      "url": "https://www.booking.com/hotel/my/cozy-4br-house-with-balcony-in-shah-alam.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=8&hapos=8&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=1581624301_429272841_9_0_0&highlighted_blocks=1581624301_429272841_9_0_0&matching_block_id=1581624301_429272841_9_0_0&sr_pri_blocks=1581624301_429272841_9_0_0__40740&from=searchresults",
+      "address": null,
+      "score_raw": null,
+      "price_raw": "MYR 407",
+      "distance": "9.1 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/glenz-business.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=977707801_431658944_2_2_0_596953&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=9&highlighted_blocks=977707801_431658944_2_2_0_596953&hpos=9&matching_block_id=977707801_431658944_2_2_0_596953&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=977707801_431658944_2_2_0_596953_21000&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "FOX Hotel Glenmarie Shah Alam",
+    "address": "Level 8, Pusat Komersil Vestland (The Glenz)- East No.6, Jalan Juruanalisis U1/35 seksyen U1, 40150 Shah Alam, Malaysia",
+    "score_raw": "8.4\nVery Good · 1,412 reviews",
+    "score_right": "8.4\nRated: Very Good 8.4 – based on 1,412 reviews Expand ratings and reviews section\nVery Good\n1,412 reviews",
+    "stars": 3,
+    "preferred_partner": false,
+    "travel_sustainable_badge": true,
+    "sustainability_level_raw": "Certified",
+    "subscores": {
+      "staff": 8.7,
+      "facilities": 8.6,
+      "cleanliness": 8.8,
+      "comfort": 8.9,
+      "value_for_money": 8.6,
+      "location": 8.4,
+      "free_wifi": 7.9
+    },
+    "room_type_count": 31,
+    "facility_groups": {
+      "Great for your stay": [
+        "Private bathroom",
+        "Parking",
+        "Spa and wellness center",
+        "View",
+        "Free Wifi",
+        "Air conditioning",
+        "Family rooms",
+        "Fitness center",
+        "Shuttle service (free)",
+        "Non-smoking rooms"
+      ],
+      "Bathroom": [
+        "Toilet paper",
+        "Towels",
+        "Bidet",
+        "Slippers",
+        "Private bathroom",
+        "Toilet",
+        "Free toiletries",
+        "Hairdryer",
+        "Shower"
+      ],
+      "Bedroom": [
+        "Linens",
+        "Wardrobe or closet"
+      ],
+      "View": [
+        "City view",
+        "View"
+      ],
+      "Outdoors": [
+        "Outdoor furniture",
+        "Sun deck",
+        "Terrace",
+        "Garden"
+      ],
+      "Kitchen": [
+        "Cleaning products",
+        "Electric kettle",
+        "Refrigerator"
+      ],
+      "Room amenities": [
+        "Socket near the bed",
+        "Drying rack for clothing",
+        "Clothes rack"
+      ],
+      "Living Area": [
+        "Seating area",
+        "Desk"
+      ],
+      "Media & Technology": [
+        "Flat-screen TV",
+        "Cable channels",
+        "Satellite channels",
+        "Telephone",
+        "TV"
+      ],
+      "Food & Drink": [
+        "Tea/Coffee maker"
+      ],
+      "Internet\nWifi is available in all areas and is free of charge.": [],
+      "Parking\nPrivate parking is available on site (reservation is not possible) and costs MYR 5 per day.": [
+        "Parking garage",
+        "Accessible parking"
+      ],
+      "Front Desk Services": [
+        "Invoice provided",
+        "Lockers",
+        "Private check-in/out",
+        "Concierge",
+        "ATM on site",
+        "Baggage storage",
+        "Express check-in/out",
+        "24-hour front desk"
+      ],
+      "Cleaning Services": [
+        "Daily housekeeping"
+      ],
+      "Business Facilities": [
+        "Fax/Photocopying\nAdditional charge",
+        "Meeting/Banquet facilities\nAdditional charge"
+      ],
+      "Safety & security": [
+        "Fire extinguishers",
+        "CCTV outside property",
+        "CCTV in common areas",
+        "Smoke alarms",
+        "Security alarm",
+        "Key card access",
+        "Key access",
+        "24-hour security",
+        "Safe"
+      ],
+      "General": [
+        "Shuttle service",
+        "Convenience store on site",
+        "Shared lounge/TV area",
+        "Designated smoking area",
+        "Air conditioning",
+        "Smoke-free property",
+        "Wake-up service",
+        "Hardwood or parquet floors",
+        "Private entrance",
+        "Laptop safe",
+        "Elevator",
+        "Family rooms",
+        "Ironing facilities",
+        "Non-smoking rooms",
+        "Iron",
+        "Wake-up service/Alarm clock",
+        "Room service"
+      ],
+      "Accessibility": [
+        "Upper floors accessible by elevator"
+      ],
+      "Outdoor swimming pool\nFree!": [
+        "Open all year",
+        "Adults only",
+        "Pool is on rooftop",
+        "Infinity pool",
+        "Pool with view",
+        "Pool/Beach towels",
+        "Beach chairs/Loungers"
+      ],
+      "Spa": [
+        "Personal trainer",
+        "Fitness classes",
+        "Fitness",
+        "Spa/Wellness packages",
+        "Beach chairs/Loungers",
+        "Spa and wellness center\nAdditional charge",
+        "Fitness center"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Indonesian",
+        "Malay",
+        "Chinese"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Spa and wellness center",
+      "Room service",
+      "Fitness center",
+      "Private Parking",
+      "Free Wifi",
+      "Family rooms",
+      "Tea/Coffee Maker in All Rooms",
+      "Breakfast",
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Spa and wellness center",
+      "Room service",
+      "Fitness center",
+      "Private Parking",
+      "Free Wifi",
+      "Family rooms",
+      "Tea/Coffee Maker in All Rooms",
+      "Breakfast"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [
+      "Sustainability certification",
+      "Sustainability certification",
+      "Sustainability certification",
+      "Sustainability certification",
+      "Sustainability certification"
+    ],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 9,
+    "search_listing": {
+      "title": "FOX Hotel Glenmarie Shah Alam",
+      "url": "https://www.booking.com/hotel/my/glenz-business.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=9&hapos=9&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=977707801_431658944_2_2_0_596953&highlighted_blocks=977707801_431658944_2_2_0_596953&matching_block_id=977707801_431658944_2_2_0_596953&sr_pri_blocks=977707801_431658944_2_2_0_596953_21000&from_sustainable_property_sr=1&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 8.4\n8.4\nVery Good\n1,412 reviews",
+      "price_raw": "MYR 210",
+      "distance": "5.1 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/mercure-kuala-lumpur-glenmarie.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=751937702_428789428_2_0_0_772868&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=10&highlighted_blocks=751937702_428789428_2_0_0_772868&hpos=10&matching_block_id=751937702_428789428_2_0_0_772868&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=751937702_428789428_2_0_0_772868_27300&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Mercure Kuala Lumpur Glenmarie",
+    "address": "Jalan Kontraktor U 14 Seksyen U1, 40150 Shah Alam, Malaysia",
+    "score_raw": "8.5\nVery Good · 1,091 reviews",
+    "score_right": "8.5\nRated: Very Good 8.5 – based on 1,091 reviews Expand ratings and reviews section\nVery Good\n1,091 reviews",
+    "stars": 4,
+    "preferred_partner": false,
+    "travel_sustainable_badge": true,
+    "sustainability_level_raw": "Certified",
+    "subscores": {
+      "staff": 8.9,
+      "facilities": 8.8,
+      "cleanliness": 9.1,
+      "comfort": 9,
+      "value_for_money": 8.7,
+      "location": 8.4,
+      "free_wifi": 7.8
+    },
+    "room_type_count": 109,
+    "facility_groups": {
+      "Great for your stay": [
+        "Restaurant",
+        "Private bathroom",
+        "Parking",
+        "View",
+        "Free Wifi",
+        "Air conditioning",
+        "Fitness center",
+        "Non-smoking rooms",
+        "Facilities for disabled guests",
+        "Free parking"
+      ],
+      "Bathroom": [
+        "Toilet paper",
+        "Towels",
+        "Bidet",
+        "Private bathroom",
+        "Toilet",
+        "Free toiletries",
+        "Hairdryer",
+        "Shower"
+      ],
+      "Bedroom": [
+        "Linens",
+        "Wardrobe or closet",
+        "Extra long beds (> 80 inches)"
+      ],
+      "View": [
+        "View"
+      ],
+      "Outdoors": [
+        "Sun deck",
+        "Terrace"
+      ],
+      "Kitchen": [
+        "Electric kettle",
+        "Refrigerator"
+      ],
+      "Room amenities": [
+        "Socket near the bed",
+        "Drying rack for clothing",
+        "Clothes rack"
+      ],
+      "Living Area": [
+        "Sofa",
+        "Seating area"
+      ],
+      "Media & Technology": [
+        "Flat-screen TV",
+        "Satellite channels",
+        "Telephone",
+        "TV"
+      ],
+      "Food & Drink": [
+        "Coffee house on site",
+        "Wine/Champagne\nAdditional charge",
+        "Kid-friendly buffet",
+        "Kids' meals\nAdditional charge",
+        "Special diet meals (on request)",
+        "Bar",
+        "Restaurant",
+        "Tea/Coffee maker"
+      ],
+      "Internet\nWifi is available in the rooms and is free of charge.": [],
+      "Parking\nFree private parking is available on site (reservation is not needed).": [
+        "Parking garage",
+        "Accessible parking"
+      ],
+      "Front Desk Services": [
+        "Invoice provided",
+        "Concierge",
+        "Baggage storage",
+        "Express check-in/out",
+        "24-hour front desk"
+      ],
+      "Entertainment & Family Services": [
+        "Board games/Puzzles"
+      ],
+      "Cleaning Services": [
+        "Daily housekeeping",
+        "Suit press\nAdditional charge",
+        "Ironing service\nAdditional charge",
+        "Dry cleaning\nAdditional charge",
+        "Laundry\nAdditional charge"
+      ],
+      "Business Facilities": [
+        "Fax/Photocopying\nAdditional charge",
+        "Business center\nAdditional charge",
+        "Meeting/Banquet facilities\nAdditional charge"
+      ],
+      "Safety & security": [
+        "Fire extinguishers",
+        "CCTV outside property",
+        "CCTV in common areas",
+        "Smoke alarms",
+        "Security alarm",
+        "Key card access",
+        "24-hour security",
+        "Safe"
+      ],
+      "General": [
+        "Shared lounge/TV area",
+        "Designated smoking area",
+        "Air conditioning",
+        "Smoke-free property",
+        "Wake-up service",
+        "Soundproofing",
+        "Carpeted",
+        "Soundproof rooms",
+        "Elevator",
+        "Facilities for disabled guests",
+        "Non-smoking rooms",
+        "Iron",
+        "Room service"
+      ],
+      "Accessibility": [
+        "Entire unit wheelchair accessible"
+      ],
+      "Outdoor swimming pool\nFree!": [
+        "Opening times",
+        "Open all year",
+        "All ages welcome",
+        "Pool is on rooftop",
+        "Saltwater pool",
+        "Pool/Beach towels",
+        "Beach chairs/Loungers",
+        "Beach umbrellas"
+      ],
+      "Spa": [
+        "Fitness",
+        "Beach umbrellas",
+        "Beach chairs/Loungers",
+        "Fitness center"
+      ],
+      "Languages Spoken": [
+        "Mandarin",
+        "English",
+        "Malay",
+        "Cantonese"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Room service",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "Restaurant",
+      "Tea/Coffee Maker in All Rooms",
+      "Bar",
+      "Good Breakfast",
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Room service",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "Restaurant",
+      "Tea/Coffee Maker in All Rooms",
+      "Bar",
+      "Good Breakfast"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [
+      "Sustainability certification",
+      "Sustainability certification",
+      "Sustainability certification",
+      "Sustainability certification",
+      "Sustainability certification"
+    ],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 10,
+    "search_listing": {
+      "title": "Mercure Kuala Lumpur Glenmarie",
+      "url": "https://www.booking.com/hotel/my/mercure-kuala-lumpur-glenmarie.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=10&hapos=10&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=751937702_428789428_2_0_0_772868&highlighted_blocks=751937702_428789428_2_0_0_772868&matching_block_id=751937702_428789428_2_0_0_772868&sr_pri_blocks=751937702_428789428_2_0_0_772868_27300&from_sustainable_property_sr=1&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 8.5\n8.5\nVery Good\n1,091 reviews",
+      "price_raw": "MYR 273",
+      "distance": "5.3 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/wyndham-grand-i-city.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=1548263301_426053397_2_0_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=11&highlighted_blocks=1548263301_426053397_2_0_0&hpos=11&matching_block_id=1548263301_426053397_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1548263301_426053397_2_0_0__38372&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Wyndham Grand I-City",
+    "address": "East Wing Lobby Block G No 3 Persiaran Multimedia, 40000 Shah Alam, Malaysia",
+    "score_raw": "8.6\nExcellent · 22 reviews",
+    "score_right": "8.6\nRated: Excellent 8.6 – based on 22 reviews Expand ratings and reviews section\nExcellent\n22 reviews",
+    "stars": 3,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 9.3,
+      "facilities": 8.3,
+      "cleanliness": 9.1,
+      "comfort": 8.9,
+      "value_for_money": 8.6,
+      "location": 9
+    },
+    "room_type_count": 46,
+    "facility_groups": {
+      "Great for your stay": [
+        "Restaurant",
+        "Parking",
+        "Free Wifi",
+        "Kitchen",
+        "Air conditioning",
+        "Family rooms",
+        "Fitness center",
+        "Airport shuttle",
+        "Non-smoking rooms",
+        "Facilities for disabled guests"
+      ],
+      "Bathroom": [
+        "Toilet paper",
+        "Towels",
+        "Bidet",
+        "Towels/sheets (extra fee)",
+        "Bath or shower",
+        "Slippers",
+        "Toilet",
+        "Free toiletries",
+        "Bathrobe",
+        "Hairdryer",
+        "Shower"
+      ],
+      "Bedroom": [
+        "Linens"
+      ],
+      "Outdoors": [
+        "BBQ facilities",
+        "Garden"
+      ],
+      "Kitchen": [
+        "Dining table",
+        "Kitchenware",
+        "Electric kettle",
+        "Kitchen",
+        "Microwave",
+        "Refrigerator",
+        "Kitchenette"
+      ],
+      "Room amenities": [
+        "Socket near the bed",
+        "Clothes rack"
+      ],
+      "Activities": [
+        "Water park\nAdditional charge\nOff-site",
+        "Playground",
+        "Tennis court"
+      ],
+      "Living Area": [
+        "Dining area",
+        "Sofa",
+        "Seating area",
+        "Desk"
+      ],
+      "Media & Technology": [
+        "TV"
+      ],
+      "Food & Drink": [
+        "Restaurant",
+        "Tea/Coffee maker"
+      ],
+      "Internet\nWifi is available in all areas and is free of charge.": [],
+      "Parking\nPublic parking is available on site (reservation is not needed) and charges may apply.": [
+        "Parking garage"
+      ],
+      "Front Desk Services": [
+        "Invoice provided",
+        "Concierge",
+        "Baggage storage",
+        "Express check-in/out",
+        "24-hour front desk"
+      ],
+      "Cleaning Services": [
+        "Daily housekeeping",
+        "Ironing service",
+        "Laundry"
+      ],
+      "Safety & security": [
+        "Fire extinguishers",
+        "CCTV in common areas",
+        "Smoke alarms",
+        "Key card access",
+        "24-hour security",
+        "Safe"
+      ],
+      "General": [
+        "Air conditioning",
+        "Smoke-free property",
+        "Wake-up service",
+        "Tile/marble floor",
+        "Heating",
+        "Soundproofing",
+        "Elevator",
+        "Family rooms",
+        "Facilities for disabled guests",
+        "Airport shuttle\nAdditional charge",
+        "Non-smoking rooms",
+        "Iron",
+        "Wake-up service/Alarm clock",
+        "Room service"
+      ],
+      "Accessibility": [
+        "Upper floors accessible by elevator"
+      ],
+      "Outdoor swimming pool": [
+        "Open all year"
+      ],
+      "Spa": [
+        "Fitness",
+        "Hot tub/Jacuzzi",
+        "Fitness center"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Malay"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Airport shuttle",
+      "Room service",
+      "Fitness center",
+      "Parking on site",
+      "Free Wifi",
+      "Restaurant",
+      "Tea/Coffee Maker in All Rooms",
+      "Breakfast",
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Airport shuttle",
+      "Room service",
+      "Fitness center",
+      "Parking on site",
+      "Free Wifi",
+      "Restaurant",
+      "Tea/Coffee Maker in All Rooms",
+      "Breakfast"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 11,
+    "search_listing": {
+      "title": "Wyndham Grand I-City",
+      "url": "https://www.booking.com/hotel/my/wyndham-grand-i-city.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=11&hapos=11&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=1548263301_426053397_2_0_0&highlighted_blocks=1548263301_426053397_2_0_0&matching_block_id=1548263301_426053397_2_0_0&sr_pri_blocks=1548263301_426053397_2_0_0__38372&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 8.6\n8.6\nExcellent\n22 reviews",
+      "price_raw": "MYR 384",
+      "distance": "3.9 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/cozy-suite-i-city.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=893608301_359769087_4_0_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=12&highlighted_blocks=893608301_359769087_4_0_0&hpos=12&matching_block_id=893608301_359769087_4_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=893608301_359769087_4_0_0__21000&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Cozy Suite @ I-City",
+    "address": "i-suite@icity, persiaran multimedia, seksyen 7, i-City, 40000 Shah Alam, Malaysia",
+    "score_raw": "8.5\nVery Good · 57 reviews",
+    "score_right": "8.5\nRated: Very Good 8.5 – based on 57 reviews Expand ratings and reviews section\nVery Good\n57 reviews",
+    "stars": 3,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 9.3,
+      "facilities": 9,
+      "cleanliness": 9.1,
+      "comfort": 9,
+      "value_for_money": 8.8,
+      "location": 9.3,
+      "free_wifi": 7.5
+    },
+    "room_type_count": 3,
+    "facility_groups": {
+      "Great for your stay": [
+        "Private bathroom",
+        "Balcony",
+        "Parking",
+        "View",
+        "Free Wifi",
+        "Kitchen",
+        "Air conditioning",
+        "Non-smoking rooms",
+        "Free parking",
+        "Swimming pool"
+      ],
+      "Parking\nFree public parking is available on site (reservation is not needed).": [],
+      "Internet\nWifi is available in the rooms and is free of charge.": [],
+      "Kitchen": [
+        "Dining table",
+        "Cleaning products",
+        "Kitchenware",
+        "Electric kettle",
+        "Kitchen",
+        "Washing machine",
+        "Refrigerator"
+      ],
+      "Bedroom": [
+        "Wardrobe or closet"
+      ],
+      "Bathroom": [
+        "Toilet paper",
+        "Towels",
+        "Sauna",
+        "Private bathroom",
+        "Toilet",
+        "Free toiletries",
+        "Hairdryer"
+      ],
+      "Living Area": [
+        "Dining area",
+        "Sofa"
+      ],
+      "Media & Technology": [
+        "Flat-screen TV"
+      ],
+      "Room amenities": [
+        "Socket near the bed",
+        "Clothes rack",
+        "Hardwood or parquet floors",
+        "Heating",
+        "Ironing facilities",
+        "Iron"
+      ],
+      "Outdoors": [
+        "Private pool",
+        "Balcony"
+      ],
+      "Swimming pool": [],
+      "Outdoor & View": [
+        "City view",
+        "View"
+      ],
+      "Building Characteristics": [
+        "Detached"
+      ],
+      "Front Desk Services": [
+        "Invoice provided"
+      ],
+      "Miscellaneous": [
+        "Air conditioning",
+        "Smoke-free property",
+        "Non-smoking rooms"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Indonesian",
+        "Malay",
+        "Chinese"
+      ]
+    },
+    "popular_facilities": [
+      "Swimming pool",
+      "Non-smoking rooms",
+      "Free parking",
+      "Free Wifi",
+      "Swimming pool",
+      "Non-smoking rooms",
+      "Free parking",
+      "Free Wifi"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 12,
+    "search_listing": {
+      "title": "Cozy Suite @ I-City",
+      "url": "https://www.booking.com/hotel/my/cozy-suite-i-city.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=12&hapos=12&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=893608301_359769087_4_0_0&highlighted_blocks=893608301_359769087_4_0_0&matching_block_id=893608301_359769087_4_0_0&sr_pri_blocks=893608301_359769087_4_0_0__21000&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 8.5\n8.5\nVery Good\n57 reviews",
+      "price_raw": "MYR 210",
+      "distance": "4.2 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/sinar-rasa-homestay-at-i-soho-i-city-shah-alam.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=947336201_409491949_0_0_0_617193&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=13&highlighted_blocks=947336201_409491949_0_0_0_617193&hpos=13&matching_block_id=947336201_409491949_0_0_0_617193&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=947336201_409491949_0_0_0_617193_10260&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Sinar Rasa Homestay at I-Soho, I-City",
+    "address": "Soho Suite, I-Soho, Jalan Multimedia, I-city Sinar Rasa Homestay, i-City, 40000 Shah Alam, Malaysia",
+    "score_raw": "7.2\nGood · 1,519 reviews",
+    "score_right": "7.2\nRated: Good 7.2 – based on 1,519 reviews Expand ratings and reviews section\nGood\n1,519 reviews",
+    "stars": 5,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 7.7,
+      "facilities": 7.5,
+      "cleanliness": 7.6,
+      "comfort": 7.7,
+      "value_for_money": 7.6,
+      "location": 8.3,
+      "free_wifi": 7.9
+    },
+    "room_type_count": 31,
+    "facility_groups": {
+      "Great for your stay": [
+        "Restaurant",
+        "Private bathroom",
+        "Parking",
+        "View",
+        "Free Wifi",
+        "Kitchen",
+        "Air conditioning",
+        "Fitness center",
+        "Airport shuttle",
+        "Non-smoking rooms"
+      ],
+      "Bathroom": [
+        "Toilet paper",
+        "Towels",
+        "Bidet",
+        "Private bathroom",
+        "Toilet",
+        "Free toiletries",
+        "Hairdryer",
+        "Shower"
+      ],
+      "Bedroom": [
+        "Linens"
+      ],
+      "View": [
+        "City view",
+        "View"
+      ],
+      "Outdoors": [
+        "Barbecue",
+        "Patio",
+        "Terrace",
+        "Garden"
+      ],
+      "Kitchen": [
+        "Dining table",
+        "Stovetop",
+        "Electric kettle",
+        "Kitchen",
+        "Microwave",
+        "Refrigerator",
+        "Kitchenette"
+      ],
+      "Room amenities": [
+        "Socket near the bed",
+        "Clothes rack"
+      ],
+      "Activities": [
+        "Water park\nAdditional charge\nOff-site",
+        "Evening entertainment",
+        "Kids' club",
+        "Bowling\nAdditional charge",
+        "Playground"
+      ],
+      "Living Area": [
+        "Dining area",
+        "Sofa",
+        "Desk"
+      ],
+      "Media & Technology": [
+        "Flat-screen TV",
+        "Cable channels",
+        "TV"
+      ],
+      "Food & Drink": [
+        "Coffee house on site",
+        "Restaurant"
+      ],
+      "Internet\nWifi is available in the rooms and is free of charge.": [],
+      "Parking\nFree private parking is available on site (reservation is not needed).": [
+        "Parking garage"
+      ],
+      "Services": [
+        "ATM on site",
+        "Baggage storage\nAdditional charge",
+        "Currency exchange",
+        "Ironing service\nAdditional charge",
+        "Hair/Beauty salon",
+        "Dry cleaning\nAdditional charge",
+        "Laundry\nAdditional charge",
+        "Airport shuttle\nAdditional charge"
+      ],
+      "Front Desk Services": [
+        "Invoice provided"
+      ],
+      "Safety & security": [
+        "Fire extinguishers",
+        "CCTV outside property",
+        "CCTV in common areas",
+        "Smoke alarms",
+        "Security alarm",
+        "Key card access",
+        "Key access",
+        "24-hour security"
+      ],
+      "General": [
+        "Carbon monoxide detector",
+        "Convenience store on site",
+        "Air conditioning",
+        "Smoke-free property",
+        "Tile/marble floor",
+        "Elevator",
+        "Ironing facilities",
+        "Non-smoking rooms",
+        "Iron"
+      ],
+      "Accessibility": [
+        "Upper floors accessible by elevator"
+      ],
+      "Outdoor swimming pool\nFree!": [
+        "Open all year",
+        "All ages welcome",
+        "Pool is on rooftop",
+        "Beach chairs/Loungers"
+      ],
+      "Spa": [
+        "Fitness",
+        "Beach chairs/Loungers",
+        "Fitness center",
+        "Sauna"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Malay",
+        "Chinese"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Airport shuttle",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "Restaurant",
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Airport shuttle",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "Restaurant"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 13,
+    "search_listing": {
+      "title": "Sinar Rasa Homestay at I-Soho, I-City",
+      "url": "https://www.booking.com/hotel/my/sinar-rasa-homestay-at-i-soho-i-city-shah-alam.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=13&hapos=13&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=947336201_409491949_0_0_0_617193&highlighted_blocks=947336201_409491949_0_0_0_617193&matching_block_id=947336201_409491949_0_0_0_617193&sr_pri_blocks=947336201_409491949_0_0_0_617193_10260&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 7.2\n7.2\nGood\n1,517 reviews",
+      "price_raw": "MYR 103",
+      "distance": "4.2 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/neko-homes-at-i-city-wifi-tv-box-1-carpark.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=1457072902_417501295_3_0_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=14&highlighted_blocks=1457072902_417501295_3_0_0&hpos=14&matching_block_id=1457072902_417501295_3_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1457072902_417501295_3_0_0__15870&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Neko Homes at i-City - WiFi TV Box 1 Carpark",
+    "address": "Selangor Golden Triangle, i-City, 40000 Shah Alam, Malaysia",
+    "score_raw": "8.8\nExcellent · 28 reviews",
+    "score_right": "8.8\nRated: Excellent 8.8 – based on 28 reviews Expand ratings and reviews section\nExcellent\n28 reviews",
+    "stars": 3,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 9.5,
+      "facilities": 9.1,
+      "cleanliness": 9.2,
+      "comfort": 9.4,
+      "value_for_money": 9.1,
+      "location": 9.6,
+      "free_wifi": 10
+    },
+    "room_type_count": 3,
+    "facility_groups": {
+      "Great for your stay": [
+        "Private bathroom",
+        "Parking",
+        "Free Wifi",
+        "Kitchen",
+        "Air conditioning",
+        "Fitness center",
+        "Free parking",
+        "Outdoor swimming pool",
+        "Washing machine",
+        "Private Parking"
+      ],
+      "Parking\nFree private parking is available on site (reservation is not possible).": [],
+      "Internet\nWifi is available in public areas and is free of charge.": [],
+      "Kitchen": [
+        "Dining table",
+        "Stovetop",
+        "Dryer",
+        "Kitchenware",
+        "Electric kettle",
+        "Kitchen",
+        "Washing machine",
+        "Refrigerator"
+      ],
+      "Bedroom": [
+        "Linens",
+        "Wardrobe or closet"
+      ],
+      "Bathroom": [
+        "Private bathroom",
+        "Free toiletries",
+        "Hairdryer"
+      ],
+      "Living Area": [
+        "Dining area"
+      ],
+      "Media & Technology": [
+        "Flat-screen TV",
+        "TV"
+      ],
+      "Room amenities": [
+        "Clothes rack",
+        "Iron"
+      ],
+      "Outdoor swimming pool": [],
+      "Spa": [
+        "Fitness",
+        "Fitness center"
+      ],
+      "Miscellaneous": [
+        "Air conditioning",
+        "Smoke-free property"
+      ],
+      "Safety & security": [
+        "Smoke alarms"
+      ],
+      "Languages Spoken": [
+        "English"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "Outdoor swimming pool",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 14,
+    "search_listing": {
+      "title": "Neko Homes at i-City - WiFi TV Box 1 Carpark",
+      "url": "https://www.booking.com/hotel/my/neko-homes-at-i-city-wifi-tv-box-1-carpark.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=14&hapos=14&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=1457072902_417501295_3_0_0&highlighted_blocks=1457072902_417501295_3_0_0&matching_block_id=1457072902_417501295_3_0_0&sr_pri_blocks=1457072902_417501295_3_0_0__15870&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 8.8\n8.8\nExcellent\n28 reviews",
+      "price_raw": "MYR 159",
+      "distance": "4 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/alinea-suites-by-moka.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=1370753901_409287142_2_0_0_831446&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=15&highlighted_blocks=1370753901_409287142_2_0_0_831446&hpos=15&matching_block_id=1370753901_409287142_2_0_0_831446&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1370753901_409287142_2_0_0_831446_11988&srepoch=1789742142&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Alinea Suites by Moka",
+    "address": "Alinea Suites, 40000 Shah Alam, Malaysia",
+    "score_raw": "8.6\nExcellent · 176 reviews",
+    "score_right": "8.6\nRated: Excellent 8.6 – based on 176 reviews Expand ratings and reviews section\nExcellent\n176 reviews",
+    "stars": 4,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 8.8,
+      "facilities": 8.6,
+      "cleanliness": 9,
+      "comfort": 8.9,
+      "value_for_money": 8.9,
+      "location": 9.1,
+      "free_wifi": 9.1
+    },
+    "room_type_count": 11,
+    "facility_groups": {
+      "Great for your stay": [
+        "Restaurant",
+        "Private bathroom",
+        "Parking",
+        "Free Wifi",
+        "Family rooms",
+        "Fitness center",
+        "Non-smoking rooms",
+        "BBQ facilities",
+        "Free parking",
+        "Outdoor swimming pool"
+      ],
+      "Parking\nFree private parking is available on site (reservation is not needed).": [],
+      "Internet\nWifi is available in the rooms and is free of charge.": [],
+      "Bathroom": [
+        "Private bathroom"
+      ],
+      "Outdoors": [
+        "Picnic area",
+        "Outdoor furniture",
+        "BBQ facilities",
+        "Terrace"
+      ],
+      "Common Areas": [
+        "Game room"
+      ],
+      "Outdoor swimming pool\nFree!": [
+        "Open all year",
+        "All ages welcome",
+        "Infinity pool"
+      ],
+      "Spa": [
+        "Kids' pool",
+        "Fitness",
+        "Public Bath",
+        "Hot tub/Jacuzzi",
+        "Fitness center",
+        "Sauna"
+      ],
+      "Food & Drink": [
+        "Restaurant"
+      ],
+      "Activities": [
+        "Pool table"
+      ],
+      "Front Desk Services": [
+        "Lockers",
+        "Private check-in/out"
+      ],
+      "Entertainment & Family Services": [
+        "Outdoor play equipment for kids",
+        "Indoor play area",
+        "Playground"
+      ],
+      "Business Facilities": [
+        "Meeting/Banquet facilities"
+      ],
+      "Shops": [
+        "Convenience store on site"
+      ],
+      "Miscellaneous": [
+        "Designated smoking area",
+        "Air conditioning",
+        "Smoke-free property",
+        "Elevator",
+        "Family rooms",
+        "Non-smoking rooms"
+      ],
+      "Safety & security": [
+        "Fire extinguishers",
+        "CCTV outside property",
+        "CCTV in common areas",
+        "Smoke alarms",
+        "Security alarm",
+        "Key card access",
+        "24-hour security"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Malay",
+        "Chinese"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "Restaurant",
+      "Family rooms",
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "Restaurant",
+      "Family rooms"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 15,
+    "search_listing": {
+      "title": "Alinea Suites by Moka",
+      "url": "https://www.booking.com/hotel/my/alinea-suites-by-moka.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=15&hapos=15&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742142&all_sr_blocks=1370753901_409287142_2_0_0_831446&highlighted_blocks=1370753901_409287142_2_0_0_831446&matching_block_id=1370753901_409287142_2_0_0_831446&sr_pri_blocks=1370753901_409287142_2_0_0_831446_11988&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 8.6\n8.6\nExcellent\n176 reviews",
+      "price_raw": "MYR 120",
+      "distance": "0.5 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/nova-stay-i-city-be-central.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=1632697901_0_2_0_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=16&highlighted_blocks=1632697901_0_2_0_0&hpos=1&matching_block_id=1632697901_0_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1632697901_0_2_0_0__24168&srepoch=1789742140&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "NOVA STAY I-City Be Central",
+    "address": "BeCentral @ i-City Jalan Plumbum 7/102, Seksyen7, 40000 Shah Alam, Malaysia",
+    "score_raw": "8.8\nExcellent · 14 reviews",
+    "score_right": "8.8\nRated: Excellent 8.8 – based on 14 reviews Expand ratings and reviews section\nExcellent\n14 reviews",
+    "stars": 4,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 8.7,
+      "facilities": 9.5,
+      "cleanliness": 9.3,
+      "comfort": 9.5,
+      "value_for_money": 9.3,
+      "location": 9.5,
+      "free_wifi": 10
+    },
+    "room_type_count": 9,
+    "facility_groups": {
+      "Great for your stay": [
+        "Private bathroom",
+        "Parking",
+        "View",
+        "Free Wifi",
+        "Kitchen",
+        "Air conditioning",
+        "Family rooms",
+        "Non-smoking rooms",
+        "Free parking",
+        "Water sports facilities on site"
+      ],
+      "Parking\nFree private parking is available on site (reservation is not needed).": [
+        "Electric vehicle charging station",
+        "Accessible parking"
+      ],
+      "Internet\nWifi is available in all areas and is free of charge.": [],
+      "Kitchen": [
+        "Dining table",
+        "Cleaning products",
+        "Stovetop",
+        "Dryer",
+        "Electric kettle",
+        "Kitchen",
+        "Washing machine",
+        "Kitchenette"
+      ],
+      "Bedroom": [
+        "Wardrobe or closet"
+      ],
+      "Bathroom": [
+        "Toilet paper",
+        "Towels",
+        "Bath or shower",
+        "Slippers",
+        "Private bathroom",
+        "Toilet",
+        "Free toiletries",
+        "Hairdryer",
+        "Shower"
+      ],
+      "Living Area": [
+        "Dining area",
+        "Sofa",
+        "Seating area",
+        "Desk"
+      ],
+      "Media & Technology": [
+        "Flat-screen TV",
+        "Cable channels"
+      ],
+      "Room amenities": [
+        "Drying rack for clothing",
+        "Clothes rack",
+        "Hypoallergenic",
+        "Hardwood or parquet floors",
+        "Soundproofing",
+        "Carpeted",
+        "Ironing facilities"
+      ],
+      "Accessibility": [
+        "Upper floors accessible by elevator",
+        "Entire unit located on ground floor"
+      ],
+      "Outdoors": [
+        "Private pool",
+        "Garden"
+      ],
+      "Outdoor swimming pool\nFree!": [
+        "Opening times",
+        "Open all year",
+        "All ages welcome",
+        "Pool is on rooftop",
+        "Infinity pool",
+        "Pool with view",
+        "Shallow end",
+        "Beach chairs/Loungers",
+        "Beach umbrellas"
+      ],
+      "Spa": [
+        "Fitness",
+        "Beach umbrellas",
+        "Beach chairs/Loungers"
+      ],
+      "Activities": [
+        "Water park\nAdditional charge\nOff-site",
+        "Water sports facilities on site"
+      ],
+      "Outdoor & View": [
+        "City view",
+        "Landmark view",
+        "Pool view",
+        "Garden view",
+        "View"
+      ],
+      "Front Desk Services": [
+        "Invoice provided",
+        "Private check-in/out",
+        "Express check-in/out"
+      ],
+      "Miscellaneous": [
+        "Air conditioning",
+        "Smoke-free property",
+        "Hypoallergenic room available",
+        "Soundproof rooms",
+        "Elevator",
+        "Family rooms",
+        "Non-smoking rooms"
+      ],
+      "Safety & security": [
+        "Fire extinguishers",
+        "CCTV outside property",
+        "CCTV in common areas",
+        "Smoke alarms",
+        "Security alarm",
+        "24-hour security",
+        "Carbon monoxide detector"
+      ],
+      "Languages Spoken": [
+        "Arabic",
+        "English",
+        "Malay",
+        "Chinese"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Free parking",
+      "Free Wifi",
+      "Family rooms",
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Free parking",
+      "Free Wifi",
+      "Family rooms"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 16,
+    "search_listing": {
+      "title": "NOVA STAY I-City Be Central",
+      "url": "https://www.booking.com/hotel/my/nova-stay-i-city-be-central.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=1&hapos=16&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742140&all_sr_blocks=1632697901_0_2_0_0&highlighted_blocks=1632697901_0_2_0_0&matching_block_id=1632697901_0_2_0_0&sr_pri_blocks=1632697901_0_2_0_0__24168&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 8.8\n8.8\nExcellent\n14 reviews",
+      "price_raw": "MYR 242",
+      "distance": "4 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/new-n-stylish-sunsuria-forum-5-at-setiacity-sccc.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=1457816001_417112115_6_0_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=17&highlighted_blocks=1457816001_417112115_6_0_0&hpos=2&matching_block_id=1457816001_417112115_6_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1457816001_417112115_6_0_0__23441&srepoch=1789742140&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "NEW Stylish Sunsuria Forum 5 at SetiaCity SCCC",
+    "address": "Sunsuria Forum Residential Suites, Jalan Setia Dagang AG U13/AL, Seksyen U13, L40, 40170 Shah Alam, Malaysia",
+    "score_raw": "9.9\nExceptional · 9 reviews",
+    "score_right": "9.9\nRated: Exceptional 9.9 – based on 9 reviews Expand ratings and reviews section\nExceptional\n9 reviews",
+    "stars": 4,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 9.3,
+      "facilities": 9.3,
+      "cleanliness": 9.3,
+      "comfort": 9.7,
+      "value_for_money": 9.3,
+      "location": 9.3
+    },
+    "room_type_count": 6,
+    "facility_groups": {
+      "Great for your stay": [
+        "Private bathroom",
+        "Balcony",
+        "Parking",
+        "View",
+        "Free Wifi",
+        "Kitchen",
+        "Air conditioning",
+        "Fitness center",
+        "Non-smoking rooms",
+        "BBQ facilities"
+      ],
+      "Parking\nFree private parking is available on site (reservation is not needed).": [
+        "Parking garage"
+      ],
+      "Internet\nWifi is available in all areas and is free of charge.": [],
+      "Kitchen": [
+        "Dining table",
+        "Cleaning products",
+        "Stovetop",
+        "Kitchenware",
+        "Electric kettle",
+        "Kitchen",
+        "Washing machine",
+        "Microwave",
+        "Refrigerator"
+      ],
+      "Bedroom": [
+        "Linens",
+        "Wardrobe or closet"
+      ],
+      "Bathroom": [
+        "Toilet paper",
+        "Towels",
+        "Bidet",
+        "Additional toilet",
+        "Bath or shower",
+        "Private bathroom",
+        "Hairdryer",
+        "Shower"
+      ],
+      "Living Area": [
+        "Dining area",
+        "Sofa",
+        "Desk"
+      ],
+      "Media & Technology": [
+        "Flat-screen TV",
+        "TV"
+      ],
+      "Room amenities": [
+        "Socket near the bed",
+        "Drying rack for clothing",
+        "Clothes rack",
+        "Hardwood or parquet floors",
+        "Fan",
+        "Ironing facilities",
+        "Iron"
+      ],
+      "Outdoors": [
+        "Private pool",
+        "BBQ facilities",
+        "Patio",
+        "Balcony",
+        "Terrace",
+        "Garden"
+      ],
+      "Outdoor swimming pool\nFree!": [
+        "Opening times",
+        "Open all year",
+        "All ages welcome",
+        "Pool is on rooftop",
+        "Infinity pool",
+        "Pool with view",
+        "Beach chairs/Loungers",
+        "Beach umbrellas"
+      ],
+      "Spa": [
+        "Fitness",
+        "Beach umbrellas",
+        "Beach chairs/Loungers",
+        "Fitness center"
+      ],
+      "Activities": [
+        "Ping-pong",
+        "Pool table"
+      ],
+      "Outdoor & View": [
+        "City view",
+        "View"
+      ],
+      "Building Characteristics": [
+        "Private apartment in building"
+      ],
+      "Entertainment & Family Services": [
+        "Playground"
+      ],
+      "Miscellaneous": [
+        "Designated smoking area",
+        "Air conditioning",
+        "Smoke-free property",
+        "Elevator",
+        "Non-smoking rooms"
+      ],
+      "Safety & security": [
+        "Fire extinguishers",
+        "CCTV outside property",
+        "Security alarm",
+        "Key card access",
+        "Key access",
+        "24-hour security"
+      ],
+      "Languages Spoken": [
+        "English"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 17,
+    "search_listing": {
+      "title": "NEW Stylish Sunsuria Forum 5 at SetiaCity SCCC",
+      "url": "https://www.booking.com/hotel/my/new-n-stylish-sunsuria-forum-5-at-setiacity-sccc.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=2&hapos=17&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742140&all_sr_blocks=1457816001_417112115_6_0_0&highlighted_blocks=1457816001_417112115_6_0_0&matching_block_id=1457816001_417112115_6_0_0&sr_pri_blocks=1457816001_417112115_6_0_0__23441&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 9.9\n9.9\nExceptional\n9 reviews",
+      "price_raw": "MYR 234",
+      "distance": "7.1 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/sunsuria-forum-premier-suites-setia-alam.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=1182371004_432946398_2_0_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=18&highlighted_blocks=1182371004_432946398_2_0_0&hpos=3&matching_block_id=1182371004_432946398_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=1182371004_432946398_2_0_0__16610&srepoch=1789742140&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Sunsuria Forum Premier Suites Setia Alam",
+    "address": "Soho Suites Sunsuria Forum, Jln Setia Dagang AL U13/AL, Alam Nusantara,, 40170 Shah Alam, Malaysia",
+    "score_raw": "7.2\nGood · 66 reviews",
+    "score_right": "7.2\nRated: Good 7.2 – based on 66 reviews Expand ratings and reviews section\nGood\n66 reviews",
+    "stars": 3,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 7.8,
+      "facilities": 7.6,
+      "cleanliness": 7.7,
+      "comfort": 7.9,
+      "value_for_money": 7.9,
+      "location": 8.1
+    },
+    "room_type_count": 26,
+    "facility_groups": {
+      "Great for your stay": [
+        "Restaurant",
+        "Private bathroom",
+        "Parking",
+        "Kitchen",
+        "Air conditioning",
+        "Fitness center",
+        "Non-smoking rooms",
+        "BBQ facilities",
+        "Free parking",
+        "Outdoor swimming pool"
+      ],
+      "Parking\nFree private parking is available on site (reservation is not needed).": [
+        "Parking garage"
+      ],
+      "Internet\nNo internet access available.": [],
+      "Kitchen": [
+        "Dining table",
+        "Stovetop",
+        "Kitchenware",
+        "Electric kettle",
+        "Kitchen",
+        "Washing machine",
+        "Microwave",
+        "Refrigerator",
+        "Kitchenette"
+      ],
+      "Bedroom": [
+        "Linens",
+        "Wardrobe or closet"
+      ],
+      "Bathroom": [
+        "Toilet paper",
+        "Towels",
+        "Bidet",
+        "Private bathroom",
+        "Toilet",
+        "Free toiletries",
+        "Hairdryer",
+        "Shower"
+      ],
+      "Living Area": [
+        "Dining area",
+        "Desk"
+      ],
+      "Media & Technology": [
+        "Streaming service (like Netflix)",
+        "Flat-screen TV",
+        "TV"
+      ],
+      "Room amenities": [
+        "Socket near the bed",
+        "Drying rack for clothing",
+        "Clothes rack",
+        "Tile/marble floor",
+        "Fan",
+        "Ironing facilities",
+        "Iron"
+      ],
+      "Outdoors": [
+        "Outdoor furniture",
+        "BBQ facilities"
+      ],
+      "Outdoor swimming pool": [],
+      "Spa": [
+        "Fitness",
+        "Fitness center"
+      ],
+      "Food & Drink": [
+        "Coffee house on site",
+        "Vending machine (drinks)",
+        "Restaurant"
+      ],
+      "Building Characteristics": [
+        "Private apartment in building"
+      ],
+      "Entertainment & Family Services": [
+        "Outdoor play equipment for kids",
+        "Playground"
+      ],
+      "Shops": [
+        "Convenience store on site"
+      ],
+      "Miscellaneous": [
+        "Designated smoking area",
+        "Air conditioning",
+        "Elevator",
+        "Non-smoking rooms"
+      ],
+      "Safety & security": [
+        "Fire extinguishers",
+        "CCTV in common areas",
+        "Smoke alarms",
+        "Security alarm",
+        "Key card access",
+        "24-hour security"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Malay",
+        "Chinese"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Fitness center",
+      "Free parking",
+      "Restaurant",
+      "Outdoor swimming pool",
+      "Non-smoking rooms",
+      "Fitness center",
+      "Free parking",
+      "Restaurant"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 18,
+    "search_listing": {
+      "title": "Sunsuria Forum Premier Suites Setia Alam",
+      "url": "https://www.booking.com/hotel/my/sunsuria-forum-premier-suites-setia-alam.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=3&hapos=18&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742140&all_sr_blocks=1182371004_432946398_2_0_0&highlighted_blocks=1182371004_432946398_2_0_0&matching_block_id=1182371004_432946398_2_0_0&sr_pri_blocks=1182371004_432946398_2_0_0__16610&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 7.2\n7.2\nGood\n66 reviews",
+      "price_raw": "MYR 166",
+      "distance": "7.1 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/mardhiyyah-hotel-and-suites.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=2571201_0_2_0_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=19&highlighted_blocks=2571201_0_2_0_0&hpos=4&matching_block_id=2571201_0_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=2571201_0_2_0_0__24746&srepoch=1789742140&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "Mardhiyyah Hotel and Suites",
+    "address": "Persiaran Perbandaran, Seksyen 14, 40000 Shah Alam, Malaysia",
+    "score_raw": "8.7\nExcellent · 1,322 reviews",
+    "score_right": "8.7\nRated: Excellent 8.7 – based on 1,322 reviews Expand ratings and reviews section\nExcellent\n1,322 reviews",
+    "stars": 5,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 9.4,
+      "facilities": 8.8,
+      "cleanliness": 9.1,
+      "comfort": 9.1,
+      "value_for_money": 8.8,
+      "location": 9.2
+    },
+    "room_type_count": 49,
+    "facility_groups": {
+      "Great for your stay": [
+        "Restaurant",
+        "Parking",
+        "Fitness center",
+        "Non-smoking rooms",
+        "Facilities for disabled guests",
+        "Free parking",
+        "Valet parking",
+        "Indoor swimming pool",
+        "Room service",
+        "Rooftop pool"
+      ],
+      "Food & Drink": [
+        "Restaurant"
+      ],
+      "Internet\nWired internet is available in the rooms and is free of charge.": [],
+      "Parking\nFree public parking is available on site (reservation is not needed).": [
+        "Valet parking"
+      ],
+      "Services": [
+        "Baggage storage",
+        "Fax/Photocopying\nAdditional charge",
+        "Ironing service\nAdditional charge",
+        "Dry cleaning\nAdditional charge",
+        "Laundry\nAdditional charge",
+        "Business center\nAdditional charge",
+        "24-hour front desk",
+        "Meeting/Banquet facilities\nAdditional charge",
+        "Room service"
+      ],
+      "Safety & security": [
+        "Fire extinguishers",
+        "CCTV in common areas",
+        "Security alarm",
+        "24-hour security",
+        "Safe"
+      ],
+      "General": [
+        "Designated smoking area",
+        "Air conditioning",
+        "Smoke-free property",
+        "Elevator",
+        "Facilities for disabled guests",
+        "Non-smoking rooms"
+      ],
+      "Indoor swimming pool\nFree!": [
+        "Opening times",
+        "Open all year",
+        "All ages welcome",
+        "Pool is on rooftop",
+        "Saltwater pool",
+        "Pool/Beach towels"
+      ],
+      "Spa": [
+        "Fitness center"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Malay"
+      ]
+    },
+    "popular_facilities": [
+      "Indoor swimming pool",
+      "Non-smoking rooms",
+      "Room service",
+      "Fitness center",
+      "Free parking",
+      "Restaurant",
+      "Facilities for disabled guests",
+      "Good Breakfast",
+      "Indoor swimming pool",
+      "Non-smoking rooms",
+      "Room service",
+      "Fitness center",
+      "Free parking",
+      "Restaurant",
+      "Facilities for disabled guests",
+      "Good Breakfast"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 19,
+    "search_listing": {
+      "title": "Mardhiyyah Hotel and Suites",
+      "url": "https://www.booking.com/hotel/my/mardhiyyah-hotel-and-suites.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=4&hapos=19&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742140&all_sr_blocks=2571201_0_2_0_0&highlighted_blocks=2571201_0_2_0_0&matching_block_id=2571201_0_2_0_0&sr_pri_blocks=2571201_0_2_0_0__24746&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 8.7\n8.7\nExcellent\n1,322 reviews",
+      "price_raw": "MYR 247",
+      "distance": "0.8 km from downtown"
+    },
+    "city_slug": "selangor"
+  },
+  {
+    "url": "https://www.booking.com/hotel/my/green-geniehome3br-99mbps-wifi-utropolis-shah-alam.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&sid=cf00c68bdb4f08ecdb7a0a1c170efb49&all_sr_blocks=783145801_337786280_4_0_0&checkin=2026-11-01&checkout=2026-11-02&dist=0&group_adults=2&group_children=0&hapos=20&highlighted_blocks=783145801_337786280_4_0_0&hpos=5&matching_block_id=783145801_337786280_4_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=783145801_337786280_4_0_0__24098&srepoch=1789742140&srpvid=aee7669849740919&type=total&ucfs=1&",
+    "title": "HIJAU Geniehome 2BR1studio Free 99mbps WIFI and Carpark at Utropolis Shah Alam",
+    "address": "TOWER C , UTROPOLIS SUITES 2, JALAN KONTRAKTOR U1/14, SEKSYEN U1, 40150 ,Persiaran Kerjaya, 40150 Shah Alam, Malaysia",
+    "score_raw": "9.4\nWonderful · 60 reviews",
+    "score_right": "9.4\nRated: Wonderful 9.4 – based on 60 reviews Expand ratings and reviews section\nWonderful\n60 reviews",
+    "stars": 4,
+    "preferred_partner": false,
+    "travel_sustainable_badge": false,
+    "sustainability_level_raw": null,
+    "subscores": {
+      "staff": 9.5,
+      "facilities": 9.5,
+      "cleanliness": 9.7,
+      "comfort": 9.7,
+      "value_for_money": 9.4,
+      "location": 9.3,
+      "free_wifi": 8.5
+    },
+    "room_type_count": 7,
+    "facility_groups": {
+      "Great for your stay": [
+        "6 restaurants",
+        "Private bathroom",
+        "Parking",
+        "Free Wifi",
+        "Kitchen",
+        "Air conditioning",
+        "Family rooms",
+        "Fitness center",
+        "Facilities for disabled guests",
+        "BBQ facilities"
+      ],
+      "Parking\nFree private parking is available on site (reservation is not needed).": [
+        "Parking garage",
+        "Accessible parking"
+      ],
+      "Internet\nWifi is available in the rooms and is free of charge.": [],
+      "Kitchen": [
+        "Dining table",
+        "Stovetop",
+        "Oven",
+        "Kitchenware",
+        "Electric kettle",
+        "Kitchen",
+        "Washing machine",
+        "Microwave",
+        "Refrigerator",
+        "Kitchenette"
+      ],
+      "Bedroom": [
+        "Linens",
+        "Wardrobe or closet",
+        "Dressing room"
+      ],
+      "Bathroom": [
+        "Toilet paper",
+        "Towels",
+        "Bidet",
+        "Additional toilet",
+        "Bath or shower",
+        "Slippers",
+        "Private bathroom",
+        "Toilet",
+        "Free toiletries",
+        "Hairdryer",
+        "Shower"
+      ],
+      "Living Area": [
+        "Dining area",
+        "Seating area",
+        "Desk"
+      ],
+      "Media & Technology": [
+        "Streaming service (like Netflix)",
+        "Flat-screen TV",
+        "TV"
+      ],
+      "Room amenities": [
+        "Socket near the bed",
+        "Sofa bed",
+        "Clothes rack",
+        "Fan",
+        "Iron"
+      ],
+      "Accessibility": [
+        "Entire unit wheelchair accessible",
+        "Upper floors accessible by elevator"
+      ],
+      "Outdoors": [
+        "Outdoor furniture",
+        "Barbecue",
+        "Private pool",
+        "BBQ facilities\nAdditional charge",
+        "Terrace",
+        "Garden"
+      ],
+      "Outdoor swimming pool\nFree!": [
+        "Opening times",
+        "Open all year",
+        "All ages welcome",
+        "Infinity pool",
+        "Beach chairs/Loungers",
+        "Beach umbrellas"
+      ],
+      "Spa": [
+        "Kids' pool",
+        "Beach umbrellas",
+        "Beach chairs/Loungers",
+        "Fitness center"
+      ],
+      "Food & Drink": [
+        "Restaurant"
+      ],
+      "Activities": [
+        "Hiking\nOff-site",
+        "Golf course (within 2 miles)\nAdditional charge"
+      ],
+      "Outdoor & View": [
+        "Inner courtyard view"
+      ],
+      "Building Characteristics": [
+        "Private apartment in building",
+        "Detached"
+      ],
+      "Front Desk Services": [
+        "Lockers",
+        "Private check-in/out",
+        "ATM on site",
+        "Baggage storage\nAdditional charge",
+        "Express check-in/out",
+        "24-hour front desk"
+      ],
+      "Entertainment & Family Services": [
+        "Outdoor play equipment for kids",
+        "Board games/Puzzles",
+        "Playground"
+      ],
+      "Cleaning Services": [
+        "Daily housekeeping\nAdditional charge"
+      ],
+      "Shops": [
+        "Convenience store on site"
+      ],
+      "Miscellaneous": [
+        "Wheelchair accessible",
+        "Air conditioning",
+        "Smoke-free property",
+        "Elevator",
+        "Family rooms",
+        "Facilities for disabled guests"
+      ],
+      "Safety & security": [
+        "Fire extinguishers",
+        "CCTV outside property",
+        "CCTV in common areas",
+        "Smoke alarms",
+        "Security alarm",
+        "24-hour security"
+      ],
+      "Languages Spoken": [
+        "English",
+        "Malay",
+        "Cantonese",
+        "Chinese"
+      ]
+    },
+    "popular_facilities": [
+      "Outdoor swimming pool",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "6 restaurants",
+      "Facilities for disabled guests",
+      "Family rooms",
+      "Outdoor swimming pool",
+      "Fitness center",
+      "Free parking",
+      "Free Wifi",
+      "6 restaurants",
+      "Facilities for disabled guests",
+      "Family rooms"
+    ],
+    "property_type": "Booking.com",
+    "badges_raw": [],
+    "city": "Shah Alam",
+    "search_page": 1,
+    "search_position": 20,
+    "search_listing": {
+      "title": "HIJAU Geniehome 2BR1studio Free 99mbps WIFI and Carpark at Utropolis Shah Alam",
+      "url": "https://www.booking.com/hotel/my/green-geniehome3br-99mbps-wifi-utropolis-shah-alam.html?aid=304142&label=gen173nr-10CAQoggI46wdIM1gEaKEBiAEBmAEzuAEHyAEM2AED6AEB-AEBiAIBqAIBuAKxmLXVBsACAdICJDAwY2M1MTAyLTNjYWQtNGQ1Yi04OTNiLWQ5ZWQwOTdlNzUwMNgCAeACAQ&ucfs=1&arphpl=1&checkin=2026-11-01&checkout=2026-11-02&group_adults=2&req_adults=2&no_rooms=1&group_children=0&req_children=0&hpos=5&hapos=20&sr_order=popularity&srpvid=aee7669849740919&srepoch=1789742140&all_sr_blocks=783145801_337786280_4_0_0&highlighted_blocks=783145801_337786280_4_0_0&matching_block_id=783145801_337786280_4_0_0&sr_pri_blocks=783145801_337786280_4_0_0__24098&from=searchresults",
+      "address": null,
+      "score_raw": "Scored 9.4\n9.4\nWonderful\n60 reviews",
+      "price_raw": "MYR 241",
+      "distance": "5.2 km from downtown"
+    },
+    "city_slug": "selangor"
+  }
+]

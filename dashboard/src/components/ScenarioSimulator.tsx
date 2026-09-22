@@ -20,7 +20,8 @@ import {
   ChevronUp,
   SlidersHorizontal,
   Route,
-  BarChart3
+  BarChart3,
+  ArrowRight
 } from 'lucide-react';
 
 // Custom smooth interpolation hook using requestAnimationFrame & cubic ease-out (~400ms)
@@ -164,6 +165,7 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
   const [optimizationMode, setOptimizationMode] = useState<'expected' | 'conservative_p10' | 'risk_adjusted'>('expected');
   const [customCosts, setCustomCosts] = useState<Record<string, number>>({}); // corridor_id -> RM '000
   const [showAllCandidates, setShowAllCandidates] = useState<boolean>(false);
+  const [selectedMcCorridor, setSelectedMcCorridor] = useState<string | null>(null);
 
   useEffect(() => {
     if (initialDestination && stateProfiles[initialDestination]) {
@@ -912,10 +914,25 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
 
       {/* MODE 2: Monte Carlo Stochastic Uncertainty Engine (Phase 26) */}
       {simulationMode === 'monte_carlo' && (() => {
-        const activeMcKey = `${activeCorridorOrigin || 'Selangor'} -> ${selectedState}`;
-        const benchmark = scenarioConfig.monte_carlo_benchmarks?.[activeMcKey];
+        const benchmarks = scenarioConfig.monte_carlo_benchmarks || {};
+        const availableCorridors = Object.keys(benchmarks);
+
+        // Intelligently resolve active corridor key
+        let activeMcKey = selectedMcCorridor && benchmarks[selectedMcCorridor]
+          ? selectedMcCorridor
+          : `${activeCorridorOrigin || 'Selangor'} -> ${selectedState}`;
+
+        if (!benchmarks[activeMcKey]) {
+          const matchingDest = availableCorridors.find(c => c.endsWith(` -> ${selectedState}`));
+          if (matchingDest) {
+            activeMcKey = matchingDest;
+          } else if (availableCorridors.length > 0) {
+            activeMcKey = availableCorridors[0];
+          }
+        }
+
+        const benchmark = benchmarks[activeMcKey];
         const mc = benchmark && 'percentiles' in benchmark ? benchmark : undefined;
-        if (!mc) return <div role="status" className="glass-panel p-6">No precomputed uncertainty benchmark for {activeMcKey}. Select a supported corridor; no substitute result is shown.</div>;
         const histData = mc?.distribution?.gva_density || [];
 
         const mcChartOption = {
@@ -956,164 +973,308 @@ export const ScenarioSimulator: React.FC<ScenarioSimulatorProps> = ({
           ]
         };
 
+        const [activeOrig, activeDest] = (activeMcKey || 'Selangor -> Melaka').split(' -> ');
+
         return (
           <div className="space-y-6 animate-fadeIn">
-            <div className="glass-panel p-5 border border-purple-200">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="px-2 py-0.5 rounded bg-purple-100 text-purple-800 text-[10px] font-bold uppercase tracking-wider">
-                      Uncertainty benchmark
-                    </span>
-                    <span className="text-xs text-stone-500">Fixed benchmark · {mc.n_simulations} draws · 2025 baseline</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-stone-900">
-                    Corridor Uncertainty: {mc ? `${mc.origin} ➔ ${mc.destination}` : `${selectedState} Feeder Corridor`}
-                  </h3>
-                  <p className="text-xs text-stone-600 mt-0.5">
-                    Precomputed benchmark, independent of policy sliders: reach {mc.parameters.input_affected_share * 100}%, stay extension {mc.parameters.input_delta_alos} nights, guests per room {mc.parameters.input_guests_per_room}. Historical variability is a sensitivity assumption, not a confidence interval for campaign effectiveness.
-                  </p>
-                </div>
-
+            {/* 16 x 16 Benchmark Corridor Selector */}
+            <div className="glass-panel p-5 border border-purple-200 bg-gradient-to-r from-purple-50/40 via-white to-violet-50/40 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-purple-100 pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 rounded-lg bg-stone-100 text-stone-700 text-xs font-mono font-medium">
-                    Seed: 42 (100% Reproducible)
+                  <Sparkles className="w-4 h-4 text-purple-600" />
+                  <span className="text-xs font-bold text-stone-900 uppercase tracking-wider">
+                    Stochastic Corridor Simulator ({availableCorridors.length} Precomputed 16 × 16 Models)
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 text-[10px] font-bold">
+                    Full National Coverage
                   </span>
                 </div>
+                <span className="text-[11px] text-stone-500">
+                  1,000 empirical stochastic draws per corridor · P10 / P25 / P50 / P75 / P90
+                </span>
               </div>
 
-              {/* 3 Metric Cards with P10 - P50 - P90 */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
-                <div className="p-4 rounded-xl bg-white border border-purple-100 shadow-sm">
-                  <div className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider">Additional Tourist Nights</div>
-                  <div className="text-2xl font-bold text-purple-900 mt-1 font-mono">
-                    +{mc ? (mc.percentiles.additional_nights.p50).toLocaleString() : '—'}
-                  </div>
-                  <div className="text-xs text-stone-500 mt-1 flex justify-between font-mono">
-                    <span>P10: +{mc ? (mc.percentiles.additional_nights.p10).toLocaleString() : '—'}</span>
-                    <span>P90: +{mc ? (mc.percentiles.additional_nights.p90).toLocaleString() : '—'}</span>
+              {/* Dual Dropdowns: Origin and Destination */}
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                <div className="sm:col-span-5">
+                  <label className="block text-[11px] font-semibold text-stone-600 uppercase tracking-wider mb-1">
+                    Origin Market (Source)
+                  </label>
+                  <select
+                    value={activeOrig || 'Selangor'}
+                    onChange={(e) => {
+                      const newOrig = e.target.value;
+                      const targetDest = activeDest || selectedState || 'Melaka';
+                      const newKey = `${newOrig} -> ${targetDest}`;
+                      setSelectedMcCorridor(newKey);
+                      setActiveCorridorOrigin(newOrig);
+                    }}
+                    className="w-full bg-white border border-purple-200 text-stone-900 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-400"
+                  >
+                    {stateList.map((s) => (
+                      <option key={s.state} value={s.state}>
+                        {s.state}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="sm:col-span-2 flex items-center justify-center pt-2 sm:pt-4">
+                  <div className="p-2 rounded-full bg-purple-100/80 text-purple-700 shadow-sm">
+                    <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
 
-                <div className="p-4 rounded-xl bg-white border border-purple-100 shadow-sm">
-                  <div className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider">Additional Spend (RM M)</div>
-                  <div className="text-2xl font-bold text-emerald-700 mt-1 font-mono">
-                    +RM {mc ? mc.percentiles.additional_spend_rm_m.p50.toFixed(2) : '—'}M
-                  </div>
-                  <div className="text-xs text-stone-500 mt-1 flex justify-between font-mono">
-                    <span>P10: RM {mc ? mc.percentiles.additional_spend_rm_m.p10.toFixed(2) : '—'}M</span>
-                    <span>P90: RM {mc ? mc.percentiles.additional_spend_rm_m.p90.toFixed(2) : '—'}M</span>
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-xl bg-white border border-purple-100 shadow-sm">
-                  <div className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider">Potential Tourism GVA (RM M)</div>
-                  <div className="text-2xl font-bold text-indigo-700 mt-1 font-mono">
-                    +RM {mc ? mc.percentiles.potential_gva_rm_m.p50.toFixed(2) : '—'}M
-                  </div>
-                  <div className="text-xs text-stone-500 mt-1 flex justify-between font-mono">
-                    <span>P10: RM {mc ? mc.percentiles.potential_gva_rm_m.p10.toFixed(2) : '—'}M</span>
-                    <span>P90: RM {mc ? mc.percentiles.potential_gva_rm_m.p90.toFixed(2) : '—'}M</span>
-                  </div>
+                <div className="sm:col-span-5">
+                  <label className="block text-[11px] font-semibold text-stone-600 uppercase tracking-wider mb-1">
+                    Destination State (Target)
+                  </label>
+                  <select
+                    value={activeDest || selectedState || 'Melaka'}
+                    onChange={(e) => {
+                      const newDest = e.target.value;
+                      const targetOrig = activeOrig || activeCorridorOrigin || 'Selangor';
+                      const newKey = `${targetOrig} -> ${newDest}`;
+                      setSelectedMcCorridor(newKey);
+                      setSelectedState(newDest);
+                    }}
+                    className="w-full bg-white border border-purple-200 text-stone-900 rounded-lg p-2.5 text-xs font-semibold focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-400"
+                  >
+                    {stateList.map((s) => (
+                      <option key={s.state} value={s.state}>
+                        {s.state} ({s.archetype_name})
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
-              {/* Capacity Risk Gauge */}
-              <div className="mt-5 p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <ShieldAlert className="w-5 h-5 text-amber-700 shrink-0" />
-                  <div>
-                    <div className="text-xs font-bold text-amber-900">Capacity Saturation Breach Risk</div>
-                    <div className="text-xs text-amber-800 mt-0.5">
-                      Probability that destination hotel occupancy exceeds {mc.parameters.planning_threshold_pct}% benchmark planning threshold under stochastic arrivals.
-                    </div>
-                  </div>
-                </div>
-                <div className="text-right shrink-0">
-                  <span className="text-xl font-bold text-amber-900 font-mono">
-                    {mc.prob_capacity_breach == null ? 'Unavailable' : `${(mc.prob_capacity_breach * 100).toFixed(1)}%`}
+              {/* Priority Corridor Shortcuts Ribbon */}
+              <div className="pt-2 border-t border-purple-100/80">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[10px] uppercase font-bold text-stone-500 tracking-wider">
+                    High-Priority Strategic Corridors (Quick Jump):
                   </span>
-                  <span className="block text-[10px] text-amber-700 font-semibold">Risk of Saturation</span>
+                  <span className="text-[10px] text-purple-700 font-medium">
+                    Active: <strong className="font-mono">{activeMcKey}</strong>
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto pr-1">
+                  {[
+                    'Selangor -> Melaka',
+                    'Johor -> Melaka',
+                    'W.P. Kuala Lumpur -> Pahang',
+                    'Selangor -> Pahang',
+                    'Perak -> Pulau Pinang',
+                    'Selangor -> Pulau Pinang',
+                    'Selangor -> Perak',
+                    'W.P. Kuala Lumpur -> Johor',
+                    'Selangor -> Johor',
+                    'Selangor -> Negeri Sembilan',
+                    'Selangor -> Kedah',
+                    'Selangor -> Kelantan',
+                    'Pahang -> Terengganu',
+                    'Perak -> Selangor',
+                    'Selangor -> W.P. Kuala Lumpur',
+                    'Selangor -> Sabah',
+                    'Sabah -> Sarawak',
+                  ].map((key) => {
+                    const isSelected = key === activeMcKey;
+                    const [orig, dest] = key.split(' -> ');
+                    return (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => {
+                          setSelectedMcCorridor(key);
+                          setActiveCorridorOrigin(orig);
+                          setSelectedState(dest);
+                        }}
+                        className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all flex items-center gap-1 ${
+                          isSelected
+                            ? 'bg-purple-700 text-white shadow-sm font-bold ring-1 ring-purple-400'
+                            : 'bg-white hover:bg-purple-50 text-stone-600 hover:text-purple-900 border border-stone-200 hover:border-purple-200'
+                        }`}
+                      >
+                        <span className="truncate max-w-[100px]">{orig}</span>
+                        <ArrowRight className={`w-2.5 h-2.5 ${isSelected ? 'text-purple-200' : 'text-stone-400'}`} />
+                        <span className="truncate max-w-[100px]">{dest}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
-              {/* Sprint D Phase 17: Uncertainty Provenance Architecture */}
-              {mc?.uncertainty_provenance && (
-                <div className="mt-5 p-4 rounded-xl bg-white border border-purple-200">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold text-stone-900 uppercase tracking-wider flex items-center gap-2">
-                      <Sparkles className="w-3.5 h-3.5 text-purple-700" />
-                      Uncertainty Provenance Architecture (Plan Section 17)
-                    </span>
-                    <span className="text-[10px] text-stone-500 font-medium">Separation of Empirical Data vs Policy Assumptions</span>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                    {/* Data Uncertainty */}
-                    <div className="p-3 rounded-lg bg-emerald-50/60 border border-emerald-200/80">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="font-bold text-emerald-900">Data-Calibrated Empirical Variation</span>
-                        <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 text-[9px] font-bold">DATA CALIBRATED</span>
-                      </div>
-                      <div className="space-y-1.5 text-stone-700 text-[11px]">
-                        <div className="flex justify-between">
-                          <span>Destination Nightly Spend CV:</span>
-                          <strong className="font-mono text-emerald-800">{((mc.uncertainty_provenance.data_uncertainty.spend_per_night_cv * 100)).toFixed(1)}%</strong>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>TSA Accommodation VAI SD (σ):</span>
-                          <strong className="font-mono text-emerald-800">±{(mc.uncertainty_provenance.data_uncertainty.vai_historical_sd * 100).toFixed(1)}%</strong>
-                        </div>
-                        {mc.uncertainty_provenance.data_uncertainty.destination_aor_sd != null && (
-                          <div className="flex justify-between">
-                            <span>Historical Occupancy SD:</span>
-                            <strong className="font-mono text-emerald-800">±{mc.uncertainty_provenance.data_uncertainty.destination_aor_sd.toFixed(1)}%</strong>
-                          </div>
-                        )}
-                        <p className="text-[10px] text-stone-500 pt-1 border-t border-emerald-100/80">
-                          {mc.uncertainty_provenance.data_uncertainty.calibration_source}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Policy Assumption Uncertainty */}
-                    <div className="p-3 rounded-lg bg-amber-50/60 border border-amber-200/80">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="font-bold text-amber-900">Configurable Policy Priors</span>
-                        <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">POLICY ASSUMPTION</span>
-                      </div>
-                      <div className="space-y-1.5 text-stone-700 text-[11px]">
-                        <div className="flex justify-between">
-                          <span>Campaign Reach Prior:</span>
-                          <strong className="font-mono text-amber-800">{((mc.uncertainty_provenance.policy_uncertainty.affected_share.location * 100)).toFixed(0)}% (±{((mc.uncertainty_provenance.policy_uncertainty.affected_share.sd * 100)).toFixed(0)}%)</strong>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Length-of-Stay Expansion:</span>
-                          <strong className="font-mono text-amber-800">+{mc.uncertainty_provenance.policy_uncertainty.delta_alos.location.toFixed(1)}d (±{mc.uncertainty_provenance.policy_uncertainty.delta_alos.sd.toFixed(2)}d)</strong>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Room Guest Density:</span>
-                          <strong className="font-mono text-amber-800">{mc.uncertainty_provenance.policy_uncertainty.guests_per_room.location.toFixed(1)} guests/room</strong>
-                        </div>
-                        <p className="text-[10px] text-stone-500 pt-1 border-t border-amber-100/80">
-                          Policy levers configured by campaign planners. Stochastic priors capture implementation variance.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
+
+            {!mc ? (
+              <div role="status" className="glass-panel p-6 border border-amber-200 bg-amber-50/40">
+                <div className="text-amber-800 font-semibold text-sm">
+                  No precomputed uncertainty benchmark for {activeMcKey}.
+                </div>
+                <p className="text-xs text-stone-600 mt-1">
+                  Please click one of the supported priority benchmark corridors above to inspect calibrated Monte Carlo distributions.
+                </p>
+              </div>
+            ) : (
+              <div className="glass-panel p-5 border border-purple-200">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="px-2 py-0.5 rounded bg-purple-100 text-purple-800 text-[10px] font-bold uppercase tracking-wider">
+                        Uncertainty benchmark
+                      </span>
+                      <span className="text-xs text-stone-500">Fixed benchmark · {mc.n_simulations} draws · 2025 baseline</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-stone-900">
+                      Corridor Uncertainty: {mc.origin} ➔ {mc.destination}
+                    </h3>
+                    <p className="text-xs text-stone-600 mt-0.5">
+                      Precomputed benchmark, independent of policy sliders: reach {mc.parameters.input_affected_share * 100}%, stay extension {mc.parameters.input_delta_alos} nights, guests per room {mc.parameters.input_guests_per_room}. Historical variability is a sensitivity assumption, not a confidence interval for campaign effectiveness.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="px-3 py-1 rounded-lg bg-stone-100 text-stone-700 text-xs font-mono font-medium">
+                      Seed: 42 (100% Reproducible)
+                    </span>
+                  </div>
+                </div>
+
+                {/* 3 Metric Cards with P10 - P50 - P90 */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
+                  <div className="p-4 rounded-xl bg-white border border-purple-100 shadow-sm">
+                    <div className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider">Additional Tourist Nights</div>
+                    <div className="text-2xl font-bold text-purple-900 mt-1 font-mono">
+                      +{mc.percentiles.additional_nights.p50.toLocaleString()}
+                    </div>
+                    <div className="text-xs text-stone-500 mt-1 flex justify-between font-mono">
+                      <span>P10: +{mc.percentiles.additional_nights.p10.toLocaleString()}</span>
+                      <span>P90: +{mc.percentiles.additional_nights.p90.toLocaleString()}</span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-white border border-purple-100 shadow-sm">
+                    <div className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider">Additional Spend (RM M)</div>
+                    <div className="text-2xl font-bold text-emerald-700 mt-1 font-mono">
+                      +RM {mc.percentiles.additional_spend_rm_m.p50.toFixed(2)}M
+                    </div>
+                    <div className="text-xs text-stone-500 mt-1 flex justify-between font-mono">
+                      <span>P10: RM {mc.percentiles.additional_spend_rm_m.p10.toFixed(2)}M</span>
+                      <span>P90: RM {mc.percentiles.additional_spend_rm_m.p90.toFixed(2)}M</span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-white border border-purple-100 shadow-sm">
+                    <div className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider">Potential Tourism GVA (RM M)</div>
+                    <div className="text-2xl font-bold text-indigo-700 mt-1 font-mono">
+                      +RM {mc.percentiles.potential_gva_rm_m.p50.toFixed(2)}M
+                    </div>
+                    <div className="text-xs text-stone-500 mt-1 flex justify-between font-mono">
+                      <span>P10: RM {mc.percentiles.potential_gva_rm_m.p10.toFixed(2)}M</span>
+                      <span>P90: RM {mc.percentiles.potential_gva_rm_m.p90.toFixed(2)}M</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Capacity Risk Gauge */}
+                <div className="mt-5 p-4 rounded-xl bg-amber-50/70 border border-amber-200/80 flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <ShieldAlert className="w-5 h-5 text-amber-700 shrink-0" />
+                    <div>
+                      <div className="text-xs font-bold text-amber-900">Capacity Saturation Breach Risk</div>
+                      <div className="text-xs text-amber-800 mt-0.5">
+                        Probability that destination hotel occupancy exceeds {mc.parameters.planning_threshold_pct}% benchmark planning threshold under stochastic arrivals.
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span className="text-xl font-bold text-amber-900 font-mono">
+                      {mc.prob_capacity_breach == null ? 'Unavailable' : `${(mc.prob_capacity_breach * 100).toFixed(1)}%`}
+                    </span>
+                    <span className="block text-[10px] text-amber-700 font-semibold">Risk of Saturation</span>
+                  </div>
+                </div>
+                {/* Sprint D Phase 17: Uncertainty Provenance Architecture */}
+                {mc?.uncertainty_provenance && (
+                  <div className="mt-5 p-4 rounded-xl bg-white border border-purple-200">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-bold text-stone-900 uppercase tracking-wider flex items-center gap-2">
+                        <Sparkles className="w-3.5 h-3.5 text-purple-700" />
+                        Uncertainty Provenance Architecture (Plan Section 17)
+                      </span>
+                      <span className="text-[10px] text-stone-500 font-medium">Separation of Empirical Data vs Policy Assumptions</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                      {/* Data Uncertainty */}
+                      <div className="p-3 rounded-lg bg-emerald-50/60 border border-emerald-200/80">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="font-bold text-emerald-900">Data-Calibrated Empirical Variation</span>
+                          <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 text-[9px] font-bold">DATA CALIBRATED</span>
+                        </div>
+                        <div className="space-y-1.5 text-stone-700 text-[11px]">
+                          <div className="flex justify-between">
+                            <span>Destination Nightly Spend CV:</span>
+                            <strong className="font-mono text-emerald-800">{((mc.uncertainty_provenance.data_uncertainty.spend_per_night_cv * 100)).toFixed(1)}%</strong>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>TSA Accommodation VAI SD (σ):</span>
+                            <strong className="font-mono text-emerald-800">±{(mc.uncertainty_provenance.data_uncertainty.vai_historical_sd * 100).toFixed(1)}%</strong>
+                          </div>
+                          {mc.uncertainty_provenance.data_uncertainty.destination_aor_sd != null && (
+                            <div className="flex justify-between">
+                              <span>Historical Occupancy SD:</span>
+                              <strong className="font-mono text-emerald-800">±{mc.uncertainty_provenance.data_uncertainty.destination_aor_sd.toFixed(1)}%</strong>
+                            </div>
+                          )}
+                          <p className="text-[10px] text-stone-500 pt-1 border-t border-emerald-100/80">
+                            {mc.uncertainty_provenance.data_uncertainty.calibration_source}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Policy Assumption Uncertainty */}
+                      <div className="p-3 rounded-lg bg-amber-50/60 border border-amber-200/80">
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="font-bold text-amber-900">Configurable Policy Priors</span>
+                          <span className="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 text-[9px] font-bold">POLICY ASSUMPTION</span>
+                        </div>
+                        <div className="space-y-1.5 text-stone-700 text-[11px]">
+                          <div className="flex justify-between">
+                            <span>Campaign Reach Prior:</span>
+                            <strong className="font-mono text-amber-800">{((mc.uncertainty_provenance.policy_uncertainty.affected_share.location * 100)).toFixed(0)}% (±{((mc.uncertainty_provenance.policy_uncertainty.affected_share.sd * 100)).toFixed(0)}%)</strong>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Length-of-Stay Expansion:</span>
+                            <strong className="font-mono text-amber-800">+{mc.uncertainty_provenance.policy_uncertainty.delta_alos.location.toFixed(1)}d (±{mc.uncertainty_provenance.policy_uncertainty.delta_alos.sd.toFixed(2)}d)</strong>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Room Guest Density:</span>
+                            <strong className="font-mono text-amber-800">{mc.uncertainty_provenance.policy_uncertainty.guests_per_room.location.toFixed(1)} guests/room</strong>
+                          </div>
+                          <p className="text-[10px] text-stone-500 pt-1 border-t border-amber-100/80">
+                            Policy levers configured by campaign planners. Stochastic priors capture implementation variance.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Chart: Probability Density Distribution */}
-            <div className="glass-panel p-5 border border-purple-100">
-              <h4 className="text-sm font-bold text-stone-800 mb-2 flex items-center gap-2">
-                <BarChart3 className="w-4 h-4 text-purple-600" />
-                Stochastic Incremental GVA Frequency Distribution (20 Bins)
-              </h4>
-              <div className="h-64 w-full">
-                <ReactECharts option={mcChartOption} style={{ height: '100%', width: '100%' }} />
+            {mc && (
+              <div className="glass-panel p-5 border border-purple-100">
+                <h4 className="text-sm font-bold text-stone-800 mb-2 flex items-center gap-2">
+                  <BarChart3 className="w-4 h-4 text-purple-600" />
+                  Stochastic Incremental GVA Frequency Distribution (20 Bins)
+                </h4>
+                <div className="h-64 w-full">
+                  <ReactECharts option={mcChartOption} style={{ height: '100%', width: '100%' }} />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         );
       })()}

@@ -12,7 +12,8 @@ import type {
   ODCorridorsData, 
   ScenarioEngineConfig, 
   DriversData,
-  ModelMetricsData
+  ModelMetricsData,
+  BookingHotelBenchmarksData
 } from './types';
 import { 
   Loader2, 
@@ -36,6 +37,7 @@ export function App() {
   const [scenarioConfig, setScenarioConfig] = useState<ScenarioEngineConfig | null>(null);
   const [driversData, setDriversData] = useState<DriversData | null>(null);
   const [modelMetrics, setModelMetrics] = useState<ModelMetricsData | null>(null);
+  const [bookingData, setBookingData] = useState<BookingHotelBenchmarksData | null>(null);
   const [sourceMetadata, setSourceMetadata] = useState<any | null>(null);
   const [implementationMetadata, setImplementationMetadata] = useState<any | null>(null);
 
@@ -83,6 +85,19 @@ export function App() {
     updateUrlParams('simulator', dest, origin || null, selectedYear);
   };
 
+  const handleExploreCorridorsForState = (dest: string) => {
+    setSelectedDestination(dest);
+    setActiveTab('corridors');
+    updateUrlParams('corridors', dest, selectedOrigin, selectedYear);
+  };
+
+  const handleTestScenarioForState = (dest: string) => {
+    setSelectedDestination(dest);
+    setSelectedOrigin(null);
+    setActiveTab('simulator');
+    updateUrlParams('simulator', dest, null, selectedYear);
+  };
+
   // Parse URL query parameters on initial page load
   useEffect(() => {
     try {
@@ -126,6 +141,7 @@ export function App() {
           scenarioRes, 
           driversRes,
           metricsRes,
+          bookingRes,
           sourceMetaRes,
           implMetaRes
         ] = await Promise.all([
@@ -136,6 +152,7 @@ export function App() {
           fetch(`${cleanBase}data/scenario_engine.json`),
           fetch(`${cleanBase}data/drivers_rq3.json`),
           fetch(`${cleanBase}data/model_metrics.json`),
+          fetch(`${cleanBase}data/booking_hotel_benchmarks.json`).catch(() => ({ ok: false })),
           fetch(`${cleanBase}data/source_metadata.json`),
           fetch(`${cleanBase}data/implementation_metadata.json`).catch(() => ({ ok: false })),
         ]);
@@ -152,6 +169,7 @@ export function App() {
           scenarioJson,
           driversJson,
           metricsJson,
+          bookingJson,
           sourceMetaJson,
           implMetaJson
         ] = await Promise.all([
@@ -162,6 +180,7 @@ export function App() {
           scenarioRes.json(),
           driversRes.json(),
           metricsRes.ok ? metricsRes.json() : null,
+          ('ok' in bookingRes && bookingRes.ok) ? (bookingRes as any).json() : null,
           sourceMetaRes.ok ? sourceMetaRes.json() : null,
           ('ok' in implMetaRes && implMetaRes.ok) ? (implMetaRes as any).json() : null,
         ]);
@@ -173,6 +192,7 @@ export function App() {
         setScenarioConfig(scenarioJson);
         setDriversData(driversJson);
         setModelMetrics(metricsJson);
+        setBookingData(bookingJson);
         setSourceMetadata(sourceMetaJson);
         setImplementationMetadata(implMetaJson || scenarioJson?.implementation_roadmap || null);
       } catch (err: any) {
@@ -200,19 +220,11 @@ export function App() {
       {/* Main Content Body */}
       <main className="main-content">
         {loading && (
-          <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-            <div className="relative">
-              <Loader2 className="w-12 h-12 text-violet-700 animate-spin" />
-              <div className="absolute inset-0 rounded-full blur-lg bg-violet-600/20"></div>
-            </div>
-            <div className="text-center space-y-1.5">
-              <h2 className="text-lg font-bold text-stone-900 tracking-wide">
-                Initializing Tourism Economic Intelligence Engine
-              </h2>
-              <p className="text-xs text-stone-600 max-w-md">
-                Ingesting DOSM TSA 2015–2025, DTS state panels, Demographics, HIES Table 6, and 240 Origin-Destination corridors...
-              </p>
-            </div>
+          <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
+            <Loader2 className="w-10 h-10 animate-spin text-violet-900" />
+            <p className="text-sm text-stone-500 font-medium animate-pulse">
+              Hydrating analytical datasets from DuckDB cache...
+            </p>
           </div>
         )}
 
@@ -236,7 +248,7 @@ export function App() {
           <>
             {/* View 1: Macro & Product Value Monitor */}
             {activeTab === 'monitor' && tsaData && (
-              <TourismValueMonitor data={tsaData} />
+              <TourismValueMonitor data={tsaData} onExploreMap={() => handleTabChange('map')} />
             )}
 
             {/* View 2: Accommodation Opportunity Map & State Profiles */}
@@ -245,7 +257,15 @@ export function App() {
                 stateProfiles={stateProfiles} 
                 geoJson={geoJson}
                 driversData={driversData}
+                bookingData={bookingData}
                 selectedYear={2025}
+                initialState={selectedDestination}
+                onSelectState={(stateName) => {
+                  setSelectedDestination(stateName);
+                  updateUrlParams('map', stateName, selectedOrigin, 2025);
+                }}
+                onExploreCorridors={handleExploreCorridorsForState}
+                onTestScenario={handleTestScenarioForState}
               />
             )}
 
@@ -258,6 +278,7 @@ export function App() {
                 selectedYear={selectedYear}
                 modelMetrics={modelMetrics}
                 onSelectCorridorForScenario={handleSelectCorridorForScenario}
+                initialDestination={selectedDestination}
               />
             )}
 

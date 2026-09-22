@@ -1,9 +1,25 @@
 @import "tailwindcss";
 
+/* Expose the shared palette to Tailwind without changing its default colours. */
+@theme inline {
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --font-display: 'Outfit', sans-serif;
+  --color-brand: var(--purple);
+  --color-brand-deep: var(--purple-deep);
+  --color-brand-wash: var(--purple-wash);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-surface: var(--surface);
+  --color-canvas: var(--canvas);
+}
+
+@layer base {
 :root {
   font-family: 'Plus Jakarta Sans', sans-serif;
   color: #251d32;
-  background: #f8f7f4;
+  background: var(--canvas);
+  --canvas: #f8f7f4;
   --ink: #251d32;
   --muted: #746d80;
   --purple: #6544b5;
@@ -14,12 +30,21 @@
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; min-width: 320px; background: #f8f7f4; }
+body { margin: 0; min-width: 320px; background: var(--canvas); }
 button, select, input { font: inherit; }
-button { cursor: pointer; }
-button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; }
+button:not(:disabled), summary { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+:where(button, select, input, textarea, summary, a):focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; }
 ::selection { background: #ddd2f5; color: var(--ink); }
 
+.main-content :where(h2, h3) { font-family: 'Outfit', sans-serif; letter-spacing: -.025em; }
+.main-content h2 { line-height: 1.16; }
+.main-content p { line-height: 1.65; }
+input[type="range"] { accent-color: var(--purple); }
+}
+
+/* Component defaults sit below utilities so local spacing and colours win. */
+@layer components {
 .app-shell { min-height: 100vh; display: flex; flex-direction: column; }
 .app-header { background: #fff; border-bottom: 1px solid var(--line); }
 .app-header-inner, .main-content, .site-footer { width: min(100% - 64px, 1440px); margin-inline: auto; }
@@ -49,26 +74,11 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px s
 .year-control select { border: 1px solid #dcd5e8; color: var(--ink); background: #fff; border-radius: 8px; padding: 8px 30px 8px 11px; font-size: 12px; font-weight: 700; }
 
 .main-content { flex: 1; padding-top: 38px; padding-bottom: 70px; }
-.main-content > .space-y-6, .main-content > .space-y-8 { display: flex; flex-direction: column; gap: 28px; }
 .glass-panel, .glass-panel-elevated { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 8px 30px rgba(40, 28, 65, .035); }
-.glass-panel:hover { border-color: #ddd4ea; }
-.metric-card { position: relative; overflow: hidden; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+.metric-card { position: relative; overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
 .metric-value { font-family: Outfit, sans-serif; font-size: 30px; font-weight: 700; line-height: 1.12; letter-spacing: -.035em; color: var(--ink); }
 .metric-label { color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; }
 .glass-pill { display: inline-flex; align-items: center; gap: 6px; background: var(--purple-wash); border: 1px solid #e5dbf5; color: var(--purple-deep); border-radius: 999px; padding: 5px 11px; font-size: 11px; font-weight: 700; }
-.main-content h2, .main-content h3 { font-family: Outfit, sans-serif; letter-spacing: -.025em; }
-.main-content h2 { line-height: 1.16; }
-.main-content p { line-height: 1.65; }
-.main-content .grid { column-gap: clamp(16px, 2vw, 28px); row-gap: clamp(16px, 2vw, 28px); }
-.main-content .glass-panel { padding: clamp(20px, 2.2vw, 30px); }
-.main-content .text-\[10px\], .main-content .text-\[11px\] { line-height: 1.4; }
-.main-content select, .main-content input[type="text"] { color: var(--ink); }
-.main-content input[type="range"] { accent-color: var(--purple); }
-.main-content button { transition: background-color .2s, border-color .2s, color .2s, transform .2s; }
-.main-content button:hover { transform: translateY(-1px); }
-.main-content .bg-violet-600, .main-content .bg-violet-700 { color: white; }
-.main-content .bg-violet-600 *, .main-content .bg-violet-700 * { color: inherit; }
-.main-content .bg-gradient-to-r, .main-content .bg-gradient-to-tr { color: white; }
 .site-footer { padding: 25px 0 34px; border-top: 1px solid var(--line); color: var(--muted); display: flex; justify-content: space-between; gap: 30px; font-size: 11px; }
 .site-footer strong { color: var(--purple); font-size: 13px; }
 .site-footer p { max-width: 650px; margin: 0; line-height: 1.65; }
@@ -89,4 +99,24 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px s
   .page-intro-copy { font-size: 13px; }
   .main-content { padding-top: 24px; }
   .site-footer { flex-direction: column; gap: 8px; }
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  border-radius: .5rem;
+  padding: .625rem 1rem;
+  background: var(--purple-deep);
+  color: #fff;
+  font-size: .875rem;
+  font-weight: 600;
+  transition: background-color .2s;
+}
+.btn-primary:hover:not(:disabled) { background: var(--purple); }
+.btn-primary:disabled { opacity: .5; }
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary { transition: none; }
+}
 }

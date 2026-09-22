@@ -13,7 +13,7 @@ export interface ProvenanceMetric {
   id: string;
   name: string;
   category: 'Macro Accounting' | 'State Yield' | 'SDG Sustainability' | 'Network & Gravity' | 'Capacity & Pricing';
-  status: 'OFFICIAL' | 'PRELIMINARY' | 'DERIVED' | 'MODEL' | 'SCENARIO';
+  status: 'OFFICIAL' | 'PRELIMINARY' | 'DERIVED' | 'MODEL' | 'SCENARIO' | 'SUPPORTING';
   definition: string;
   formula: string;
   sources: string[];
@@ -178,6 +178,20 @@ const PROVENANCE_METRICS: ProvenanceMetric[] = [
     transformation: 'Deflated using official national headline CPI series from 112.1 in 2015 to 134.6 in 2025.',
     limitations: 'Uses national headline CPI; does not isolate sub-state or tourism-specific consumer price baskets.',
     exampleValue: 'Deflator Multiplier 2018: 1.123x'
+  },
+  {
+    id: 'ota_booking_rates',
+    name: 'Commercial Lodging Room Rate Benchmark (OTA Sample)',
+    category: 'Capacity & Pricing',
+    status: 'SUPPORTING',
+    definition: 'Cross-sectional commercial hotel room rates, guest ratings, and luxury supply shares scraped from Booking.com.',
+    formula: 'MedianPrice_state = median(price_myr[i ∈ destination])',
+    sources: ['Scraped Booking.com Commercial Lodging Sample (2026 Snapshot)'],
+    referencePeriod: '2026 Cross-Section (N=360 properties across 18 destinations)',
+    unit: 'RM / room-night',
+    transformation: 'Non-parametric median and IQR calculation across 20 sampled properties per destination. Star ratings and guest reviews aggregated.',
+    limitations: 'Unvalidated scraped market sample. Covers commercial online booking listings only (over-indexes on commercial hotels vs informal VFR). Strictly excluded from econometric and ML model training.',
+    exampleValue: 'RM 226.50 / room-night (National Median)'
   }
 ];
 
@@ -216,6 +230,13 @@ const STATUS_BADGES: Record<string, { label: string; bg: string; text: string; b
     text: 'text-emerald-700',
     border: 'border-emerald-200',
     desc: 'What-if policy intervention estimate under transparent user-configured assumptions.'
+  },
+  SUPPORTING: {
+    label: 'SUPPORTING SAMPLE',
+    bg: 'bg-amber-100 text-amber-900',
+    text: 'text-amber-800',
+    border: 'border-amber-300',
+    desc: 'Auxiliary cross-sectional scraped market data (Booking.com 2026). Unvalidated; excluded from ML.'
   }
 };
 
@@ -330,7 +351,7 @@ export const ProvenanceDrawer: React.FC<ProvenanceDrawerProps> = ({ isOpen, onCl
                   />
                 </div>
                 <div className="flex flex-wrap items-center gap-1.5 w-full sm:w-auto">
-                  {['ALL', 'OFFICIAL', 'DERIVED', 'MODEL', 'SCENARIO'].map((status) => (
+                  {['ALL', 'OFFICIAL', 'DERIVED', 'MODEL', 'SCENARIO', 'SUPPORTING'].map((status) => (
                     <button
                       key={status}
                       onClick={() => setSelectedStatus(status)}
@@ -534,7 +555,7 @@ export const ProvenanceDrawer: React.FC<ProvenanceDrawerProps> = ({ isOpen, onCl
           <span>Malaysia Tourism Value Optimizer • Research Prototype</span>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 rounded-lg bg-violet-700 hover:bg-violet-600 text-white font-semibold transition-all cursor-pointer shadow-sm"
+            className="btn-primary px-4 py-1.5 text-xs shadow-sm"
           >
             Close Drawer
           </button>

@@ -441,4 +441,40 @@ class TestSprintDUncertaintyAndOptimization:
         assert p10_le_risk.all(), f"P10 > RiskAdjusted violations: {(~p10_le_risk).sum()}"
         assert risk_le_exp.all(), f"RiskAdjusted > Expected violations: {(~risk_le_exp).sum()}"
 
+    def test_scenario_engine_16x16_monte_carlo_coverage(self):
+        """Verify scenario_engine.json contains all 16x16 (256) state corridors with valid calibrated distributions."""
+        import json
+        from pathlib import Path
+
+        json_path = Path(__file__).resolve().parent.parent / "dashboard/public/data/scenario_engine.json"
+        assert json_path.exists(), "scenario_engine.json not found"
+
+        with open(json_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        mc_benchmarks = data.get("monte_carlo_benchmarks", {})
+        assert len(mc_benchmarks) == 256, f"Expected 256 corridors (16x16), found {len(mc_benchmarks)}"
+
+        # Check diverse corridors across Peninsular and Borneo
+        test_pairs = [
+            "Selangor -> Melaka",
+            "Johor -> Melaka",
+            "Perlis -> Sabah",
+            "Kelantan -> Johor",
+            "Sabah -> Sarawak",
+            "Sarawak -> Sabah",
+            "W.P. Kuala Lumpur -> Pahang",
+            "W.P. Labuan -> Selangor",
+        ]
+        for pair in test_pairs:
+            assert pair in mc_benchmarks, f"Missing pair: {pair}"
+            b = mc_benchmarks[pair]
+            p = b["percentiles"]
+            # Assert strict monotonicity: P10 <= P50 <= P90
+            assert p["additional_nights"]["p10"] <= p["additional_nights"]["p50"] <= p["additional_nights"]["p90"]
+            assert p["additional_spend_rm_m"]["p10"] <= p["additional_spend_rm_m"]["p50"] <= p["additional_spend_rm_m"]["p90"]
+            assert p["potential_gva_rm_m"]["p10"] <= p["potential_gva_rm_m"]["p50"] <= p["potential_gva_rm_m"]["p90"]
+            assert "uncertainty_provenance" in b
+
+
 

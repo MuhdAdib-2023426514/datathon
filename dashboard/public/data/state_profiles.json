@@ -114,6 +114,27 @@
       "t20_pct": 12.7,
       "affluence_index": 46.1
     },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 52.3,
+      "hotels_count": 552,
+      "rooms_count": 36043,
+      "domestic_hotel_guests": 7082360,
+      "foreign_hotel_guests": 3221442,
+      "total_hotel_guests": 10303802,
+      "foreign_guest_share_pct": 31.26
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 27,
+      "no_of_villages": 62,
+      "no_of_operators": 477,
+      "no_of_rooms": 454,
+      "domestic_homestay_guests": 221488,
+      "foreign_homestay_guests": 21381,
+      "total_homestay_guests": 242869,
+      "total_income_rm": 8605467.0
+    },
     "time_series": [
       {
         "year": 2018,
@@ -671,6 +692,27 @@
       "m40_pct": 22.5,
       "t20_pct": 7.8,
       "affluence_index": 30.3
+    },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 46.6,
+      "hotels_count": 328,
+      "rooms_count": 18602,
+      "domestic_hotel_guests": 2876480,
+      "foreign_hotel_guests": 1945168,
+      "total_hotel_guests": 4821648,
+      "foreign_guest_share_pct": 40.34
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 12,
+      "no_of_villages": 20,
+      "no_of_operators": 183,
+      "no_of_rooms": 204,
+      "domestic_homestay_guests": 26703,
+      "foreign_homestay_guests": 256,
+      "total_homestay_guests": 26959,
+      "total_income_rm": 1557841.0
     },
     "time_series": [
       {
@@ -1230,6 +1272,27 @@
       "t20_pct": 7.5,
       "affluence_index": 30.0
     },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 43.2,
+      "hotels_count": 170,
+      "rooms_count": 6362,
+      "domestic_hotel_guests": 1398526,
+      "foreign_hotel_guests": 58670,
+      "total_hotel_guests": 1457196,
+      "foreign_guest_share_pct": 4.03
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 8,
+      "no_of_villages": 8,
+      "no_of_operators": 136,
+      "no_of_rooms": 171,
+      "domestic_homestay_guests": 10480,
+      "foreign_homestay_guests": 16,
+      "total_homestay_guests": 10496,
+      "total_income_rm": 441478.0
+    },
     "time_series": [
       {
         "year": 2018,
@@ -1787,6 +1850,27 @@
       "m40_pct": 35.4,
       "t20_pct": 10.6,
       "affluence_index": 46.0
+    },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 45.4,
+      "hotels_count": 354,
+      "rooms_count": 20159,
+      "domestic_hotel_guests": 3481179,
+      "foreign_hotel_guests": 1539516,
+      "total_hotel_guests": 5020695,
+      "foreign_guest_share_pct": 30.66
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 9,
+      "no_of_villages": 9,
+      "no_of_operators": 143,
+      "no_of_rooms": 129,
+      "domestic_homestay_guests": 16132,
+      "foreign_homestay_guests": 1410,
+      "total_homestay_guests": 17542,
+      "total_income_rm": 1635572.0
     },
     "time_series": [
       {
@@ -2346,6 +2430,27 @@
       "t20_pct": 12.1,
       "affluence_index": 41.2
     },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 42.2,
+      "hotels_count": 166,
+      "rooms_count": 10856,
+      "domestic_hotel_guests": 2038374,
+      "foreign_hotel_guests": 450707,
+      "total_hotel_guests": 2489081,
+      "foreign_guest_share_pct": 18.11
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 9,
+      "no_of_villages": 26,
+      "no_of_operators": 145,
+      "no_of_rooms": 305,
+      "domestic_homestay_guests": 13109,
+      "foreign_homestay_guests": 1288,
+      "total_homestay_guests": 14397,
+      "total_income_rm": 1951136.0
+    },
     "time_series": [
       {
         "year": 2018,
@@ -2848,6 +2953,27 @@
       "m40_pct": 31.1,
       "t20_pct": 13.6,
       "affluence_index": 44.7
+    },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 75.6,
+      "hotels_count": 501,
+      "rooms_count": 34323,
+      "domestic_hotel_guests": 9866683,
+      "foreign_hotel_guests": 2956196,
+      "total_hotel_guests": 12822879,
+      "foreign_guest_share_pct": 23.05
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 17,
+      "no_of_villages": 36,
+      "no_of_operators": 363,
+      "no_of_rooms": 326,
+      "domestic_homestay_guests": 126930,
+      "foreign_homestay_guests": 99,
+      "total_homestay_guests": 127029,
+      "total_income_rm": 10674498.0
     },
     "time_series": [
       {
@@ -3407,6 +3533,27 @@
       "t20_pct": 9.8,
       "affluence_index": 39.1
     },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 46.9,
+      "hotels_count": 481,
+      "rooms_count": 19299,
+      "domestic_hotel_guests": 4232520,
+      "foreign_hotel_guests": 961492,
+      "total_hotel_guests": 5194012,
+      "foreign_guest_share_pct": 18.51
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 11,
+      "no_of_villages": 32,
+      "no_of_operators": 145,
+      "no_of_rooms": 180,
+      "domestic_homestay_guests": 14706,
+      "foreign_homestay_guests": 717,
+      "total_homestay_guests": 15423,
+      "total_income_rm": 973007.0
+    },
     "time_series": [
       {
         "year": 2018,
@@ -3964,6 +4111,27 @@
       "m40_pct": 28.9,
       "t20_pct": 9.1,
       "affluence_index": 38.0
+    },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 41.0,
+      "hotels_count": 44,
+      "rooms_count": 1489,
+      "domestic_hotel_guests": 314877,
+      "foreign_hotel_guests": 8429,
+      "total_hotel_guests": 323306,
+      "foreign_guest_share_pct": 2.61
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 4,
+      "no_of_villages": 8,
+      "no_of_operators": 42,
+      "no_of_rooms": 55,
+      "domestic_homestay_guests": 3969,
+      "foreign_homestay_guests": 8,
+      "total_homestay_guests": 3977,
+      "total_income_rm": 268340.0
     },
     "time_series": [
       {
@@ -4523,6 +4691,27 @@
       "t20_pct": 12.4,
       "affluence_index": 44.9
     },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 56.8,
+      "hotels_count": 376,
+      "rooms_count": 26692,
+      "domestic_hotel_guests": 5064587,
+      "foreign_hotel_guests": 3179396,
+      "total_hotel_guests": 8243983,
+      "foreign_guest_share_pct": 38.57
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 11,
+      "no_of_villages": 29,
+      "no_of_operators": 165,
+      "no_of_rooms": 154,
+      "domestic_homestay_guests": 48110,
+      "foreign_homestay_guests": 20055,
+      "total_homestay_guests": 68165,
+      "total_income_rm": 1880838.0
+    },
     "time_series": [
       {
         "year": 2018,
@@ -5081,6 +5270,27 @@
       "t20_pct": 8.1,
       "affluence_index": 33.0
     },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 51.6,
+      "hotels_count": 540,
+      "rooms_count": 27208,
+      "domestic_hotel_guests": 4105912,
+      "foreign_hotel_guests": 2938211,
+      "total_hotel_guests": 7044123,
+      "foreign_guest_share_pct": 41.71
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 39,
+      "no_of_villages": 136,
+      "no_of_operators": 538,
+      "no_of_rooms": 1072,
+      "domestic_homestay_guests": 135542,
+      "foreign_homestay_guests": 66511,
+      "total_homestay_guests": 202053,
+      "total_income_rm": 15155139.0
+    },
     "time_series": [
       {
         "year": 2019,
@@ -5583,6 +5793,27 @@
       "m40_pct": 30.0,
       "t20_pct": 9.5,
       "affluence_index": 39.5
+    },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 47.7,
+      "hotels_count": 522,
+      "rooms_count": 27913,
+      "domestic_hotel_guests": 5782026,
+      "foreign_hotel_guests": 1245889,
+      "total_hotel_guests": 7027915,
+      "foreign_guest_share_pct": 17.73
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 57,
+      "no_of_villages": 111,
+      "no_of_operators": 810,
+      "no_of_rooms": 1889,
+      "domestic_homestay_guests": 52927,
+      "foreign_homestay_guests": 3046,
+      "total_homestay_guests": 55973,
+      "total_income_rm": 6697972.0
     },
     "time_series": [
       {
@@ -6142,6 +6373,27 @@
       "t20_pct": 16.3,
       "affluence_index": 50.4
     },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 51.6,
+      "hotels_count": 460,
+      "rooms_count": 34883,
+      "domestic_hotel_guests": 6089647,
+      "foreign_hotel_guests": 3432226,
+      "total_hotel_guests": 9521873,
+      "foreign_guest_share_pct": 36.05
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 17,
+      "no_of_villages": 36,
+      "no_of_operators": 232,
+      "no_of_rooms": 322,
+      "domestic_homestay_guests": 22269,
+      "foreign_homestay_guests": 2757,
+      "total_homestay_guests": 25026,
+      "total_income_rm": 2024006.0
+    },
     "time_series": [
       {
         "year": 2018,
@@ -6699,6 +6951,27 @@
       "m40_pct": 22.4,
       "t20_pct": 8.7,
       "affluence_index": 31.1
+    },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 46.3,
+      "hotels_count": 256,
+      "rooms_count": 11190,
+      "domestic_hotel_guests": 2439721,
+      "foreign_hotel_guests": 278526,
+      "total_hotel_guests": 2718247,
+      "foreign_guest_share_pct": 10.25
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 7,
+      "no_of_villages": 7,
+      "no_of_operators": 119,
+      "no_of_rooms": 136,
+      "domestic_homestay_guests": 15241,
+      "foreign_homestay_guests": 637,
+      "total_homestay_guests": 15878,
+      "total_income_rm": 2499851.0
     },
     "time_series": [
       {
@@ -7258,6 +7531,27 @@
       "t20_pct": 26.9,
       "affluence_index": 67.0
     },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 62.6,
+      "hotels_count": 464,
+      "rooms_count": 63973,
+      "domestic_hotel_guests": 9781082,
+      "foreign_hotel_guests": 12129440,
+      "total_hotel_guests": 21910522,
+      "foreign_guest_share_pct": 55.36
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 0,
+      "no_of_villages": 0,
+      "no_of_operators": 0,
+      "no_of_rooms": 0,
+      "domestic_homestay_guests": 0,
+      "foreign_homestay_guests": 0,
+      "total_homestay_guests": 0,
+      "total_income_rm": 0.0
+    },
     "time_series": [
       {
         "year": 2018,
@@ -7816,6 +8110,27 @@
       "t20_pct": 4.1,
       "affluence_index": 41.2
     },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 37.0,
+      "hotels_count": 50,
+      "rooms_count": 2296,
+      "domestic_hotel_guests": 399785,
+      "foreign_hotel_guests": 51978,
+      "total_hotel_guests": 451763,
+      "foreign_guest_share_pct": 11.51
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 3,
+      "no_of_villages": 3,
+      "no_of_operators": 80,
+      "no_of_rooms": 155,
+      "domestic_homestay_guests": 4006,
+      "foreign_homestay_guests": 10,
+      "total_homestay_guests": 4016,
+      "total_income_rm": 551580.0
+    },
     "time_series": [
       {
         "year": 2018,
@@ -8373,6 +8688,27 @@
       "m40_pct": 48.1,
       "t20_pct": 14.1,
       "affluence_index": 62.2
+    },
+    "motac_hotel_operations_2024": {
+      "year": 2024,
+      "aor_pct": 56.5,
+      "hotels_count": 13,
+      "rooms_count": 2580,
+      "domestic_hotel_guests": 555827,
+      "foreign_hotel_guests": 221593,
+      "total_hotel_guests": 777420,
+      "foreign_guest_share_pct": 28.5
+    },
+    "motac_homestay_operations_2024": {
+      "year": 2024,
+      "no_of_homestays": 0,
+      "no_of_villages": 0,
+      "no_of_operators": 0,
+      "no_of_rooms": 0,
+      "domestic_homestay_guests": 0,
+      "foreign_homestay_guests": 0,
+      "total_homestay_guests": 0,
+      "total_income_rm": 0.0
     },
     "time_series": [
       {

@@ -32,6 +32,7 @@ interface CorridorNetworkProps {
   selectedYear?: number;
   modelMetrics?: ModelMetricsData | null;
   onSelectCorridorForScenario?: (destination: string, origin?: string) => void;
+  initialDestination?: string | null;
 }
 
 export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
@@ -40,13 +41,20 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
   stateProfiles,
   selectedYear = 2025,
   modelMetrics,
-  onSelectCorridorForScenario
+  onSelectCorridorForScenario,
+  initialDestination
 }) => {
   const [selectedTier, setSelectedTier] = useState<string>('All');
   const [selectedOrigin, setSelectedOrigin] = useState<string>('All');
-  const [selectedDestination, setSelectedDestination] = useState<string>('All');
+  const [selectedDestination, setSelectedDestination] = useState<string>(initialDestination || 'All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCorridor, setSelectedCorridor] = useState<Corridor | null>(null);
+
+  useEffect(() => {
+    if (initialDestination) {
+      setSelectedDestination(initialDestination);
+    }
+  }, [initialDestination]);
 
   useEffect(() => {
     if (geoJson) {
@@ -768,7 +776,7 @@ export const CorridorNetwork: React.FC<CorridorNetworkProps> = ({
                       setSelectedCorridor(null);
                       onSelectCorridorForScenario(dest, orig);
                     }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-violet-700 hover:bg-violet-600 text-stone-900 text-xs font-semibold transition-all cursor-pointer shadow-sm"
+                    className="btn-primary gap-1.5 px-3 py-1.5 text-xs shadow-sm"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     Simulate Corridor

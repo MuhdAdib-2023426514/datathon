@@ -135,6 +135,35 @@ class TestProductValueFrontier:
                 )
             ), f"Unexpected quadrant: {p['strategic_quadrant']}"
 
+    def test_longitudinal_10yr_trajectory_and_employment_fields(self):
+        """Verify tsa_macro.json contains all 11 years (2015-2025) of product series with employment and resilience metrics."""
+        tsa_file = DATA_DIR / "tsa_macro.json"
+        assert tsa_file.exists()
+        with open(tsa_file, "r", encoding="utf-8") as f:
+            tsa = json.load(f)
+
+        assert "product_series" in tsa
+        series = tsa["product_series"]
+        assert len(series) == 88, f"Expected 88 product-year rows (8 products x 11 years), found {len(series)}"
+
+        # Verify Accommodation multi-year series and employment
+        accom_series = [r for r in series if r.get("product_id") == "accommodation"]
+        assert len(accom_series) == 11, f"Expected 11 years of accommodation, found {len(accom_series)}"
+
+        years_present = sorted([r["year"] for r in accom_series])
+        assert years_present == list(range(2015, 2026))
+
+        for row in accom_series:
+            assert "vai" in row and row["vai"] > 0
+            assert "employment_thousands" in row and row["employment_thousands"] > 0
+
+        # Verify consistency / volatility fields in product_summary
+        accom_summary = next(p for p in tsa["product_summary"] if p["product_id"] == "accommodation")
+        assert "post_recovery_cv" in accom_summary
+        assert 0.01 <= accom_summary["post_recovery_cv"] <= 0.10, "Unexpected accommodation post-recovery CV"
+        assert "pre_covid_median_vai" in accom_summary
+        assert "post_recovery_median_vai" in accom_summary
+
 
 class TestCorridorToSimulatorContract:
     """Phase 28: Corridor to Simulator pre-population contracts"""

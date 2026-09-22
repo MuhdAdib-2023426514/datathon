@@ -7,12 +7,14 @@ export interface TSAMacroYear {
 
 export interface TourismProductYear {
   year: number;
+  product_id?: string;
   product: string;
   industry: string;
   itc: number;
   domestic_supply: number;
   gva: number;
   tourism_ratio: number;
+  employment_thousands?: number;
   vai: number;
   estimated_tourism_gva: number;
   data_status: string;
@@ -128,6 +130,29 @@ export interface StateLodgingShares {
   apartment_pct?: number | null;
 }
 
+export interface MotacHotelOperations2024 {
+  year: number;
+  aor_pct: number | null;
+  hotels_count: number | null;
+  rooms_count: number | null;
+  domestic_hotel_guests: number | null;
+  foreign_hotel_guests: number | null;
+  total_hotel_guests: number | null;
+  foreign_guest_share_pct: number | null;
+}
+
+export interface MotacHomestayOperations2024 {
+  year: number;
+  no_of_homestays: number;
+  no_of_villages: number;
+  no_of_operators: number;
+  no_of_rooms: number;
+  domestic_homestay_guests: number;
+  foreign_homestay_guests: number;
+  total_homestay_guests: number;
+  total_income_rm: number;
+}
+
 export interface StateProfile {
   state: string;
   state_code: string;
@@ -185,6 +210,8 @@ export interface StateProfile {
     t20_pct: number;
     affluence_index: number;
   };
+  motac_hotel_operations_2024?: MotacHotelOperations2024;
+  motac_homestay_operations_2024?: MotacHomestayOperations2024;
   time_series: any[];
 }
 
@@ -532,5 +559,106 @@ export interface ModelMetricsData {
       holiday_share_coef: number;
     };
   };
+}
+
+export interface BookingHotelItem {
+  hotel_id: string;
+  destination_slug: string;
+  destination_name: string;
+  state_name: string;
+  is_subdestination: boolean;
+  district?: string | null;
+  hotel_name: string;
+  price_myr: number | null;
+  stars: number;
+  rating_score: number | null;
+  review_count: number | null;
+  sub_cleanliness?: number | null;
+  sub_comfort?: number | null;
+  sub_location?: number | null;
+  sub_value_for_money?: number | null;
+  sub_facilities?: number | null;
+  sub_staff?: number | null;
+  sub_wifi?: number | null;
+  distance_downtown?: string | null;
+  address?: string | null;
+  booking_url?: string | null;
+  property_type: string;
+  sustainable_badge: boolean;
+  popular_facilities: string[];
+  data_status: string;
+}
+
+export interface BookingStarBreakdown {
+  luxury_4_5_star_count: number;
+  luxury_4_5_star_pct: number;
+  midscale_3_star_count: number;
+  midscale_3_star_pct: number;
+  budget_unrated_count: number;
+  budget_unrated_pct: number;
+}
+
+export interface BookingSubscoresAvg {
+  cleanliness: number | null;
+  comfort: number | null;
+  location: number | null;
+  value_for_money: number | null;
+  facilities: number | null;
+  staff: number | null;
+}
+
+export interface BookingDestinationSummary {
+  sample_size: number;
+  median_price_myr: number | null;
+  mean_price_myr: number | null;
+  min_price_myr: number | null;
+  max_price_myr: number | null;
+  p25_price_myr: number | null;
+  p75_price_myr: number | null;
+  mean_rating: number | null;
+  median_rating: number | null;
+  total_reviews_sample: number;
+  star_breakdown: BookingStarBreakdown;
+  subscores_avg: BookingSubscoresAvg;
+  top_amenities: Record<string, number>;
+  destination_slug?: string;
+  destination_name?: string;
+  state_name?: string;
+  is_subdestination?: boolean;
+  district?: string | null;
+  has_subdestinations?: boolean;
+  subdestinations?: string[];
+  hotels: BookingHotelItem[];
+}
+
+export interface BookingNationalBenchmark {
+  sample_size: number;
+  median_price_myr: number | null;
+  mean_price_myr: number | null;
+  min_price_myr: number | null;
+  max_price_myr: number | null;
+  p25_price_myr: number | null;
+  p75_price_myr: number | null;
+  mean_rating: number | null;
+  median_rating: number | null;
+  total_reviews_sample: number;
+  star_breakdown: BookingStarBreakdown;
+  subscores_avg: BookingSubscoresAvg;
+  top_amenities: Record<string, number>;
+}
+
+export interface BookingHotelBenchmarksData {
+  metadata: {
+    source: string;
+    snapshot_year: number;
+    total_properties: number;
+    destinations_count: number;
+    states_covered: number;
+    status: string;
+    disclaimer: string;
+  };
+  national_benchmark: BookingNationalBenchmark;
+  destinations: Record<string, BookingDestinationSummary>;
+  states: Record<string, BookingDestinationSummary>;
 }
 

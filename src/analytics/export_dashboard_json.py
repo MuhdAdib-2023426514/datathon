@@ -114,6 +114,8 @@ def export_dashboard_data():
     df_panel = con.execute("SELECT * FROM state_panel_year ORDER BY state, year").df()
     df_state_2025 = con.execute("SELECT * FROM state_panel_year WHERE year = 2025").df().set_index("state")
     df_state_year_2025 = con.execute("SELECT * FROM state_year").df().set_index("state")
+    df_hotel_ops_2024 = con.execute("SELECT * FROM hotel_operations_annual WHERE year = 2024").df()
+    df_homestay_ops_2024 = con.execute("SELECT * FROM homestay_operations_annual WHERE year = 2024").df()
 
     states_dict = {}
     for _, c_row in df_clusters.iterrows():
@@ -130,6 +132,10 @@ def export_dashboard_data():
         demog_info = demog_row.iloc[0].to_dict() if len(demog_row) > 0 else {}
         gran_row = df_granular[df_granular["state"] == st]
         gran_info = gran_row.iloc[0].to_dict() if len(gran_row) > 0 else {}
+        hotel_ops_row = df_hotel_ops_2024[df_hotel_ops_2024["state"] == st]
+        hotel_ops_info = hotel_ops_row.iloc[0].to_dict() if len(hotel_ops_row) > 0 else {}
+        homestay_ops_row = df_homestay_ops_2024[df_homestay_ops_2024["state"] == st]
+        homestay_ops_info = homestay_ops_row.iloc[0].to_dict() if len(homestay_ops_row) > 0 else {}
 
         time_series = df_panel[df_panel["state"] == st].to_dict(orient="records")
 
@@ -256,6 +262,27 @@ def export_dashboard_data():
                 "m40_pct": float(inc_info.get("m40_share_pct", 40.0)),
                 "t20_pct": float(inc_info.get("t20_share_pct", 20.0)),
                 "affluence_index": float(inc_info.get("affluence_index", 100.0)),
+            },
+            "motac_hotel_operations_2024": {
+                "year": 2024,
+                "aor_pct": float(hotel_ops_info["aor_pct"]) if pd.notnull(hotel_ops_info.get("aor_pct")) else None,
+                "hotels_count": int(hotel_ops_info["hotels_count"]) if pd.notnull(hotel_ops_info.get("hotels_count")) else None,
+                "rooms_count": int(hotel_ops_info["rooms_count"]) if pd.notnull(hotel_ops_info.get("rooms_count")) else None,
+                "domestic_hotel_guests": int(hotel_ops_info["domestic_hotel_guests"]) if pd.notnull(hotel_ops_info.get("domestic_hotel_guests")) else None,
+                "foreign_hotel_guests": int(hotel_ops_info["foreign_hotel_guests"]) if pd.notnull(hotel_ops_info.get("foreign_hotel_guests")) else None,
+                "total_hotel_guests": int(hotel_ops_info["total_hotel_guests"]) if pd.notnull(hotel_ops_info.get("total_hotel_guests")) else None,
+                "foreign_guest_share_pct": float(hotel_ops_info["foreign_guest_share_pct"]) if pd.notnull(hotel_ops_info.get("foreign_guest_share_pct")) else None,
+            },
+            "motac_homestay_operations_2024": {
+                "year": 2024,
+                "no_of_homestays": int(homestay_ops_info["no_of_homestays"]) if pd.notnull(homestay_ops_info.get("no_of_homestays")) else 0,
+                "no_of_villages": int(homestay_ops_info["no_of_villages"]) if pd.notnull(homestay_ops_info.get("no_of_villages")) else 0,
+                "no_of_operators": int(homestay_ops_info["no_of_operators"]) if pd.notnull(homestay_ops_info.get("no_of_operators")) else 0,
+                "no_of_rooms": int(homestay_ops_info["no_of_rooms"]) if pd.notnull(homestay_ops_info.get("no_of_rooms")) else 0,
+                "domestic_homestay_guests": int(homestay_ops_info["domestic_homestay_guests"]) if pd.notnull(homestay_ops_info.get("domestic_homestay_guests")) else 0,
+                "foreign_homestay_guests": int(homestay_ops_info["foreign_homestay_guests"]) if pd.notnull(homestay_ops_info.get("foreign_homestay_guests")) else 0,
+                "total_homestay_guests": int(homestay_ops_info["total_homestay_guests"]) if pd.notnull(homestay_ops_info.get("total_homestay_guests")) else 0,
+                "total_income_rm": float(homestay_ops_info["total_income_rm"]) if pd.notnull(homestay_ops_info.get("total_income_rm")) else 0.0,
             },
             "time_series": time_series,
         }
@@ -401,19 +428,14 @@ def export_dashboard_data():
     df_grav_summary = con.execute("SELECT * FROM corridor_gravity_model_summary").df()
     df_grav_val = con.execute("SELECT * FROM corridor_gravity_validation").df()
 
-    # Sprint 8 Phase 26: Pre-computed Monte Carlo benchmarks for priority corridors
+    # Sprint 8 & Expansion: Pre-computed Monte Carlo benchmarks for all 16x16 (256) state corridors
     from src.scenarios.monte_carlo import MonteCarloSimulator
     mc_sim = MonteCarloSimulator()
-    priority_mc_corridors = [
-        ("Selangor", "Melaka"),
-        ("Johor", "Melaka"),
-        ("W.P. Kuala Lumpur", "Pahang"),
-        ("Perak", "Pulau Pinang"),
-        ("Selangor", "Perak"),
-        ("W.P. Kuala Lumpur", "Johor"),
-    ]
+    df_od_2025 = con.execute("SELECT origin, destination FROM origin_destination WHERE year = 2025 ORDER BY origin, destination").df()
     monte_carlo_benchmarks = {}
-    for orig, dest in priority_mc_corridors:
+    for _, row in df_od_2025.iterrows():
+        orig = str(row["origin"])
+        dest = str(row["destination"])
         try:
             cid = f"{orig} -> {dest}"
             monte_carlo_benchmarks[cid] = mc_sim.simulate_corridor_uncertainty(

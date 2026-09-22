@@ -39,6 +39,7 @@ STAGES = {
         ("granular_dts", "src/ingestion/granular_dts_parser.py"),
         ("mytourism_kpi", "src/ingestion/mytourism_kpi_parser.py"),
         ("od_panel", "src/ingestion/od_panel_parser.py"),
+        ("booking_hotels", "src/ingestion/booking_hotel_parser.py"),
     ],
     "analytics": [
         ("product_value", "src/analytics/product_value.py"),
